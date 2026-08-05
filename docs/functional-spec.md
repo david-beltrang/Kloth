@@ -119,8 +119,6 @@ Cada outfit contiene:
 - Etiqueta de estilo
 - Usuario creador
 
-Las prendas asociadas son opcionales.
-
 Ejemplos de etiquetas:
 
 - Streetwear
