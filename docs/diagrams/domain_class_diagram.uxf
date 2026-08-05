@@ -1,0 +1,240 @@
+<diagram program="umletino" version="15.1"><zoom_level>4</zoom_level><help_text>Space for diagram notes
+
+</help_text><element><id>UMLClass</id><coordinates><x>568</x><y>628</y><w>84</w><h>56</h></coordinates><panel_attributes>Prenda
+--
++String marcaTexto
++CategoriaPrenda categoria
++String color
++Double precio
+--
+getters
+setters</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>668</x><y>480</y><w>84</w><h>92</h></coordinates><panel_attributes>&lt;&lt;Abstract&gt;&gt;
+Articulo
+--
++Int idArticulo
++TipoArticulo tipoArticulo
++String nombre
++String descripcion
++Timestamp fechaCreacion
++Int idUsuarioCreador
++Boolean eliminado
+--
++esPublicacion() Boolean
++esCatalogo() Boolean
+getters
+setters</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>604</x><y>568</y><w>84</w><h>68</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>190;10;10;150</additional_attributes></element><element><id>UMLClass</id><coordinates><x>664</x><y>628</y><w>84</w><h>56</h></coordinates><panel_attributes>Outfit
+--
++EstiloOutfit etiquetaEstilo
+--
+getters
+setters</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>704</x><y>568</y><w>12</w><h>68</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;10;150</additional_attributes></element><element><id>UMLClass</id><coordinates><x>780</x><y>616</y><w>84</w><h>56</h></coordinates><panel_attributes>Marca
+--
++String paginaWeb
++String paisOrigen
++Int añoFundacion
+--
+getters
+setters</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>736</x><y>568</y><w>72</w><h>56</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;160;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>796</x><y>528</y><w>84</w><h>56</h></coordinates><panel_attributes>Evento
+--
++String ciudad
++String pais
++Date fechaInicio
++Date fechaFin
++String organizador
+--
+getters
+setters</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>748</x><y>528</y><w>56</w><h>32</h></coordinates><panel_attributes>lt=&lt;&lt;-</panel_attributes><additional_attributes>10;10;120;60</additional_attributes></element><element><id>UMLClass</id><coordinates><x>460</x><y>556</y><w>84</w><h>56</h></coordinates><panel_attributes>Multimedia
+--
++Int idMultimedia
++Int idArticulo
++String url
++TipoMultimedia tipo
++Int orden
++Timestamp fechaSubida
+--
+getters
+setters</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>460</x><y>424</y><w>84</w><h>84</h></coordinates><panel_attributes>Resena
+--
++Int idResena
++Int idArticulo
++Int idUsuario
++Int calificacion
++String texto
++Timestamp fechaCreacion
++Timestamp fechaEdicion
++Boolean eliminada
++esEditablePor(Int) Boolean
+--
+getters
+setters</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>540</x><y>540</y><w>136</w><h>56</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+m1=1..n
+m2=1
+contiene &lt;</panel_attributes><additional_attributes>10;120;320;10</additional_attributes></element><element><id>Relation</id><coordinates><x>540</x><y>468</y><w>136</w><h>56</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+m1=1..n
+m2=1
+ &lt;contiene </panel_attributes><additional_attributes>10;10;320;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>404</x><y>180</y><w>84</w><h>108</h></coordinates><panel_attributes>Usuario
+--
++Int idUsuario
++String email
++String nombreUsuario
++String contrasenaHash
++String fotoPerfilUrl
++String biografia
++Timestamp fechaRegistro
++Boolean eliminado
++Timestamp fechaEliminacion
++Int idRol
+            
+--
++esAdministrador() Boolean
++getNombreDisplay() String
+getters
+setters</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>556</x><y>288</y><w>84</w><h>52</h></coordinates><panel_attributes>Rol
+--
++Int idRol
++String nombre
++String descripcion
+            
+--
+getters
+setters</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>484</x><y>248</y><w>80</w><h>76</h></coordinates><panel_attributes>lt=-
+m1=1..n
+m2=1
+posee &gt;</panel_attributes><additional_attributes>10;10;180;170</additional_attributes></element><element><id>UMLClass</id><coordinates><x>396</x><y>56</y><w>84</w><h>64</h></coordinates><panel_attributes>ImagenPerfil
+--
++Int idImagen
++Int idUsuario
++String url
++Int orden
++Timestamp fechaSubida
+            
+--
+getters
+setters</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>444</x><y>116</y><w>36</w><h>72</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+m1=1
+m2=0..1
+contiene &lt;</panel_attributes><additional_attributes>10;10;10;160</additional_attributes></element><element><id>UMLClass</id><coordinates><x>280</x><y>424</y><w>84</w><h>84</h></coordinates><panel_attributes>Comentario
+--
++Int idComentario
++Int idResena
++Int idUsuario
++Int idComentarioPadre
++String texto
++Timestamp fechaCreacion
++Boolean eliminado
++esNivel1() Boolean
++esNivel2() Boolean
+--
+getters
+setters</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>360</x><y>460</y><w>108</w><h>20</h></coordinates><panel_attributes>lt=-&gt;&gt;&gt;&gt;&gt;
+m1=0..n
+m2=1
+contiene &gt;</panel_attributes><additional_attributes>10;20;250;20</additional_attributes></element><element><id>Relation</id><coordinates><x>328</x><y>496</y><w>84</w><h>64</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=0..1
+contiene &gt;</panel_attributes><additional_attributes>10;30;10;140;190;140;190;10;90;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>396</x><y>332</y><w>84</w><h>52</h></coordinates><panel_attributes>LikeResena
+--
++Int idUsuario
++Int idResena
++Timestamp fechaLike
+--
+getters
+setters</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>456</x><y>380</y><w>48</w><h>52</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=0..n
+posee &gt;</panel_attributes><additional_attributes>100;110;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>440</x><y>284</y><w>40</w><h>56</h></coordinates><panel_attributes>lt=-
+m1=0..n
+m2=0..n
+&lt; hace click </panel_attributes><additional_attributes>10;10;10;120</additional_attributes></element><element><id>UMLClass</id><coordinates><x>276</x><y>316</y><w>84</w><h>48</h></coordinates><panel_attributes>LikeComentario
+--
++Int idUsuario
++Int idComentario
++Timestamp fechaLike
+--
+getters
+setters</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>316</x><y>360</y><w>36</w><h>72</h></coordinates><panel_attributes>lt=-
+m1=0..n
+m2=1
+&lt; contiene</panel_attributes><additional_attributes>10;10;10;160</additional_attributes></element><element><id>Relation</id><coordinates><x>316</x><y>220</y><w>96</w><h>104</h></coordinates><panel_attributes>lt=-
+m1=0..n
+m2=0..n
+&lt; hace click</panel_attributes><additional_attributes>220;10;10;10;10;240</additional_attributes></element><element><id>UMLClass</id><coordinates><x>544</x><y>68</y><w>84</w><h>64</h></coordinates><panel_attributes>Seguidor
+--
++Int idSeguidor
++Int idSeguido
++Timestamp fechaSeguimiento
+            
+--
+getters
+setters</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>484</x><y>128</y><w>68</w><h>60</h></coordinates><panel_attributes>lt=-
+m1=0..n
+m2=0..n
+posee &gt;</panel_attributes><additional_attributes>10;130;150;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>588</x><y>192</y><w>84</w><h>64</h></coordinates><panel_attributes>Notificacion
+--
++Int idNotificacion
++Int idUsuarioReceptor
++TipoNotificacion tipo
++Int idReferencia
++String mensaje
++Boolean leida
++Timestamp fechaCreacion
+            
+            
+--
+getters
+setters
++marcarComoLeida()</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>484</x><y>216</y><w>112</w><h>20</h></coordinates><panel_attributes>lt=-
+m1=1
+m2=0..n
+posee &gt;</panel_attributes><additional_attributes>10;20;260;20</additional_attributes></element><element><id>UMLClass</id><coordinates><x>744</x><y>404</y><w>84</w><h>44</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
+TipoArticulo
+--
+PRENDA
+OUTFIT
+MARCA
+EVENTO</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>736</x><y>444</y><w>56</w><h>44</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>120;10;10;90</additional_attributes></element><element><id>UMLClass</id><coordinates><x>568</x><y>716</y><w>84</w><h>116</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
+CategoriaPrenda
+--
+Camiseta
+Polo
+Camisa
+Chaqueta
+Banadores
+Pantalon
+Jean
+Short
+Hoodie
+Sweater
+Jogger
+Enterizo
+Top
+Blusa
+Falda
+Vestido</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>680</x><y>716</y><w>84</w><h>72</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
+EstiloOutfit
+--
+Streetwear
+Business
+Casual
+Formal
+Deportivo
+Otaku
+Vintage</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>604</x><y>680</y><w>12</w><h>44</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>704</x><y>680</y><w>12</w><h>44</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;90;10;10</additional_attributes></element><element><id>Relation</id><coordinates><x>668</x><y>228</y><w>108</w><h>12</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>250;10;10;10</additional_attributes></element><element><id>UMLClass</id><coordinates><x>768</x><y>196</y><w>84</w><h>72</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
+TipoNotificacion
+--
+NUEVO_SEGUIDOR
+COMENTARIO
+LIKE
+RESPUESTA</panel_attributes><additional_attributes></additional_attributes></element><element><id>UMLClass</id><coordinates><x>408</x><y>644</y><w>84</w><h>40</h></coordinates><panel_attributes>&lt;&lt;enumeration&gt;&gt;
+TipoMultimedia
+--
+IMAGEN
+VIDEO
+LOGO</panel_attributes><additional_attributes></additional_attributes></element><element><id>Relation</id><coordinates><x>448</x><y>608</y><w>32</w><h>44</h></coordinates><panel_attributes>lt=&lt;-</panel_attributes><additional_attributes>10;90;60;10</additional_attributes></element><element><id>UMLNote</id><coordinates><x>708</x><y>68</y><w>180</w><h>72</h></coordinates><panel_attributes>Note..
+bg=blue
+
+Las clases de dominio representan datos y reglas de negocio. 
+Los métodos de creación, persistencia y acceso a 
+base de datos corresponden a una capa de servicios y
+repositorios, que definiremos en la siguiente fase del 
+proyecto cuando avancemos en la arquitectura y diseño de MVVM</panel_attributes><additional_attributes></additional_attributes></element></diagram>
