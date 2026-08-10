@@ -20,6 +20,7 @@ import androidx.compose.ui.unit.sp
 import com.example.kloth.R
 
 @Composable
+// Barra de navegación inferior con las 5 secciones de la app
 fun BottomBar(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier
@@ -39,6 +40,7 @@ fun BottomBar(modifier: Modifier = Modifier) {
 }
 
 @Composable
+// Ítem individual de la barra inferior (icono + etiqueta), resaltado si está seleccionado
 private fun BottomNavItem(
     icon: ImageVector,
     label: String,
@@ -54,6 +56,7 @@ private fun BottomNavItem(
             .background(backgroundColor)
             .padding(horizontal = 16.dp, vertical = 4.dp)
     ) {
+        // Cada uno de los iconos de la Barra
         Icon(
             imageVector = icon,
             contentDescription = label,

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Paleta de colores de la app, usada por el tema y los componentes. -->
     <color name="primary">#020202</color>
     <color name="on_primary">#FFFFFF</color>
 

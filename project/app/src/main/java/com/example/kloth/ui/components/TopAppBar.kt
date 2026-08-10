@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.example.kloth.R
 
 @Composable
+// Barra superior: botón de retroceder, título de la pantalla y botón de búsqueda.
 fun TopAppBar(
     onBackClick: () -> Unit = {},
     onSearchClick: () -> Unit = {}

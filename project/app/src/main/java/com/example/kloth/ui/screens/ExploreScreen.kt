@@ -22,6 +22,7 @@ import com.example.kloth.R
 import com.example.kloth.ui.components.*
 
 @Composable
+// Pantalla de Explorar: buscador, categorías, filtros y grilla de productos.
 fun ExploreScreen() {
     var selectedCategoryIndex by remember { mutableIntStateOf(0) }
     val categories = listOf(
@@ -130,6 +131,7 @@ fun ExploreScreen() {
 }
 
 @Composable
+// Icono de flecha hacia abajo usado por los filtros desplegables.
 private fun ExpandIcon() {
     Icon(
         imageVector = Icons.Outlined.KeyboardArrowDown,

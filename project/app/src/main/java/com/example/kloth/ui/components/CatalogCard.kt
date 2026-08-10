@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.example.kloth.R
 
 @Composable
+// Tarjeta de producto del catálogo: imagen, etiqueta de categoría, título, calificación y favorito.
 fun CatalogCard(
     title: String,
     category: String,
@@ -44,7 +45,7 @@ fun CatalogCard(
                 .clip(RoundedCornerShape(16.dp))
                 .background(colorResource(id = R.color.surface_container_low))
         ) {
-            // Renderizado de la imagen local
+            // Renderizado de la imagen
             Image(
                 painter = painterResource(id = imageRes),
                 contentDescription = title,
@@ -52,7 +53,7 @@ fun CatalogCard(
                 modifier = Modifier.fillMaxSize()
             )
 
-            // Botón flotante de favoritos
+            // Botón flotante de corazon (Agregar a Favoritos)
             IconButton(
                 onClick = onFavoriteClick,
                 modifier = Modifier

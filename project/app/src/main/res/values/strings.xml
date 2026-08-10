@@ -1,4 +1,5 @@
 <resources>
+    <!-- Textos de la app: nombre, títulos, categorías, filtros, productos y descripciones. -->
     <string name="app_name">Kloth</string>
 
     <!-- Screen Titles -->

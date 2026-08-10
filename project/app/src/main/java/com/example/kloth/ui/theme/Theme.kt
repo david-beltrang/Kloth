@@ -11,6 +11,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
+// Esquemas de colores claro y oscuro usados por el tema.
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
@@ -34,6 +35,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
+// Tema de la app: aplica colores (dinámicos en Android 12+), tipografía y contenido.
 fun KlothTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     // Dynamic color is available on Android 12+

@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.sp
 import com.example.kloth.R
 
 @Composable
+// Chip de categoría seleccionable. Cambia de color según si está activo.
 fun CategoryChip(
     text: String,
     isSelected: Boolean,

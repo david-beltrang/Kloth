@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.example.kloth.R
 
 @Composable
+// Barra de búsqueda decorativa (icono de lupa + texto placeholder).
 fun SearchBar(modifier: Modifier = Modifier) {
     Row(
         modifier = modifier

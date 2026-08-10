@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?><!--
-   Sample data extraction rules file; uncomment and customize as necessary.
-   See https://developer.android.com/about/versions/12/backup-restore#xml-changes
-   for details.
+   Reglas de extracción de datos para la copia de seguridad en la nube.
+   Por defecto permite todo; se restringe con <include>/<exclude>.
 -->
 <data-extraction-rules>
     <cloud-backup>

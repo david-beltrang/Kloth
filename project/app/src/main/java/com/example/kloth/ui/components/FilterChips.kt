@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.sp
 import com.example.kloth.R
 
 @Composable
+// Chip de filtro con iconos opcionales (ej. Precio, Color, Talla).
 fun FilterChip(
     text: String,
     leadingIcon: @Composable (() -> Unit)? = null,
