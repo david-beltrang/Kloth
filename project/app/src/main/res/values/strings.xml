@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">Kloth</string>
+
+    <!-- Screen Titles -->
+    <string name="title_explore">Explorar</string>
+
+    <!-- Search -->
+    <string name="search_placeholder">Buscar artículos...</string>
+
+    <!-- Categories -->
+    <string name="category_prendas">Prendas</string>
+    <string name="category_outfits">Outfits</string>
+    <string name="category_marcas">Marcas</string>
+    <string name="category_eventos">Eventos</string>
+
+    <!-- Filters -->
+    <string name="filter_tune">Filtros</string>
+    <string name="filter_price">Precio</string>
+    <string name="filter_color">Color</string>
+    <string name="filter_size">Talla</string>
+
+    <!-- Products -->
+    <string name="product_abrigo">Abrigo Negro</string>
+    <string name="product_gym">Camiseta GymShark</string>
+    <string name="product_bolso">Bolso Cuero</string>
+    <string name="product_barcelona">Jersey Barcelona</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_explore">Explore</string>
+    <string name="nav_create">Create</string>
+    <string name="nav_alerts">Alerts</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Accessibility / Content Descriptions -->
+    <string name="cd_back">Volver atrás</string>
+    <string name="cd_search">Buscar</string>
+    <string name="cd_favorite">Añadir a favoritos</string>
+    <string name="cd_product_image">Imagen del producto</string>
+</resources>
