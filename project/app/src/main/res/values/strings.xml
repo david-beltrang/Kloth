@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">KLOTH</string>
+    <string name="tab_following">Following</string>
+    <string name="tab_for_you">For You</string>
+    <string name="badge_couture">COUTURE</string>
+    <string name="badge_essentials">ESSENTIALS</string>
+    <string name="label_reviews">(%1$d reviews)</string>
+    <string name="nav_home">Home</string>
+    <string name="nav_explore">Explore</string>
+    <string name="nav_create">Create</string>
+    <string name="nav_alerts">Alerts</string>
+    <string name="nav_profile">Profile</string>
+    <string name="content_desc_back">Back</string>
+    <string name="content_desc_search">Search</string>
+    <string name="content_desc_notifications">Notifications</string>
+    <string name="content_desc_more">More options</string>
+    <string name="content_desc_favorite">Favorite</string>
+    <string name="content_desc_comment">Comment</string>
+</resources>
