@@ -50,12 +50,5 @@ fun TopAppBar(
                 letterSpacing = (-0.5).sp
             )
         }
-        IconButton(onClick = onSearchClick) {
-            Icon(
-                imageVector = Icons.Outlined.Search,
-                contentDescription = stringResource(R.string.cd_search),
-                tint = colorResource(id = R.color.primary)
-            )
-        }
     }
 }

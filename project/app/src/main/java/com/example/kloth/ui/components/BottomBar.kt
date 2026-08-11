@@ -3,16 +3,15 @@ package com.example.kloth.ui.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,18 +30,18 @@ fun BottomBar(modifier: Modifier = Modifier) {
         horizontalArrangement = Arrangement.SpaceAround,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        BottomNavItem(icon = Icons.Filled.Home, label = stringResource(R.string.nav_home), isSelected = false)
-        BottomNavItem(icon = Icons.Filled.Explore, label = stringResource(R.string.nav_explore), isSelected = true)
-        BottomNavItem(icon = Icons.Filled.AddCircle, label = stringResource(R.string.nav_create), isSelected = false)
-        BottomNavItem(icon = Icons.Filled.Notifications, label = stringResource(R.string.nav_alerts), isSelected = false)
-        BottomNavItem(icon = Icons.Filled.Person, label = stringResource(R.string.nav_profile), isSelected = false)
+        BottomNavItem(painter = painterResource(R.drawable.home), label = stringResource(R.string.nav_home), isSelected = false)
+        BottomNavItem(painter = painterResource(R.drawable.search), label = stringResource(R.string.nav_explore), isSelected = true)
+        BottomNavItem(painter = painterResource(R.drawable.create), label = stringResource(R.string.nav_create), isSelected = false)
+        BottomNavItem(painter = painterResource(R.drawable.notification), label = stringResource(R.string.nav_alerts), isSelected = false)
+        BottomNavItem(painter = painterResource(R.drawable.profile), label = stringResource(R.string.nav_profile), isSelected = false)
     }
 }
 
 @Composable
 // Ítem individual de la barra inferior (icono + etiqueta), resaltado si está seleccionado
 private fun BottomNavItem(
-    icon: ImageVector,
+    painter: Painter,
     label: String,
     isSelected: Boolean
 ) {
@@ -58,7 +57,7 @@ private fun BottomNavItem(
     ) {
         // Cada uno de los iconos de la Barra
         Icon(
-            imageVector = icon,
+            painter = painter,
             contentDescription = label,
             tint = contentColor,
             modifier = Modifier.size(24.dp)
