@@ -2,6 +2,7 @@ package com.example.kloth.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
@@ -26,18 +27,21 @@ import androidx.compose.ui.unit.sp
 import com.example.kloth.R
 
 @Composable
-// Tarjeta de producto del catálogo: imagen, etiqueta de categoría, título, calificación y favorito.
 fun CatalogCard(
     title: String,
     category: String,
     rating: String,
     reviews: String,
-    imageRes: Int, // <-- Nuevo parámetro para recibir la imagen
+    imageRes: Int,
+    onClick: () -> Unit = {},
     onFavoriteClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
-    Column(modifier = modifier) {
-        // Área de Imagen
+    Column(
+        modifier = modifier
+            .clip(RoundedCornerShape(16.dp))
+            .clickable { onClick() }
+    ) {
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -45,15 +49,13 @@ fun CatalogCard(
                 .clip(RoundedCornerShape(16.dp))
                 .background(colorResource(id = R.color.surface_container_low))
         ) {
-            // Renderizado de la imagen
             Image(
                 painter = painterResource(id = imageRes),
                 contentDescription = title,
-                contentScale = ContentScale.Crop, // Recorta y para llenar la tarjeta sin deformarse
+                contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
             )
 
-            // Botón flotante de corazon (Agregar a Favoritos)
             IconButton(
                 onClick = onFavoriteClick,
                 modifier = Modifier
@@ -74,7 +76,6 @@ fun CatalogCard(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        // Etiqueta de categoría
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(999.dp))
@@ -92,7 +93,6 @@ fun CatalogCard(
 
         Spacer(modifier = Modifier.height(4.dp))
 
-        // Título del producto
         Text(
             text = title,
             fontSize = 16.sp,
@@ -104,7 +104,6 @@ fun CatalogCard(
 
         Spacer(modifier = Modifier.height(4.dp))
 
-        // Calificación y reseñas
         Row(verticalAlignment = Alignment.CenterVertically) {
             Icon(
                 imageVector = Icons.Filled.Star,
