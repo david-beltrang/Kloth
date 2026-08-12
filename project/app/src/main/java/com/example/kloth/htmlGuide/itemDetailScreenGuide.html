@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+
+<html class="light" lang="es"><head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface": "#1c1b1b",
+                      "on-primary": "#ffffff",
+                      "primary-fixed": "#e4e2df",
+                      "on-secondary-container": "#566471",
+                      "secondary-fixed": "#d6e4f3",
+                      "surface-variant": "#e5e2e1",
+                      "inverse-on-surface": "#f4f0ef",
+                      "surface-tint": "#5e5e5c",
+                      "on-tertiary-container": "#898383",
+                      "on-primary-container": "#858582",
+                      "error-container": "#ffdad6",
+                      "tertiary": "#030202",
+                      "surface-bright": "#fcf8f7",
+                      "tertiary-container": "#1f1c1c",
+                      "secondary": "#52606c",
+                      "on-tertiary-fixed-variant": "#4a4646",
+                      "on-tertiary": "#ffffff",
+                      "on-background": "#1c1b1b",
+                      "on-secondary-fixed-variant": "#3b4854",
+                      "on-primary-fixed-variant": "#464744",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed": "#e8e1e0",
+                      "on-primary-fixed": "#1b1c1a",
+                      "primary-fixed-dim": "#c7c6c3",
+                      "on-error": "#ffffff",
+                      "inverse-primary": "#c7c6c3",
+                      "outline-variant": "#c6c7c1",
+                      "surface-container-high": "#ebe7e6",
+                      "inverse-surface": "#313030",
+                      "tertiary-fixed-dim": "#ccc5c4",
+                      "primary-container": "#1c1d1b",
+                      "outline": "#767872",
+                      "on-secondary": "#ffffff",
+                      "secondary-container": "#d3e1f0",
+                      "surface": "#fcf8f7",
+                      "on-secondary-fixed": "#0f1d27",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-dim": "#ddd9d8",
+                      "red-inferno": "#790005",
+                      "sunset": "#E7E7E0",
+                      "on-tertiary-fixed": "#1e1b1b",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#f7f3f2",
+                      "primary": "#020202",
+                      "surface-container": "#f1edec",
+                      "on-surface-variant": "#454743",
+                      "background": "#fcf8f7",
+                      "wild-dove": "#8B8B8B",
+                      "secondary-fixed-dim": "#bac8d7",
+                      "surface-container-highest": "#e5e2e1"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "touch-target": "48px",
+                      "section-gap": "24px",
+                      "margin-lateral": "16px",
+                      "gutter": "16px",
+                      "base": "8px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Roboto"],
+                      "body-md": ["Roboto"],
+                      "subtitle-md": ["Roboto"],
+                      "title-md": ["Roboto"],
+                      "display-lg": ["Roboto"],
+                      "body-sm": ["Roboto"],
+                      "label-button": ["Roboto"],
+                      "caption": ["Roboto"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "subtitle-md": ["18px", {"lineHeight": "24px", "fontWeight": "500"}],
+                      "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "display-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "label-button": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
+                      "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+    <style>
+        body { background-color: #fcf8f7; color: #1c1b1b; -webkit-font-smoothing: antialiased; }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        .hero-clip {
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #e5e2e1; border-radius: 10px; }
+    </style>
+    <style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="font-body-md text-body-md overflow-x-hidden">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface flex items-center justify-between px-margin-lateral h-touch-target">
+    <div class="flex items-center gap-4">
+        <button class="hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-150">
+            <span class="material-symbols-outlined text-primary">arrow_back</span>
+        </button>
+        <h1 class="font-title-md text-title-md text-primary">Detalle de Artículo</h1>
+    </div>
+    <div class="flex items-center gap-2">
+        <button class="hover:bg-surface-container-low transition-colors p-2 rounded-full active:scale-95 duration-150">
+            <span class="material-symbols-outlined text-primary">more_vert</span>
+        </button>
+    </div>
+</header>
+<main class="pt-[48px] pb-32">
+    <!-- Hero Image -->
+    <section class="relative w-full h-[353px] overflow-hidden hero-clip bg-surface-container shadow-sm">
+        <div class="w-full h-full bg-cover bg-center" data-alt="A cinematic, high-fashion editorial shot of a luxury cashmere coat draped over a minimalist velvet chair in a bright, sun-drenched architectural space. The color palette is dominated by soft creams, subtle greys, and deep black accents. The lighting is ethereal and directional, creating soft shadows that emphasize the premium fabric texture. The overall mood is quiet luxury, sophisticated and professionally curated for a high-end social network." style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuASfOVlwUdVCSgcOAcpFkOAoUPnedpHibzL37gcn76OOI_Za3t_RKJ4ha8sOw7cpZ3lFWxpOZMQdquiuoOyHpKdoExj8hlyIJh0W94kDbwuRsf9ZVK80-f1EyUkOPuJASnmn_65Ep53982GwiGvijeMtLSXDeTSlTfmGMBh17ZO9fTbN_K4Er28Nx1ODpcT14oG3OzYFhP-ZYAOQ-ecFzJHnbKYKGmEFhvOfE2P5JoP2415BBf7CWxe6A')">
+        </div>
+        <div class="absolute bottom-6 right-6 flex gap-2">
+            <button class="bg-surface/80 backdrop-blur-md p-3 rounded-full shadow-lg active:scale-90 transition-transform">
+                <span class="material-symbols-outlined text-primary">favorite</span>
+            </button>
+            <button class="bg-surface/80 backdrop-blur-md p-3 rounded-full shadow-lg active:scale-90 transition-transform">
+                <span class="material-symbols-outlined text-primary">share</span>
+            </button>
+        </div>
+    </section>
+    <!-- General Info -->
+    <section class="px-margin-lateral mt-section-gap">
+        <div class="flex justify-between items-start">
+            <div class="flex flex-col gap-1">
+                <span class="inline-flex items-center px-3 py-0.5 rounded-full bg-sunset text-on-surface-variant font-label-button text-caption">Prenda</span>
+                <h2 class="font-headline-md text-headline-md text-on-surface mt-2">Abrigo de Cachemira "Nebulosa"</h2>
+                <p class="font-subtitle-md text-subtitle-md text-secondary">Maison de l'Éther</p>
+            </div>
+            <div class="text-right">
+                <span class="font-headline-md text-headline-md text-primary">2.450€</span>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 gap-4 mt-6">
+            <div class="p-4 rounded-xl bg-surface-container-low flex flex-col">
+                <span class="text-caption text-on-surface-variant font-label-button uppercase tracking-wider">Color</span>
+                <div class="flex items-center gap-2 mt-1">
+                    <div class="w-4 h-4 rounded-full bg-primary border border-outline-variant"></div>
+                    <span class="font-body-md text-on-surface">Nebulosity Dark</span>
+                </div>
+            </div>
+            <div class="p-4 rounded-xl bg-surface-container-low flex flex-col">
+                <span class="text-caption text-on-surface-variant font-label-button uppercase tracking-wider">Categoría</span>
+                <span class="font-body-md text-on-surface mt-1">Outerwear Elite</span>
+            </div>
+        </div>
+        <div class="mt-8">
+            <h3 class="font-title-md text-title-md text-on-surface">Descripción</h3>
+            <p class="font-body-md text-on-surface-variant mt-2 leading-relaxed">
+                Una pieza maestra de sastrería contemporánea. Este abrigo ha sido confeccionado con 100% cachemira italiana de origen sostenible, ofreciendo una caída impecable y una suavidad inigualable. El diseño presenta hombros estructurados y un cierre asimétrico que evoca la sofisticación del minimalismo corporativo moderno.
+            </p>
+        </div>
+    </section>
+    <!-- Rating Summary -->
+    <section class="px-margin-lateral mt-10 border-t border-outline-variant pt-8">
+        <div class="flex items-center justify-between">
+            <div>
+                <h3 class="font-title-md text-title-md text-on-surface">Valoraciones</h3>
+                <div class="flex items-center gap-2 mt-1">
+                    <span class="font-headline-md text-headline-md text-primary">4.9</span>
+                    <div class="flex">
+                        <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1;">star_half</span>
+                    </div>
+                    <span class="font-caption text-on-surface-variant">(124 reseñas)</span>
+                </div>
+            </div>
+            <button class="bg-primary text-on-primary font-label-button text-label-button h-touch-target px-6 rounded-[12px] active:scale-95 transition-all shadow-sm">
+                Escribir reseña
+            </button>
+        </div>
+        <!-- Review List -->
+        <div class="mt-8 flex flex-col gap-6">
+            <!-- Review 1 -->
+            <div class="flex flex-col gap-3 pb-6 border-b border-outline-variant last:border-0">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <img class="w-10 h-10 rounded-full object-cover bg-surface-container" data-alt="Close up portrait of a stylish woman with a sharp bob haircut and minimalist silver jewelry, representing a high-end fashion professional. Soft studio lighting, neutral background, editorial aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZmZrqDC7H3x4f40zNWodV5qLVc4eHfqbFcT5OtfDUNQgmZWvV-qC-1tYe6GpeV0JvDnbYcIbz04xD5pgHL1S7a3HYGp6MnoNE8yAYyMHFtsKDbQsIQBL41bdWSAkHJKmO57-18dygYJ0yoY47QPQP-dl_Iycj_6n0UqfuLwR8oCLO7MuLPCHBHRmODjl4Sd9EvOdNWm2K-Nzue9Ia-ZPbM3VqnJO8gRjMerl7N7-HJc1odju_cuEmtw"/>
+                        <div>
+                            <p class="font-label-button text-label-button text-on-surface">Elena V. Costanza</p>
+                            <p class="font-caption text-on-surface-variant">Hace 2 días</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-0.5">
+                        <span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                    </div>
+                </div>
+                <p class="font-body-sm text-on-surface-variant">
+                    La calidad de la tela es excepcional. Es ligero pero increíblemente cálido. Definitivamente una inversión que vale cada céntimo para cualquier armario profesional.
+                </p>
+                <div class="flex items-center gap-4 mt-1">
+                    <button class="flex items-center gap-1 font-label-button text-caption text-secondary hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined text-[18px]">thumb_up</span> 24
+                    </button>
+                    <button class="flex items-center gap-1 font-label-button text-caption text-secondary hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined text-[18px]">chat_bubble</span> 2
+                    </button>
+                </div>
+            </div>
+            <!-- Review 2 -->
+            <div class="flex flex-col gap-3 pb-6 border-b border-outline-variant last:border-0">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-3">
+                        <img class="w-10 h-10 rounded-full object-cover bg-surface-container" data-alt="Portrait of a sophisticated man with a groomed beard wearing a charcoal turtleneck. The lighting is moody and dramatic with high-contrast shadows. Luxury fashion photography style, sharp focus, clean composition." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBnwywEGxGQLCEBW4_GYEsXPlZE_XVWiCfO9zWOt_aKswJa6xiLXU_5tgLGGjPNy-lpw4u_sHM5z8_P9sAazAhgd6QPm3mUEWkq-BtdbObWlYfhliMGV2C_2YzxlAuCc2tHOZn2WiPrzOslT0LJHOEncUeTSLgmG4vkOYnwsYSmJCtagiqnK1olH28idmgfKMwqO6tNuZOJLMKUyUMYtsnRIYQ-PcoEbZ8yNcdjCwzQc24JyNBV71gPNQ"/>
+                        <div>
+                            <p class="font-label-button text-label-button text-on-surface">Marcus Thorne</p>
+                            <p class="font-caption text-on-surface-variant">Hace 1 semana</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-0.5">
+                        <span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined text-primary text-[16px]" style="font-variation-settings: 'FILL' 1;">star</span>
+                        <span class="material-symbols-outlined text-outline-variant text-[16px]">star</span>
+                    </div>
+                </div>
+                <p class="font-body-sm text-on-surface-variant">
+                    El corte es perfecto, aunque las mangas son ligeramente más largas de lo esperado. Aún así, la construcción es de nivel artesanal.
+                </p>
+                <div class="flex items-center gap-4 mt-1">
+                    <button class="flex items-center gap-1 font-label-button text-caption text-secondary hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined text-[18px]">thumb_up</span> 12
+                    </button>
+                    <button class="flex items-center gap-1 font-label-button text-caption text-secondary hover:text-primary transition-colors">
+                        <span class="material-symbols-outlined text-[18px]">chat_bubble</span> Responder
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full z-50 h-[80px] bg-surface border-t border-outline-variant flex justify-around items-center px-margin-lateral">
+    <button class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-container-high transition-all active:scale-90 duration-200">
+        <span class="material-symbols-outlined">home</span>
+        <span class="font-label-button text-label-button">Home</span>
+    </button>
+    <!-- Active: Explore (Assuming detail page reached via exploration) -->
+    <button class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-base py-1 active:scale-90 duration-200">
+        <span class="material-symbols-outlined">explore</span>
+        <span class="font-label-button text-label-button">Explore</span>
+    </button>
+    <button class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-container-high transition-all active:scale-90 duration-200">
+        <span class="material-symbols-outlined">add_circle</span>
+        <span class="font-label-button text-label-button">Create</span>
+    </button>
+    <button class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-container-high transition-all active:scale-90 duration-200">
+        <span class="material-symbols-outlined">notifications</span>
+        <span class="font-label-button text-label-button">Alerts</span>
+    </button>
+    <button class="flex flex-col items-center justify-center text-on-surface-variant p-2 hover:bg-surface-container-high transition-all active:scale-90 duration-200">
+        <span class="material-symbols-outlined">person</span>
+        <span class="font-label-button text-label-button">Profile</span>
+    </button>
+</nav>
+<script>
+    // Micro-interactions
+    document.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+            const ripple = document.createElement('span');
+            ripple.classList.add('ripple');
+            this.appendChild(ripple);
+            setTimeout(() => ripple.remove(), 600);
+        });
+    });
+</script>
+</body></html>
