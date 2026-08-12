@@ -1,4 +1,4 @@
-package com.example.kloth.ui.components
+package com.example.kloth.ui.components.feedComponents
 
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable

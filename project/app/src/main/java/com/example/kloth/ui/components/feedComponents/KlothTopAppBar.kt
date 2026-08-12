@@ -1,5 +1,7 @@
-package com.example.kloth.ui.components
+package com.example.kloth.ui.components.feedComponents
 
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
@@ -10,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,13 +36,12 @@ fun KlothTopAppBar(
 
 ) {
     CenterAlignedTopAppBar(
-        modifier = modifier,
+        modifier = modifier.height(100.dp),
         title = {
-            Text(
-                text = stringResource(id = R.string.app_name),
-                style = MaterialTheme.typography.displayLarge,
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Bold
+            Image(
+                painter = painterResource(id = R.drawable.klogo),
+                contentDescription = stringResource(id = R.string.app_name),
+                modifier = Modifier.size(130.dp)
             )
         },
         navigationIcon = {

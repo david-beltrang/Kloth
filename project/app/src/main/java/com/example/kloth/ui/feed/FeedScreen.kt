@@ -3,15 +3,20 @@ package com.example.kloth.ui.feed
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.kloth.ui.components.*
+import androidx.compose.ui.res.stringResource
+import com.example.kloth.R
+import com.example.kloth.ui.components.feedComponents.FeedTabRow
+import com.example.kloth.ui.components.feedComponents.KlothBottomNavigation
+import com.example.kloth.ui.components.feedComponents.KlothTopAppBar
+import com.example.kloth.ui.components.feedComponents.PostCard
+import com.example.kloth.ui.screens.detail.ItemDetailScreen
+import com.example.kloth.ui.screens.explore.ExploreScreen
 import com.example.kloth.ui.theme.KlothSecondary
 import com.example.kloth.ui.theme.KlothTheme
 import com.example.kloth.ui.theme.RedInferno
@@ -47,7 +52,7 @@ fun FeedScreen(
             comments = "42",
             description = "Este traje define la elegancia y minimalismo con sus cortes",
             tags = listOf("minimalista", "otoño", "black outfits"),
-            category = "OUTFIT",
+            category = stringResource(R.string.badge_couture),
             categoryColor = RedInferno
         ),
         PostItem(
@@ -61,7 +66,7 @@ fun FeedScreen(
             comments = "18",
             description = "Este vestido es la muestra de que no se necesita algo extravagante para brillar",
             tags = listOf("minimalista", "summer", "timeless"),
-            category = "PRENDA",
+            category = stringResource(R.string.badge_essentials),
             categoryColor = KlothSecondary
         )
     )
@@ -75,7 +80,7 @@ fun FeedScreen(
             }
         },
         bottomBar = {
-            KlothBottomNavigation()
+            KlothBottomNavigation(selectedItem = 0)
         }
     ) { innerPadding ->
         LazyColumn(

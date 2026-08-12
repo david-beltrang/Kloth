@@ -1,23 +1,23 @@
-package com.example.kloth.ui.components
+package com.example.kloth.ui.components.feedComponents
 
+import androidx.compose.foundation.layout.height
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddBox
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Search
+import androidx.compose.material.icons.outlined.AddBox
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.Person
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kloth.ui.theme.KlothTheme
-import androidx.compose.material.icons.outlined.Home
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.AddBox
-import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Person
 
 /*
 Este composable se usa en todas las pantallas y funciona como barra de navegacion.
@@ -28,10 +28,11 @@ link de referencia: https://m3.material.io/components/navigation-bar/specs
  */
 @Composable
 fun KlothBottomNavigation(
-    modifier: Modifier = Modifier, selectedItem: Int = 4
+    modifier: Modifier = Modifier, 
+    selectedItem: Int = 0
 ) {
     NavigationBar(
-        modifier = modifier,
+        modifier = modifier.height(64.dp),
         // Usamos 'surface' para que sea clarito (blanco/crema) en modo claro
         containerColor = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.onSurface,
@@ -39,7 +40,7 @@ fun KlothBottomNavigation(
     ) {
         NavigationBarItem(
             selected = selectedItem == 0,
-            onClick = { /* TODO */ },
+            onClick = { /* Navegación desactivada */ },
             icon = { 
                 Icon(
                     // SI está seleccionado (==0) usa Filled, SINO usa Outlined
@@ -58,7 +59,7 @@ fun KlothBottomNavigation(
         )
         NavigationBarItem(
             selected = selectedItem == 1,
-            onClick = { /* TODO */ },
+            onClick = { /* Navegación desactivada */ },
             icon = { 
                 Icon(
                     // SI está seleccionado (==0) usa Filled, SINO usa Outlined
@@ -75,7 +76,7 @@ fun KlothBottomNavigation(
         )
         NavigationBarItem(
             selected = selectedItem == 2,
-            onClick = { /* TODO */ },
+            onClick = { /* Navegación desactivada */ },
             icon = { 
                 Icon(
                     // SI está seleccionado (==0) usa Filled, SINO usa Outlined
@@ -92,7 +93,7 @@ fun KlothBottomNavigation(
         )
         NavigationBarItem(
             selected = selectedItem == 3,
-            onClick = { /* TODO */ },
+            onClick = { /* Navegación desactivada */ },
             icon = {
                 NotificationCount(
                     count = 5,
@@ -108,7 +109,7 @@ fun KlothBottomNavigation(
         )
         NavigationBarItem(
             selected = selectedItem == 4,
-            onClick = { /* TODO */ },
+            onClick = { /* Navegación desactivada */ },
             icon = { 
                 Icon(
                     // SI está seleccionado (==0) usa Filled, SINO usa Outlined

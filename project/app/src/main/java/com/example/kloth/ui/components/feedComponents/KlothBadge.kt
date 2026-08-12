@@ -1,4 +1,4 @@
-package com.example.kloth.ui.components
+package com.example.kloth.ui.components.feedComponents
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box

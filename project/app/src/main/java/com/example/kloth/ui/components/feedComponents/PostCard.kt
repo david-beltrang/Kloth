@@ -1,5 +1,6 @@
-package com.example.kloth.ui.components
+package com.example.kloth.ui.components.feedComponents
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
@@ -8,8 +9,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChatBubbleOutline
-import androidx.compose.material.icons.filled.FavoriteBorder
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -17,6 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -28,6 +28,7 @@ import coil.compose.AsyncImage
 import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
 import com.example.kloth.ui.theme.RedInferno
+import com.example.kloth.ui.theme.StarYellow
 import com.example.kloth.ui.theme.Sunset
 
 @Composable
@@ -50,11 +51,11 @@ fun PostCard(
         modifier = modifier.padding(10.dp),
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.1f)
+            containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
         ),
-        border = androidx.compose.foundation.BorderStroke(
+        border = BorderStroke(
             width = 1.dp,
-            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.2f)
+            color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f)
         )
     ) {
         Column {
@@ -184,7 +185,7 @@ private fun PostFooter(
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = null,
-                        tint = Color(0xFFFFB800),
+                        tint = StarYellow,
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
@@ -237,7 +238,7 @@ private fun PostFooter(
 
 @Composable
 private fun SocialAction(
-    icon: androidx.compose.ui.graphics.vector.ImageVector,
+    icon: ImageVector,
     count: String,
     contentDescription: String
 ) {
@@ -271,9 +272,9 @@ fun PostCardPreview() {
             rating = "4.8",
             reviewCount = 124,
             comments = "42",
-            description = "A masterclass in modern tailoring. The sharp silhouettes of this collection redefine corporate elegance with a dark, ethereal twist.",
+            description = stringResource(R.string.mock_description),
             tags = listOf("minimalist", "fall24", "obsidian"),
-            category = "OUTFIT",
+            category = stringResource(R.string.badge_couture),
             categoryColor = RedInferno,
             modifier = Modifier.padding(16.dp)
         )
