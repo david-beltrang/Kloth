@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import com.example.kloth.ui.feed.FeedScreen
 import com.example.kloth.ui.screens.detail.ItemDetailScreen
 import com.example.kloth.ui.screens.explore.ExploreScreen
+import com.example.kloth.ui.screens.profile.ProfileScreen
 import com.example.kloth.ui.theme.KlothTheme
 
 class MainActivity : ComponentActivity() {
@@ -15,9 +16,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             KlothTheme {
-                FeedScreen()
+                //FeedScreen()
                 //ExploreScreen()
                 //ItemDetailScreen(productId = "abrigo_negro")
+                ProfileScreen()
             }
         }
     }
