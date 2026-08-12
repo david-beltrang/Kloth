@@ -9,7 +9,6 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.Tune
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
@@ -20,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
 import com.example.kloth.ui.components.*
-import com.example.kloth.ui.components.feedComponents.KlothBottomNavigation
+import com.example.kloth.ui.components.utils.KlothBottomNavigation
 
 @Composable
 fun ExploreScreen() {
