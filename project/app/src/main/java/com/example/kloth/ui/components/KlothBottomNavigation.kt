@@ -12,6 +12,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kloth.ui.theme.KlothTheme
+import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.AddBox
+import androidx.compose.material.icons.outlined.Search
+import androidx.compose.material.icons.outlined.Notifications
+import androidx.compose.material.icons.outlined.Person
 
 /*
 Este composable se usa en todas las pantallas y funciona como barra de navegacion.
@@ -22,8 +28,7 @@ link de referencia: https://m3.material.io/components/navigation-bar/specs
  */
 @Composable
 fun KlothBottomNavigation(
-    modifier: Modifier = Modifier,
-    selectedItem: Int = 0
+    modifier: Modifier = Modifier, selectedItem: Int = 4
 ) {
     NavigationBar(
         modifier = modifier,
@@ -37,8 +42,9 @@ fun KlothBottomNavigation(
             onClick = { /* TODO */ },
             icon = { 
                 Icon(
-                    imageVector = Icons.Default.Home, 
-                    contentDescription = "Home" 
+                    // SI está seleccionado (==0) usa Filled, SINO usa Outlined
+                    imageVector = if (selectedItem == 0) Icons.Filled.Home else Icons.Outlined.Home,
+                    contentDescription = "Home"
                 ) 
             },
             label = null,
@@ -55,8 +61,9 @@ fun KlothBottomNavigation(
             onClick = { /* TODO */ },
             icon = { 
                 Icon(
-                    imageVector = Icons.Default.Search, 
-                    contentDescription = "Search" 
+                    // SI está seleccionado (==0) usa Filled, SINO usa Outlined
+                    imageVector = if (selectedItem == 1) Icons.Filled.Search else Icons.Outlined.Search,
+                    contentDescription = "Search"
                 ) 
             },
             label = null,
@@ -71,8 +78,9 @@ fun KlothBottomNavigation(
             onClick = { /* TODO */ },
             icon = { 
                 Icon(
-                    imageVector = Icons.Default.AddBox, 
-                    contentDescription = "Add" 
+                    // SI está seleccionado (==0) usa Filled, SINO usa Outlined
+                    imageVector = if (selectedItem == 2) Icons.Filled.AddBox else Icons.Outlined.AddBox,
+                    contentDescription = "AddBox"
                 ) 
             },
             label = null,
@@ -85,11 +93,11 @@ fun KlothBottomNavigation(
         NavigationBarItem(
             selected = selectedItem == 3,
             onClick = { /* TODO */ },
-            icon = { 
-                Icon(
-                    imageVector = Icons.Default.Notifications, 
-                    contentDescription = "Notifications" 
-                ) 
+            icon = {
+                NotificationCount(
+                    count = 5,
+                    icon = if (selectedItem == 3) Icons.Filled.Notifications else Icons.Outlined.Notifications
+                )
             },
             label = null,
             colors = NavigationBarItemDefaults.colors(
@@ -103,8 +111,9 @@ fun KlothBottomNavigation(
             onClick = { /* TODO */ },
             icon = { 
                 Icon(
-                    imageVector = Icons.Default.Person, 
-                    contentDescription = "Profile" 
+                    // SI está seleccionado (==0) usa Filled, SINO usa Outlined
+                    imageVector = if (selectedItem == 4) Icons.Filled.Person else Icons.Outlined.Person,
+                    contentDescription = "Home"
                 ) 
             },
             label = null,
