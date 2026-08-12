@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.outlined.ArrowBack
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -20,9 +19,12 @@ import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 // Barra superior: botón de retroceder, título de la pantalla y botón de búsqueda.
-fun TopAppBar() {
+fun TopAppBar(
+    title: String = stringResource(R.string.title_explore),
+    modifier: Modifier = Modifier
+) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .statusBarsPadding() // Esto baja la barra para evitar el notch/status bar
             .padding(top = 8.dp) // Un poquito de aire extra opcional
@@ -42,7 +44,7 @@ fun TopAppBar() {
             }
             Spacer(modifier = Modifier.width(8.dp))
             Text(
-                text = stringResource(R.string.title_explore),
+                text = title,
                 color = MaterialTheme.colorScheme.primary,
                 style = MaterialTheme.typography.displayLarge
             )
