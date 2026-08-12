@@ -14,7 +14,9 @@ import com.example.kloth.ui.components.ReviewItem
 import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
-fun RatingsAndReviewsSection() {
+fun RatingsAndReviewsSection(
+
+) {
     Column(
         modifier = Modifier
             .fillMaxWidth()

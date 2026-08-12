@@ -45,6 +45,22 @@
     <string name="product_barcelona">Jersey Barcelona</string>
     <string name="product_bolso">Bolso Cuero</string>
 
+    <!-- Profile Screen -->
+    <string name="title_profile">Perfil</string>
+    <string name="profile_tab_posts">Publicaciones</string>
+    <string name="profile_tab_rated">Artículos calificados</string>
+    <string name="profile_edit">Editar perfil</string>
+    <string name="profile_followers">Seguidores</string>
+    <string name="profile_following">Seguidos</string>
+    <string name="profile_reviews">Reseñas</string>
+    <string name="profile_publications">Publicaciones</string>
+    <string name="mock_profile_name">Elena Vancouvé</string>
+    <string name="mock_profile_username">\@elenav_styling</string>
+    <string name="mock_profile_bio">Arquitecta de siluetas. Minimalista por naturaleza, moda por elección.</string>
+    <string name="mock_profile_location">París, FR</string>
+    <string name="mock_profile_website">vancouve.studio</string>
+    <string name="cd_profile_photo">Foto de perfil</string>
+
     <!-- Detail Screen -->
     <string name="detail_title">Detalle de Artículo</string>
     <string name="label_color">Color</string>

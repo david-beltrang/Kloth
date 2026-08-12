@@ -1,4 +1,4 @@
-package com.example.kloth.ui.components.feedComponents
+package com.example.kloth.ui.components.utils
 
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
