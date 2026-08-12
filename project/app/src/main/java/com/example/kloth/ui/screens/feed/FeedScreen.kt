@@ -1,4 +1,4 @@
-package com.example.kloth.ui.feed
+package com.example.kloth.ui.screens.feed
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -12,11 +12,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
 import com.example.kloth.R
 import com.example.kloth.ui.components.feedComponents.FeedTabRow
-import com.example.kloth.ui.components.feedComponents.KlothBottomNavigation
-import com.example.kloth.ui.components.feedComponents.KlothTopAppBar
+import com.example.kloth.ui.components.utils.KlothBottomNavigation
+import com.example.kloth.ui.components.utils.KlothTopAppBar
 import com.example.kloth.ui.components.feedComponents.PostCard
-import com.example.kloth.ui.screens.detail.ItemDetailScreen
-import com.example.kloth.ui.screens.explore.ExploreScreen
 import com.example.kloth.ui.theme.KlothSecondary
 import com.example.kloth.ui.theme.KlothTheme
 import com.example.kloth.ui.theme.RedInferno

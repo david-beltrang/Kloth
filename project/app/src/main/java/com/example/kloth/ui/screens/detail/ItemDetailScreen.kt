@@ -10,9 +10,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.kloth.R
-import com.example.kloth.ui.components.BottomBar
-import com.example.kloth.ui.components.feedComponents.KlothBottomNavigation
+import com.example.kloth.ui.components.utils.KlothBottomNavigation
 
 @Composable
 fun ItemDetailScreen(

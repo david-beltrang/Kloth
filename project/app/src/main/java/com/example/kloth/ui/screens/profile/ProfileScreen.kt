@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.example.kloth.R
 import com.example.kloth.ui.components.CatalogCard
 import com.example.kloth.ui.components.TopAppBar
-import com.example.kloth.ui.components.feedComponents.KlothBottomNavigation
+import com.example.kloth.ui.components.utils.KlothBottomNavigation
 import com.example.kloth.ui.components.feedComponents.ProfileTabRow
 
 @Composable
