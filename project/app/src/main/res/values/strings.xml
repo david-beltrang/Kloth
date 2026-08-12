@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">NEBULOSITY</string>
+
+    <!-- Navigation -->
+    <string name="nav_home">Home</string>
+    <string name="nav_explore">Explore</string>
+    <string name="nav_create">Create</string>
+    <string name="nav_alerts">Alerts</string>
+    <string name="nav_profile">Profile</string>
+
+    <!-- Feed Screen -->
+    <string name="tab_following">Following</string>
+    <string name="tab_for_you">For You</string>
+    <string name="badge_couture">COUTURE</string>
+    <string name="badge_essentials">ESSENTIALS</string>
+    <string name="label_reviews">(%1$d reviews)</string>
+
+    <!-- Accessibility / Content Descriptions -->
+    <string name="content_desc_back">Back</string>
+    <string name="cd_back">Back</string>
+    <string name="content_desc_search">Search</string>
+    <string name="content_desc_notifications">Notifications</string>
+    <string name="content_desc_more">More options</string>
+    <string name="content_desc_favorite">Favorite</string>
+    <string name="cd_favorite">Favorite</string>
+    <string name="content_desc_comment">Comment</string>
+    <string name="cd_share">Compartir</string>
+    <string name="cd_product_image">Imagen del producto</string>
+
+    <!-- Explore Screen -->
+    <string name="title_explore">Explorar</string>
+    <string name="search_placeholder">Buscar artículos...</string>
+    <string name="category_prendas">Prendas</string>
+    <string name="category_outfits">Outfits</string>
+    <string name="category_marcas">Marcas</string>
+    <string name="category_eventos">Eventos</string>
+    <string name="filter_tune">Filtros</string>
+    <string name="filter_price">Precio</string>
+    <string name="filter_color">Color</string>
+    <string name="filter_size">Talla</string>
+
+    <!-- Catalog Products -->
+    <string name="product_abrigo">Abrigo Lunar Negro</string>
+    <string name="product_gym">Camiseta GymShark</string>
+    <string name="product_barcelona">Jersey Barcelona</string>
+    <string name="product_bolso">Bolso Cuero</string>
+
+    <!-- Detail Screen -->
+    <string name="detail_title">Detalle de Artículo</string>
+    <string name="label_color">Color</string>
+    <string name="label_category">Categoría</string>
+    <string name="label_description">Descripción</string>
+    <string name="section_reviews">Valoraciones y Reseñas</string>
+    <string name="btn_write_review">Escribir reseña</string>
+
+    <!-- Mock Data -->
+    <string name="mock_description">Una pieza maestra de sastrería contemporánea. Este abrigo ha sido confeccionado con 100% cachemira italiana de origen sostenible, ofreciendo una caída impecable y una suavidad inigualable.</string>
+    <string name="mock_price">$280.000 COP</string>
+</resources>

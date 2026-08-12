@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+    <meta charset="utf-8"/>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+    <title>NEBULOSITY - Premium Fashion Feed</title>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700;900&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script id="tailwind-config">
+        tailwind.config = {
+          darkMode: "class",
+          theme: {
+            extend: {
+              "colors": {
+                      "on-surface": "#1c1b1b",
+                      "on-primary": "#ffffff",
+                      "primary-fixed": "#e4e2df",
+                      "on-secondary-container": "#566471",
+                      "secondary-fixed": "#d6e4f3",
+                      "surface-variant": "#e5e2e1",
+                      "inverse-on-surface": "#f4f0ef",
+                      "surface-tint": "#5e5e5c",
+                      "on-tertiary-container": "#898383",
+                      "on-primary-container": "#858582",
+                      "error-container": "#ffdad6",
+                      "tertiary": "#030202",
+                      "surface-bright": "#fcf8f7",
+                      "tertiary-container": "#1f1c1c",
+                      "secondary": "#52606c",
+                      "on-tertiary-fixed-variant": "#4a4646",
+                      "on-tertiary": "#ffffff",
+                      "on-background": "#1c1b1b",
+                      "on-secondary-fixed-variant": "#3b4854",
+                      "on-primary-fixed-variant": "#464744",
+                      "error": "#ba1a1a",
+                      "tertiary-fixed": "#e8e1e0",
+                      "on-primary-fixed": "#1b1c1a",
+                      "primary-fixed-dim": "#c7c6c3",
+                      "on-error": "#ffffff",
+                      "inverse-primary": "#c7c6c3",
+                      "outline-variant": "#c6c7c1",
+                      "surface-container-high": "#ebe7e6",
+                      "inverse-surface": "#313030",
+                      "tertiary-fixed-dim": "#ccc5c4",
+                      "primary-container": "#1c1d1b",
+                      "outline": "#767872",
+                      "on-secondary": "#ffffff",
+                      "secondary-container": "#d3e1f0",
+                      "surface": "#fcf8f7",
+                      "on-secondary-fixed": "#0f1d27",
+                      "surface-container-lowest": "#ffffff",
+                      "surface-dim": "#ddd9d8",
+                      "red-inferno": "#790005",
+                      "sunset": "#E7E7E0",
+                      "on-tertiary-fixed": "#1e1b1b",
+                      "on-error-container": "#93000a",
+                      "surface-container-low": "#f7f3f2",
+                      "primary": "#020202",
+                      "surface-container": "#f1edec",
+                      "on-surface-variant": "#454743",
+                      "background": "#fcf8f7",
+                      "wild-dove": "#8B8B8B",
+                      "secondary-fixed-dim": "#bac8d7",
+                      "surface-container-highest": "#e5e2e1"
+              },
+              "borderRadius": {
+                      "DEFAULT": "0.25rem",
+                      "lg": "0.5rem",
+                      "xl": "0.75rem",
+                      "full": "9999px"
+              },
+              "spacing": {
+                      "touch-target": "48px",
+                      "section-gap": "24px",
+                      "margin-lateral": "16px",
+                      "gutter": "16px",
+                      "base": "8px"
+              },
+              "fontFamily": {
+                      "headline-md": ["Roboto"],
+                      "body-md": ["Roboto"],
+                      "subtitle-md": ["Roboto"],
+                      "title-md": ["Roboto"],
+                      "display-lg": ["Roboto"],
+                      "body-sm": ["Roboto"],
+                      "label-button": ["Roboto"],
+                      "caption": ["Roboto"]
+              },
+              "fontSize": {
+                      "headline-md": ["24px", {"lineHeight": "32px", "fontWeight": "600"}],
+                      "body-md": ["16px", {"lineHeight": "24px", "fontWeight": "400"}],
+                      "subtitle-md": ["18px", {"lineHeight": "24px", "fontWeight": "500"}],
+                      "title-md": ["20px", {"lineHeight": "28px", "fontWeight": "600"}],
+                      "display-lg": ["32px", {"lineHeight": "40px", "fontWeight": "700"}],
+                      "body-sm": ["14px", {"lineHeight": "20px", "fontWeight": "400"}],
+                      "label-button": ["14px", {"lineHeight": "20px", "letterSpacing": "0.1px", "fontWeight": "500"}],
+                      "caption": ["12px", {"lineHeight": "16px", "fontWeight": "400"}]
+              }
+            },
+          },
+        }
+    </script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            display: inline-block;
+            line-height: 1;
+            text-transform: none;
+            letter-spacing: normal;
+            word-wrap: normal;
+            white-space: nowrap;
+            direction: ltr;
+        }
+        body {
+            background-color: #fcf8f7;
+            font-family: 'Roboto', sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+    <style>
+        body {
+          min-height: max(884px, 100dvh);
+        }
+    </style>
+</head>
+<body class="text-on-surface">
+<!-- Top App Bar -->
+<header class="fixed top-0 w-full z-50 bg-surface flex items-center justify-between px-margin-lateral h-touch-target">
+    <div class="flex items-center gap-base">
+        <button class="material-symbols-outlined text-primary hover:bg-surface-container-low transition-colors active:scale-95 duration-150 p-2 rounded-full">arrow_back</button>
+    </div>
+    <h1 class="font-display-lg text-display-lg tracking-tighter text-primary">NEBULOSITY</h1>
+    <div class="flex items-center gap-2">
+        <button class="material-symbols-outlined text-primary hover:bg-surface-container-low transition-colors active:scale-95 duration-150 p-2 rounded-full">search</button>
+        <button class="material-symbols-outlined text-primary hover:bg-surface-container-low transition-colors active:scale-95 duration-150 p-2 rounded-full relative">
+            notifications
+            <span class="absolute top-2 right-2 w-2 h-2 bg-red-inferno rounded-full"></span>
+        </button>
+    </div>
+</header>
+<!-- Main Content Container -->
+<main class="pt-[64px] pb-[100px] max-w-screen-md mx-auto">
+    <!-- Feed Selector (Tabs) -->
+    <nav class="sticky top-[48px] bg-surface z-40 flex border-b border-outline-variant px-margin-lateral overflow-x-auto hide-scrollbar">
+        <button class="flex-1 py-4 text-center border-b-2 border-primary font-label-button text-label-button text-primary transition-all duration-300">
+            Following
+        </button>
+        <button class="flex-1 py-4 text-center border-b-2 border-transparent font-label-button text-label-button text-on-surface-variant hover:text-primary transition-all duration-300">
+            For You
+        </button>
+    </nav>
+    <!-- Feed List -->
+    <div class="mt-section-gap px-margin-lateral flex flex-col gap-section-gap">
+        <!-- Publication Card 1 -->
+        <article class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-outline-variant/30 flex flex-col transition-transform hover:shadow-md">
+            <!-- Creator Header -->
+            <div class="flex items-center justify-between p-4">
+                <div class="flex items-center gap-base">
+                    <div class="w-10 h-10 rounded-full bg-surface-variant overflow-hidden">
+                        <img class="w-full h-full object-cover" data-alt="A professional studio headshot of a high-end fashion influencer with sharp facial features and minimalist aesthetic. The lighting is dramatic and moody, focusing on dark obsidian tones and soft highlights. The background is a clean, neutral grey that complements the premium fashion vibe of the app." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBMyCAVr9pWrd_sDsyfrx2v7B_wwZXc4En_Hj06fTPAnAoiyn85C9FsH8p6U6PiT3-zoF2ygVqjkcaxTd2qvb0dJco59T-gId4rhTYZRrypPBw7D21cyI8jziwbOHXhi6RvASwrKdMXNtFM4PZ4vmw0j-UQYyz-l9jQO_PKjkApgQurneLQYUD05xXGaJiFbJ7J7lnhsLCcMpV1reEReT6SL0W_OBqa0a_7S4P7IwHGSYytO0DdrGagg"/>
+                    </div>
+                    <div>
+                        <p class="font-title-md text-title-md text-primary leading-tight">Elias Thorne</p>
+                        <p class="font-caption text-caption text-on-surface-variant">2 hours ago</p>
+                    </div>
+                </div>
+                <button class="material-symbols-outlined text-on-surface-variant">more_vert</button>
+            </div>
+            <!-- High Quality Photo -->
+            <div class="relative aspect-[4/5] bg-surface-container-low">
+                <img class="w-full h-full object-cover" data-alt="An editorial fashion photograph of a model wearing a structured, avant-garde obsidian black silk blazer and matching tailored trousers. The setting is a minimalist concrete architecture space with harsh sunlight creating deep shadows. The color palette is strictly monochromatic with deep blacks and bright white highlights, emphasizing luxury and high-end fashion design." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDpW3hTQoK-jwp_QytcmHQOJubOsBnRcVsFRLEcNgPdJCKBG-Az5EM7-DRqTigUiaQ6z8HyWpQaHZUwssvqN8KO_vvC8raEh0FUbOpUv2AXfPTNpcyQktFe7wSFGEyhbhuVrHh0loG-el0Ziv7BFu3YgwsjMTEzkEsjjHKuEE4VW43CRnM6mepoinTZokHM9SxVv_FfSXm_48q454nLpntqlr6ieAxDR6VBbjzF9cH3h3UimDgRUF9Tng"/>
+                <div class="absolute top-4 right-4 bg-red-inferno text-white px-3 py-1 rounded-full text-caption font-medium uppercase tracking-wider">
+                    Couture
+                </div>
+            </div>
+            <!-- Card Content Footer -->
+            <div class="p-4 flex flex-col gap-2">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-subtitle-md text-subtitle-md text-primary">Sculpted Obsidian Ensemble</h3>
+                        <div class="flex items-center gap-1 mt-1">
+                            <span class="material-symbols-outlined text-sm text-[#FFB800]" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="font-label-button text-label-button text-primary">4.8</span>
+                            <span class="font-caption text-caption text-on-surface-variant ml-1">(124 reviews)</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="flex flex-col items-center">
+                            <button class="material-symbols-outlined text-primary hover:scale-110 transition-transform">favorite</button>
+                            <span class="text-[10px] font-medium">1.2k</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <button class="material-symbols-outlined text-primary hover:scale-110 transition-transform">chat_bubble</button>
+                            <span class="text-[10px] font-medium">42</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                    A masterclass in modern tailoring. The sharp silhouettes of this collection redefine corporate elegance with a dark, ethereal twist.
+                </p>
+                <div class="mt-2 flex gap-2 overflow-x-auto hide-scrollbar">
+                    <span class="px-3 py-1 bg-sunset rounded-full text-caption font-medium text-on-surface-variant">#minimalist</span>
+                    <span class="px-3 py-1 bg-sunset rounded-full text-caption font-medium text-on-surface-variant">#fall24</span>
+                    <span class="px-3 py-1 bg-sunset rounded-full text-caption font-medium text-on-surface-variant">#obsidian</span>
+                </div>
+            </div>
+        </article>
+        <!-- Publication Card 2 -->
+        <article class="bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden border border-outline-variant/30 flex flex-col transition-transform hover:shadow-md">
+            <div class="flex items-center justify-between p-4">
+                <div class="flex items-center gap-base">
+                    <div class="w-10 h-10 rounded-full bg-surface-variant overflow-hidden">
+                        <img class="w-full h-full object-cover" data-alt="A portrait of a minimalist fashion designer with a calm and intellectual expression. The lighting is soft and directional, creating a sense of quiet luxury. The overall color palette is muted, featuring earthy tones and subtle hints of charcoal, fitting the high-end social network's professional and sophisticated identity." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC95eWrmdTsvGcWV1NOUN0MzDh83ydDTJqbvYHSRent__IorafJzU75Ekw0imOsmu5YbxUD-D0qrfUPEiAoELNQVHAX2SfPPaZ6dkXRauvVK2mFKBibQgRBCGlVs1xNmHyT5S18k_aVV0-Up-7GWyhZlRS67xh60NH6BFRtcs245CfgwFdlKZqwEBb4mAyhh4eWgoCTcw0VWdfN06gzCnR0W5LMsyphOFYFDv884Cdk6Ld-Gr60z9QFdA"/>
+                    </div>
+                    <div>
+                        <p class="font-title-md text-title-md text-primary leading-tight">Sienna Vogue</p>
+                        <p class="font-caption text-caption text-on-surface-variant">5 hours ago</p>
+                    </div>
+                </div>
+                <button class="material-symbols-outlined text-on-surface-variant">more_vert</button>
+            </div>
+            <div class="relative aspect-[4/5] bg-surface-container-low">
+                <img class="w-full h-full object-cover" data-alt="A high-fidelity fashion photo showing a model in a fluid, ethereal white silk dress draped elegantly over a mid-century modern chair. The room is a light-filled studio with soft architectural curves and subtle grey textures. The aesthetic is clean, minimalist, and serene, focusing on the texture of the fabric and the precision of the garment's construction." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB1KG55WXpe9UvmdGLd27HVJIBZfnEGtrsbetkZBgmDeqtGIgk2bHncKagU1Tb-cieQm3z8oZr_I-EU3NWzPzaiTVoHtLBbr8jeqaxaYeLxIYTqhbNk_cJfl6G_zqDE-DDh_7JXvS7WOV-SO_zEcI9nAi2iph5yKUMIfrHv3eTG5bAtNiZHgnDbYu6iB_7oSDlG59oFSFV0ejX5e3_F6W-tQp4H7YBAK-Y3JVNtQpE5fhWSwvWi-Y9rnw"/>
+                <div class="absolute top-4 right-4 bg-secondary text-white px-3 py-1 rounded-full text-caption font-medium uppercase tracking-wider">
+                    Essentials
+                </div>
+            </div>
+            <div class="p-4 flex flex-col gap-2">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h3 class="font-subtitle-md text-subtitle-md text-primary">Ether Fluid Dress</h3>
+                        <div class="flex items-center gap-1 mt-1">
+                            <span class="material-symbols-outlined text-sm text-[#FFB800]" style="font-variation-settings: 'FILL' 1;">star</span>
+                            <span class="font-label-button text-label-button text-primary">4.5</span>
+                            <span class="font-caption text-caption text-on-surface-variant ml-1">(89 reviews)</span>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <div class="flex flex-col items-center">
+                            <button class="material-symbols-outlined text-primary hover:scale-110 transition-transform">favorite</button>
+                            <span class="text-[10px] font-medium">856</span>
+                        </div>
+                        <div class="flex flex-col items-center">
+                            <button class="material-symbols-outlined text-primary hover:scale-110 transition-transform">chat_bubble</button>
+                            <span class="text-[10px] font-medium">18</span>
+                        </div>
+                    </div>
+                </div>
+                <p class="font-body-sm text-body-sm text-on-surface-variant line-clamp-2">
+                    Effortless luxury designed for the modern muse. This piece flows with every movement, capturing the light in its delicate silk fibers.
+                </p>
+                <div class="mt-2 flex gap-2 overflow-x-auto hide-scrollbar">
+                    <span class="px-3 py-1 bg-sunset rounded-full text-caption font-medium text-on-surface-variant">#whiteout</span>
+                    <span class="px-3 py-1 bg-sunset rounded-full text-caption font-medium text-on-surface-variant">#silk</span>
+                    <span class="px-3 py-1 bg-sunset rounded-full text-caption font-medium text-on-surface-variant">#timeless</span>
+                </div>
+            </div>
+        </article>
+    </div>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed bottom-24 right-6 w-14 h-14 bg-primary text-on-primary rounded-2xl flex items-center justify-center shadow-lg hover:shadow-xl active:scale-90 transition-all duration-200 z-50">
+    <span class="material-symbols-outlined text-2xl">add</span>
+</button>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full z-50 h-[80px] bg-surface border-t border-outline-variant flex justify-around items-center px-margin-lateral">
+    <!-- Home (Active) -->
+    <a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-base py-1 transition-all hover:bg-surface-container-high active:scale-90 duration-200" href="#">
+        <span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">home</span>
+        <span class="font-label-button text-label-button mt-0.5">Home</span>
+    </a>
+    <!-- Explore -->
+    <a class="flex flex-col items-center justify-center text-on-surface-variant p-2 transition-all hover:bg-surface-container-high active:scale-90 duration-200" href="#">
+        <span class="material-symbols-outlined">explore</span>
+        <span class="font-label-button text-label-button mt-0.5">Explore</span>
+    </a>
+    <!-- Create -->
+    <a class="flex flex-col items-center justify-center text-on-surface-variant p-2 transition-all hover:bg-surface-container-high active:scale-90 duration-200" href="#">
+        <span class="material-symbols-outlined">add_circle</span>
+        <span class="font-label-button text-label-button mt-0.5">Create</span>
+    </a>
+    <!-- Alerts -->
+    <a class="flex flex-col items-center justify-center text-on-surface-variant p-2 transition-all hover:bg-surface-container-high active:scale-90 duration-200" href="#">
+        <span class="material-symbols-outlined">notifications</span>
+        <span class="font-label-button text-label-button mt-0.5">Alerts</span>
+    </a>
+    <!-- Profile -->
+    <a class="flex flex-col items-center justify-center text-on-surface-variant p-2 transition-all hover:bg-surface-container-high active:scale-90 duration-200" href="#">
+        <span class="material-symbols-outlined">person</span>
+        <span class="font-label-button text-label-button mt-0.5">Profile</span>
+    </a>
+</nav>
+<script>
+    // Micro-interactions for tab selection
+    const tabs = document.querySelectorAll('nav button');
+    tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+            tabs.forEach(t => {
+                t.classList.remove('border-primary', 'text-primary');
+                t.classList.add('border-transparent', 'text-on-surface-variant');
+            });
+            tab.classList.add('border-primary', 'text-primary');
+            tab.classList.remove('border-transparent', 'text-on-surface-variant');
+        });
+    });
+
+    // Like button toggle animation
+    const likeButtons = document.querySelectorAll('.favorite-btn'); // Note: I used generic selectors in logic below
+    // Example implementation on elements with specific classes if needed,
+    // for now keeping it clean as per layout prompt.
+</script>
+</body></html>
