@@ -15,10 +15,10 @@ import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun RatingsAndReviewsSection(
-
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(horizontal = 20.dp, vertical = 8.dp)
     ) {

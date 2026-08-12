@@ -17,8 +17,13 @@ import com.example.kloth.R
 import com.example.kloth.ui.theme.RedInferno
 
 @Composable
-fun NotificationCount(modifier: Modifier = Modifier, count: Int = 3, icon: ImageVector = Icons.Default.Notifications) {
+fun NotificationCount(
+    modifier: Modifier = Modifier,
+    count: Int = 3,
+    icon: ImageVector = Icons.Default.Notifications
+) {
     BadgedBox(
+        modifier = modifier,
         badge = {
             if (count > 0) {
                 Badge(
@@ -35,15 +40,12 @@ fun NotificationCount(modifier: Modifier = Modifier, count: Int = 3, icon: Image
                 }
             }
         }
-    )
-    {
+    ) {
         Icon(
             imageVector = icon,
             contentDescription = stringResource(id = R.string.content_desc_notifications)
         )
-
     }
-
 }
 
 @Composable

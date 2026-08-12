@@ -19,13 +19,14 @@ import com.example.kloth.ui.theme.KlothTheme
 fun CategoryChip(
     text: String,
     isSelected: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     val backgroundColor = if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceContainer
     val textColor = if (isSelected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurfaceVariant
 
     Box(
-        modifier = Modifier
+        modifier = modifier
             .height(40.dp)
             .clip(RoundedCornerShape(999.dp))
             .background(backgroundColor)

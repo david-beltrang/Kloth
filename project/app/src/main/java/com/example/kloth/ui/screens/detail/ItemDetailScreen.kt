@@ -14,9 +14,11 @@ import com.example.kloth.ui.components.utils.KlothBottomNavigation
 
 @Composable
 fun ItemDetailScreen(
-    productId: String
+    productId: String,
+    modifier: Modifier = Modifier
 ) {
     Scaffold(
+        modifier = modifier,
         bottomBar = {
             Column {
                 Divider(

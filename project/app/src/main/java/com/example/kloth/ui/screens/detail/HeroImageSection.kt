@@ -29,10 +29,11 @@ import com.example.kloth.ui.theme.KlothTheme
 @Composable
 fun HeroImageSection(
     onBackClick: () -> Unit = {},
-    imageRes: Int = R.drawable.abrigo_negro
+    imageRes: Int = R.drawable.abrigo_negro,
+    modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .statusBarsPadding()
             .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))

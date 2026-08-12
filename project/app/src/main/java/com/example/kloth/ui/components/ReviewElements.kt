@@ -21,8 +21,11 @@ import coil.compose.AsyncImage
 import com.example.kloth.ui.theme.*
 
 @Composable
-fun RatingStars(rating: Float) {
-    Row {
+fun RatingStars(
+    rating: Float,
+    modifier: Modifier = Modifier
+) {
+    Row(modifier = modifier) {
         for (i in 1..5) {
             val icon = when {
                 rating >= i -> Icons.Default.Star
@@ -46,9 +49,10 @@ fun ReviewItem(
     timeAgo: String,
     avatarUrl: String,
     rating: Int,
-    reviewText: String
+    reviewText: String,
+    modifier: Modifier = Modifier
 ) {
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,

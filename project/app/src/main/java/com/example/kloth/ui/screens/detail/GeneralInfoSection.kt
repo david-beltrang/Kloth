@@ -19,10 +19,11 @@ import com.example.kloth.ui.theme.Sunset
 
 @Composable
 fun GeneralInfoSection(
-    productId: String
+    productId: String,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(20.dp)
     ) {

@@ -240,9 +240,13 @@ private fun PostFooter(
 private fun SocialAction(
     icon: ImageVector,
     count: String,
-    contentDescription: String
+    contentDescription: String,
+    modifier: Modifier = Modifier
 ) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         IconButton(onClick = { /* TODO */ }, modifier = Modifier.size(24.dp)) {
             Icon(
                 imageVector = icon,

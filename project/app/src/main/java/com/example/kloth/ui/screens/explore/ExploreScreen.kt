@@ -22,7 +22,9 @@ import com.example.kloth.ui.components.*
 import com.example.kloth.ui.components.utils.KlothBottomNavigation
 
 @Composable
-fun ExploreScreen() {
+fun ExploreScreen(
+    modifier: Modifier = Modifier
+) {
     var selectedCategoryIndex by remember { mutableIntStateOf(0) }
     val categories = listOf(
         stringResource(R.string.category_prendas),
@@ -32,6 +34,7 @@ fun ExploreScreen() {
     )
 
     Scaffold(
+        modifier = modifier,
         topBar = { TopAppBar() },
         bottomBar = {
             KlothBottomNavigation(selectedItem = 1)
@@ -164,11 +167,13 @@ fun ExploreScreen() {
 }
 
 @Composable
-private fun ExpandIcon() {
+private fun ExpandIcon(
+    modifier: Modifier = Modifier
+) {
     Icon(
         imageVector = Icons.Outlined.KeyboardArrowDown,
         contentDescription = null,
-        modifier = Modifier.size(16.dp),
+        modifier = modifier.size(16.dp),
         tint = MaterialTheme.colorScheme.onSurfaceVariant
     )
 }
