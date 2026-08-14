@@ -1,4 +1,4 @@
-package com.example.kloth.ui.screens.profile
+package com.example.kloth.ui.screens.profile.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border

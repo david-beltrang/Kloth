@@ -1,4 +1,4 @@
-package com.example.kloth.ui.components.feedComponents
+package com.example.kloth.ui.screens.feed.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background

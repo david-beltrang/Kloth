@@ -1,4 +1,4 @@
-package com.example.kloth.ui.components
+package com.example.kloth.ui.screens.explore.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

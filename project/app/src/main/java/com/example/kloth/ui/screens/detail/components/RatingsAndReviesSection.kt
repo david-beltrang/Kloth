@@ -1,4 +1,4 @@
-package com.example.kloth.ui.screens.detail
+package com.example.kloth.ui.screens.detail.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Divider
@@ -10,7 +10,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.res.stringResource
 import com.example.kloth.R
-import com.example.kloth.ui.components.ReviewItem
 import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
