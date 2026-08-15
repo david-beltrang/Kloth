@@ -1,4 +1,4 @@
-package com.example.kloth.ui.components.feedComponents
+package com.example.kloth.ui.screens.feed.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
@@ -240,9 +240,13 @@ private fun PostFooter(
 private fun SocialAction(
     icon: ImageVector,
     count: String,
-    contentDescription: String
+    contentDescription: String,
+    modifier: Modifier = Modifier
 ) {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+    Column(
+        modifier = modifier,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
         IconButton(onClick = { /* TODO */ }, modifier = Modifier.size(24.dp)) {
             Icon(
                 imageVector = icon,

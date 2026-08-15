@@ -1,4 +1,4 @@
-package com.example.kloth.ui.screens.detail
+package com.example.kloth.ui.screens.detail.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -22,17 +22,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
 import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun HeroImageSection(
     onBackClick: () -> Unit = {},
-    imageRes: Int = R.drawable.abrigo_negro
+    imageRes: Int = R.drawable.abrigo_negro,
+    modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .statusBarsPadding()
             .clip(RoundedCornerShape(bottomStart = 32.dp, bottomEnd = 32.dp))
