@@ -16,10 +16,10 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             KlothTheme {
-                FeedScreen()
+                //FeedScreen()
                 //ExploreScreen()
                 //ItemDetailScreen(productId = "abrigo_negro")
-                //ProfileScreen()
+                ProfileScreen()
             }
         }
     }

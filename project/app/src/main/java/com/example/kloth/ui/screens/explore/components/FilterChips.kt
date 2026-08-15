@@ -1,4 +1,4 @@
-package com.example.kloth.ui.components
+package com.example.kloth.ui.screens.explore.components
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -20,10 +20,11 @@ fun FilterChip(
     text: String,
     leadingIcon: @Composable (() -> Unit)? = null,
     trailingIcon: @Composable (() -> Unit)? = null,
-    onClick: () -> Unit = {}
+    onClick: () -> Unit = {},
+    modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier
+        modifier = modifier
             .clip(RoundedCornerShape(8.dp))
             .border(1.dp, MaterialTheme.colorScheme.outlineVariant, RoundedCornerShape(8.dp))
             .clickable { onClick() }
