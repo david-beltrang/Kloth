@@ -22,6 +22,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Kloth"
+rootProject.name = "kloth"
 include(":app")
  

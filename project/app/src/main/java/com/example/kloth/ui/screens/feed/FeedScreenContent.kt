@@ -2,9 +2,7 @@ package com.example.kloth.ui.screens.feed
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
@@ -40,11 +38,6 @@ fun FeedScreenContent(
                 categoryColor = post.categoryColor,
                 onClick = { onProductClick(post.id) }
             )
-        }
-
-        // Extra spacer for the bottom navigation
-        item {
-            Spacer(modifier = Modifier.height(80.dp))
         }
     }
 }
