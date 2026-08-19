@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Colores mínimos para el sistema (Splash, Status Bar, Iconos) -->
+    <!-- Estos valores DEBEN coincidir con Color.kt -->
+    <color name="primary">#020202</color> <!-- KlothBlack -->
+    <color name="surface">#FCF8F7</color> <!-- KlothSurface -->
+    <color name="on_surface">#1C1B1B</color> <!-- KlothOnSurface -->
+</resources>
