@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import com.example.kloth.ui.screens.detail.ItemDetailScreen
 import com.example.kloth.ui.screens.explore.ExploreScreen
 import com.example.kloth.ui.screens.feed.FeedScreen
+import com.example.kloth.ui.screens.login.LoginScreen
 import com.example.kloth.ui.screens.profile.ProfileScreen
 import com.example.kloth.ui.theme.KlothTheme
 
@@ -19,7 +20,8 @@ class MainActivity : ComponentActivity() {
                 //FeedScreen()
                 //ExploreScreen()
                 //ItemDetailScreen(productId = "abrigo_negro")
-                ProfileScreen()
+                //ProfileScreen()
+                LoginScreen()
             }
         }
     }
