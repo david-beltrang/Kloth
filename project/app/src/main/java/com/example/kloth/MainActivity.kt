@@ -23,7 +23,7 @@ class MainActivity : ComponentActivity() {
                 //ExploreScreen()
                 //ItemDetailScreen(productId = "abrigo_negro")
                 //ProfileScreen()
-                LoginScreen()
+                //LoginScreen()
             }
         }
     }
