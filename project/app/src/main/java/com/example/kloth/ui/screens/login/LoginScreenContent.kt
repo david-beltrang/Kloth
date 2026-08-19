@@ -26,7 +26,9 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
+import com.example.kloth.ui.screens.login.components.LoginForgotPassword
 import com.example.kloth.ui.screens.login.components.LoginHeader
+import com.example.kloth.ui.screens.login.components.LoginOrDivider
 import com.example.kloth.ui.screens.login.components.LoginRegisterPrompt
 import com.example.kloth.ui.utils.KlothPrimaryButton
 import com.example.kloth.ui.utils.KlothTextField
@@ -38,6 +40,7 @@ fun LoginScreenContent(
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onLoginClick: () -> Unit,
+    onForgotPasswordClick: () -> Unit,
     onRegisterClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -93,12 +96,20 @@ fun LoginScreenContent(
                 )
             )
 
+            Spacer(modifier = Modifier.height(8.dp))
+
+            LoginForgotPassword(onClick = onForgotPasswordClick)
+
             Spacer(modifier = Modifier.height(32.dp))
 
             KlothPrimaryButton(
                 text = stringResource(R.string.login_button),
                 onClick = onLoginClick
             )
+
+            Spacer(modifier = Modifier.height(24.dp))
+
+            LoginOrDivider()
 
             Spacer(modifier = Modifier.height(24.dp))
 

@@ -21,6 +21,7 @@ fun LoginScreen(
         onEmailChange = { email = it },
         onPasswordChange = { password = it },
         onLoginClick = { /* Navegación desactivada */ },
+        onForgotPasswordClick = { /* Navegación desactivada */ },
         onRegisterClick = { /* Navegación desactivada */ }
     )
 }
