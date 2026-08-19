@@ -4,13 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.example.kloth.ui.screens.createArticlle.CreateArticleScreen
 import com.example.kloth.ui.screens.detail.ItemDetailScreen
 import com.example.kloth.ui.screens.explore.ExploreScreen
 import com.example.kloth.ui.screens.feed.FeedScreen
+import com.example.kloth.ui.screens.login.LoginScreen
 import com.example.kloth.ui.screens.profile.ProfileScreen
 import com.example.kloth.ui.theme.KlothTheme
-import com.example.kloth.ui.screens.createArticlle.CreateArticleScreen
-
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,10 +19,11 @@ class MainActivity : ComponentActivity() {
         setContent {
             KlothTheme {
                 //CreateArticleScreen()
-                FeedScreen()
+                //FeedScreen()
                 //ExploreScreen()
                 //ItemDetailScreen(productId = "abrigo_negro")
                 //ProfileScreen()
+                LoginScreen()
             }
         }
     }
