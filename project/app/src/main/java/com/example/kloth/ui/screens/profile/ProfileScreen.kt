@@ -7,5 +7,8 @@ import androidx.compose.ui.Modifier
 fun ProfileScreen(
     modifier: Modifier = Modifier
 ) {
-    ProfileScreenContent(modifier = modifier)
+    ProfileScreenContent(
+        onEditProfileClick = { },
+        modifier = modifier
+    )
 }
