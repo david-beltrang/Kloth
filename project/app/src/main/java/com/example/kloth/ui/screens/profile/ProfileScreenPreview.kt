@@ -2,6 +2,7 @@ package com.example.kloth.ui.screens.profile
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
 import com.example.kloth.ui.theme.KlothTheme
 
 @Preview(
@@ -12,6 +13,6 @@ import com.example.kloth.ui.theme.KlothTheme
 @Composable
 fun ProfileScreenPreview() {
     KlothTheme {
-        ProfileScreen()
+        ProfileScreen(navController = rememberNavController())
     }
 }
