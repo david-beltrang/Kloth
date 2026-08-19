@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import com.example.kloth.ui.MainScreen
 import com.example.kloth.ui.screens.createArticlle.CreateArticleScreen
 import com.example.kloth.ui.screens.detail.ItemDetailScreen
 import com.example.kloth.ui.screens.explore.ExploreScreen
@@ -18,6 +19,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             KlothTheme {
+                MainScreen()
                 //CreateArticleScreen()
                 //FeedScreen()
                 //ExploreScreen()

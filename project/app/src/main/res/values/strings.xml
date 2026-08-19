@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NEBULOSITY</string>
+    <string name="app_name">KLOTH</string>
 
     <!-- Navigation -->
     <string name="nav_home">Home</string>
@@ -88,4 +88,24 @@
     <!-- Mock Data -->
     <string name="mock_description">Una pieza maestra de sastrería contemporánea. Este abrigo ha sido confeccionado con 100% cachemira italiana de origen sostenible, ofreciendo una caída impecable y una suavidad inigualable.</string>
     <string name="mock_price">$280.000 COP</string>
+
+    <!-- Edit Profile Screen -->
+    <string name="edit_profile_title">Editar perfil</string>
+    <string name="edit_profile_cancel">Cancelar</string>
+    <string name="edit_profile_save">Guardar</string>
+    <string name="edit_profile_change_photo">Cambiar foto</string>
+    <string name="edit_profile_label_username">Nombre de usuario</string>
+    <string name="edit_profile_label_bio">Biografía</string>
+    <string name="edit_profile_placeholder_bio">Apasionado por la moda urbana y streetwear. Compartiendo looks y descubriendo marcas emergentes.</string>
+    <string name="edit_profile_label_email">Correo electrónico</string>
+    <string name="edit_profile_placeholder_email">alex@kloth.app</string>
+    <string name="edit_profile_label_location">Ubicación</string>
+    <string name="edit_profile_placeholder_location">Ciudad, País</string>
+    <string name="edit_profile_label_website">Sitio web</string>
+    <string name="edit_profile_placeholder_website">https://</string>
+    <string name="edit_profile_btn_save">Guardar cambios</string>
+    <string name="edit_profile_danger_zone_title">Zona de peligro</string>
+    <string name="edit_profile_btn_delete_account">Eliminar cuenta</string>
+    <string name="edit_profile_danger_zone_desc">Esta acción no se puede deshacer. Tus publicaciones se eliminarán permanentemente y tus reseñas pasarán a mostrarse como \"Usuario eliminado\".</string>
+    <string name="edit_profile_mock_username">alex_style</string>
 </resources>
