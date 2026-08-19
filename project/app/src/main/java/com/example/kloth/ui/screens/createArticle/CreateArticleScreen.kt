@@ -1,11 +1,11 @@
-package com.example.kloth.ui.screens.explore
+package com.example.kloth.ui.screens.createArticle
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun ExploreScreen(
+fun CreateArticleScreen(
     modifier: Modifier = Modifier
 ) {
-    ExploreScreenContent(modifier = modifier)
+    CreateArticleScreenContent(modifier = modifier)
 }

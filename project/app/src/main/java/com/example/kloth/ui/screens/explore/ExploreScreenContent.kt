@@ -35,12 +35,9 @@ import com.example.kloth.ui.screens.detail.components.CatalogCard
 import com.example.kloth.ui.screens.explore.components.CategoryChip
 import com.example.kloth.ui.screens.explore.components.FilterChip
 import com.example.kloth.ui.screens.explore.components.SearchBar
-import androidx.navigation.NavController
-import com.example.kloth.navigation.Screen
 
 @Composable
 fun ExploreScreenContent(
-    navController: NavController,
     modifier: Modifier = Modifier
 ) {
     var selectedCategoryIndex by remember { mutableIntStateOf(0) }
@@ -141,9 +138,7 @@ fun ExploreScreenContent(
                 rating = "4.9",
                 reviews = "128",
                 imageRes = R.drawable.abrigo_negro,
-                onClick = { 
-                    navController.navigate(Screen.Detail.createRoute("abrigo_negro"))
-                }
+                onClick = { }
             )
         }
         item {
@@ -153,9 +148,7 @@ fun ExploreScreenContent(
                 rating = "4.8",
                 reviews = "84",
                 imageRes = R.drawable.camiseta_gymshark,
-                onClick = { 
-                    navController.navigate(Screen.Detail.createRoute("camiseta_gymshark"))
-                }
+                onClick = { }
             )
         }
         item {
@@ -165,9 +158,7 @@ fun ExploreScreenContent(
                 rating = "5.0",
                 reviews = "42",
                 imageRes = R.drawable.camiseta_barcelona,
-                onClick = { 
-                    navController.navigate(Screen.Detail.createRoute("camiseta_barcelona"))
-                }
+                onClick = { }
             )
         }
         item {
@@ -177,9 +168,7 @@ fun ExploreScreenContent(
                 rating = "4.7",
                 reviews = "215",
                 imageRes = R.drawable.bolso_cuero,
-                onClick = { 
-                    navController.navigate(Screen.Detail.createRoute("bolso_cuero"))
-                }
+                onClick = { }
             )
         }
     }
