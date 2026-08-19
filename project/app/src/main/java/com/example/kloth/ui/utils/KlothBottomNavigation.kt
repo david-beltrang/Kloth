@@ -17,6 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.kloth.navigation.Screen
 import com.example.kloth.ui.theme.KlothTheme
 
 /*
@@ -28,6 +31,7 @@ link de referencia: https://m3.material.io/components/navigation-bar/specs
  */
 @Composable
 fun KlothBottomNavigation(
+    navController: NavController,
     modifier: Modifier = Modifier, 
     selectedItem: Int = 0
 ) {
@@ -40,7 +44,15 @@ fun KlothBottomNavigation(
     ) {
         NavigationBarItem(
             selected = selectedItem == 0,
-            onClick = { /* Navegación desactivada */ },
+            onClick = { 
+                if (selectedItem != 0) {
+                    navController.navigate(Screen.Feed.route) {
+                        popUpTo(Screen.Feed.route) { saveState = true }
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            },
             icon = { 
                 Icon(
                     // SI está seleccionado (==0) usa Filled, SINO usa Outlined
@@ -59,7 +71,14 @@ fun KlothBottomNavigation(
         )
         NavigationBarItem(
             selected = selectedItem == 1,
-            onClick = { /* Navegación desactivada */ },
+            onClick = { 
+                if (selectedItem != 1) {
+                    navController.navigate(Screen.Explore.route) {
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            },
             icon = { 
                 Icon(
                     // SI está seleccionado (==0) usa Filled, SINO usa Outlined
@@ -76,7 +95,14 @@ fun KlothBottomNavigation(
         )
         NavigationBarItem(
             selected = selectedItem == 2,
-            onClick = { /* Navegación desactivada */ },
+            onClick = { 
+                if (selectedItem != 2) {
+                    navController.navigate(Screen.Add.route) {
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            },
             icon = { 
                 Icon(
                     // SI está seleccionado (==0) usa Filled, SINO usa Outlined
@@ -93,7 +119,14 @@ fun KlothBottomNavigation(
         )
         NavigationBarItem(
             selected = selectedItem == 3,
-            onClick = { /* Navegación desactivada */ },
+            onClick = { 
+                if (selectedItem != 3) {
+                    navController.navigate(Screen.Notifications.route) {
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            },
             icon = {
                 NotificationCount(
                     count = 5,
@@ -109,7 +142,14 @@ fun KlothBottomNavigation(
         )
         NavigationBarItem(
             selected = selectedItem == 4,
-            onClick = { /* Navegación desactivada */ },
+            onClick = { 
+                if (selectedItem != 4) {
+                    navController.navigate(Screen.Profile.route) {
+                        launchSingleTop = true
+                        restoreState = true
+                    }
+                }
+            },
             icon = { 
                 Icon(
                     // SI está seleccionado (==0) usa Filled, SINO usa Outlined
@@ -131,6 +171,6 @@ fun KlothBottomNavigation(
 @Composable
 fun KlothBottomNavigationPreview() {
     KlothTheme(darkTheme = false) { // Forzamos el modo claro en el preview
-        KlothBottomNavigation()
+        KlothBottomNavigation(navController = rememberNavController())
     }
 }

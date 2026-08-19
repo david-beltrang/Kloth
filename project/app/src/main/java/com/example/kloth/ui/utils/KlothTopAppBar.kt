@@ -1,6 +1,7 @@
 package com.example.kloth.ui.utils
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
@@ -34,11 +35,17 @@ fun KlothTopAppBar(
     notificationCount: Int = 0
 
 ) {
+    val logoResource = if (isSystemInDarkTheme()) {
+        R.drawable.logo_blanco
+    } else {
+        R.drawable.logo_negro
+    }
+
     CenterAlignedTopAppBar(
         modifier = modifier.height(100.dp),
         title = {
             Image(
-                painter = painterResource(id = R.drawable.klogo),
+                painter = painterResource(id = logoResource),
                 contentDescription = stringResource(id = R.string.app_name),
                 modifier = Modifier.size(130.dp)
             )
