@@ -22,6 +22,13 @@ val KlothOnSecondaryContainer = Color(0xFF566471)
 
 val KlothOutlineVariant = Color(0xFFC6C7C1)
 
+// Edit Profile Colors (Refactoring)
+val LightGrayBackground = Color(0xFFF5F5F5)
+val TextGray = Color(0xFF757575)
+val DangerRed = Color(0xFFE53935)
+val DividerColor = Color(0xFFE0E0E0)
+val ProfileImagePlaceholder = Color(0xFFB0BEC5)
+
 // Surface Containers
 val SurfaceContainerLow = Color(0xFFF7F3F2)
 val SurfaceContainer = Color(0xFFF1EDEC)
