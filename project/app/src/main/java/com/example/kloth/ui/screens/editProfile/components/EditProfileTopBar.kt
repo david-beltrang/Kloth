@@ -35,18 +35,6 @@ fun EditProfileTopBar(
             .fillMaxWidth()
             .background(MaterialTheme.colorScheme.surface)
     ) {
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 16.dp, bottom = 8.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Image(
-                painter = painterResource(id = logoResource),
-                contentDescription = stringResource(id = R.string.app_name),
-                modifier = Modifier.size(height = 30.dp, width = 130.dp)
-            )
-        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()

@@ -35,4 +35,10 @@ val SurfaceContainer = Color(0xFFF1EDEC)
 val SurfaceContainerHigh = Color(0xFFE5E2E1)
 val SurfaceContainerLowest = Color(0xFFFFFFFF)
 
+val SurfaceContainerLowDark = Color(0xFF1C1B1B)
+val SurfaceContainerDark = Color(0xFF211F1F)
+val SurfaceContainerHighDark = Color(0xFF2B2929)
+val SurfaceContainerLowestDark = Color(0xFF0E0E0E)
+val KlothOnSurfaceVariantDark = Color(0xFFC6C7C1)
+val KlothOutlineVariantDark = Color(0xFF454743)
 

@@ -46,74 +46,78 @@ fun LoginScreenContent(
 ) {
     val focusManager = LocalFocusManager.current
 
-    Box(
-        modifier = modifier
-            .fillMaxSize()
-            .imePadding()
-    ) {
-        Column(
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        containerColor = MaterialTheme.colorScheme.background
+    ) { innerPadding ->
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .align(Alignment.Center)
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 24.dp, vertical = 24.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize()
+                .padding(innerPadding)
+                .imePadding()
         ) {
-            LoginHeader()
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Center)
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = 24.dp, vertical = 24.dp),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                LoginHeader()
 
-            Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(40.dp))
 
-            KlothTextField(
-                value = email,
-                onValueChange = onEmailChange,
-               // label = stringResource(R.string.login_email_label),
-                placeholder = stringResource(R.string.login_email_placeholder),
-                leadingIcon = Icons.Outlined.Email,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Email,
-                    imeAction = ImeAction.Next
+                KlothTextField(
+                    value = email,
+                    onValueChange = onEmailChange,
+                    placeholder = stringResource(R.string.login_email_placeholder),
+                    leadingIcon = Icons.Outlined.Email,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Email,
+                        imeAction = ImeAction.Next
+                    )
                 )
-            )
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            KlothTextField(
-                value = password,
-                onValueChange = onPasswordChange,
-                //label = stringResource(R.string.login_password_label),
-                placeholder = stringResource(R.string.login_password_placeholder),
-                leadingIcon = Icons.Outlined.Lock,
-                isPassword = true,
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Password,
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        focusManager.clearFocus()
-                        onLoginClick()
-                    }
+                KlothTextField(
+                    value = password,
+                    onValueChange = onPasswordChange,
+                    placeholder = stringResource(R.string.login_password_placeholder),
+                    leadingIcon = Icons.Outlined.Lock,
+                    isPassword = true,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password,
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            focusManager.clearFocus()
+                            onLoginClick()
+                        }
+                    )
                 )
-            )
 
-            Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(8.dp))
 
-            LoginForgotPassword(onClick = onForgotPasswordClick)
+                LoginForgotPassword(onClick = onForgotPasswordClick)
 
-            Spacer(modifier = Modifier.height(32.dp))
+                Spacer(modifier = Modifier.height(32.dp))
 
-            KlothPrimaryButton(
-                text = stringResource(R.string.login_button),
-                onClick = onLoginClick
-            )
+                KlothPrimaryButton(
+                    text = stringResource(R.string.login_button),
+                    onClick = onLoginClick
+                )
 
-            Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-            LoginOrDivider()
+                LoginOrDivider()
 
-            Spacer(modifier = Modifier.height(24.dp))
+                Spacer(modifier = Modifier.height(24.dp))
 
-            LoginRegisterPrompt(onRegisterClick = onRegisterClick)
+                LoginRegisterPrompt(onRegisterClick = onRegisterClick)
+            }
         }
     }
 }
