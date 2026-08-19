@@ -1,4 +1,4 @@
-package com.example.kloth.ui.screens.createArticlle
+package com.example.kloth.ui.screens.createArticle
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier

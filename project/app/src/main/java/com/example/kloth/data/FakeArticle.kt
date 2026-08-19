@@ -1,26 +1,11 @@
 package com.example.kloth.data
 
-import androidx.compose.ui.graphics.Color
 import com.example.kloth.ui.theme.RedInferno
-
-data class PostItem(
-    val creatorName: String,
-    val timeAgo: String,
-    val avatarUrl: String,
-    val postImageUrl: String,
-    val title: String,
-    val rating: String,
-    val reviewCount: Int,
-    val comments: String,
-    val description: String,
-    val tags: List<String>,
-    val category: String,
-    val categoryColor: Color
-)
 
 object FakeArticle {
     val posts = listOf(
         PostItem(
+            id = "1",
             creatorName = "Isabela",
             timeAgo = "2 horas",
             avatarUrl = "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=200&h=200&auto=format&fit=crop",
@@ -35,6 +20,7 @@ object FakeArticle {
             categoryColor = RedInferno
         ),
         PostItem(
+            id = "2",
             creatorName = "Mary Luz",
             timeAgo = "5 horas",
             avatarUrl = "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=200&h=200&auto=format&fit=crop",
@@ -49,6 +35,7 @@ object FakeArticle {
             categoryColor = RedInferno
         ),
         PostItem(
+            id = "3",
             creatorName = "Ana",
             timeAgo = "1 día",
             avatarUrl = "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=200&h=200&auto=format&fit=crop",
@@ -63,6 +50,7 @@ object FakeArticle {
             categoryColor = RedInferno
         ),
         PostItem(
+            id = "4",
             creatorName = "Elena Vancouvé",
             timeAgo = "3 horas",
             avatarUrl = "https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=200&h=200&auto=format&fit=crop",
@@ -77,6 +65,7 @@ object FakeArticle {
             categoryColor = RedInferno
         ),
         PostItem(
+            id = "5",
             creatorName = "Carlos Ruiz",
             timeAgo = "6 horas",
             avatarUrl = "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=200&h=200&auto=format&fit=crop",
@@ -91,6 +80,7 @@ object FakeArticle {
             categoryColor = RedInferno
         ),
         PostItem(
+            id = "6",
             creatorName = "Sofia",
             timeAgo = "8 horas",
             avatarUrl = "https://images.unsplash.com/photo-1488423191181-016ce2632205?q=80&w=200&h=200&auto=format&fit=crop",

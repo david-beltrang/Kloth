@@ -10,8 +10,10 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun BotonSeguir(
@@ -45,5 +47,21 @@ fun BotonSeguir(
         ) {
             Text("Seguir", fontSize = 12.sp)
         }
+    }
+}
+
+@Preview(showBackground = true, name = "Seguir")
+@Composable
+fun BotonSeguirPreview() {
+    KlothTheme {
+        BotonSeguir(estaSiguiendo = false, onClick = {})
+    }
+}
+
+@Preview(showBackground = true, name = "Siguiendo")
+@Composable
+fun BotonSiguiendoPreview() {
+    KlothTheme {
+        BotonSeguir(estaSiguiendo = true, onClick = {})
     }
 }

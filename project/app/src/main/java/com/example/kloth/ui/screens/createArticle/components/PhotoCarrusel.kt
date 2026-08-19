@@ -1,4 +1,4 @@
-package com.example.kloth.ui.screens.createArticlle.components
+package com.example.kloth.ui.screens.createArticle.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
