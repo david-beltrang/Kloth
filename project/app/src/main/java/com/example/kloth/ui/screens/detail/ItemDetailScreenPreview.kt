@@ -2,7 +2,6 @@ package com.example.kloth.ui.screens.detail
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.compose.rememberNavController
 import com.example.kloth.ui.theme.KlothTheme
 
 @Preview(
@@ -12,10 +11,24 @@ import com.example.kloth.ui.theme.KlothTheme
 )
 @Composable
 fun ItemDetailScreenPreview() {
-    KlothTheme {
+    KlothTheme(darkTheme = false) {
         ItemDetailScreen(
-            productId = "abrigo_negro",
-            navController = rememberNavController()
+            productId = "abrigo_negro"
+        )
+    }
+}
+
+@Preview(
+    name = "Item Detail Screen - Dark",
+    showBackground = true,
+    showSystemUi = true,
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun ItemDetailScreenDarkPreview() {
+    KlothTheme(darkTheme = true) {
+        ItemDetailScreen(
+            productId = "abrigo_negro"
         )
     }
 }

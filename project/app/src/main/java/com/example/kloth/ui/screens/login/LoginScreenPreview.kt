@@ -11,7 +11,20 @@ import com.example.kloth.ui.theme.KlothTheme
 )
 @Composable
 fun LoginScreenPreview() {
-    KlothTheme {
+    KlothTheme(darkTheme = false) {
+        LoginScreen()
+    }
+}
+
+@Preview(
+    name = "Login Screen - Dark",
+    showBackground = true,
+    showSystemUi = true,
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun LoginScreenDarkPreview() {
+    KlothTheme(darkTheme = true) {
         LoginScreen()
     }
 }

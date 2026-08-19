@@ -11,8 +11,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun NotificacionAvatar(
@@ -44,5 +46,13 @@ fun NotificacionAvatar(
                     .border(2.dp, MaterialTheme.colorScheme.background, CircleShape)
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun NotificacionAvatarPreview() {
+    KlothTheme {
+        NotificacionAvatar(inicial = "A", mostrarPuntoNoLeido = true)
     }
 }

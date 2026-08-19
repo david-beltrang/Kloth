@@ -1,4 +1,4 @@
-package com.example.kloth.ui.screens.createArticlle.components
+package com.example.kloth.ui.screens.createArticle.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
@@ -127,9 +127,16 @@ fun FormArticle(
                 .fillMaxWidth()
                 .height(56.dp),
             shape = RoundedCornerShape(12.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.Black)
+            colors = ButtonDefaults.buttonColors(
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
+            )
         ) {
-            Text(text = "Publicar", color = Color.White, fontWeight = FontWeight.Bold, fontSize = 16.sp)
+            Text(
+                text = "Publicar",
+                fontWeight = FontWeight.Bold,
+                fontSize = 16.sp
+            )
         }
     }
 }
@@ -143,6 +150,7 @@ fun FormInput(
     value: String,
     onValueChange: (String) -> Unit,
     placeholder: String,
+    modifier: Modifier = Modifier,
     required: Boolean = false,
     singleLine: Boolean = true,
     minLines: Int = 1,
@@ -152,7 +160,10 @@ fun FormInput(
     prefix: String? = null,
     keyboardType: KeyboardType = KeyboardType.Text
 ) {
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
         Row {
             Text(
                 text = label,
@@ -203,12 +214,54 @@ fun FormInput(
 
 // Previews con datos estáticos para visualización
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Form - Prenda")
 @Composable
 fun FormArticlePrendaPreview() {
     KlothTheme {
         FormArticle(
             selectedType = ArticleType.PRENDA,
+            nombre = "", onNombreChange = {},
+            descripcion = "", onDescripcionChange = {},
+            marca = "", onMarcaChange = {},
+            color = "", onColorChange = {},
+            precio = "", onPrecioChange = {},
+            estilo = "", onEstiloChange = {},
+            ciudad = "", onCiudadChange = {},
+            pais = "", onPaisChange = {},
+            organizador = "", onOrganizadorChange = {},
+            onPublicarClick = {},
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Form - Outfit")
+@Composable
+fun FormArticleOutfitPreview() {
+    KlothTheme {
+        FormArticle(
+            selectedType = ArticleType.OUTFIT,
+            nombre = "", onNombreChange = {},
+            descripcion = "", onDescripcionChange = {},
+            marca = "", onMarcaChange = {},
+            color = "", onColorChange = {},
+            precio = "", onPrecioChange = {},
+            estilo = "", onEstiloChange = {},
+            ciudad = "", onCiudadChange = {},
+            pais = "", onPaisChange = {},
+            organizador = "", onOrganizadorChange = {},
+            onPublicarClick = {},
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Form - Evento")
+@Composable
+fun FormArticleEventoPreview() {
+    KlothTheme {
+        FormArticle(
+            selectedType = ArticleType.EVENTO,
             nombre = "", onNombreChange = {},
             descripcion = "", onDescripcionChange = {},
             marca = "", onMarcaChange = {},
