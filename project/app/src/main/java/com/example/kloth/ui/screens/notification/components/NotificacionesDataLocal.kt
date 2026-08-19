@@ -1,10 +1,5 @@
-package com.example.kloth.ui.screens.notification.componentes
+package com.example.kloth.ui.screens.notification.components
 
-/**
- * Datos locales quemados de la entidad de UI NotificacionUI, usados mientras
- * no hay conexión real a Firestore/API REST. Reemplazar por el repositorio
- * real en la siguiente entrega.
- */
 object NotificacionesDataLocal {
     val notificacionesEjemplo = listOf(
         NotificacionUI(

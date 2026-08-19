@@ -1,4 +1,4 @@
-package com.example.kloth.notificaciones.componentes
+package com.example.kloth.ui.screens.notification.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -14,10 +14,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-/**
- * Avatar circular con placeholder de inicial (sin dependencias de carga de
- * imágenes) y un punto rojo opcional que indica notificación no leída.
- */
 @Composable
 fun NotificacionAvatar(
     inicial: String,

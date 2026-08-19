@@ -1,4 +1,4 @@
-package com.example.kloth.ui.screens.notification.componentes
+package com.example.kloth.ui.screens.notification.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
@@ -13,11 +13,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-/**
- * Botón de seguir/siguiendo con STATE HOSTING: el estado real (estaSiguiendo)
- * vive en el padre (NotificacionesScreen), este componente es "sin estado":
- * solo pinta según el valor que recibe y notifica el clic hacia arriba.
- */
 @Composable
 fun BotonSeguir(
     estaSiguiendo: Boolean,

@@ -1,4 +1,4 @@
-package com.example.kloth.ui.screens.notification.componentes
+package com.example.kloth.ui.screens.notification.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -21,14 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.kloth.notificaciones.componentes.NotificacionAvatar
 
-/**
- * Fila completa de una notificación: avatar (con punto de no leído) + texto
- * (nombre en negrita + descripción + tiempo) + elemento trailing que cambia
- * según el tipo: botón Seguir/Siguiendo para nuevos seguidores, o una
- * miniatura cuadrada para el resto de tipos que la tengan.
- */
 @Composable
 fun NotificacionItem(
     notificacion: NotificacionUI,
