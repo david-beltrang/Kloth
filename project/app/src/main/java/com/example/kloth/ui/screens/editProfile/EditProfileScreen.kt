@@ -8,10 +8,11 @@ import com.example.kloth.ui.screens.editProfile.components.EditProfileTopBar
 
 @Composable
 fun EditProfileScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onCancelClick: () -> Unit = {}
 ) {
     Column(modifier = modifier.fillMaxSize()) {
-        EditProfileTopBar()
+        EditProfileTopBar(onCancelClick = onCancelClick)
         EditProfileScreenContent(
             modifier = Modifier.weight(1f)
         )
