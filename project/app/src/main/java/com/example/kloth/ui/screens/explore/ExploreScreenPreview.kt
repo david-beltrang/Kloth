@@ -10,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
 import com.example.kloth.R
 import com.example.kloth.ui.screens.detail.components.CatalogCard
 import com.example.kloth.ui.screens.explore.components.CategoryChip
@@ -27,8 +26,21 @@ import com.example.kloth.ui.utils.KlothBottomNavigation
 )
 @Composable
 fun ExploreScreenPreview() {
-    KlothTheme {
-        ExploreScreen(navController = rememberNavController())
+    KlothTheme(darkTheme = false) {
+        ExploreScreen()
+    }
+}
+
+@Preview(
+    name = "Explore Screen - Dark",
+    showBackground = true,
+    showSystemUi = true,
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun ExploreScreenDarkPreview() {
+    KlothTheme(darkTheme = true) {
+        ExploreScreen()
     }
 }
 
@@ -44,7 +56,7 @@ fun ExploreTopBarPreview() {
 @Composable
 fun ExploreBottomNavPreview() {
     KlothTheme {
-        KlothBottomNavigation(navController = rememberNavController(), selectedItem = 1)
+        KlothBottomNavigation(selectedItem = 1)
     }
 }
 

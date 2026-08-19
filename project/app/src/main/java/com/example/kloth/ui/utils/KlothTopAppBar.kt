@@ -50,14 +50,6 @@ fun KlothTopAppBar(
                 modifier = Modifier.size(130.dp)
             )
         },
-        navigationIcon = {
-            IconButton(onClick = { /* TODO */ }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = stringResource(id = R.string.content_desc_back)
-                )
-            }
-        },
         actions = {
             IconButton(onClick = { /* TODO */ }) {
                 Icon(
