@@ -70,15 +70,12 @@
     <string name="btn_write_review">Escribir reseña</string>
 
     <!-- Login Screen -->
-    <string name="login_welcome">Bienvenido</string>
-    <string name="login_subtitle">Inicia sesión para descubrir y reseñar moda</string>
-    <string name="login_email_label">Correo electrónico</string>
-    <string name="login_email_placeholder">tu@correo.com</string>
-    <string name="login_password_label">Contraseña</string>
-    <string name="login_password_placeholder">••••••••</string>
-    <string name="login_button">Iniciar sesión</string>
+    <string name="login_subtitle">Tu comunidad de moda</string>
+    <string name="login_email_placeholder">Correo electrónico</string>
+    <string name="login_password_placeholder">Contraseña</string>
+    <string name="login_button">Ingresar</string>
     <string name="login_no_account">¿No tienes cuenta?</string>
-    <string name="login_create_account">Crear cuenta</string>
+    <string name="login_create_account">Regístrate</string>
     <string name="cd_logo">Logo de Kloth</string>
     <string name="cd_toggle_password">Mostrar u ocultar contraseña</string>
 

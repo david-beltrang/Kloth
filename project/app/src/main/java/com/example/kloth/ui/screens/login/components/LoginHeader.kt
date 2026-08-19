@@ -33,17 +33,16 @@ fun LoginHeader(
         Image(
             painter = painterResource(id = logoResource),
             contentDescription = stringResource(R.string.cd_logo),
-            modifier = Modifier.size(height = 30.dp, width = 140.dp)
+            modifier = Modifier.size(height = 90.dp, width = 420.dp)
         )
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Text(
-            text = stringResource(R.string.login_welcome),
-            style = MaterialTheme.typography.displayLarge,
-            color = MaterialTheme.colorScheme.onSurface,
-            textAlign = TextAlign.Center
-        )
+        //Text(
+            //style = MaterialTheme.typography.displayLarge,
+            //color = MaterialTheme.colorScheme.onSurface,
+          //  textAlign = TextAlign.Center
+        //)
 
         Spacer(modifier = Modifier.height(8.dp))
 

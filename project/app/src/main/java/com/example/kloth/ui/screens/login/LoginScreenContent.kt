@@ -63,7 +63,7 @@ fun LoginScreenContent(
             KlothTextField(
                 value = email,
                 onValueChange = onEmailChange,
-                label = stringResource(R.string.login_email_label),
+               // label = stringResource(R.string.login_email_label),
                 placeholder = stringResource(R.string.login_email_placeholder),
                 leadingIcon = Icons.Outlined.Email,
                 keyboardOptions = KeyboardOptions(
@@ -77,7 +77,7 @@ fun LoginScreenContent(
             KlothTextField(
                 value = password,
                 onValueChange = onPasswordChange,
-                label = stringResource(R.string.login_password_label),
+                //label = stringResource(R.string.login_password_label),
                 placeholder = stringResource(R.string.login_password_placeholder),
                 leadingIcon = Icons.Outlined.Lock,
                 isPassword = true,

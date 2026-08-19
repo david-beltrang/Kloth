@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import com.example.kloth.ui.screens.createArticle.CreateArticleScreen
 import com.example.kloth.ui.screens.explore.ExploreScreen
 import com.example.kloth.ui.screens.feed.FeedScreen
+import com.example.kloth.ui.screens.notification.NotificationScreen
 import com.example.kloth.ui.screens.profile.ProfileScreen
 import com.example.kloth.ui.utils.KlothBottomNavigation
 import com.example.kloth.ui.utils.KlothTopAppBar
@@ -64,7 +65,7 @@ fun KlothApp() {
             "Feed" -> FeedScreen(modifier = modifier)
             "Explore" -> ExploreScreen(modifier = modifier)
             "Create" -> CreateArticleScreen(modifier = modifier)
-            "Notifications" -> FeedScreen(modifier = modifier) // Placeholder
+            "Notifications" -> NotificationScreen(modifier = modifier) // Placeholder
             "Profile" -> ProfileScreen(modifier = modifier)
         }
     }
