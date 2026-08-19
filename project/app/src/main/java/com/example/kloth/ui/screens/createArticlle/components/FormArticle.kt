@@ -34,78 +34,76 @@ enum class ArticleType {
     PRENDA, OUTFIT, EVENTO
 }
 
-/*
- Este es el formulario principal. Cambia su forma dependiendo de qué categoría
- haya elegido el usuario.
+/**
+ * Este es el formulario principal. Es STATELESS (no tiene memoria interna).
+ * Recibe todos los valores y las funciones para avisar cuando cambian.
  */
 @Composable
 fun FormArticle(
-    selectedType: ArticleType, // Aquí recibimos qué tipo de formulario mostrar
+    selectedType: ArticleType,
+    nombre: String,
+    onNombreChange: (String) -> Unit,
+    descripcion: String,
+    onDescripcionChange: (String) -> Unit,
+    marca: String,
+    onMarcaChange: (String) -> Unit,
+    color: String,
+    onColorChange: (String) -> Unit,
+    precio: String,
+    onPrecioChange: (String) -> Unit,
+    estilo: String,
+    onEstiloChange: (String) -> Unit,
+    ciudad: String,
+    onCiudadChange: (String) -> Unit,
+    pais: String,
+    onPaisChange: (String) -> Unit,
+    organizador: String,
+    onOrganizadorChange: (String) -> Unit,
+    onPublicarClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // Guardamos lo que el usuario escribe en variables "remember"
-    var nombre by remember { mutableStateOf("") }
-    var descripcion by remember { mutableStateOf("") }
-    
-    // Estos solo se usan si es una Prenda
-    var marca by remember { mutableStateOf("") }
-    var color by remember { mutableStateOf("") }
-    var precio by remember { mutableStateOf("") }
-    
-    // Este solo si es un Outfit
-    var estilo by remember { mutableStateOf("") }
-    
-    // Estos solo si es un Evento
-    var ciudad by remember { mutableStateOf("") }
-    var pais by remember { mutableStateOf("") }
-    var organizador by remember { mutableStateOf("") }
-
-    // Usamos una columna con scroll por si el formulario es muy largo
     Column(
         modifier = modifier
             .fillMaxWidth()
-            .verticalScroll(rememberScrollState())
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(20.dp) // Espacio parejo entre campos
+        verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        // campos que siempre
+        // campos que siempre van
         FormInput(
             label = "Nombre",
             value = nombre,
-            onValueChange = { nombre = it },
+            onValueChange = onNombreChange,
             placeholder = "Nombre del artículo",
-            required = true // Muestra el asterisco rojo
+            required = true
         )
 
         FormInput(
             label = "Descripción",
             value = descripcion,
-            onValueChange = { descripcion = it },
+            onValueChange = onDescripcionChange,
             placeholder = "Describe este artículo...",
             singleLine = false,
             minLines = 4,
             maxLines = 6,
-            maxLength = 500 // Muestra el contador de letras abajo
+            maxLength = 500
         )
 
         // campos que cambian segun la categoria
-        // AnimatedContent hace que el cambio de campos no sea brusco
         AnimatedContent(targetState = selectedType, label = "form_transition") { type ->
             Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
                 when (type) {
                     ArticleType.PRENDA -> {
-                        FormInput(label = "Marca", value = marca, onValueChange = { marca = it }, placeholder = "Marca o diseñador")
+                        FormInput(label = "Marca", value = marca, onValueChange = onMarcaChange, placeholder = "Marca o diseñador")
                         FormInput(label = "Categoría", value = "", onValueChange = {}, placeholder = "Seleccionar categoría", required = true, isSelector = true)
-                        FormInput(label = "Color", value = color, onValueChange = { color = it }, placeholder = "Color principal")
-                        FormInput(label = "Precio", value = precio, onValueChange = { precio = it }, placeholder = "0.00", prefix = "€", keyboardType = KeyboardType.Number)
+                        FormInput(label = "Color", value = color, onValueChange = onColorChange, placeholder = "Color principal")
+                        FormInput(label = "Precio", value = precio, onValueChange = onPrecioChange, placeholder = "0.00", prefix = "€", keyboardType = KeyboardType.Number)
                     }
                     ArticleType.OUTFIT -> {
-                        FormInput(label = "Estilo", value = estilo, onValueChange = { estilo = it }, placeholder = "Seleccionar estilo", isSelector = true)
+                        FormInput(label = "Estilo", value = estilo, onValueChange = onEstiloChange, placeholder = "Seleccionar estilo", isSelector = true)
                     }
                     ArticleType.EVENTO -> {
-                        FormInput(label = "Ciudad", value = ciudad, onValueChange = { ciudad = it }, placeholder = "Ciudad del evento")
-                        FormInput(label = "País", value = pais, onValueChange = { pais = it }, placeholder = "País del evento")
-                        // Ponemos las fechas una al lado de la otra
+                        FormInput(label = "Ciudad", value = ciudad, onValueChange = onCiudadChange, placeholder = "Ciudad del evento")
+                        FormInput(label = "País", value = pais, onValueChange = onPaisChange, placeholder = "País del evento")
                         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
                             Box(modifier = Modifier.weight(1f)) {
                                 FormInput(label = "Inicio", value = "", onValueChange = {}, placeholder = "DD/MM/AA", isSelector = true)
@@ -114,7 +112,7 @@ fun FormArticle(
                                 FormInput(label = "Fin", value = "", onValueChange = {}, placeholder = "DD/MM/AA", isSelector = true)
                             }
                         }
-                        FormInput(label = "Organizador", value = organizador, onValueChange = { organizador = it }, placeholder = "Nombre del organizador")
+                        FormInput(label = "Organizador", value = organizador, onValueChange = onOrganizadorChange, placeholder = "Nombre del organizador")
                     }
                 }
             }
@@ -122,9 +120,9 @@ fun FormArticle(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Botón final para enviar la publicación
+        // Botón final
         Button(
-            onClick = { /* Aquí iría la lógica para guardar */ },
+            onClick = onPublicarClick,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
@@ -136,27 +134,25 @@ fun FormArticle(
     }
 }
 
-/**
- * Este es un componente que creamos para no repetir el diseño de cada cajita de texto.
- * Maneja el título, el asterisco, el contador y el estilo visual.
+/*
+Componente visual para las entradas de texto.
  */
 @Composable
 fun FormInput(
-    label: String, // Título arriba del campo
-    value: String, // El texto actual
-    onValueChange: (String) -> Unit, // Función para actualizar el texto
-    placeholder: String, // Lo que sale cuando está vacío
-    required: Boolean = false, // Si lleva el asterisco rojo
-    singleLine: Boolean = true, // Si es de una sola línea
+    label: String,
+    value: String,
+    onValueChange: (String) -> Unit,
+    placeholder: String,
+    required: Boolean = false,
+    singleLine: Boolean = true,
     minLines: Int = 1,
     maxLines: Int = 1,
-    maxLength: Int? = null, // Límite de letras
-    isSelector: Boolean = false, // Si debe mostrar la flechita de bajar
-    prefix: String? = null, // Texto al inicio (como el €)
-    keyboardType: KeyboardType = KeyboardType.Text // Tipo de teclado (letras o números)
+    maxLength: Int? = null,
+    isSelector: Boolean = false,
+    prefix: String? = null,
+    keyboardType: KeyboardType = KeyboardType.Text
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        // Título del campo
         Row {
             Text(
                 text = label,
@@ -169,7 +165,6 @@ fun FormInput(
             }
         }
 
-        // La caja de texto propiamente dicha
         TextField(
             value = value,
             onValueChange = { if (maxLength == null || it.length <= maxLength) onValueChange(it) },
@@ -183,19 +178,17 @@ fun FormInput(
                 { Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null) }
             } else null,
             keyboardOptions = KeyboardOptions(keyboardType = keyboardType),
-            // Personalizamos colores para que se vea limpio sin rayas pesadas
             colors = TextFieldDefaults.colors(
                 focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
                 unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
                 disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
-                focusedIndicatorColor = Color.Transparent, // Quita la línea de abajo
+                focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
             ),
-            shape = RoundedCornerShape(12.dp) // Bordes suavizados
+            shape = RoundedCornerShape(12.dp)
         )
 
-        // Si tiene límite de letras, mostramos el contador (ej: 10/500)
         if (maxLength != null) {
             Text(
                 text = "${value.length}/$maxLength",
@@ -208,28 +201,25 @@ fun FormInput(
     }
 }
 
-// --- PREVIEWS PARA VER CÓMO QUEDA CADA UNO EN EL EDITOR ---
+// Previews con datos estáticos para visualización
 
 @Preview(showBackground = true)
 @Composable
 fun FormArticlePrendaPreview() {
     KlothTheme {
-        FormArticle(selectedType = ArticleType.PRENDA)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun FormArticleOutfitPreview() {
-    KlothTheme {
-        FormArticle(selectedType = ArticleType.OUTFIT)
-    }
-}
-
-@Preview(showBackground = true)
-@Composable
-fun FormArticleEventoPreview() {
-    KlothTheme {
-        FormArticle(selectedType = ArticleType.EVENTO)
+        FormArticle(
+            selectedType = ArticleType.PRENDA,
+            nombre = "", onNombreChange = {},
+            descripcion = "", onDescripcionChange = {},
+            marca = "", onMarcaChange = {},
+            color = "", onColorChange = {},
+            precio = "", onPrecioChange = {},
+            estilo = "", onEstiloChange = {},
+            ciudad = "", onCiudadChange = {},
+            pais = "", onPaisChange = {},
+            organizador = "", onOrganizadorChange = {},
+            onPublicarClick = {},
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        )
     }
 }

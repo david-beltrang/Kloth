@@ -3,12 +3,8 @@ package com.example.kloth.ui.screens.createArticlle.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.outlined.ArrowBack
-import androidx.compose.material.icons.outlined.ArrowBack
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,38 +15,37 @@ import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
-// Barra superior: botón de retroceder, título de la pantalla y botón de búsqueda.
 fun TopAppBarCreateArticle(
+    onCloseClick: () -> Unit, // Callback para cerrar la pantalla
     modifier: Modifier = Modifier,
     title: String = stringResource(R.string.create_article_title)
 ) {
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .statusBarsPadding() // Esto baja la barra para evitar el notch/status bar
-            .padding(top = 8.dp) // Un poquito de aire extra opcional
-            .height(56.dp) // Subimos un poco el alto para que se vea más balanceado
+            .statusBarsPadding()
+            .padding(top = 8.dp)
+            .height(56.dp)
             .background(MaterialTheme.colorScheme.surface)
             .padding(horizontal = 16.dp),
-        verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.SpaceBetween
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            IconButton(onClick = { /* Navegación desactivada */ }) {
-                Icon(
-                    imageVector = Icons.Outlined.ArrowBack,
-                    contentDescription = stringResource(R.string.cd_back),
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
-            Spacer(modifier = Modifier.width(45.dp))
-            Text(
-                text = title,
-                color = MaterialTheme.colorScheme.primary,
-                style = MaterialTheme.typography.headlineMedium,
-
+        IconButton(onClick = onCloseClick) {
+            Icon(
+                imageVector = Icons.Default.Close,
+                contentDescription = "Cerrar",
+                tint = MaterialTheme.colorScheme.primary
             )
         }
+        
+        Spacer(modifier = Modifier.width(16.dp))
+        
+        Text(
+            text = title,
+            color = MaterialTheme.colorScheme.primary,
+            style = MaterialTheme.typography.titleLarge,
+            modifier = Modifier.weight(1f)
+        )
     }
 }
 
@@ -58,6 +53,6 @@ fun TopAppBarCreateArticle(
 @Composable
 fun TopAppBarCreateArticlePreview() {
     KlothTheme {
-        TopAppBarCreateArticle()
+        TopAppBarCreateArticle(onCloseClick = {})
     }
 }
