@@ -19,17 +19,11 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kloth.ui.theme.KlothTheme
 
-/*
-Este composable se usa en todas las pantallas y funciona como barra de navegacion.
-Es de tipo NavigationBar, se añado el item de home, buscador, crear, notficaciones, perfil.
-
-Es el composable llamado NavigationBar
-link de referencia: https://m3.material.io/components/navigation-bar/specs
- */
 @Composable
 fun KlothBottomNavigation(
     modifier: Modifier = Modifier, 
-    selectedItem: Int = 0
+    selectedItem: Int = 0,
+    onItemSelected: (Int) -> Unit = {}
 ) {
     NavigationBar(
         modifier = modifier.height(64.dp),
@@ -39,7 +33,7 @@ fun KlothBottomNavigation(
     ) {
         NavigationBarItem(
             selected = selectedItem == 0,
-            onClick = { },
+            onClick = { onItemSelected(0) },
             icon = { 
                 Icon(
                     imageVector = if (selectedItem == 0) Icons.Filled.Home else Icons.Outlined.Home,
@@ -55,7 +49,7 @@ fun KlothBottomNavigation(
         )
         NavigationBarItem(
             selected = selectedItem == 1,
-            onClick = { },
+            onClick = { onItemSelected(1) },
             icon = { 
                 Icon(
                     imageVector = if (selectedItem == 1) Icons.Filled.Search else Icons.Outlined.Search,
@@ -71,7 +65,7 @@ fun KlothBottomNavigation(
         )
         NavigationBarItem(
             selected = selectedItem == 2,
-            onClick = { },
+            onClick = { onItemSelected(2) },
             icon = { 
                 Icon(
                     imageVector = if (selectedItem == 2) Icons.Filled.AddBox else Icons.Outlined.AddBox,
@@ -87,7 +81,7 @@ fun KlothBottomNavigation(
         )
         NavigationBarItem(
             selected = selectedItem == 3,
-            onClick = { },
+            onClick = { onItemSelected(3) },
             icon = {
                 NotificationCount(
                     count = 5,
@@ -103,7 +97,7 @@ fun KlothBottomNavigation(
         )
         NavigationBarItem(
             selected = selectedItem == 4,
-            onClick = { },
+            onClick = { onItemSelected(4) },
             icon = { 
                 Icon(
                     imageVector = if (selectedItem == 4) Icons.Filled.Person else Icons.Outlined.Person,
