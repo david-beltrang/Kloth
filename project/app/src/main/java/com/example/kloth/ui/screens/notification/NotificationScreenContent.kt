@@ -17,8 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.kloth.ui.screens.notification.components.NotificacionItem
 import com.example.kloth.ui.screens.notification.components.NotificacionesDataLocal
-import com.example.kloth.ui.utils.KlothBottomNavigation
-import com.example.kloth.ui.utils.KlothTopAppBar
 
 @Composable
 fun NotificationScreenContent(
@@ -26,37 +24,23 @@ fun NotificationScreenContent(
 ) {
     var notificaciones by remember { mutableStateOf(NotificacionesDataLocal.notificacionesEjemplo) }
 
-    Scaffold(
-        modifier = modifier,
-        topBar = {
-            KlothTopAppBar(notificationCount = 0)
-        },
-        bottomBar = {
-            KlothBottomNavigation(selectedItem = 3)
-        },
-        containerColor = MaterialTheme.colorScheme.surface
-    ) { paddingValues ->
-
-        LazyColumn(
-            contentPadding = PaddingValues(
-                top = 8.dp,
-                bottom = paddingValues.calculateBottomPadding() + 24.dp
-            ),
-            verticalArrangement = Arrangement.spacedBy(20.dp),
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(top = paddingValues.calculateTopPadding())
-        ) {
-            items(notificaciones, key = { it.id }) { notificacion ->
-                NotificacionItem(
-                    notificacion = notificacion,
-                    onToggleSeguir = { id ->
-                        notificaciones = notificaciones.map {
-                            if (it.id == id) it.copy(estaSiguiendo = !it.estaSiguiendo) else it
-                        }
+    LazyColumn(
+        contentPadding = PaddingValues(
+            top = 8.dp,
+            bottom = 24.dp
+        ),
+        verticalArrangement = Arrangement.spacedBy(20.dp),
+        modifier = modifier.fillMaxSize()
+    ) {
+        items(notificaciones, key = { it.id }) { notificacion ->
+            NotificacionItem(
+                notificacion = notificacion,
+                onToggleSeguir = { id ->
+                    notificaciones = notificaciones.map {
+                        if (it.id == id) it.copy(estaSiguiendo = !it.estaSiguiendo) else it
                     }
-                )
-            }
+                }
+            )
         }
     }
 }

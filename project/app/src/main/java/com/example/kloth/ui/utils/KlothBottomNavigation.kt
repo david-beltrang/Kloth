@@ -17,9 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.kloth.navigation.Screen
 import com.example.kloth.ui.theme.KlothTheme
 
 /*
@@ -31,57 +28,36 @@ link de referencia: https://m3.material.io/components/navigation-bar/specs
  */
 @Composable
 fun KlothBottomNavigation(
-    navController: NavController,
     modifier: Modifier = Modifier, 
     selectedItem: Int = 0
 ) {
     NavigationBar(
         modifier = modifier.height(64.dp),
-        // Usamos 'surface' para que sea clarito (blanco/crema) en modo claro
         containerColor = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.onSurface,
         tonalElevation = 0.dp
     ) {
         NavigationBarItem(
             selected = selectedItem == 0,
-            onClick = { 
-                if (selectedItem != 0) {
-                    navController.navigate(Screen.Feed.route) {
-                        popUpTo(Screen.Feed.route) { saveState = true }
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-            },
+            onClick = { },
             icon = { 
                 Icon(
-                    // SI está seleccionado (==0) usa Filled, SINO usa Outlined
                     imageVector = if (selectedItem == 0) Icons.Filled.Home else Icons.Outlined.Home,
                     contentDescription = "Home"
                 ) 
             },
             label = null,
             colors = NavigationBarItemDefaults.colors(
-                // Los iconos ahora son Negros (primary) cuando se seleccionan
                 selectedIconColor = MaterialTheme.colorScheme.primary,
-                // Y grises (onSurfaceVariant) cuando no lo están
                 unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
                 indicatorColor = MaterialTheme.colorScheme.secondaryContainer.copy(alpha = 0.5f)
             )
         )
         NavigationBarItem(
             selected = selectedItem == 1,
-            onClick = { 
-                if (selectedItem != 1) {
-                    navController.navigate(Screen.Explore.route) {
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-            },
+            onClick = { },
             icon = { 
                 Icon(
-                    // SI está seleccionado (==0) usa Filled, SINO usa Outlined
                     imageVector = if (selectedItem == 1) Icons.Filled.Search else Icons.Outlined.Search,
                     contentDescription = "Search"
                 ) 
@@ -95,17 +71,9 @@ fun KlothBottomNavigation(
         )
         NavigationBarItem(
             selected = selectedItem == 2,
-            onClick = { 
-                if (selectedItem != 2) {
-                    navController.navigate(Screen.Add.route) {
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-            },
+            onClick = { },
             icon = { 
                 Icon(
-                    // SI está seleccionado (==0) usa Filled, SINO usa Outlined
                     imageVector = if (selectedItem == 2) Icons.Filled.AddBox else Icons.Outlined.AddBox,
                     contentDescription = "AddBox"
                 ) 
@@ -119,14 +87,7 @@ fun KlothBottomNavigation(
         )
         NavigationBarItem(
             selected = selectedItem == 3,
-            onClick = { 
-                if (selectedItem != 3) {
-                    navController.navigate(Screen.Notifications.route) {
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-            },
+            onClick = { },
             icon = {
                 NotificationCount(
                     count = 5,
@@ -142,19 +103,11 @@ fun KlothBottomNavigation(
         )
         NavigationBarItem(
             selected = selectedItem == 4,
-            onClick = { 
-                if (selectedItem != 4) {
-                    navController.navigate(Screen.Profile.route) {
-                        launchSingleTop = true
-                        restoreState = true
-                    }
-                }
-            },
+            onClick = { },
             icon = { 
                 Icon(
-                    // SI está seleccionado (==0) usa Filled, SINO usa Outlined
                     imageVector = if (selectedItem == 4) Icons.Filled.Person else Icons.Outlined.Person,
-                    contentDescription = "Home"
+                    contentDescription = "Profile"
                 ) 
             },
             label = null,
@@ -170,7 +123,7 @@ fun KlothBottomNavigation(
 @Preview(showBackground = true)
 @Composable
 fun KlothBottomNavigationPreview() {
-    KlothTheme(darkTheme = false) { // Forzamos el modo claro en el preview
-        KlothBottomNavigation(navController = rememberNavController())
+    KlothTheme(darkTheme = false) { 
+        KlothBottomNavigation()
     }
 }

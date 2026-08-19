@@ -19,8 +19,10 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun NotificacionItem(
@@ -81,5 +83,24 @@ fun NotificacionItem(
                 }
             }
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun NotificacionItemPreview() {
+    KlothTheme {
+        NotificacionItem(
+            notificacion = NotificacionUI(
+                id = "1",
+                nombreUsuario = "alex_style",
+                descripcion = "comentó tu reseña",
+                tiempo = "Hace 18 min",
+                tipo = TipoNotificacion.COMENTARIO,
+                tieneMiniatura = true,
+                noLeida = true
+            ),
+            onToggleSeguir = {}
+        )
     }
 }

@@ -21,16 +21,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import com.example.kloth.R
-import com.example.kloth.navigation.Screen
 import com.example.kloth.ui.screens.detail.components.CatalogCard
 import com.example.kloth.ui.screens.feed.components.ProfileTabRow
 import com.example.kloth.ui.screens.profile.components.ProfileHeaderSection
 
 @Composable
 fun ProfileScreenContent(
-    navController: NavController,
     onEditProfileClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -76,9 +73,7 @@ fun ProfileScreenContent(
                     rating = "4.9",
                     reviews = "128",
                     imageRes = R.drawable.abrigo_negro,
-                    onClick = { 
-                        navController.navigate(Screen.Detail.createRoute("abrigo_negro"))
-                    }
+                    onClick = { }
                 )
             }
             item {
@@ -88,9 +83,7 @@ fun ProfileScreenContent(
                     rating = "4.8",
                     reviews = "84",
                     imageRes = R.drawable.camiseta_gymshark,
-                    onClick = { 
-                        navController.navigate(Screen.Detail.createRoute("camiseta_gymshark"))
-                    }
+                    onClick = { }
                 )
             }
             item {
@@ -100,9 +93,7 @@ fun ProfileScreenContent(
                     rating = "5.0",
                     reviews = "42",
                     imageRes = R.drawable.camiseta_barcelona,
-                    onClick = { 
-                        navController.navigate(Screen.Detail.createRoute("camiseta_barcelona"))
-                    }
+                    onClick = { }
                 )
             }
         } else {
@@ -113,9 +104,7 @@ fun ProfileScreenContent(
                     rating = "4.7",
                     reviews = "215",
                     imageRes = R.drawable.bolso_cuero,
-                    onClick = { 
-                        navController.navigate(Screen.Detail.createRoute("bolso_cuero"))
-                    }
+                    onClick = { }
                 )
             }
             item {
@@ -125,9 +114,7 @@ fun ProfileScreenContent(
                     rating = "4.9",
                     reviews = "128",
                     imageRes = R.drawable.abrigo_negro,
-                    onClick = { 
-                        navController.navigate(Screen.Detail.createRoute("abrigo_negro"))
-                    }
+                    onClick = { }
                 )
             }
             item {
@@ -137,9 +124,7 @@ fun ProfileScreenContent(
                     rating = "5.0",
                     reviews = "42",
                     imageRes = R.drawable.camiseta_barcelona,
-                    onClick = { 
-                        navController.navigate(Screen.Detail.createRoute("camiseta_barcelona"))
-                    }
+                    onClick = { }
                 )
             }
             item {
@@ -149,9 +134,7 @@ fun ProfileScreenContent(
                     rating = "4.8",
                     reviews = "84",
                     imageRes = R.drawable.camiseta_gymshark,
-                    onClick = { 
-                        navController.navigate(Screen.Detail.createRoute("camiseta_gymshark"))
-                    }
+                    onClick = { }
                 )
             }
         }

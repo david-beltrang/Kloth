@@ -2,7 +2,6 @@ package com.example.kloth.ui.screens.editProfile.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.HorizontalDivider
@@ -11,11 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -25,9 +22,7 @@ import com.example.kloth.ui.theme.TextGray
 
 @Composable
 fun EditProfileTopBar(
-    modifier: Modifier = Modifier,
-    onCancel: () -> Unit = {},
-    onSave: () -> Unit = {}
+    modifier: Modifier = Modifier
 ) {
     val logoResource = if (isSystemInDarkTheme()) {
         R.drawable.logo_blanco
@@ -62,8 +57,7 @@ fun EditProfileTopBar(
             Text(
                 text = stringResource(R.string.edit_profile_cancel),
                 color = TextGray,
-                fontSize = 15.sp,
-                modifier = Modifier.clickable { onCancel() }
+                fontSize = 15.sp
             )
             Text(
                 text = stringResource(R.string.edit_profile_title),
@@ -73,8 +67,7 @@ fun EditProfileTopBar(
             Text(
                 text = stringResource(R.string.edit_profile_save),
                 color = TextGray,
-                fontSize = 15.sp,
-                modifier = Modifier.clickable { onSave() }
+                fontSize = 15.sp
             )
         }
         HorizontalDivider(thickness = 1.dp, color = DividerColor)
