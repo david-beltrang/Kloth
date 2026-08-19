@@ -29,7 +29,8 @@ import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun ProfileHeaderSection(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onEditProfileClick: () -> Unit = {}
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -160,7 +161,7 @@ fun ProfileHeaderSection(
                 .padding(horizontal = 16.dp)
                 .clip(RoundedCornerShape(999.dp))
                 .background(MaterialTheme.colorScheme.primary)
-                .clickable { /* TODO */ }
+                .clickable { onEditProfileClick() }
                 .padding(vertical = 14.dp),
             contentAlignment = Alignment.Center
         ) {
