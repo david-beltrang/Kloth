@@ -13,13 +13,14 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import com.example.kloth.data.PostItem
 import com.example.kloth.ui.utils.KlothBottomNavigation
 import com.example.kloth.ui.utils.KlothTopAppBar
 import com.example.kloth.ui.screens.feed.components.FeedTabRow
 import com.example.kloth.ui.screens.feed.components.PostCard
 
 @Composable
-fun FeedScreenContent(modifier: Modifier=Modifier, mockPosts: List<PostItem>){
+fun FeedScreenContent(modifier: Modifier = Modifier, mockPosts: List<PostItem>) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
         topBar = {
@@ -31,8 +32,7 @@ fun FeedScreenContent(modifier: Modifier=Modifier, mockPosts: List<PostItem>){
         bottomBar = {
             KlothBottomNavigation(selectedItem = 0)
         }
-    ) {
-            innerPadding ->
+    ) { innerPadding ->
         LazyColumn(
             modifier = Modifier
                 .fillMaxSize()
@@ -57,7 +57,7 @@ fun FeedScreenContent(modifier: Modifier=Modifier, mockPosts: List<PostItem>){
                 )
             }
 
-            // Extra spacer for the bottom navigation and FAB
+            // Extra spacer for the bottom navigation
             item {
                 Spacer(modifier = Modifier.height(80.dp))
             }

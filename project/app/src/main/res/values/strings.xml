@@ -82,6 +82,9 @@
     <string name="cd_logo">Logo de Kloth</string>
     <string name="cd_toggle_password">Mostrar u ocultar contraseña</string>
 
+    <!-- Create Article Screen -->
+    <string name="create_article_title">Crear publicación</string>
+
     <!-- Mock Data -->
     <string name="mock_description">Una pieza maestra de sastrería contemporánea. Este abrigo ha sido confeccionado con 100% cachemira italiana de origen sostenible, ofreciendo una caída impecable y una suavidad inigualable.</string>
     <string name="mock_price">$280.000 COP</string>
