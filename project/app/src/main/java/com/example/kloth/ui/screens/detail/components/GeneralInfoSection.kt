@@ -1,4 +1,4 @@
-package com.example.kloth.ui.screens.detail
+package com.example.kloth.ui.screens.detail.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -19,10 +19,11 @@ import com.example.kloth.ui.theme.Sunset
 
 @Composable
 fun GeneralInfoSection(
-    productId: String
+    productId: String,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .padding(20.dp)
     ) {
