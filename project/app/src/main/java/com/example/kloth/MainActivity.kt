@@ -9,8 +9,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.example.kloth.ui.screens.createArticle.CreateArticleScreen
+import com.example.kloth.ui.screens.editProfile.EditProfileScreen
 import com.example.kloth.ui.screens.explore.ExploreScreen
 import com.example.kloth.ui.screens.feed.FeedScreen
+import com.example.kloth.ui.screens.notification.NotificationScreen
 import com.example.kloth.ui.screens.profile.ProfileScreen
 import com.example.kloth.ui.utils.KlothBottomNavigation
 import com.example.kloth.ui.utils.KlothTopAppBar
@@ -34,7 +36,9 @@ fun KlothApp() {
 
     Scaffold(
         topBar = {
-            KlothTopAppBar()
+            if (currentScreen != "EditProfile") {
+                KlothTopAppBar()
+            }
         },
         bottomBar = {
             KlothBottomNavigation(
@@ -43,7 +47,7 @@ fun KlothApp() {
                     "Explore" -> 1
                     "Create" -> 2
                     "Notifications" -> 3
-                    "Profile" -> 4
+                    "Profile", "EditProfile" -> 4
                     else -> 0
                 },
                 onItemSelected = { index ->
@@ -64,8 +68,15 @@ fun KlothApp() {
             "Feed" -> FeedScreen(modifier = modifier)
             "Explore" -> ExploreScreen(modifier = modifier)
             "Create" -> CreateArticleScreen(modifier = modifier)
-            "Notifications" -> FeedScreen(modifier = modifier) // Placeholder
-            "Profile" -> ProfileScreen(modifier = modifier)
+            "Notifications" -> NotificationScreen(modifier = modifier)
+            "Profile" -> ProfileScreen(
+                modifier = modifier,
+                onEditProfileClick = { currentScreen = "EditProfile" }
+            )
+            "EditProfile" -> EditProfileScreen(
+                modifier = modifier,
+                onCancelClick = { currentScreen = "Profile" }
+            )
         }
     }
 }
