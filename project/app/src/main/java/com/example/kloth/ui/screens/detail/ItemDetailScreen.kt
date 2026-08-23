@@ -2,7 +2,8 @@ package com.example.kloth.ui.screens.detail
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.kloth.data.sampleProductDetail
+import com.example.kloth.data.ProductDetailData
+import com.example.kloth.data.ProductosDataLocal.sampleProductDetail
 
 @Composable
 fun ItemDetailScreen(

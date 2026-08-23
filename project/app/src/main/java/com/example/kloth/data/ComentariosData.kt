@@ -20,7 +20,7 @@ object ComentariosDataLocal {
             id = "c1",
             authorName = "Sofia Rossi",
             timeAgo = "Hace 1 día",
-            avatarRes = R.drawable.abrigo_negro,
+            avatarRes = R.drawable.user1,
             commentText = "Totalmente de acuerdo, la calidad del abrigo es impresionante.",
             likesCount = 3
         ),
@@ -28,9 +28,25 @@ object ComentariosDataLocal {
             id = "c2",
             authorName = "Lucas Méndez",
             timeAgo = "Hace 12h",
-            avatarRes = R.drawable.abrigo_negro,
+            avatarRes = R.drawable.user2,
             commentText = "¿Cómo te quedó de los hombros? Estoy dudando entre S y M.",
             likesCount = 1
+        ),
+        ComentarioReviewData(
+            id = "c3",
+            authorName = "Violetta Ávila",
+            timeAgo = "Hace 4h",
+            avatarRes = R.drawable.profile,
+            commentText = "Me encanta pero siento que es muy delicada para usar en un dia casual.",
+            likesCount = 3
+        ),
+        ComentarioReviewData(
+            id = "c4",
+            authorName = "Carmen Odiosa",
+            timeAgo = "Hace 1 día",
+            avatarRes = R.drawable.user3,
+            commentText = "Esta fea",
+            likesCount = 0
         )
     )
 }
