@@ -8,6 +8,7 @@ val KlothWhite = Color(0xFFFFFFFF)
 val KlothSurface = Color(0xFFFCF8F7)
 val KlothOnSurface = Color(0xFF1C1B1B)
 val KlothOnSurfaceVariant = Color(0xFF454743)
+val DarkSurfaceContainerLow = Color(0xFF181818)
 
 // Brand & Accent Colors
 val RedInferno = Color(0xFF790005)
@@ -35,10 +36,5 @@ val SurfaceContainer = Color(0xFFF1EDEC)
 val SurfaceContainerHigh = Color(0xFFE5E2E1)
 val SurfaceContainerLowest = Color(0xFFFFFFFF)
 
-val SurfaceContainerLowDark = Color(0xFF1C1B1B)
-val SurfaceContainerDark = Color(0xFF211F1F)
-val SurfaceContainerHighDark = Color(0xFF2B2929)
-val SurfaceContainerLowestDark = Color(0xFF0E0E0E)
-val KlothOnSurfaceVariantDark = Color(0xFFC6C7C1)
-val KlothOutlineVariantDark = Color(0xFF454743)
-
+//Color rating estrellas
+val GoldStar = Color(0xFFFFB800)

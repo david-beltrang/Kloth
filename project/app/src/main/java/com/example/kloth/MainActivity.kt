@@ -9,7 +9,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import com.example.kloth.ui.screens.createArticle.CreateArticleScreen
-import com.example.kloth.ui.screens.editProfile.EditProfileScreen
+import com.example.kloth.ui.screens.detail.ItemDetailScreen
 import com.example.kloth.ui.screens.explore.ExploreScreen
 import com.example.kloth.ui.screens.feed.FeedScreen
 import com.example.kloth.ui.screens.notification.NotificationScreen
@@ -33,6 +33,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun KlothApp() {
     var currentScreen by remember { mutableStateOf("Feed") }
+
 
     Scaffold(
         topBar = {
@@ -63,20 +64,17 @@ fun KlothApp() {
             )
         }
     ) { innerPadding ->
-        val modifier = Modifier.padding(innerPadding)
+        ItemDetailScreen(
+            productId = "abrigo_negro",
+            modifier = Modifier.padding(innerPadding)
+        )
+        /*val modifier = Modifier.padding(innerPadding)
         when (currentScreen) {
             "Feed" -> FeedScreen(modifier = modifier)
             "Explore" -> ExploreScreen(modifier = modifier)
             "Create" -> CreateArticleScreen(modifier = modifier)
-            "Notifications" -> NotificationScreen(modifier = modifier)
-            "Profile" -> ProfileScreen(
-                modifier = modifier,
-                onEditProfileClick = { currentScreen = "EditProfile" }
-            )
-            "EditProfile" -> EditProfileScreen(
-                modifier = modifier,
-                onCancelClick = { currentScreen = "Profile" }
-            )
-        }
+            "Notifications" -> FeedScreen(modifier = modifier) // Placeholder
+            "Profile" -> ProfileScreen(modifier = modifier)
+        }*/
     }
 }

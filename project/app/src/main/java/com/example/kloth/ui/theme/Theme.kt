@@ -15,12 +15,11 @@ private val DarkColorScheme = darkColorScheme(
     onSecondary = KlothWhite,
     onBackground = KlothWhite,
     onSurface = KlothWhite,
-    onSurfaceVariant = KlothOnSurfaceVariantDark,
-    outlineVariant = KlothOutlineVariantDark,
-    surfaceContainerLow = SurfaceContainerLowDark,
-    surfaceContainer = SurfaceContainerDark,
-    surfaceContainerHigh = SurfaceContainerHighDark,
-    surfaceContainerLowest = SurfaceContainerLowestDark
+    onSurfaceVariant = AstronomicGrey,
+    secondaryContainer = KlothSecondary,
+    onSecondaryContainer = KlothWhite,
+    surfaceContainerLow = DarkSurfaceContainerLow,
+    outlineVariant = KlothOutlineVariant
 )
 
 private val LightColorScheme = lightColorScheme(
@@ -35,11 +34,8 @@ private val LightColorScheme = lightColorScheme(
     onSurfaceVariant = KlothOnSurfaceVariant,
     secondaryContainer = KlothSecondaryContainer,
     onSecondaryContainer = KlothOnSecondaryContainer,
-    outlineVariant = KlothOutlineVariant,
     surfaceContainerLow = SurfaceContainerLow,
-    surfaceContainer = SurfaceContainer,
-    surfaceContainerHigh = SurfaceContainerHigh,
-    surfaceContainerLowest = SurfaceContainerLowest
+    outlineVariant = KlothOutlineVariant
 )
 
 @Composable

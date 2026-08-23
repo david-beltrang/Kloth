@@ -1,4 +1,23 @@
-package com.example.kloth.ui.screens.notification.components
+package com.example.kloth.data
+
+enum class TipoNotificacion {
+    NUEVO_SEGUIDOR,
+    COMENTARIO,
+    LIKE,
+    MENCION,
+    GUARDADO
+}
+
+data class NotificacionUI(
+    val id: String,
+    val nombreUsuario: String,
+    val descripcion: String,
+    val tiempo: String,
+    val tipo: TipoNotificacion,
+    val tieneMiniatura: Boolean = false,
+    val noLeida: Boolean = false,
+    val estaSiguiendo: Boolean = false
+)
 
 object NotificacionesDataLocal {
     val notificacionesEjemplo = listOf(
