@@ -1,12 +1,13 @@
 package com.example.kloth.ui.screens.detail.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
@@ -23,10 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kloth.R
-import com.example.kloth.ui.theme.AstronomicGrey
 import com.example.kloth.ui.theme.KlothTheme
-import com.example.kloth.ui.theme.StarYellow
-import com.example.kloth.ui.theme.Sunset
 
 @Composable
 fun CatalogCard(
@@ -64,14 +62,14 @@ fun CatalogCard(
                     .align(Alignment.TopEnd)
                     .padding(12.dp)
                     .size(32.dp)
-                    .clip(RoundedCornerShape(999.dp))
-                    .background(Color.White.copy(alpha = 0.2f))
+                    .clip(CircleShape)
+                    .background(Color.Black.copy(alpha = 0.3f))
             ) {
                 Icon(
                     imageVector = Icons.Outlined.FavoriteBorder,
                     contentDescription = stringResource(R.string.cd_favorite),
                     tint = Color.White,
-                    modifier = Modifier.size(20.dp)
+                    modifier = Modifier.size(18.dp)
                 )
             }
         }
@@ -81,12 +79,12 @@ fun CatalogCard(
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(999.dp))
-                .background(Sunset)
+                .background(MaterialTheme.colorScheme.secondaryContainer)
                 .padding(horizontal = 8.dp, vertical = 2.dp)
         ) {
             Text(
                 text = category.uppercase(),
-                color = MaterialTheme.colorScheme.onSurface,
+                color = MaterialTheme.colorScheme.onSecondaryContainer,
                 style = MaterialTheme.typography.labelSmall.copy(
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 1.sp
@@ -107,29 +105,29 @@ fun CatalogCard(
         Spacer(modifier = Modifier.height(4.dp))
 
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Icon(
-                imageVector = Icons.Filled.Star,
-                contentDescription = null,
-                tint = StarYellow,
-                modifier = Modifier.size(14.dp)
+            val numericRating = rating.toFloatOrNull() ?: 0f
+            RatingStars(
+                rating = numericRating,
+                starSize = 14.dp
             )
-            Spacer(modifier = Modifier.width(4.dp))
+            Spacer(modifier = Modifier.width(6.dp))
             Text(
                 text = rating,
                 style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Bold),
-                color = MaterialTheme.colorScheme.primary
+                color = MaterialTheme.colorScheme.onSurface
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
                 text = "($reviews)",
                 style = MaterialTheme.typography.bodySmall,
-                color = AstronomicGrey
+                color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         }
     }
 }
 
-@Preview(showBackground = true)
+@Preview(name = "Claro", showBackground = true)
+@Preview(name = "Oscuro", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun CatalogCardPreview() {
     KlothTheme {
