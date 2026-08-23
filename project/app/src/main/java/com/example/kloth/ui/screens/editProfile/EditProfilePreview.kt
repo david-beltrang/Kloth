@@ -8,7 +8,7 @@ import com.example.kloth.ui.theme.KlothTheme
 @Composable
 fun EditProfileScreenPreview() {
     KlothTheme {
-        EditProfileScreenContent()
+        EditProfileScreen()
     }
 }
 
@@ -16,6 +16,6 @@ fun EditProfileScreenPreview() {
 @Composable
 fun EditProfileScreenDarkPreview() {
     KlothTheme {
-        EditProfileScreenContent()
+        EditProfileScreen()
     }
 }
