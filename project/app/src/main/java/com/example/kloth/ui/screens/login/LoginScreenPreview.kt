@@ -20,7 +20,8 @@ fun LoginScreenPreview() {
     name = "Login Screen - Dark",
     showBackground = true,
     showSystemUi = true,
-    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES,
+    backgroundColor = 0xFF020202
 )
 @Composable
 fun LoginScreenDarkPreview() {

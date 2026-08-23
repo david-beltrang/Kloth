@@ -12,6 +12,7 @@ import com.example.kloth.ui.screens.createArticle.CreateArticleScreen
 import com.example.kloth.ui.screens.detail.ItemDetailScreen
 import com.example.kloth.ui.screens.explore.ExploreScreen
 import com.example.kloth.ui.screens.feed.FeedScreen
+import com.example.kloth.ui.screens.notification.NotificationScreen
 import com.example.kloth.ui.screens.profile.ProfileScreen
 import com.example.kloth.ui.utils.KlothBottomNavigation
 import com.example.kloth.ui.utils.KlothTopAppBar
@@ -36,7 +37,9 @@ fun KlothApp() {
 
     Scaffold(
         topBar = {
-            KlothTopAppBar()
+            if (currentScreen != "EditProfile") {
+                KlothTopAppBar()
+            }
         },
         bottomBar = {
             KlothBottomNavigation(
@@ -45,7 +48,7 @@ fun KlothApp() {
                     "Explore" -> 1
                     "Create" -> 2
                     "Notifications" -> 3
-                    "Profile" -> 4
+                    "Profile", "EditProfile" -> 4
                     else -> 0
                 },
                 onItemSelected = { index ->
