@@ -1,5 +1,6 @@
 package com.example.kloth.ui.screens.notification.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
@@ -28,7 +29,7 @@ fun BotonSeguir(
             onClick = onClick,
             modifier = modifier.height(32.dp),
             contentPadding = contentPadding,
-            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outline),
+            border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
             colors = ButtonDefaults.outlinedButtonColors(
                 contentColor = MaterialTheme.colorScheme.onSurface
             )
@@ -50,7 +51,8 @@ fun BotonSeguir(
     }
 }
 
-@Preview(showBackground = true, name = "Seguir")
+@Preview(name = "Seguir Claro", showBackground = true)
+@Preview(name = "Seguir Oscuro", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun BotonSeguirPreview() {
     KlothTheme {
@@ -58,7 +60,8 @@ fun BotonSeguirPreview() {
     }
 }
 
-@Preview(showBackground = true, name = "Siguiendo")
+@Preview(name = "Siguiendo Claro", showBackground = true)
+@Preview(name = "Siguiendo Oscuro", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun BotonSiguiendoPreview() {
     KlothTheme {
