@@ -44,7 +44,7 @@ fun ReviewItem(
 
         ReviewActions(
             likesCount = review.likesCount,
-            commentsText = review.commentsText,
+            commentsText = review.commentsCountText,
             onLikeClick = onLikeClick,
             onCommentClick = onCommentClick
         )
@@ -64,7 +64,7 @@ fun ReviewItemPreview() {
                 rating = 5.0f,
                 reviewText = "La calidad de la tela es excepcional. Es ligero pero increíblemente cálido. Definitivamente una inversión que vale cada céntimo para cualquier armario profesional.",
                 likesCount = 24,
-                commentsText = "2"
+                commentsCountText = "2"
             )
         )
     }

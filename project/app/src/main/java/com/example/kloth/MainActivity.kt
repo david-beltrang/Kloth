@@ -14,6 +14,7 @@ import com.example.kloth.ui.screens.explore.ExploreScreen
 import com.example.kloth.ui.screens.feed.FeedScreen
 import com.example.kloth.ui.screens.notification.NotificationScreen
 import com.example.kloth.ui.screens.profile.ProfileScreen
+import com.example.kloth.ui.screens.review.ReviewScreen
 import com.example.kloth.ui.utils.KlothBottomNavigation
 import com.example.kloth.ui.utils.KlothTopAppBar
 import com.example.kloth.ui.theme.KlothTheme
@@ -64,8 +65,7 @@ fun KlothApp() {
             )
         }
     ) { innerPadding ->
-        ItemDetailScreen(
-            productId = "abrigo_negro",
+        ReviewScreen(
             modifier = Modifier.padding(innerPadding)
         )
         /*val modifier = Modifier.padding(innerPadding)
