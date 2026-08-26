@@ -89,6 +89,12 @@
     <string name="register_has_account">¿Ya tienes cuenta?</string>
     <string name="register_login">Inicia sesión</string>
 
+    <!-- Forgot Password Screen -->
+    <string name="forgot_password_title">¿Olvidaste tu contraseña?</string>
+    <string name="forgot_password_instruction">Ingresa tu correo electrónico para enviarte las instrucciones de recuperación.</string>
+    <string name="forgot_password_button">Enviar correo</string>
+    <string name="forgot_password_back_login">Volver al inicio de sesión</string>
+
     <!-- Create Article Screen -->
     <string name="create_article_title">Crear publicación</string>
 
