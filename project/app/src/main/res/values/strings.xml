@@ -63,6 +63,9 @@
 
     <!-- Detail Screen -->
     <string name="detail_title">Detalle de Artículo</string>
+    <string name="detail_not_found_title">Art&#237;culo no encontrado</string>
+    <string name="detail_not_found_desc">El art&#237;culo que buscas no est&#225; disponible o fue eliminado.</string>
+    <string name="detail_not_found_back">Volver</string>
     <string name="label_color">Color</string>
     <string name="label_category">Categoría</string>
     <string name="label_description">Descripción</string>
@@ -97,6 +100,18 @@
 
     <!-- Create Article Screen -->
     <string name="create_article_title">Crear publicación</string>
+
+    <!-- Review Screen -->
+    <string name="label_comments_count">%1$d comentarios</string>
+    <string name="label_order_recent">Más recientes ▼</string>
+    <string name="label_order_old">Más antiguos ▲</string>
+    <string name="content_desc_avatar">Avatar del usuario</string>
+    <string name="content_desc_post_image">Imagen de la publicación</string>
+    <string name="label_tag_prefix">#%1$s</string>
+
+    <!-- Notifications -->
+    <string name="label_follow">Seguir</string>
+    <string name="label_following">Siguiendo</string>
 
     <!-- Mock Data -->
     <string name="mock_description">Una pieza maestra de sastrería contemporánea. Este abrigo ha sido confeccionado con 100% cachemira italiana de origen sostenible, ofreciendo una caída impecable y una suavidad inigualable.</string>
