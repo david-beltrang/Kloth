@@ -8,7 +8,7 @@ import com.example.kloth.ui.theme.KlothTheme
 @Composable
 fun CreateArticleScreenPreview() {
     KlothTheme(darkTheme = false) {
-        CreateArticleScreenContent()
+        CreateArticleScreen()
     }
 }
 
@@ -16,6 +16,6 @@ fun CreateArticleScreenPreview() {
 @Composable
 fun CreateArticleScreenDarkPreview() {
     KlothTheme(darkTheme = true) {
-        CreateArticleScreenContent()
+        CreateArticleScreen()
     }
 }
