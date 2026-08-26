@@ -1,5 +1,6 @@
 package com.example.kloth.ui.screens.notification.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,6 +23,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kloth.data.NotificacionUI
+import com.example.kloth.data.TipoNotificacion
 import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
@@ -45,15 +48,16 @@ fun NotificacionItem(
         Column(modifier = Modifier.weight(1f)) {
             Text(
                 text = buildAnnotatedString {
-                    withStyle(SpanStyle(fontWeight = FontWeight.Bold)) {
+                    withStyle(SpanStyle(fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.onBackground)) {
                         append(notificacion.nombreUsuario)
                     }
                     append(" ")
-                    append(notificacion.descripcion)
+                    withStyle(SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
+                        append(notificacion.descripcion)
+                    }
                 },
                 fontSize = 14.sp,
-                lineHeight = 18.sp,
-                color = MaterialTheme.colorScheme.onBackground
+                lineHeight = 18.sp
             )
             Text(
                 text = notificacion.tiempo,
@@ -78,7 +82,7 @@ fun NotificacionItem(
                             .padding(top = 2.dp)
                             .size(40.dp)
                             .clip(RoundedCornerShape(8.dp))
-                            .background(MaterialTheme.colorScheme.surfaceVariant)
+                            .background(MaterialTheme.colorScheme.surfaceContainerLow)
                     )
                 }
             }
@@ -86,7 +90,8 @@ fun NotificacionItem(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(name = "Claro", showBackground = true)
+@Preview(name = "Oscuro", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun NotificacionItemPreview() {
     KlothTheme {

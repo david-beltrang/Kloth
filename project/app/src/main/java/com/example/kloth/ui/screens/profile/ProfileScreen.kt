@@ -5,10 +5,11 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun ProfileScreen(
+    onEditProfileClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     ProfileScreenContent(
-        onEditProfileClick = { },
+        onEditProfileClick = onEditProfileClick,
         modifier = modifier
     )
 }
