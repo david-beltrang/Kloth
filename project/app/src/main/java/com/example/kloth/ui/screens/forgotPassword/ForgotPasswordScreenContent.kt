@@ -1,5 +1,6 @@
 package com.example.kloth.ui.screens.forgotPassword
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
@@ -9,7 +10,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -35,64 +35,59 @@ fun ForgotPasswordScreenContent(
 ) {
     val focusManager = LocalFocusManager.current
 
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background
-    ) { innerPadding ->
-        Box(
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .imePadding()
+    ) {
+        Column(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .imePadding()
+                .fillMaxWidth()
+                .align(Alignment.Center)
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp, vertical = 24.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Column(
+            ForgotPasswordHeader()
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            KlothTextField(
+                value = email,
+                onValueChange = onEmailChange,
+                placeholder = stringResource(R.string.login_email_placeholder),
+                leadingIcon = Icons.Outlined.Email,
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Email,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        focusManager.clearFocus()
+                        onSendClick()
+                    }
+                )
+            )
+
+            Spacer(modifier = Modifier.height(32.dp))
+
+            KlothPrimaryButton(
+                text = stringResource(R.string.forgot_password_button),
+                onClick = onSendClick,
+                enabled = email.isNotBlank()
+            )
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            Text(
+                text = stringResource(R.string.forgot_password_back_login),
+                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
+                color = MaterialTheme.colorScheme.primary,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .align(Alignment.Center)
-                    .verticalScroll(rememberScrollState())
-                    .padding(horizontal = 24.dp, vertical = 24.dp),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                ForgotPasswordHeader()
-
-                Spacer(modifier = Modifier.height(40.dp))
-
-                KlothTextField(
-                    value = email,
-                    onValueChange = onEmailChange,
-                    placeholder = stringResource(R.string.login_email_placeholder),
-                    leadingIcon = Icons.Outlined.Email,
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Email,
-                        imeAction = ImeAction.Done
-                    ),
-                    keyboardActions = KeyboardActions(
-                        onDone = {
-                            focusManager.clearFocus()
-                            onSendClick()
-                        }
-                    )
-                )
-
-                Spacer(modifier = Modifier.height(32.dp))
-
-                KlothPrimaryButton(
-                    text = stringResource(R.string.forgot_password_button),
-                    onClick = onSendClick,
-                    enabled = email.isNotBlank()
-                )
-
-                Spacer(modifier = Modifier.height(40.dp))
-
-                Text(
-                    text = stringResource(R.string.forgot_password_back_login),
-                    style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
-                    color = MaterialTheme.colorScheme.primary,
-                    modifier = Modifier
-                        .clickable(onClick = onBackClick)
-                        .padding(horizontal = 6.dp, vertical = 4.dp)
-                )
-            }
+                    .clickable(onClick = onBackClick)
+                    .padding(horizontal = 6.dp, vertical = 4.dp)
+            )
         }
     }
 }
