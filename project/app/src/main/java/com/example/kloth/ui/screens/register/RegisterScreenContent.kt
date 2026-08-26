@@ -1,5 +1,6 @@
 package com.example.kloth.ui.screens.register
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -17,7 +18,6 @@ import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,7 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.example.kloth.R
 import com.example.kloth.ui.screens.login.components.LoginHeader
 import com.example.kloth.ui.screens.login.components.LoginOrDivider
-import com.example.kloth.ui.screens.register.components.RegisterLoginPrompt
+import com.example.kloth.ui.utils.AuthRedirectPrompt
 import com.example.kloth.ui.utils.KlothPrimaryButton
 import com.example.kloth.ui.utils.KlothTextField
 
@@ -51,16 +51,12 @@ fun RegisterScreenContent(
 ) {
     val focusManager = LocalFocusManager.current
 
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .imePadding()
-        ) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .imePadding()
+    ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -154,8 +150,11 @@ fun RegisterScreenContent(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                RegisterLoginPrompt(onLoginClick = onLoginClick)
+                AuthRedirectPrompt(
+                    text = stringResource(R.string.register_has_account),
+                    linkText = stringResource(R.string.register_login),
+                    onLinkClick = onLoginClick
+                )
             }
-        }
     }
 }

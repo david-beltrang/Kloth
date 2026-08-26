@@ -1,19 +1,15 @@
 package com.example.kloth.data
 
-import androidx.compose.ui.graphics.Color
-
+/**
+ * Representa una publicación en el Feed social.
+ * Vincula la información del creador y el contexto social con un producto concreto.
+ */
 data class PostItem(
     val id: String,
     val creatorName: String,
     val timeAgo: String,
     val avatarUrl: String,
-    val postImageUrl: String,
-    val title: String,
-    val rating: String,
-    val reviewCount: Int,
-    val comments: String,
-    val description: String,
+    val commentsCount: String,
     val tags: List<String>,
-    val category: String,
-    val categoryColor: Color
+    val product: ProductDetailData
 )

@@ -11,13 +11,19 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
 
+/**
+ * Botón de acción para seguir o dejar de seguir a un usuario.
+ * Alterna entre estados 'Seguir' y 'Siguiendo' con estilos visuales distintos.
+ */
 @Composable
-fun BotonSeguir(
+fun FollowButton(
     estaSiguiendo: Boolean,
     onClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -34,7 +40,10 @@ fun BotonSeguir(
                 contentColor = MaterialTheme.colorScheme.onSurface
             )
         ) {
-            Text("Siguiendo", fontSize = 12.sp)
+            Text(
+                text = stringResource(R.string.label_following),
+                fontSize = 12.sp
+            )
         }
     } else {
         Button(
@@ -46,7 +55,10 @@ fun BotonSeguir(
                 contentColor = MaterialTheme.colorScheme.onPrimary
             )
         ) {
-            Text("Seguir", fontSize = 12.sp)
+            Text(
+                text = stringResource(R.string.label_follow),
+                fontSize = 12.sp
+            )
         }
     }
 }
@@ -54,17 +66,17 @@ fun BotonSeguir(
 @Preview(name = "Seguir Claro", showBackground = true)
 @Preview(name = "Seguir Oscuro", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun BotonSeguirPreview() {
+fun FollowButtonPreview() {
     KlothTheme {
-        BotonSeguir(estaSiguiendo = false, onClick = {})
+        FollowButton(estaSiguiendo = false, onClick = {})
     }
 }
 
 @Preview(name = "Siguiendo Claro", showBackground = true)
 @Preview(name = "Siguiendo Oscuro", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun BotonSiguiendoPreview() {
+fun FollowingButtonPreview() {
     KlothTheme {
-        BotonSeguir(estaSiguiendo = true, onClick = {})
+        FollowButton(estaSiguiendo = true, onClick = {})
     }
 }

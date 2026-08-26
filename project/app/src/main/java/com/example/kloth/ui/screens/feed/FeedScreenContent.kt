@@ -24,19 +24,8 @@ fun FeedScreenContent(
     ) {
         items(mockPosts) { post ->
             PostCard(
-                creatorName = post.creatorName,
-                timeAgo = post.timeAgo,
-                avatarUrl = post.avatarUrl,
-                postImageUrl = post.postImageUrl,
-                title = post.title,
-                rating = post.rating,
-                reviewCount = post.reviewCount,
-                comments = post.comments,
-                description = post.description,
-                tags = post.tags,
-                category = post.category,
-                categoryColor = post.categoryColor,
-                onClick = { onProductClick(post.id) }
+                post = post,
+                onClick = { onProductClick(post.product.id) }
             )
         }
     }

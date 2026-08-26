@@ -1,6 +1,5 @@
 package com.example.kloth.ui.screens.review
 
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,7 +14,6 @@ import com.example.kloth.data.ResenasDataLocal
 @Composable
 fun ReviewScreen(
     onBackClick: () -> Unit = {},
-    contentPadding: PaddingValues = PaddingValues(0.dp),
     modifier: Modifier = Modifier
 ) {
     var resenaState by remember { mutableStateOf(ResenasDataLocal.resenaDetalleSeleccionada) }
@@ -74,7 +72,6 @@ fun ReviewScreen(
             resenaState = resenaState.copy(comentariosList = resenaState.comentariosList.reversed())
         },
         onBackClick = onBackClick,
-        contentPadding = contentPadding,
         modifier = modifier
     )
 }

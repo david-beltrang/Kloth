@@ -24,7 +24,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -34,6 +33,7 @@ import androidx.compose.ui.unit.sp
 import com.example.kloth.data.ResenasDataLocal
 import com.example.kloth.data.ReviewData
 import com.example.kloth.ui.theme.KlothTheme
+import com.example.kloth.ui.theme.GoldStar
 
 @Composable
 fun MainReviewItem(
@@ -96,7 +96,7 @@ fun MainReviewItem(
                         imageVector = Icons.Default.Star,
                         contentDescription = null,
                         modifier = Modifier.size(16.dp),
-                        tint = if (index < resena.rating.toInt()) Color(0xFFF5A623) else MaterialTheme.colorScheme.outlineVariant
+                        tint = if (index < resena.rating.toInt()) GoldStar else MaterialTheme.colorScheme.outlineVariant
                     )
                 }
             }
@@ -123,7 +123,7 @@ fun MainReviewItem(
                     Icon(
                         imageVector = if (resena.isLikedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                         contentDescription = "Me gusta",
-                        tint = if (resena.isLikedByMe) Color.Red else MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = if (resena.isLikedByMe) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 Text(

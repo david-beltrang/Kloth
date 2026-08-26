@@ -13,8 +13,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kloth.R
-import com.example.kloth.ui.theme.DividerColor
-import com.example.kloth.ui.theme.TextGray
+import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun FormSection(
@@ -89,11 +88,11 @@ fun FormSection(
                 .fillMaxWidth()
                 .height(50.dp),
             colors = ButtonDefaults.buttonColors(
-                containerColor = DividerColor,
-                contentColor = TextGray
+                containerColor = MaterialTheme.colorScheme.primary,
+                contentColor = MaterialTheme.colorScheme.onPrimary
             ),
             shape = RoundedCornerShape(12.dp),
-            enabled = true // Enabled for interactivity as per requirements
+            enabled = true 
         ) {
             Text(
                 text = stringResource(R.string.edit_profile_btn_save),
@@ -107,16 +106,18 @@ fun FormSection(
 @Preview(showBackground = true)
 @Composable
 fun FormSectionPreview() {
-    FormSection(
-        username = "Username",
-        onUsernameChange = {},
-        bio = "",
-        onBioChange = {},
-        email = "",
-        onEmailChange = {},
-        location = "",
-        onLocationChange = {},
-        website = "",
-        onWebsiteChange = {}
-    )
+    KlothTheme {
+        FormSection(
+            username = "Username",
+            onUsernameChange = {},
+            bio = "",
+            onBioChange = {},
+            email = "",
+            onEmailChange = {},
+            location = "",
+            onLocationChange = {},
+            website = "",
+            onWebsiteChange = {}
+        )
+    }
 }

@@ -21,7 +21,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -93,7 +92,7 @@ fun CommentItem(
                         Icon(
                             imageVector = if (comentario.isLikedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                             contentDescription = "Me gusta",
-                            tint = if (comentario.isLikedByMe) Color.Red else MaterialTheme.colorScheme.onSurfaceVariant,
+                            tint = if (comentario.isLikedByMe) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(16.dp)
                         )
                     }

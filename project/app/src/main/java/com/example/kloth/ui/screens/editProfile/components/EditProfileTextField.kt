@@ -13,8 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.kloth.ui.theme.LightGrayBackground
-import com.example.kloth.ui.theme.TextGray
+import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun EditProfileTextField(
@@ -33,7 +32,7 @@ fun EditProfileTextField(
         Text(
             text = label,
             fontSize = 12.sp,
-            color = TextGray,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
             modifier = Modifier.padding(bottom = 6.dp)
         )
         
@@ -53,23 +52,29 @@ fun EditProfileTextField(
                 }
             },
             placeholder = { 
-                Text(text = placeholder, color = TextGray, fontSize = 14.sp) 
+                Text(
+                    text = placeholder,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
+                    fontSize = 14.sp
+                ) 
             },
             leadingIcon = if (leadingIcon != null) {
                 {
                     Icon(
                         imageVector = leadingIcon,
                         contentDescription = null,
-                        tint = TextGray,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.size(20.dp)
                     )
                 }
             } else null,
             colors = TextFieldDefaults.colors(
-                focusedContainerColor = LightGrayBackground,
-                unfocusedContainerColor = LightGrayBackground,
+                focusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
+                unfocusedContainerColor = MaterialTheme.colorScheme.surfaceContainerLow,
                 focusedIndicatorColor = Color.Transparent,
-                unfocusedIndicatorColor = Color.Transparent
+                unfocusedIndicatorColor = Color.Transparent,
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface
             ),
             shape = RoundedCornerShape(12.dp),
             modifier = textFieldModifier,
@@ -80,7 +85,7 @@ fun EditProfileTextField(
             Text(
                 text = "${value.length}/$maxCharacters",
                 fontSize = 12.sp,
-                color = TextGray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(top = 4.dp),
@@ -93,10 +98,12 @@ fun EditProfileTextField(
 @Preview(showBackground = true)
 @Composable
 fun EditProfileTextFieldPreview() {
-    EditProfileTextField(
-        label = "Nombre de usuario",
-        value = "alex_style",
-        onValueChange = {},
-        leadingIcon = Icons.Outlined.Search
-    )
+    KlothTheme {
+        EditProfileTextField(
+            label = "Nombre de usuario",
+            value = "alex_style",
+            onValueChange = {},
+            leadingIcon = Icons.Outlined.Search
+        )
+    }
 }

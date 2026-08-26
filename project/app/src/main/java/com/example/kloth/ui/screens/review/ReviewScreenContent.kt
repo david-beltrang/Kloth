@@ -15,7 +15,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -24,6 +23,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.example.kloth.R
 import com.example.kloth.data.ResenasDataLocal
 import com.example.kloth.data.ReviewData
 import com.example.kloth.ui.screens.review.components.CommentInputField
@@ -43,33 +44,19 @@ fun ReviewScreenContent(
     onEliminarComentario: (String) -> Unit,
     onToggleOrden: () -> Unit,
     onBackClick: () -> Unit,
-    contentPadding: PaddingValues = PaddingValues(0.dp),
     modifier: Modifier = Modifier
 ) {
     val yaComento = resena.comentariosList.any { it.isMyComment }
 
-    Scaffold(
-        bottomBar = {
-            CommentInputField(
-                texto = nuevoComentarioTexto,
-                onTextoChange = onTextoComentarioChange,
-                onSendClick = onEnviarComentario,
-                deshabilitado = yaComento
-            )
-        },
-        contentWindowInsets = WindowInsets(0.dp),
-        modifier = modifier.fillMaxSize()
-    ) { innerPadding ->
+    Column(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+    ) {
         LazyColumn(
-            contentPadding = PaddingValues(
-                top = 0.dp,
-                bottom = innerPadding.calculateBottomPadding(),
-                start = 0.dp,
-                end = 0.dp
-            ),
             modifier = Modifier
-                .fillMaxSize()
-                .background(MaterialTheme.colorScheme.background)
+                .weight(1f)
+                .fillMaxWidth()
         ) {
             item {
                 MainReviewItem(
@@ -94,13 +81,17 @@ fun ReviewScreenContent(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "${resena.comentariosList.size} comentarios",
+                            text = stringResource(R.string.label_comments_count, resena.comentariosList.size),
                             fontSize = 13.sp,
                             fontWeight = FontWeight.Medium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
                         Text(
-                            text = if (ordenMasRecientes) "Más recientes ▼" else "Más antiguos ▲",
+                            text = if (ordenMasRecientes) {
+                                stringResource(R.string.label_order_recent)
+                            } else {
+                                stringResource(R.string.label_order_old)
+                            },
                             fontSize = 13.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.clickable { onToggleOrden() }
@@ -122,6 +113,13 @@ fun ReviewScreenContent(
                 )
             }
         }
+
+        CommentInputField(
+            texto = nuevoComentarioTexto,
+            onTextoChange = onTextoComentarioChange,
+            onSendClick = onEnviarComentario,
+            deshabilitado = yaComento
+        )
     }
 }
 

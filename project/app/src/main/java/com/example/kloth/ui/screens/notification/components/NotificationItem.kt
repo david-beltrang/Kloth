@@ -27,8 +27,12 @@ import com.example.kloth.data.NotificacionUI
 import com.example.kloth.data.TipoNotificacion
 import com.example.kloth.ui.theme.KlothTheme
 
+/**
+ * Fila individual para la lista de notificaciones.
+ * Muestra el autor, la acción realizada, el tiempo transcurrido y una acción (Seguir) o miniatura.
+ */
 @Composable
-fun NotificacionItem(
+fun NotificationItem(
     notificacion: NotificacionUI,
     onToggleSeguir: (String) -> Unit,
     modifier: Modifier = Modifier
@@ -40,7 +44,7 @@ fun NotificacionItem(
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        NotificacionAvatar(
+        NotificationAvatar(
             inicial = notificacion.nombreUsuario.take(1),
             mostrarPuntoNoLeido = notificacion.noLeida
         )
@@ -69,7 +73,7 @@ fun NotificacionItem(
 
         when (notificacion.tipo) {
             TipoNotificacion.NUEVO_SEGUIDOR -> {
-                BotonSeguir(
+                FollowButton(
                     estaSiguiendo = notificacion.estaSiguiendo,
                     onClick = { onToggleSeguir(notificacion.id) },
                     modifier = Modifier.padding(top = 2.dp)
@@ -93,9 +97,9 @@ fun NotificacionItem(
 @Preview(name = "Claro", showBackground = true)
 @Preview(name = "Oscuro", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun NotificacionItemPreview() {
+fun NotificationItemPreview() {
     KlothTheme {
-        NotificacionItem(
+        NotificationItem(
             notificacion = NotificacionUI(
                 id = "1",
                 nombreUsuario = "alex_style",
