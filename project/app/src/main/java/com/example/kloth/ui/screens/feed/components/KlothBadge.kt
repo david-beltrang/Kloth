@@ -26,8 +26,8 @@ link de referencia: https://www.jetpackcompose.pro/tabs/tabrow/
 fun KlothBadge(
     text: String,
     modifier: Modifier = Modifier,
-    containerColor: Color = MaterialTheme.colorScheme.secondary, //Por defecto se utiliza el redInferno, se podría utilziar otro
-    contentColor: Color = Color.White
+    containerColor: Color = MaterialTheme.colorScheme.secondary, 
+    contentColor: Color = MaterialTheme.colorScheme.onSecondary
 ) {
     Box(
         modifier = modifier

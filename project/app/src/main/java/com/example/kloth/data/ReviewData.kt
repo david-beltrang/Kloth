@@ -7,7 +7,7 @@ data class ReviewData(
     val id: String,
     val authorName: String,
     val timeAgo: String,
-    @DrawableRes val avatarRes: Int,
+    @get:DrawableRes val avatarRes: Int,
     val rating: Float,
     val reviewText: String,
     val likesCount: Int = 0,

@@ -122,19 +122,36 @@ fun KlothTextField(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
-                cursorColor = MaterialTheme.colorScheme.primary
+                cursorColor = MaterialTheme.colorScheme.primary,
+                focusedTextColor = MaterialTheme.colorScheme.onSurface,
+                unfocusedTextColor = MaterialTheme.colorScheme.onSurface
             )
         )
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
 fun KlothTextFieldPreview() {
-    KlothTheme {
+    KlothTheme(darkTheme = false) {
         Column(modifier = Modifier.padding(16.dp)) {
             KlothTextField(
-                value = "",
+                value = "alex_style",
+                onValueChange = {},
+                label = "Correo electrónico",
+                placeholder = "tu@correo.com"
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, name = "Dark Mode", uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun KlothTextFieldDarkPreview() {
+    KlothTheme(darkTheme = true) {
+        Column(modifier = Modifier.padding(16.dp)) {
+            KlothTextField(
+                value = "alex_style",
                 onValueChange = {},
                 label = "Correo electrónico",
                 placeholder = "tu@correo.com"

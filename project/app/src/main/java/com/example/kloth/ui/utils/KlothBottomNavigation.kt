@@ -17,6 +17,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.res.stringResource
+import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
@@ -37,7 +39,7 @@ fun KlothBottomNavigation(
             icon = { 
                 Icon(
                     imageVector = if (selectedItem == 0) Icons.Filled.Home else Icons.Outlined.Home,
-                    contentDescription = "Home"
+                    contentDescription = stringResource(R.string.nav_home)
                 ) 
             },
             label = null,
@@ -53,7 +55,7 @@ fun KlothBottomNavigation(
             icon = { 
                 Icon(
                     imageVector = if (selectedItem == 1) Icons.Filled.Search else Icons.Outlined.Search,
-                    contentDescription = "Search"
+                    contentDescription = stringResource(R.string.nav_explore)
                 ) 
             },
             label = null,
@@ -69,7 +71,7 @@ fun KlothBottomNavigation(
             icon = { 
                 Icon(
                     imageVector = if (selectedItem == 2) Icons.Filled.AddBox else Icons.Outlined.AddBox,
-                    contentDescription = "AddBox"
+                    contentDescription = stringResource(R.string.nav_create)
                 ) 
             },
             label = null,
@@ -101,7 +103,7 @@ fun KlothBottomNavigation(
             icon = { 
                 Icon(
                     imageVector = if (selectedItem == 4) Icons.Filled.Person else Icons.Outlined.Person,
-                    contentDescription = "Profile"
+                    contentDescription = stringResource(R.string.nav_profile)
                 ) 
             },
             label = null,
@@ -114,10 +116,18 @@ fun KlothBottomNavigation(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
 fun KlothBottomNavigationPreview() {
     KlothTheme(darkTheme = false) { 
+        KlothBottomNavigation()
+    }
+}
+
+@Preview(showBackground = true, name = "Dark Mode", uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun KlothBottomNavigationDarkPreview() {
+    KlothTheme(darkTheme = true) { 
         KlothBottomNavigation()
     }
 }

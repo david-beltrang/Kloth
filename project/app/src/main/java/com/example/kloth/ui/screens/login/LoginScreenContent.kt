@@ -1,5 +1,6 @@
 package com.example.kloth.ui.screens.login
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,7 +17,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -29,7 +29,7 @@ import com.example.kloth.R
 import com.example.kloth.ui.screens.login.components.LoginForgotPassword
 import com.example.kloth.ui.screens.login.components.LoginHeader
 import com.example.kloth.ui.screens.login.components.LoginOrDivider
-import com.example.kloth.ui.screens.login.components.LoginRegisterPrompt
+import com.example.kloth.ui.utils.AuthRedirectPrompt
 import com.example.kloth.ui.utils.KlothPrimaryButton
 import com.example.kloth.ui.utils.KlothTextField
 
@@ -46,16 +46,12 @@ fun LoginScreenContent(
 ) {
     val focusManager = LocalFocusManager.current
 
-    Scaffold(
-        modifier = modifier.fillMaxSize(),
-        containerColor = MaterialTheme.colorScheme.background
-    ) { innerPadding ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-                .imePadding()
-        ) {
+    Box(
+        modifier = modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colorScheme.background)
+            .imePadding()
+    ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -116,8 +112,11 @@ fun LoginScreenContent(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                LoginRegisterPrompt(onRegisterClick = onRegisterClick)
+                AuthRedirectPrompt(
+                    text = stringResource(R.string.login_no_account),
+                    linkText = stringResource(R.string.login_create_account),
+                    onLinkClick = onRegisterClick
+                )
             }
-        }
     }
 }

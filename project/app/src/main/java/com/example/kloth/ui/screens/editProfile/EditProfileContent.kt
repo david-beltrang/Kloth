@@ -13,15 +13,20 @@ import com.example.kloth.ui.screens.editProfile.components.*
 
 @Composable
 fun EditProfileScreenContent(
+    username: String,
+    onUsernameChange: (String) -> Unit,
+    bio: String,
+    onBioChange: (String) -> Unit,
+    email: String,
+    onEmailChange: (String) -> Unit,
+    location: String,
+    onLocationChange: (String) -> Unit,
+    website: String,
+    onWebsiteChange: (String) -> Unit,
+    onSaveClick: () -> Unit,
+    onDeleteAccount: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val defaultUsername = stringResource(R.string.edit_profile_mock_username)
-    var username by remember { mutableStateOf(defaultUsername) }
-    var bio by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var location by remember { mutableStateOf("") }
-    var website by remember { mutableStateOf("") }
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -38,21 +43,21 @@ fun EditProfileScreenContent(
 
         FormSection(
             username = username,
-            onUsernameChange = { username = it },
+            onUsernameChange = onUsernameChange,
             bio = bio,
-            onBioChange = { bio = it },
+            onBioChange = onBioChange,
             email = email,
-            onEmailChange = { email = it },
+            onEmailChange = onEmailChange,
             location = location,
-            onLocationChange = { location = it },
+            onLocationChange = onLocationChange,
             website = website,
-            onWebsiteChange = { website = it },
-            onSaveClick = { /* TODO */ }
+            onWebsiteChange = onWebsiteChange,
+            onSaveClick = onSaveClick
         )
 
         Spacer(modifier = Modifier.height(32.dp))
 
-        DangerZoneSection(onDeleteAccount = { /* TODO */ })
+        DangerZoneSection(onDeleteAccount = onDeleteAccount)
         
         Spacer(modifier = Modifier.height(32.dp))
     }

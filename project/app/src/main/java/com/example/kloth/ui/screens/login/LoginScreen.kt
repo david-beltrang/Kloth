@@ -9,6 +9,9 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun LoginScreen(
+    onLoginClick: () -> Unit = {},
+    onForgotPasswordClick: () -> Unit = {},
+    onRegisterClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     var email by remember { mutableStateOf("") }
@@ -20,8 +23,8 @@ fun LoginScreen(
         password = password,
         onEmailChange = { email = it },
         onPasswordChange = { password = it },
-        onLoginClick = { /* Navegación desactivada */ },
-        onForgotPasswordClick = { /* Navegación desactivada */ },
-        onRegisterClick = { /* Navegación desactivada */ }
+        onLoginClick = onLoginClick,
+        onForgotPasswordClick = onForgotPasswordClick,
+        onRegisterClick = onRegisterClick
     )
 }
