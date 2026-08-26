@@ -1,4 +1,4 @@
-package com.example.kloth.ui.screens.login
+package com.example.kloth.ui.screens.register
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -8,20 +8,25 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 
 @Composable
-fun LoginScreen(
+fun RegisterScreen(
     modifier: Modifier = Modifier
 ) {
+    var fullName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
+    var confirmPassword by remember { mutableStateOf("") }
 
-    LoginScreenContent(
+    RegisterScreenContent(
         modifier = modifier,
+        fullName = fullName,
         email = email,
         password = password,
+        confirmPassword = confirmPassword,
+        onFullNameChange = { fullName = it },
         onEmailChange = { email = it },
         onPasswordChange = { password = it },
-        onLoginClick = { /* Navegación desactivada */ },
-        onForgotPasswordClick = { /* Navegación desactivada */ },
-        onRegisterClick = { /* Navegación desactivada */ }
+        onConfirmPasswordChange = { confirmPassword = it },
+        onRegisterClick = { /* Navegación desactivada */ },
+        onLoginClick = { /* Navegación desactivada */ }
     )
 }

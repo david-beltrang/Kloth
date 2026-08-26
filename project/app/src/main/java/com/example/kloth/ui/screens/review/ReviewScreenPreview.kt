@@ -1,27 +1,27 @@
-package com.example.kloth.ui.screens.notification
+package com.example.kloth.ui.screens.review
 
 import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.kloth.ui.theme.KlothTheme
 
-@Preview(name = "Notificaciones - Claro", showBackground = true, showSystemUi = true)
+@Preview(name = "ReviewScreen - Claro", showBackground = true, showSystemUi = true)
 @Composable
-private fun NotificacionesScreenPreviewClaro() {
+fun ReviewScreenPreviewClaro() {
     KlothTheme(darkTheme = false) {
-        NotificationScreen()
+        ReviewScreen()
     }
 }
 
 @Preview(
-    name = "Notificaciones - Oscuro",
+    name = "ReviewScreen - Oscuro",
     showBackground = true,
     showSystemUi = true,
     uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
-private fun NotificacionesScreenPreviewOscuro() {
+fun ReviewScreenPreviewOscuro() {
     KlothTheme(darkTheme = true) {
-        NotificationScreen()
+        ReviewScreen()
     }
 }

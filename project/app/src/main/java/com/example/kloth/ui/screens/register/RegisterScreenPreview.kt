@@ -1,31 +1,31 @@
-package com.example.kloth.ui.screens.login
+package com.example.kloth.ui.screens.register
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.kloth.ui.theme.KlothTheme
 
 @Preview(
-    name = "Login Screen - Light",
+    name = "Register Screen - Light",
     showBackground = true,
     showSystemUi = true
 )
 @Composable
-fun LoginScreenPreview() {
+fun RegisterScreenPreview() {
     KlothTheme(darkTheme = false) {
-        LoginScreen()
+        RegisterScreen()
     }
 }
 
 @Preview(
-    name = "Login Screen - Dark",
+    name = "Register Screen - Dark",
     showBackground = true,
     showSystemUi = true,
     uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES,
     backgroundColor = 0xFF020202
 )
 @Composable
-fun LoginScreenDarkPreview() {
+fun RegisterScreenDarkPreview() {
     KlothTheme(darkTheme = true) {
-        LoginScreen()
+        RegisterScreen()
     }
 }

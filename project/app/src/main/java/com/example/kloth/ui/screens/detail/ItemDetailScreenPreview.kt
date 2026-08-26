@@ -1,5 +1,6 @@
 package com.example.kloth.ui.screens.detail
 
+import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.kloth.ui.theme.KlothTheme
@@ -22,7 +23,7 @@ fun ItemDetailScreenPreview() {
     name = "Item Detail Screen - Dark",
     showBackground = true,
     showSystemUi = true,
-    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
+    uiMode = Configuration.UI_MODE_NIGHT_YES
 )
 @Composable
 fun ItemDetailScreenDarkPreview() {

@@ -1,4 +1,4 @@
-package com.example.kloth.ui.screens.login
+package com.example.kloth.ui.screens.register
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,33 +15,38 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Email
 import androidx.compose.material.icons.outlined.Lock
+import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
+import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
-import com.example.kloth.ui.screens.login.components.LoginForgotPassword
 import com.example.kloth.ui.screens.login.components.LoginHeader
 import com.example.kloth.ui.screens.login.components.LoginOrDivider
-import com.example.kloth.ui.screens.login.components.LoginRegisterPrompt
+import com.example.kloth.ui.screens.register.components.RegisterLoginPrompt
 import com.example.kloth.ui.utils.KlothPrimaryButton
 import com.example.kloth.ui.utils.KlothTextField
 
 @Composable
-fun LoginScreenContent(
+fun RegisterScreenContent(
+    fullName: String,
     email: String,
     password: String,
+    confirmPassword: String,
+    onFullNameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
-    onLoginClick: () -> Unit,
-    onForgotPasswordClick: () -> Unit,
+    onConfirmPasswordChange: (String) -> Unit,
     onRegisterClick: () -> Unit,
+    onLoginClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     val focusManager = LocalFocusManager.current
@@ -66,7 +71,30 @@ fun LoginScreenContent(
             ) {
                 LoginHeader()
 
-                Spacer(modifier = Modifier.height(40.dp))
+                Spacer(modifier = Modifier.height(32.dp))
+
+                Text(
+                    text = stringResource(R.string.register_title),
+                    style = MaterialTheme.typography.displayLarge,
+                    color = MaterialTheme.colorScheme.onSurface,
+                    modifier = Modifier.fillMaxWidth()
+                )
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                KlothTextField(
+                    value = fullName,
+                    onValueChange = onFullNameChange,
+                    placeholder = stringResource(R.string.register_name_placeholder),
+                    leadingIcon = Icons.Outlined.Person,
+                    keyboardOptions = KeyboardOptions(
+                        capitalization = KeyboardCapitalization.Words,
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Next
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
 
                 KlothTextField(
                     value = email,
@@ -89,25 +117,35 @@ fun LoginScreenContent(
                     isPassword = true,
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password,
+                        imeAction = ImeAction.Next
+                    )
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                KlothTextField(
+                    value = confirmPassword,
+                    onValueChange = onConfirmPasswordChange,
+                    placeholder = stringResource(R.string.register_confirm_password_placeholder),
+                    leadingIcon = Icons.Outlined.Lock,
+                    isPassword = true,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Password,
                         imeAction = ImeAction.Done
                     ),
                     keyboardActions = KeyboardActions(
                         onDone = {
                             focusManager.clearFocus()
-                            onLoginClick()
+                            onRegisterClick()
                         }
                     )
                 )
 
-                Spacer(modifier = Modifier.height(8.dp))
-
-                LoginForgotPassword(onClick = onForgotPasswordClick)
-
                 Spacer(modifier = Modifier.height(32.dp))
 
                 KlothPrimaryButton(
-                    text = stringResource(R.string.login_button),
-                    onClick = onLoginClick
+                    text = stringResource(R.string.register_button),
+                    onClick = onRegisterClick
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
@@ -116,7 +154,7 @@ fun LoginScreenContent(
 
                 Spacer(modifier = Modifier.height(24.dp))
 
-                LoginRegisterPrompt(onRegisterClick = onRegisterClick)
+                RegisterLoginPrompt(onLoginClick = onLoginClick)
             }
         }
     }
