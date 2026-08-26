@@ -1,7 +1,6 @@
 package com.example.kloth.ui.utils
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
@@ -13,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,7 +35,7 @@ fun KlothTopAppBar(
     notificationCount: Int = 0
 
 ) {
-    val logoResource = if (isSystemInDarkTheme()) {
+    val logoResource = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) {
         R.drawable.logo_blanco
     } else {
         R.drawable.logo_negro
@@ -89,10 +89,18 @@ fun KlothTopAppBar(
     )
 }
 
-@Preview
+@Preview(name = "Light Mode")
 @Composable
 fun KlothTopAppBarPreview() {
-    KlothTheme {
+    KlothTheme(darkTheme = false) {
+        KlothTopAppBar(notificationCount = 5)
+    }
+}
+
+@Preview(name = "Dark Mode", uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun KlothTopAppBarDarkPreview() {
+    KlothTheme(darkTheme = true) {
         KlothTopAppBar(notificationCount = 5)
     }
 }

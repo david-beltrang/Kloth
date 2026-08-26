@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -15,9 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kloth.R
-import com.example.kloth.ui.theme.DangerRed
-import com.example.kloth.ui.theme.LightGrayBackground
-import com.example.kloth.ui.theme.TextGray
+import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun DangerZoneSection(
@@ -29,7 +28,7 @@ fun DangerZoneSection(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(8.dp)
-                .background(LightGrayBackground)
+                .background(MaterialTheme.colorScheme.surfaceContainerLow)
         )
 
         Column(
@@ -39,7 +38,7 @@ fun DangerZoneSection(
         ) {
             Text(
                 text = stringResource(R.string.edit_profile_danger_zone_title),
-                color = DangerRed,
+                color = MaterialTheme.colorScheme.error,
                 fontWeight = FontWeight.Bold,
                 fontSize = 15.sp,
                 modifier = Modifier.padding(bottom = 16.dp)
@@ -50,9 +49,9 @@ fun DangerZoneSection(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
-                border = BorderStroke(1.dp, DangerRed),
+                border = BorderStroke(1.dp, MaterialTheme.colorScheme.error),
                 shape = RoundedCornerShape(12.dp),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = DangerRed)
+                colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.error)
             ) {
                 Text(
                     text = stringResource(R.string.edit_profile_btn_delete_account),
@@ -64,7 +63,7 @@ fun DangerZoneSection(
 
             Text(
                 text = stringResource(R.string.edit_profile_danger_zone_desc),
-                color = TextGray,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontSize = 12.sp,
                 lineHeight = 16.sp
             )
@@ -75,5 +74,15 @@ fun DangerZoneSection(
 @Preview(showBackground = true)
 @Composable
 fun DangerZoneSectionPreview() {
-    DangerZoneSection()
+    KlothTheme {
+        DangerZoneSection()
+    }
+}
+
+@Preview(showBackground = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun DangerZoneSectionDarkPreview() {
+    KlothTheme(darkTheme = true) {
+        DangerZoneSection()
+    }
 }

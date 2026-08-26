@@ -11,7 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.kloth.data.NotificacionUI
-import com.example.kloth.ui.screens.notification.components.NotificacionItem
+import com.example.kloth.ui.screens.notification.components.NotificationItem
 
 @Composable
 fun NotificationScreenContent(
@@ -31,7 +31,7 @@ fun NotificationScreenContent(
             .background(MaterialTheme.colorScheme.background)
     ) {
         items(notificaciones, key = { it.id }) { notificacion ->
-            NotificacionItem(
+            NotificationItem(
                 notificacion = notificacion,
                 onToggleSeguir = onToggleSeguir
             )

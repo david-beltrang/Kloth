@@ -9,7 +9,9 @@ import androidx.compose.ui.Modifier
 
 @Composable
 fun RegisterScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onRegisterClick: () -> Unit = {},
+    onLoginClick: () -> Unit = {}
 ) {
     var fullName by remember { mutableStateOf("") }
     var email by remember { mutableStateOf("") }
@@ -26,7 +28,7 @@ fun RegisterScreen(
         onEmailChange = { email = it },
         onPasswordChange = { password = it },
         onConfirmPasswordChange = { confirmPassword = it },
-        onRegisterClick = { /* Navegación desactivada */ },
-        onLoginClick = { /* Navegación desactivada */ }
+        onRegisterClick = onRegisterClick,
+        onLoginClick = onLoginClick
     )
 }

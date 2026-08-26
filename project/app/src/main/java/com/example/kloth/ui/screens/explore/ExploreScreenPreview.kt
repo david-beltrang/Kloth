@@ -11,18 +11,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
-import com.example.kloth.ui.screens.detail.components.CatalogCard
+import com.example.kloth.ui.screens.detail.components.ProductCatalogCard
 import com.example.kloth.ui.screens.explore.components.CategoryChip
 import com.example.kloth.ui.screens.explore.components.FilterChip
 import com.example.kloth.ui.screens.explore.components.SearchBar
-import com.example.kloth.ui.screens.explore.components.TopAppBar
 import com.example.kloth.ui.theme.KlothTheme
 import com.example.kloth.ui.utils.KlothBottomNavigation
 
 @Preview(
     name = "Explore Screen - Light",
     showBackground = true,
-    showSystemUi = true
+    showSystemUi = true,
 )
 @Composable
 fun ExploreScreenPreview() {
@@ -35,20 +34,12 @@ fun ExploreScreenPreview() {
     name = "Explore Screen - Dark",
     showBackground = true,
     showSystemUi = true,
-    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES,
 )
 @Composable
 fun ExploreScreenDarkPreview() {
     KlothTheme(darkTheme = true) {
         ExploreScreen()
-    }
-}
-
-@Preview(name = "Explore Components - Top Bar", showBackground = true)
-@Composable
-fun ExploreTopBarPreview() {
-    KlothTheme {
-        TopAppBar(title = stringResource(R.string.title_explore))
     }
 }
 
@@ -129,12 +120,12 @@ fun ExploreFilterChipsPreview() {
 fun ExploreCatalogCardPreview() {
     KlothTheme {
         Box(modifier = Modifier.padding(16.dp).width(180.dp)) {
-            CatalogCard(
+            ProductCatalogCard(
                 title = stringResource(R.string.product_abrigo),
                 category = stringResource(R.string.category_prendas),
                 rating = "4.9",
                 reviews = "128",
-                imageRes = R.drawable.abrigo_negro,
+                imageModel = R.drawable.abrigo_negro,
                 onClick = {}
             )
         }

@@ -21,7 +21,8 @@ link de referencia: https://www.jetpackcompose.pro/tabs/tabrow/
 @Composable
 fun FeedTabRow(
     modifier: Modifier = Modifier,
-    selectedTabIndex: Int = 0
+    selectedTabIndex: Int = 0,
+    onTabSelected: (Int) -> Unit = {}
 ) {
     TabRow(
         selectedTabIndex = selectedTabIndex,
@@ -34,7 +35,7 @@ fun FeedTabRow(
     ) {
         Tab(
             selected = selectedTabIndex == 0,
-            onClick = { /* TODO */ },
+            onClick = { onTabSelected(0) },
             text = {
                 Text(
                     text = stringResource(R.string.tab_following),
@@ -44,7 +45,7 @@ fun FeedTabRow(
         )
         Tab(
             selected = selectedTabIndex == 1,
-            onClick = { /* TODO */ },
+            onClick = { onTabSelected(1) },
             text = {
                 Text(
                     text = stringResource(R.string.tab_for_you),

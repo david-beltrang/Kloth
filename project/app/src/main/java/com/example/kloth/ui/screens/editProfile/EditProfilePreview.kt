@@ -7,7 +7,7 @@ import com.example.kloth.ui.theme.KlothTheme
 @Preview(showBackground = true, showSystemUi = true)
 @Composable
 fun EditProfileScreenPreview() {
-    KlothTheme {
+    KlothTheme(darkTheme = false) {
         EditProfileScreen()
     }
 }
@@ -15,7 +15,7 @@ fun EditProfileScreenPreview() {
 @Preview(showBackground = true, showSystemUi = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun EditProfileScreenDarkPreview() {
-    KlothTheme {
+    KlothTheme(darkTheme = true) {
         EditProfileScreen()
     }
 }

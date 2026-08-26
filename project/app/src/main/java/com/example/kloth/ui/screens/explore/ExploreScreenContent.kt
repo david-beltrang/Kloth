@@ -16,36 +16,36 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
-import com.example.kloth.ui.screens.detail.components.CatalogCard
+import com.example.kloth.data.FakeArticle
+import com.example.kloth.ui.screens.detail.components.ProductCatalogCard
 import com.example.kloth.ui.screens.explore.components.CategoryChip
 import com.example.kloth.ui.screens.explore.components.FilterChip
 import com.example.kloth.ui.screens.explore.components.SearchBar
 
 @Composable
 fun ExploreScreenContent(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    selectedCategoryIndex: Int,
+    onCategorySelected: (Int) -> Unit,
+    onProductClick: (String) -> Unit = {},
 ) {
-    var selectedCategoryIndex by remember { mutableIntStateOf(0) }
-    val categories = listOf(
-        stringResource(R.string.category_prendas),
-        stringResource(R.string.category_outfits),
-        stringResource(R.string.category_marcas),
-        stringResource(R.string.category_eventos)
+    val categoryResIds = listOf(
+        R.string.category_prendas,
+        R.string.category_outfits,
+        R.string.category_marcas,
+        R.string.category_eventos,
     )
 
     LazyVerticalGrid(
@@ -74,11 +74,11 @@ fun ExploreScreenContent(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     contentPadding = PaddingValues(end = 16.dp)
                 ) {
-                    items(categories.size) { index ->
+                    items(categoryResIds.size) { index ->
                         CategoryChip(
-                            text = categories[index],
+                            text = stringResource(categoryResIds[index]),
                             isSelected = selectedCategoryIndex == index,
-                            onClick = { selectedCategoryIndex = index }
+                            onClick = { onCategorySelected(index) }
                         )
                     }
                 }
@@ -114,61 +114,41 @@ fun ExploreScreenContent(
                     item {
                         FilterChip(
                             text = stringResource(R.string.filter_price),
-                            trailingIcon = { ExpandIcon() })
+                            trailingIcon = {
+                                ExpandIcon()
+                            }
+                        )
                     }
                     item {
                         FilterChip(
                             text = stringResource(R.string.filter_color),
-                            trailingIcon = { ExpandIcon() })
+                            trailingIcon = {
+                                ExpandIcon()
+                            }
+                        )
                     }
                     item {
                         FilterChip(
                             text = stringResource(R.string.filter_size),
-                            trailingIcon = { ExpandIcon() })
+                            trailingIcon = {
+                                ExpandIcon()
+                            }
+                        )
                     }
                 }
                 Spacer(modifier = Modifier.height(24.dp))
             }
         }
 
-        item {
-            CatalogCard(
-                title = stringResource(R.string.product_abrigo),
-                category = stringResource(R.string.category_prendas),
-                rating = "4.9",
-                reviews = "128",
-                imageRes = R.drawable.abrigo_negro,
-                onClick = { }
-            )
-        }
-        item {
-            CatalogCard(
-                title = stringResource(R.string.product_gym),
-                category = stringResource(R.string.category_prendas),
-                rating = "4.8",
-                reviews = "84",
-                imageRes = R.drawable.camiseta_gymshark,
-                onClick = { }
-            )
-        }
-        item {
-            CatalogCard(
-                title = stringResource(R.string.product_barcelona),
-                category = stringResource(R.string.category_prendas),
-                rating = "5.0",
-                reviews = "42",
-                imageRes = R.drawable.camiseta_barcelona,
-                onClick = { }
-            )
-        }
-        item {
-            CatalogCard(
-                title = stringResource(R.string.product_bolso),
-                category = stringResource(R.string.category_prendas),
-                rating = "4.7",
-                reviews = "215",
-                imageRes = R.drawable.bolso_cuero,
-                onClick = { }
+        // Ahora mostramos dinámicamente todos los productos del catálogo
+        items(FakeArticle.allProducts) { product ->
+            ProductCatalogCard(
+                title = product.title,
+                category = product.categoryTag,
+                rating = product.averageRating.toString(),
+                reviews = product.reviewsCountText.filter { it.isDigit() }, // Limpiamos "(128 reseñas)" a "128"
+                imageModel = product.imageUrl ?: product.imageRes,
+                onClick = { onProductClick(product.id) }
             )
         }
     }

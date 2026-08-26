@@ -1,4 +1,4 @@
-package com.example.kloth.ui.screens.login.components
+package com.example.kloth.ui.utils
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -9,16 +9,24 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
 
+/**
+ * Componente genérico para mostrar un mensaje informativo seguido de un enlace clicable.
+ * Se utiliza principalmente para alternar entre pantallas de autenticación (Login/Registro).
+ *
+ * @param text Texto informativo (ej: "¿No tienes cuenta?").
+ * @param linkText Texto del enlace accionable (ej: "Regístrate").
+ * @param onLinkClick Acción a ejecutar al pulsar el enlace.
+ */
 @Composable
-fun LoginRegisterPrompt(
-    onRegisterClick: () -> Unit,
+fun AuthRedirectPrompt(
+    text: String,
+    linkText: String,
+    onLinkClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -27,16 +35,16 @@ fun LoginRegisterPrompt(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(
-            text = stringResource(R.string.login_no_account),
+            text = text,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
         Text(
-            text = stringResource(R.string.login_create_account),
+            text = linkText,
             style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.SemiBold),
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
-                .clickable(onClick = onRegisterClick)
+                .clickable(onClick = onLinkClick)
                 .padding(horizontal = 6.dp, vertical = 4.dp)
         )
     }
@@ -44,8 +52,12 @@ fun LoginRegisterPrompt(
 
 @Preview(showBackground = true)
 @Composable
-fun LoginRegisterPromptPreview() {
+fun AuthRedirectPromptPreview() {
     KlothTheme {
-        LoginRegisterPrompt(onRegisterClick = {})
+        AuthRedirectPrompt(
+            text = "¿No tienes cuenta?",
+            linkText = "Regístrate",
+            onLinkClick = {}
+        )
     }
 }

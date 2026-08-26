@@ -18,8 +18,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kloth.ui.theme.KlothTheme
 
+/**
+ * Avatar circular para notificaciones.
+ * Muestra la inicial del autor y un indicador opcional de 'no leído'.
+ */
 @Composable
-fun NotificacionAvatar(
+fun NotificationAvatar(
     inicial: String,
     mostrarPuntoNoLeido: Boolean,
     modifier: Modifier = Modifier
@@ -55,8 +59,8 @@ fun NotificacionAvatar(
 @Preview(name = "Claro", showBackground = true)
 @Preview(name = "Oscuro", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun NotificacionAvatarPreview() {
+fun NotificationAvatarPreview() {
     KlothTheme {
-        NotificacionAvatar(inicial = "A", mostrarPuntoNoLeido = true)
+        NotificationAvatar(inicial = "A", mostrarPuntoNoLeido = true)
     }
 }

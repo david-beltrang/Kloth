@@ -14,24 +14,22 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
-import com.example.kloth.ui.screens.detail.components.CatalogCard
+import com.example.kloth.data.FakeArticle
+import com.example.kloth.ui.screens.detail.components.ProductCatalogCard
 import com.example.kloth.ui.screens.feed.components.ProfileTabRow
 import com.example.kloth.ui.screens.profile.components.ProfileHeaderSection
 
 @Composable
 fun ProfileScreenContent(
+    selectedTabIndex: Int,
+    onTabSelected: (Int) -> Unit,
     onEditProfileClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    var selectedTabIndex by remember { mutableIntStateOf(0) }
 
     LazyVerticalGrid(
         columns = GridCells.Fixed(2),
@@ -58,7 +56,7 @@ fun ProfileScreenContent(
 
                 ProfileTabRow(
                     selectedTabIndex = selectedTabIndex,
-                    onTabSelected = { selectedTabIndex = it }
+                    onTabSelected = onTabSelected
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -66,74 +64,61 @@ fun ProfileScreenContent(
         }
 
         if (selectedTabIndex == 0) {
+            // Publicaciones (Usando datos de FakeArticle)
             item {
-                CatalogCard(
-                    title = stringResource(R.string.product_abrigo),
-                    category = stringResource(R.string.category_prendas),
-                    rating = "4.9",
-                    reviews = "128",
-                    imageRes = R.drawable.abrigo_negro,
+                val p = FakeArticle.detailSuit
+                ProductCatalogCard(
+                    title = p.title,
+                    category = p.categoryTag,
+                    rating = p.averageRating.toString(),
+                    reviews = p.reviewsCountText.filter { it.isDigit() },
+                    imageModel = p.imageUrl ?: p.imageRes,
                     onClick = { }
                 )
             }
             item {
-                CatalogCard(
-                    title = stringResource(R.string.product_gym),
-                    category = stringResource(R.string.category_outfits),
-                    rating = "4.8",
-                    reviews = "84",
-                    imageRes = R.drawable.camiseta_gymshark,
+                val p = FakeArticle.detailVestido
+                ProductCatalogCard(
+                    title = p.title,
+                    category = p.categoryTag,
+                    rating = p.averageRating.toString(),
+                    reviews = p.reviewsCountText.filter { it.isDigit() },
+                    imageModel = p.imageUrl ?: p.imageRes,
                     onClick = { }
                 )
             }
             item {
-                CatalogCard(
-                    title = stringResource(R.string.product_barcelona),
-                    category = stringResource(R.string.category_prendas),
-                    rating = "5.0",
-                    reviews = "42",
-                    imageRes = R.drawable.camiseta_barcelona,
+                val p = FakeArticle.detailStreetwear
+                ProductCatalogCard(
+                    title = p.title,
+                    category = p.categoryTag,
+                    rating = p.averageRating.toString(),
+                    reviews = p.reviewsCountText.filter { it.isDigit() },
+                    imageModel = p.imageUrl ?: p.imageRes,
                     onClick = { }
                 )
             }
         } else {
+            // Artículos calificados
             item {
-                CatalogCard(
-                    title = stringResource(R.string.product_bolso),
-                    category = stringResource(R.string.category_prendas),
-                    rating = "4.7",
-                    reviews = "215",
-                    imageRes = R.drawable.bolso_cuero,
+                val p = FakeArticle.abrigoNegro
+                ProductCatalogCard(
+                    title = p.title,
+                    category = p.categoryTag,
+                    rating = p.averageRating.toString(),
+                    reviews = p.reviewsCountText.filter { it.isDigit() },
+                    imageModel = p.imageUrl ?: p.imageRes,
                     onClick = { }
                 )
             }
             item {
-                CatalogCard(
-                    title = stringResource(R.string.product_abrigo),
-                    category = stringResource(R.string.category_prendas),
-                    rating = "4.9",
-                    reviews = "128",
-                    imageRes = R.drawable.abrigo_negro,
-                    onClick = { }
-                )
-            }
-            item {
-                CatalogCard(
-                    title = stringResource(R.string.product_barcelona),
-                    category = stringResource(R.string.category_marcas),
-                    rating = "5.0",
-                    reviews = "42",
-                    imageRes = R.drawable.camiseta_barcelona,
-                    onClick = { }
-                )
-            }
-            item {
-                CatalogCard(
-                    title = stringResource(R.string.product_gym),
-                    category = stringResource(R.string.category_eventos),
-                    rating = "4.8",
-                    reviews = "84",
-                    imageRes = R.drawable.camiseta_gymshark,
+                val p = FakeArticle.camisetaGymshark
+                ProductCatalogCard(
+                    title = p.title,
+                    category = p.categoryTag,
+                    rating = p.averageRating.toString(),
+                    reviews = p.reviewsCountText.filter { it.isDigit() },
+                    imageModel = p.imageUrl ?: p.imageRes,
                     onClick = { }
                 )
             }
