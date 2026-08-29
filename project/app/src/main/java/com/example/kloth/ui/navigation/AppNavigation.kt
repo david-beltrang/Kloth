@@ -1,7 +1,10 @@
 package com.example.kloth.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -17,6 +20,7 @@ import com.example.kloth.ui.screens.login.LoginScreen
 import com.example.kloth.ui.screens.notification.NotificationScreen
 import com.example.kloth.ui.screens.profile.ProfileScreen
 import com.example.kloth.ui.screens.register.RegisterScreen
+import com.example.kloth.ui.screens.register.RegisterViewModel
 import com.example.kloth.ui.screens.review.ReviewScreen
 
 /**
@@ -59,12 +63,17 @@ fun AppNavigation(
         }
 
         composable(AppRoutes.Register.route) {
+            val registerViewModel: RegisterViewModel = viewModel()
+            val state by registerViewModel.uiState.collectAsState()
+
+            if (state.navigate) {
+                navController.navigate(AppRoutes.Feed.route) {
+                    popUpTo(AppRoutes.Login.route) { inclusive = true }
+                }
+            }
+
             RegisterScreen(
-                onRegisterClick = {
-                    navController.navigate(AppRoutes.Feed.route) {
-                        popUpTo(AppRoutes.Login.route) { inclusive = true }
-                    }
-                },
+                registerViewModel = registerViewModel,
                 onLoginClick = {
                     navController.popBackStack()
                 }

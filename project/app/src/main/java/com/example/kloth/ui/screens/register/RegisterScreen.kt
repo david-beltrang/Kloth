@@ -1,34 +1,39 @@
 package com.example.kloth.ui.screens.register
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 
 @Composable
 fun RegisterScreen(
+    registerViewModel: RegisterViewModel,
     modifier: Modifier = Modifier,
-    onRegisterClick: () -> Unit = {},
     onLoginClick: () -> Unit = {}
 ) {
-    var fullName by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var password by remember { mutableStateOf("") }
-    var confirmPassword by remember { mutableStateOf("") }
+    val state by registerViewModel.uiState.collectAsState()
 
     RegisterScreenContent(
         modifier = modifier,
-        fullName = fullName,
-        email = email,
-        password = password,
-        confirmPassword = confirmPassword,
-        onFullNameChange = { fullName = it },
-        onEmailChange = { email = it },
-        onPasswordChange = { password = it },
-        onConfirmPasswordChange = { confirmPassword = it },
-        onRegisterClick = onRegisterClick,
+
+        //Variables de estado
+        fullName = state.fullName,
+        email = state.email,
+        password = state.password,
+        confirmPassword = state.confirmPassword,
+        isPasswordVisible = state.isPasswordVisible,
+        isConfirmPasswordVisible = state.isConfirmPasswordVisible,
+
+        //Metodos del View Model para manejar el estado
+        onFullNameChange = { registerViewModel.onFullNameChange(it) },
+        onEmailChange = { registerViewModel.onEmailChange(it) },
+        onPasswordChange = { registerViewModel.onPasswordChange(it) },
+        onConfirmPasswordChange = { registerViewModel.onConfirmPasswordChange(it) },
+        onPasswordToggleClick = { registerViewModel.togglePasswordVisibility() },
+        onConfirmPasswordToggleClick = { registerViewModel.toggleConfirmPasswordVisibility() },
+
+        //Navegacion
+        onRegisterClick = { registerViewModel.registerButtonPressed() },
         onLoginClick = onLoginClick
     )
 }
