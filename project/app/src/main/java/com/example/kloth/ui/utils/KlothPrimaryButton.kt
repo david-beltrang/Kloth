@@ -50,10 +50,22 @@ fun KlothPrimaryButton(
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light Mode")
 @Composable
 fun KlothPrimaryButtonPreview() {
-    KlothTheme {
+    KlothTheme(darkTheme = false) {
+        KlothPrimaryButton(
+            text = "Iniciar sesión",
+            onClick = {},
+            modifier = Modifier.padding(16.dp)
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Dark Mode", uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun KlothPrimaryButtonDarkPreview() {
+    KlothTheme(darkTheme = true) {
         KlothPrimaryButton(
             text = "Iniciar sesión",
             onClick = {},

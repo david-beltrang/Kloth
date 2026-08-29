@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kloth.R
-import com.example.kloth.ui.theme.ProfileImagePlaceholder
+import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun ProfileImageEditor(
@@ -46,7 +46,7 @@ fun ProfileImageEditor(
                 modifier = Modifier
                     .size(96.dp)
                     .clip(CircleShape)
-                    .background(ProfileImagePlaceholder),
+                    .background(MaterialTheme.colorScheme.secondaryContainer),
                 contentScale = ContentScale.Crop
             )
 
@@ -79,5 +79,15 @@ fun ProfileImageEditor(
 @Preview(showBackground = true)
 @Composable
 fun ProfileImageEditorPreview() {
-    ProfileImageEditor()
+    KlothTheme {
+        ProfileImageEditor()
+    }
+}
+
+@Preview(showBackground = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun ProfileImageEditorDarkPreview() {
+    KlothTheme(darkTheme = true) {
+        ProfileImageEditor()
+    }
 }

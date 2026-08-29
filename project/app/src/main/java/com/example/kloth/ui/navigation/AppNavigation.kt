@@ -1,0 +1,143 @@
+package com.example.kloth.ui.navigation
+
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
+import com.example.kloth.ui.screens.createArticle.CreateArticleScreen
+import com.example.kloth.ui.screens.detail.ItemDetailScreen
+import com.example.kloth.ui.screens.editProfile.EditProfileScreen
+import com.example.kloth.ui.screens.explore.ExploreScreen
+import com.example.kloth.ui.screens.feed.FeedScreen
+import com.example.kloth.ui.screens.forgotPassword.ForgotPasswordScreen
+import com.example.kloth.ui.screens.login.LoginScreen
+import com.example.kloth.ui.screens.notification.NotificationScreen
+import com.example.kloth.ui.screens.profile.ProfileScreen
+import com.example.kloth.ui.screens.register.RegisterScreen
+import com.example.kloth.ui.screens.review.ReviewScreen
+
+/**
+ * Componente central de navegación de la aplicación.
+ * Configura el NavHost y conecta las pantallas mediante callbacks.
+ */
+@Composable
+fun AppNavigation(
+    navController: NavHostController,
+    modifier: Modifier = Modifier,
+) {
+    NavHost(
+        navController = navController,
+        startDestination = AppRoutes.Login.route,
+        modifier = modifier
+    ) {
+        // --- Flujo de Autenticación ---
+        composable(AppRoutes.Login.route) {
+            LoginScreen(
+                onLoginClick = {
+                    navController.navigate(AppRoutes.Feed.route) {
+                        popUpTo(AppRoutes.Login.route) { inclusive = true }
+                    }
+                },
+                onRegisterClick = {
+                    navController.navigate(AppRoutes.Register.route)
+                },
+                onForgotPasswordClick = {
+                    navController.navigate(AppRoutes.ForgotPassword.route)
+                }
+            )
+        }
+
+        composable(AppRoutes.ForgotPassword.route) {
+            ForgotPasswordScreen(
+                onBackClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        composable(AppRoutes.Register.route) {
+            RegisterScreen(
+                onRegisterClick = {
+                    navController.navigate(AppRoutes.Feed.route) {
+                        popUpTo(AppRoutes.Login.route) { inclusive = true }
+                    }
+                },
+                onLoginClick = {
+                    navController.popBackStack()
+                }
+            )
+        }
+
+        // --- Flujo Principal de la App ---
+        composable(AppRoutes.Feed.route) {
+            FeedScreen(
+                onProductClick = { productId ->
+                    navController.navigate(AppRoutes.ArticleDetail.createRoute(productId))
+                }
+            )
+        }
+
+        composable(AppRoutes.Explore.route) {
+            ExploreScreen(
+                onProductClick = { productId ->
+                    navController.navigate(AppRoutes.ArticleDetail.createRoute(productId))
+                }
+            )
+        }
+
+        composable(AppRoutes.CreateArticle.route) {
+            CreateArticleScreen(
+                onPublicarClick = { navController.popBackStack() }
+            )
+        }
+
+        composable(AppRoutes.Notifications.route) {
+            NotificationScreen()
+        }
+
+        composable(AppRoutes.Profile.route) {
+            ProfileScreen(
+                onEditProfileClick = {
+                    navController.navigate(AppRoutes.EditProfile.route)
+                }
+            )
+        }
+
+        composable(AppRoutes.EditProfile.route) {
+            EditProfileScreen(
+                onCancelClick = { navController.popBackStack() }
+            )
+        }
+
+        // --- Pantallas de Detalle y Reseñas ---
+        composable(AppRoutes.Review.route) {
+            ReviewScreen(
+                onBackClick = { navController.popBackStack() }
+            )
+        }
+
+        composable(
+            route = AppRoutes.ArticleDetail.route,
+            arguments = listOf(
+                navArgument(AppRoutes.ArticleDetail.ARG_PRODUCT_ID) {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments
+                ?.getString(AppRoutes.ArticleDetail.ARG_PRODUCT_ID)
+                .orEmpty()
+
+            ItemDetailScreen(
+                productId = productId,
+                onBackClick = { navController.popBackStack() },
+                onWriteReviewClick = {
+                    navController.navigate(AppRoutes.Review.route)
+                }
+            )
+        }
+    }
+}

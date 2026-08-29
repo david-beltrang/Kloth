@@ -8,33 +8,39 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.kloth.ui.screens.createArticle.components.*
 import com.example.kloth.ui.screens.explore.components.CategoryChip
-import com.example.kloth.R
 import java.util.Locale
 
 /**
- * Pantalla principal que aplica STATE HOISTING. 
- * Toda la lógica de "memoria" (estados) vive aquí, y los componentes de abajo solo dibujan.
+ * Contenido sin estado de la pantalla. Los estados viven hoisted en CreateArticleScreen,
+ * y este composable solo dibuja a partir de los parámetros y callbacks recibidos.
  */
 @Composable
 fun CreateArticleScreenContent(
+    selectedType: ArticleType,
+    onTypeChange: (ArticleType) -> Unit,
+    photos: List<Int>,
+    onDeletePhoto: (Int) -> Unit,
+    nombre: String,
+    onNombreChange: (String) -> Unit,
+    descripcion: String,
+    onDescripcionChange: (String) -> Unit,
+    marca: String,
+    onMarcaChange: (String) -> Unit,
+    color: String,
+    onColorChange: (String) -> Unit,
+    precio: String,
+    onPrecioChange: (String) -> Unit,
+    estilo: String,
+    onEstiloChange: (String) -> Unit,
+    ciudad: String,
+    onCiudadChange: (String) -> Unit,
+    pais: String,
+    onPaisChange: (String) -> Unit,
+    organizador: String,
+    onOrganizadorChange: (String) -> Unit,
+    onPublicarClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    // state hosting
-    // Guardamos toda la información aquí para que los componentes hijos sean Stateless
-    var selectedType by remember { mutableStateOf(ArticleType.PRENDA) }
-    val photos = remember { mutableStateListOf(R.drawable.abrigo_negro, R.drawable.bolso_cuero) }
-    
-    // Variables para el formulario
-    var nombre by remember { mutableStateOf("") }
-    var descripcion by remember { mutableStateOf("") }
-    var marca by remember { mutableStateOf("") }
-    var color by remember { mutableStateOf("") }
-    var precio by remember { mutableStateOf("") }
-    var estilo by remember { mutableStateOf("") }
-    var ciudad by remember { mutableStateOf("") }
-    var pais by remember { mutableStateOf("") }
-    var organizador by remember { mutableStateOf("") }
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -49,7 +55,7 @@ fun CreateArticleScreenContent(
                 CategoryChip(
                     text = type.name.lowercase().replaceFirstChar { it.titlecase(Locale.ROOT) },
                     isSelected = selectedType == type,
-                    onClick = { selectedType = type }
+                    onClick = { onTypeChange(type) }
                 )
             }
         }
@@ -63,7 +69,7 @@ fun CreateArticleScreenContent(
         if (photos.isNotEmpty()) {
             PhotoCarrusel(
                 photos = photos,
-                onDeletePhoto = { index -> photos.removeAt(index) }
+                onDeletePhoto = onDeletePhoto
             )
         }
 
@@ -71,24 +77,24 @@ fun CreateArticleScreenContent(
         FormArticle(
             selectedType = selectedType,
             nombre = nombre,
-            onNombreChange = { nombre = it },
+            onNombreChange = onNombreChange,
             descripcion = descripcion,
-            onDescripcionChange = { descripcion = it },
+            onDescripcionChange = onDescripcionChange,
             marca = marca,
-            onMarcaChange = { marca = it },
+            onMarcaChange = onMarcaChange,
             color = color,
-            onColorChange = { color = it },
+            onColorChange = onColorChange,
             precio = precio,
-            onPrecioChange = { precio = it },
+            onPrecioChange = onPrecioChange,
             estilo = estilo,
-            onEstiloChange = { estilo = it },
+            onEstiloChange = onEstiloChange,
             ciudad = ciudad,
-            onCiudadChange = { ciudad = it },
+            onCiudadChange = onCiudadChange,
             pais = pais,
-            onPaisChange = { pais = it },
+            onPaisChange = onPaisChange,
             organizador = organizador,
-            onOrganizadorChange = { organizador = it },
-            onPublicarClick = { /* Lógica de guardado final */ }
+            onOrganizadorChange = onOrganizadorChange,
+            onPublicarClick = onPublicarClick
         )
     }
 }
