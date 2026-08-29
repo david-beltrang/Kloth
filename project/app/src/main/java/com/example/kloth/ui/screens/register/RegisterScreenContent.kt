@@ -37,16 +37,26 @@ import com.example.kloth.ui.utils.KlothTextField
 
 @Composable
 fun RegisterScreenContent(
+    // Variables de estado (Datos)
     fullName: String,
     email: String,
     password: String,
     confirmPassword: String,
+    isPasswordVisible: Boolean,
+    isConfirmPasswordVisible: Boolean,
+
+    // Métodos para manejar el estado (Eventos)
     onFullNameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onConfirmPasswordChange: (String) -> Unit,
+    onPasswordToggleClick: () -> Unit,
+    onConfirmPasswordToggleClick: () -> Unit,
+
+    // Navegación
     onRegisterClick: () -> Unit,
     onLoginClick: () -> Unit,
+
     modifier: Modifier = Modifier
 ) {
     val focusManager = LocalFocusManager.current
@@ -106,8 +116,13 @@ fun RegisterScreenContent(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 KlothTextField(
+                    // Estado y Eventos elevados
                     value = password,
                     onValueChange = onPasswordChange,
+                    isPasswordVisible = isPasswordVisible,
+                    onPasswordToggleClick = onPasswordToggleClick,
+
+                    // Estética y Configuración
                     placeholder = stringResource(R.string.login_password_placeholder),
                     leadingIcon = Icons.Outlined.Lock,
                     isPassword = true,
@@ -120,8 +135,13 @@ fun RegisterScreenContent(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 KlothTextField(
+                    // Estado y Eventos elevados
                     value = confirmPassword,
                     onValueChange = onConfirmPasswordChange,
+                    isPasswordVisible = isConfirmPasswordVisible,
+                    onPasswordToggleClick = onConfirmPasswordToggleClick,
+
+                    // Estética y Configuración
                     placeholder = stringResource(R.string.register_confirm_password_placeholder),
                     leadingIcon = Icons.Outlined.Lock,
                     isPassword = true,

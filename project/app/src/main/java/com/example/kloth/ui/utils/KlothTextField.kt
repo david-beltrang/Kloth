@@ -42,17 +42,23 @@ link de referencia: https://m3.material.io/components/text-fields/overview
  */
 @Composable
 fun KlothTextField(
+    // Estado y Datos
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
     label: String? = null,
     placeholder: String = "",
     leadingIcon: ImageVector? = null,
+
+    // Lógica de visualización de Contraseña
     isPassword: Boolean = false,
+    isPasswordVisible: Boolean = false,
+    onPasswordToggleClick: () -> Unit = {},
+
+    // Configuración de Teclado y Acciones
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     keyboardActions: KeyboardActions = KeyboardActions.Default
 ) {
-    var isPasswordVisible by remember { mutableStateOf(false) }
     val visualTransformation = if (isPassword && !isPasswordVisible) {
         PasswordVisualTransformation()
     } else {
@@ -95,7 +101,7 @@ fun KlothTextField(
             },
             trailingIcon = if (isPassword) {
                 {
-                    IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                    IconButton(onClick = onPasswordToggleClick) {
                         Icon(
                             imageVector = if (isPasswordVisible) {
                                 Icons.Outlined.VisibilityOff
