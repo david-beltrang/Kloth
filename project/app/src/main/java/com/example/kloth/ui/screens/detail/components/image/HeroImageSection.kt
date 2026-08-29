@@ -1,7 +1,6 @@
 package com.example.kloth.ui.screens.detail.components.image
 
 import android.content.res.Configuration
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -15,7 +14,7 @@ import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun HeroImageSection(
-    @DrawableRes imageRes: Int,
+    imageModel: Any?, // Acepta Int (Resource) o String (URL)
     isFavorite: Boolean = false,
     onBackClick: () -> Unit = {},
     onFavoriteClick: () -> Unit = {},
@@ -28,7 +27,7 @@ fun HeroImageSection(
             .height(450.dp)
     ) {
         HeroImage(
-            imageRes = imageRes,
+            imageModel = imageModel,
             modifier = Modifier.fillMaxSize()
         )
 
@@ -60,7 +59,7 @@ fun HeroImageSection(
 fun HeroImageSectionPreview() {
     KlothTheme {
         HeroImageSection(
-            imageRes = R.drawable.abrigo_negro,
+            imageModel = R.drawable.abrigo_negro,
             isFavorite = false
         )
     }

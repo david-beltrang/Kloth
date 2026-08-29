@@ -1,7 +1,6 @@
 package com.example.kloth.ui.screens.detail.components
 
 import android.content.res.Configuration
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -16,23 +15,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
+import com.example.kloth.ui.theme.TransparentBlack30
 
+/**
+ * Tarjeta descriptiva para mostrar productos en cuadrículas o listados.
+ * Sigue el diseño del catálogo con imagen, categoría, título y valoración.
+ */
 @Composable
-fun CatalogCard(
+fun ProductCatalogCard(
     title: String,
     category: String,
     rating: String,
     reviews: String,
-    imageRes: Int,
+    imageModel: Any?, // Acepta Int (Resource) o String (URL)
     onClick: () -> Unit = {},
     onFavoriteClick: () -> Unit = {},
     modifier: Modifier = Modifier
@@ -49,8 +53,8 @@ fun CatalogCard(
                 .clip(RoundedCornerShape(16.dp))
                 .background(MaterialTheme.colorScheme.surfaceContainerLow)
         ) {
-            Image(
-                painter = painterResource(id = imageRes),
+            AsyncImage(
+                model = imageModel,
                 contentDescription = title,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.fillMaxSize()
@@ -63,7 +67,7 @@ fun CatalogCard(
                     .padding(12.dp)
                     .size(32.dp)
                     .clip(CircleShape)
-                    .background(Color.Black.copy(alpha = 0.3f))
+                    .background(TransparentBlack30)
             ) {
                 Icon(
                     imageVector = Icons.Outlined.FavoriteBorder,
@@ -129,14 +133,14 @@ fun CatalogCard(
 @Preview(name = "Claro", showBackground = true)
 @Preview(name = "Oscuro", showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
-fun CatalogCardPreview() {
+fun ProductCatalogCardPreview() {
     KlothTheme {
-        CatalogCard(
+        ProductCatalogCard(
             title = stringResource(R.string.product_abrigo),
             category = stringResource(R.string.category_prendas),
             rating = "4.9",
             reviews = "128",
-            imageRes = R.drawable.abrigo_negro,
+            imageModel = R.drawable.abrigo_negro,
             modifier = Modifier.width(200.dp)
         )
     }

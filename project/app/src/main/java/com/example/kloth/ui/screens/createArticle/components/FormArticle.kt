@@ -172,7 +172,11 @@ fun FormInput(
                 fontWeight = FontWeight.Medium
             )
             if (required) {
-                Text(text = " *", color = Color.Red, style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    text = " *",
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodyMedium
+                )
             }
         }
 

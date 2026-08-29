@@ -203,7 +203,15 @@ private fun ProfileStatItem(
 @Preview(showBackground = true)
 @Composable
 fun ProfileHeaderSectionPreview() {
-    KlothTheme {
+    KlothTheme(darkTheme = false) {
+        ProfileHeaderSection()
+    }
+}
+
+@Preview(showBackground = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun ProfileHeaderSectionDarkPreview() {
+    KlothTheme(darkTheme = true) {
         ProfileHeaderSection()
     }
 }

@@ -30,7 +30,7 @@ fun ItemDetailScreenContent(
     ) {
         item {
             HeroImageSection(
-                imageRes = product.imageRes,
+                imageModel = product.imageUrl ?: product.imageRes,
                 isFavorite = product.isFavorite,
                 onBackClick = onBackClick,
                 onFavoriteClick = onFavoriteClick,
