@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.kloth.ui.screens.createArticle.CreateArticleScreen
+import com.example.kloth.ui.screens.detail.DetailViewModel
 import com.example.kloth.ui.screens.detail.ItemDetailScreen
 import com.example.kloth.ui.screens.editProfile.EditProfileScreen
 import com.example.kloth.ui.screens.explore.ExploreScreen
@@ -143,8 +144,11 @@ fun AppNavigation(
                 ?.getString(AppRoutes.ArticleDetail.ARG_PRODUCT_ID)
                 .orEmpty()
 
+            val detailViewModel: DetailViewModel = viewModel()
+
             ItemDetailScreen(
                 productId = productId,
+                detailViewModel = detailViewModel,
                 onBackClick = { navController.popBackStack() },
                 onWriteReviewClick = {
                     navController.navigate(AppRoutes.Review.route)

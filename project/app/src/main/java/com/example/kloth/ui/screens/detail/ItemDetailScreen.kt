@@ -11,32 +11,48 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.SearchOff
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
-import com.example.kloth.data.FakeArticle.obtenerProductoPorId
 
 @Composable
 fun ItemDetailScreen(
     productId: String,
+    detailViewModel: DetailViewModel,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onAddToCartClick: () -> Unit = {},
     onWriteReviewClick: () -> Unit = {}
 ) {
-    // Resuelve el articulo correspondiente al identificador recibido por navegacion
-    val productData = obtenerProductoPorId(productId)
+    // Escuchar el estado del ViewModel
+    val state by detailViewModel.uiState.collectAsState()
 
-    if (productData == null) {
+    // Por ahra usamos el LaunchedEffect porque la vista depende de un ID
+    LaunchedEffect(productId) {
+        detailViewModel.loadProduct(productId)
+    }
+
+    if (state.isLoading) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            CircularProgressIndicator()
+        }
+        return
+    }
+
+    if (state.product == null) {
         ProductNotFoundContent(
             onBackClick = onBackClick,
             modifier = modifier
@@ -45,9 +61,14 @@ fun ItemDetailScreen(
     }
 
     ItemDetailScreenContent(
-        product = productData,
+        // Variables de estado (Datos)
+        product = state.product!!,
+
+        // Métodos para manejar el estado (Eventos)
+        onFavoriteClick = { detailViewModel.toggleFavorite() },
+
+        // Navegación y otros eventos
         onBackClick = onBackClick,
-        onFavoriteClick = { /* Toggle favorito */ },
         onShareClick = onShareClick,
         onAddToCartClick = onAddToCartClick,
         onWriteReviewClick = onWriteReviewClick,
