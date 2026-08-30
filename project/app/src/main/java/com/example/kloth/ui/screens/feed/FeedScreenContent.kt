@@ -13,8 +13,12 @@ import com.example.kloth.ui.screens.feed.components.PostCard
 
 @Composable
 fun FeedScreenContent(
+    // Variables de estado (Datos que vienen del ViewModel)
     mockPosts: List<PostItem>,
+
+    // Eventos y Navegación
     onProductClick: (String) -> Unit,
+    
     modifier: Modifier = Modifier
 ) {
     LazyColumn(

@@ -6,16 +6,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import com.example.kloth.data.FakeArticle
 import com.example.kloth.ui.screens.feed.components.FeedTabRow
 
 @Composable
 fun FeedScreen(
+    feedViewModel: FeedViewModel,
     modifier: Modifier = Modifier,
     onProductClick: (String) -> Unit = {}
 ) {
-    var selectedTabIndex by remember { mutableIntStateOf(0) }
-    val mockPosts = FakeArticle.posts
+    // Escuchar el estado del ViewModel
+    val state by feedViewModel.uiState.collectAsState()
     
     Surface(
         modifier = modifier.fillMaxSize(),
@@ -23,11 +23,14 @@ fun FeedScreen(
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
             FeedTabRow(
-                selectedTabIndex = selectedTabIndex,
-                onTabSelected = { selectedTabIndex = it }
+                selectedTabIndex = state.selectedTabIndex,
+                onTabSelected = { feedViewModel.onTabSelected(it) }
             )
             FeedScreenContent(
-                mockPosts = mockPosts,
+                // Variables de estado (Datos)
+                mockPosts = state.posts,
+
+                // Navegación y Eventos
                 onProductClick = onProductClick
             )
         }
