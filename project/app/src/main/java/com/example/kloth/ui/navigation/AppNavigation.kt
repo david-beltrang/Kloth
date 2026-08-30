@@ -19,6 +19,7 @@ import com.example.kloth.ui.screens.feed.FeedScreen
 import com.example.kloth.ui.screens.feed.FeedViewModel
 import com.example.kloth.ui.screens.forgotPassword.ForgotPasswordScreen
 import com.example.kloth.ui.screens.login.LoginScreen
+import com.example.kloth.ui.screens.login.LoginViewModel
 import com.example.kloth.ui.screens.notification.NotificationScreen
 import com.example.kloth.ui.screens.profile.ProfileScreen
 import com.example.kloth.ui.screens.register.RegisterScreen
@@ -41,12 +42,18 @@ fun AppNavigation(
     ) {
         // --- Flujo de Autenticación ---
         composable(AppRoutes.Login.route) {
+            val loginViewModel: LoginViewModel = viewModel()
+            val state by loginViewModel.uiState.collectAsState()
+
+            if (state.navigate) {
+                navController.navigate(AppRoutes.Feed.route) {
+                    popUpTo(AppRoutes.Login.route) { inclusive = true }
+                }
+                loginViewModel.onNavigationConsumed()
+            }
+
             LoginScreen(
-                onLoginClick = {
-                    navController.navigate(AppRoutes.Feed.route) {
-                        popUpTo(AppRoutes.Login.route) { inclusive = true }
-                    }
-                },
+                loginViewModel = loginViewModel,
                 onRegisterClick = {
                     navController.navigate(AppRoutes.Register.route)
                 },
