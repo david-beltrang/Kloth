@@ -15,6 +15,7 @@ import com.example.kloth.ui.screens.detail.ItemDetailScreen
 import com.example.kloth.ui.screens.editProfile.EditProfileScreen
 import com.example.kloth.ui.screens.explore.ExploreScreen
 import com.example.kloth.ui.screens.feed.FeedScreen
+import com.example.kloth.ui.screens.feed.FeedViewModel
 import com.example.kloth.ui.screens.forgotPassword.ForgotPasswordScreen
 import com.example.kloth.ui.screens.login.LoginScreen
 import com.example.kloth.ui.screens.notification.NotificationScreen
@@ -82,7 +83,9 @@ fun AppNavigation(
 
         // --- Flujo Principal de la App ---
         composable(AppRoutes.Feed.route) {
+            val feedViewModel: FeedViewModel = viewModel()
             FeedScreen(
+                feedViewModel = feedViewModel,
                 onProductClick = { productId ->
                     navController.navigate(AppRoutes.ArticleDetail.createRoute(productId))
                 }
