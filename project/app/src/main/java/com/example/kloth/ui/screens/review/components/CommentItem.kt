@@ -23,10 +23,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kloth.R
 import com.example.kloth.data.ComentarioReviewData
 import com.example.kloth.data.ComentariosDataLocal
 import com.example.kloth.ui.theme.KlothTheme
@@ -91,7 +93,7 @@ fun CommentItem(
                     IconButton(onClick = onLikeClick, modifier = Modifier.size(20.dp)) {
                         Icon(
                             imageVector = if (comentario.isLikedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                            contentDescription = "Me gusta",
+                            contentDescription = stringResource(R.string.cd_like),
                             tint = if (comentario.isLikedByMe) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant,
                             modifier = Modifier.size(16.dp)
                         )
@@ -107,7 +109,7 @@ fun CommentItem(
                     IconButton(onClick = onDeleteClick, modifier = Modifier.size(20.dp)) {
                         Icon(
                             imageVector = Icons.Outlined.Delete,
-                            contentDescription = "Eliminar comentario",
+                            contentDescription = stringResource(R.string.cd_delete_comment),
                             tint = MaterialTheme.colorScheme.error,
                             modifier = Modifier.size(16.dp)
                         )

@@ -25,17 +25,15 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
 
-/**
- * Carrusel horizontal simple usando solo recursos locales (Drawables).
- */
 @Composable
 fun PhotoCarrusel(
-    photos: List<Int>, // recibe solo IDs de recursos R.drawable.nombre
+    photos: List<Int>,
     onDeletePhoto: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -62,7 +60,6 @@ fun PhotoItem(
     Box(
         modifier = modifier.size(100.dp)
     ) {
-        // Usamos Image y painterResource para cargar fotos locales de forma síncrona
         Image(
             painter = painterResource(id = photoResId),
             contentDescription = null,
@@ -73,7 +70,6 @@ fun PhotoItem(
                 .background(MaterialTheme.colorScheme.surfaceVariant)
         )
 
-        // Botón de eliminar
         Box(
             modifier = Modifier
                 .align(Alignment.TopEnd)
@@ -86,13 +82,14 @@ fun PhotoItem(
         ) {
             Icon(
                 imageVector = Icons.Default.Close,
-                contentDescription = "Eliminar",
+                contentDescription = stringResource(R.string.cd_delete_photo),
                 tint = Color.White,
                 modifier = Modifier.size(16.dp)
             )
         }
     }
 }
+
 
 @Preview(showBackground = true)
 @Composable

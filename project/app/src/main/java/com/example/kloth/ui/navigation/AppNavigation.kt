@@ -11,6 +11,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.kloth.ui.screens.createArticle.CreateArticleScreen
+import com.example.kloth.ui.screens.createReview.CreateReviewScreen
 import com.example.kloth.ui.screens.detail.DetailViewModel
 import com.example.kloth.ui.screens.detail.ItemDetailScreen
 import com.example.kloth.ui.screens.editProfile.EditProfileScreen
@@ -158,7 +159,23 @@ fun AppNavigation(
                 detailViewModel = detailViewModel,
                 onBackClick = { navController.popBackStack() },
                 onWriteReviewClick = {
-                    navController.navigate(AppRoutes.Review.route)
+                    navController.navigate(AppRoutes.CreateReview.createRoute(productId))
+                }
+            )
+        }
+
+        composable(
+            route = AppRoutes.CreateReview.route,
+            arguments = listOf(
+                navArgument(AppRoutes.CreateReview.ARG_PRODUCT_ID) {
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            CreateReviewScreen(
+                onBackClick = { navController.popBackStack() },
+                onReviewSubmitted = {
+                    navController.popBackStack()
                 }
             )
         }
