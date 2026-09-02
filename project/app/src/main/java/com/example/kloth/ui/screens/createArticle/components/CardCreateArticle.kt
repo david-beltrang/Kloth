@@ -25,19 +25,16 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
 
-/**
- * Este componente es "estático". No tiene memoria propia (no usa remember).
- * Si le pasas una foto por [imageResId], la muestra. Si no, muestra el cuadro punteado.
- */
 @Composable
 fun CardCreateArticle(
     modifier: Modifier = Modifier,
-    imageResId: Int? = null, // Parámetro opcional para la imagen
+    imageResId: Int? = null,
     onClick: () -> Unit = {}
 ) {
     val outlineColor = MaterialTheme.colorScheme.outline
@@ -49,7 +46,6 @@ fun CardCreateArticle(
             .padding(12.dp)
             .clip(RoundedCornerShape(12.dp))
             .clickable(onClick = onClick)
-            // Solo dibujamos el borde punteado si no hay una imagen puesta
             .then(
                 if (imageResId == null) {
                     Modifier.drawBehind {
@@ -71,7 +67,6 @@ fun CardCreateArticle(
         contentAlignment = Alignment.Center
     ) {
         if (imageResId != null) {
-            // Si hay id de imagen entonces s epinta
             Image(
                 painter = painterResource(id = imageResId),
                 contentDescription = null,
@@ -79,7 +74,6 @@ fun CardCreateArticle(
                 modifier = Modifier.fillMaxSize()
             )
         } else {
-            // Si no hay imagen, mostramos el diseño de "Añadir"
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(8.dp)
@@ -90,12 +84,12 @@ fun CardCreateArticle(
                     tint = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = "Añadir Foto",
+                    text = stringResource(R.string.add_photo_title),
                     style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
                 Text(
-                    text = "Toca para subir imágenes",
+                    text = stringResource(R.string.add_photo_subtitle),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
@@ -103,8 +97,6 @@ fun CardCreateArticle(
         }
     }
 }
-
-// --- PREVIEWS PARA VER AMBOS ESTADOS ---
 
 @Preview(showBackground = true, name = "Estado Vacío")
 @Composable
@@ -118,7 +110,6 @@ fun CardEmptyPreview() {
 @Composable
 fun CardWithPhotoPreview() {
     KlothTheme {
-        // Aquí simulamos que ya se agregó una foto
         CardCreateArticle(imageResId = R.drawable.abrigo_negro)
     }
 }

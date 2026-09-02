@@ -2,6 +2,7 @@ package com.example.kloth.ui.screens.register
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kloth.ui.theme.KlothTheme
 
 @Preview(
@@ -12,7 +13,7 @@ import com.example.kloth.ui.theme.KlothTheme
 @Composable
 fun RegisterScreenPreview() {
     KlothTheme(darkTheme = false) {
-        RegisterScreen()
+        RegisterScreen(registerViewModel = viewModel())
     }
 }
 
@@ -26,6 +27,6 @@ fun RegisterScreenPreview() {
 @Composable
 fun RegisterScreenDarkPreview() {
     KlothTheme(darkTheme = true) {
-        RegisterScreen()
+        RegisterScreen(registerViewModel = viewModel())
     }
 }

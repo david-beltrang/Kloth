@@ -1,58 +1,62 @@
 package com.example.kloth.ui.navigation
 
-/**
- * Definición centralizada y tipada de todas las rutas de la aplicación.
- *
- * Las Screens nunca conocen estas rutas directamente: solo reciben callbacks
- * (onProductClick, onBackClick, etc.). El único punto que las utiliza es
- * AppNavHost junto con el Scaffold principal de MainActivity.
- */
+// definicion de rutas de la app
 sealed class AppRoutes(val route: String) {
 
-    /** Pantalla de inicio de sesión (destino inicial). */
+    // login
     object Login : AppRoutes("login")
 
-    /** Pantalla de registro. */
+    // registro
     object Register : AppRoutes("register")
 
-    /** Pantalla de recuperación de contraseña. */
+    // recuperar contraseña
     object ForgotPassword : AppRoutes("forgot_password")
 
-    /** Feed principal (tab 0). */
+    // feed principal (tab 0)
     object Feed : AppRoutes("feed")
 
-    /** Explorar catálogo (tab 1). */
+    // explorar (tab 1)
     object Explore : AppRoutes("explore")
 
-    /** Crear publicación (tab 2). */
+    // crear publicacion (tab 2)
     object CreateArticle : AppRoutes("create_article")
 
-    /** Notificaciones (tab 3). */
+    // notificaciones (tab 3)
     object Notifications : AppRoutes("notifications")
 
-    /** Perfil de usuario (tab 4). */
+    // perfil (tab 4)
     object Profile : AppRoutes("profile")
 
-    /** Edición de perfil. */
+    // editar perfil
     object EditProfile : AppRoutes("edit_profile")
 
-    /** Reseñas del artículo. */
-    object Review : AppRoutes("review")
+    // resena de articulo, lleva el id como argumento
+    object Review : AppRoutes("${RouteConstants.REVIEW_BASE_ROUTE}/{${RouteConstants.REVIEW_ARG_ID}}") {
+        const val ARG_REVIEW_ID = RouteConstants.REVIEW_ARG_ID
 
-    /**
-     * Detalle de artículo. Requiere el identificador único del artículo,
-     * que viaja como argumento dentro de la ruta.
-     */
-    object ArticleDetail : AppRoutes("${ARTICLE_BASE_ROUTE}/{${ARTICLE_ARG_PRODUCT_ID}}") {
-        const val ARG_PRODUCT_ID = ARTICLE_ARG_PRODUCT_ID
-
-        /** Construye la ruta concreta para un artículo específico. */
-        fun createRoute(productId: String): String = "${ARTICLE_BASE_ROUTE}/$productId"
+        fun createRoute(reviewId: String): String = "${RouteConstants.REVIEW_BASE_ROUTE}/$reviewId"
     }
 
-    companion object {
-        /** Segmento base de la ruta de detalle y nombre de su argumento. */
-        private const val ARTICLE_BASE_ROUTE = "article"
-        private const val ARTICLE_ARG_PRODUCT_ID = "productId"
+    // detalle de articulo, lleva el id como argumento
+    object ArticleDetail : AppRoutes("${RouteConstants.ARTICLE_BASE_ROUTE}/{${RouteConstants.ARTICLE_ARG_PRODUCT_ID}}") {
+        const val ARG_PRODUCT_ID = RouteConstants.ARTICLE_ARG_PRODUCT_ID
+
+        fun createRoute(productId: String): String = "${RouteConstants.ARTICLE_BASE_ROUTE}/$productId"
     }
+
+    // crear resena para un producto especifico
+    object CreateReview : AppRoutes("${RouteConstants.CREATE_REVIEW_BASE_ROUTE}/{${RouteConstants.CREATE_REVIEW_ARG_PRODUCT_ID}}") {
+        const val ARG_PRODUCT_ID = RouteConstants.CREATE_REVIEW_ARG_PRODUCT_ID
+        fun createRoute(productId: String): String = "${RouteConstants.CREATE_REVIEW_BASE_ROUTE}/$productId"
+    }
+}
+
+// Objeto normal para constantes de rutas
+object RouteConstants {
+    const val ARTICLE_BASE_ROUTE = "article"
+    const val ARTICLE_ARG_PRODUCT_ID = "productId"
+    const val CREATE_REVIEW_BASE_ROUTE = "create_review"
+    const val CREATE_REVIEW_ARG_PRODUCT_ID = "productId"
+    const val REVIEW_BASE_ROUTE = "review"
+    const val REVIEW_ARG_ID = "reviewId"
 }

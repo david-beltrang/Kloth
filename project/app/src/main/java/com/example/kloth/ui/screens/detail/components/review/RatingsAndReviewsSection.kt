@@ -11,6 +11,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.res.stringResource
+import com.example.kloth.R
 import com.example.kloth.data.ReviewData
 import com.example.kloth.data.ResenasDataLocal.defaultReviewsList
 import com.example.kloth.ui.screens.detail.components.RatingStars
@@ -45,7 +47,7 @@ fun RatingsAndReviewsSection(
         ) {
             Column {
                 Text(
-                    text = "Valoraciones",
+                    text = stringResource(R.string.detail_section_reviews_title),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
@@ -79,7 +81,7 @@ fun RatingsAndReviewsSection(
                 contentPadding = PaddingValues(horizontal = 14.dp, vertical = 6.dp)
             ) {
                 Text(
-                    text = "Escribir\nreseña",
+                    text = stringResource(R.string.detail_write_review_btn),
                     fontSize = 11.sp,
                     fontWeight = FontWeight.SemiBold,
                     lineHeight = 13.sp

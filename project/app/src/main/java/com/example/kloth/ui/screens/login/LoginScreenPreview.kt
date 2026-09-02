@@ -2,6 +2,7 @@ package com.example.kloth.ui.screens.login
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kloth.ui.theme.KlothTheme
 
 @Preview(
@@ -12,7 +13,7 @@ import com.example.kloth.ui.theme.KlothTheme
 @Composable
 fun LoginScreenPreview() {
     KlothTheme(darkTheme = false) {
-        LoginScreen()
+        LoginScreen(loginViewModel = viewModel())
     }
 }
 
@@ -26,6 +27,6 @@ fun LoginScreenPreview() {
 @Composable
 fun LoginScreenDarkPreview() {
     KlothTheme(darkTheme = true) {
-        LoginScreen()
+        LoginScreen(loginViewModel = viewModel())
     }
 }

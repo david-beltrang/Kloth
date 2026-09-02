@@ -1,28 +1,36 @@
 package com.example.kloth.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.example.kloth.ui.screens.createArticle.CreateArticleScreen
+import com.example.kloth.ui.screens.createReview.CreateReviewScreen
+import com.example.kloth.ui.screens.detail.DetailViewModel
 import com.example.kloth.ui.screens.detail.ItemDetailScreen
 import com.example.kloth.ui.screens.editProfile.EditProfileScreen
 import com.example.kloth.ui.screens.explore.ExploreScreen
+import com.example.kloth.ui.screens.explore.ExploreViewModel
 import com.example.kloth.ui.screens.feed.FeedScreen
+import com.example.kloth.ui.screens.feed.FeedViewModel
 import com.example.kloth.ui.screens.forgotPassword.ForgotPasswordScreen
+import com.example.kloth.ui.screens.forgotPassword.ForgotPasswordViewModel
 import com.example.kloth.ui.screens.login.LoginScreen
+import com.example.kloth.ui.screens.login.LoginViewModel
 import com.example.kloth.ui.screens.notification.NotificationScreen
+import com.example.kloth.ui.screens.notification.NotificationViewModel
 import com.example.kloth.ui.screens.profile.ProfileScreen
 import com.example.kloth.ui.screens.register.RegisterScreen
+import com.example.kloth.ui.screens.register.RegisterViewModel
 import com.example.kloth.ui.screens.review.ReviewScreen
 
-/**
- * Componente central de navegación de la aplicación.
- * Configura el NavHost y conecta las pantallas mediante callbacks.
- */
+// configuracion del navHost con todas las pantallas
 @Composable
 fun AppNavigation(
     navController: NavHostController,
@@ -35,12 +43,18 @@ fun AppNavigation(
     ) {
         // --- Flujo de Autenticación ---
         composable(AppRoutes.Login.route) {
+            val loginViewModel: LoginViewModel = viewModel()
+            val state by loginViewModel.uiState.collectAsState()
+
+            if (state.navigate) {
+                navController.navigate(AppRoutes.Feed.route) {
+                    popUpTo(AppRoutes.Login.route) { inclusive = true }
+                }
+                loginViewModel.onNavigationConsumed()
+            }
+
             LoginScreen(
-                onLoginClick = {
-                    navController.navigate(AppRoutes.Feed.route) {
-                        popUpTo(AppRoutes.Login.route) { inclusive = true }
-                    }
-                },
+                loginViewModel = loginViewModel,
                 onRegisterClick = {
                     navController.navigate(AppRoutes.Register.route)
                 },
@@ -51,7 +65,16 @@ fun AppNavigation(
         }
 
         composable(AppRoutes.ForgotPassword.route) {
+            val forgotPasswordViewModel: ForgotPasswordViewModel = viewModel()
+            val state by forgotPasswordViewModel.uiState.collectAsState()
+
+            if (state.navigateBack) {
+                navController.popBackStack()
+                forgotPasswordViewModel.onNavigationConsumed()
+            }
+
             ForgotPasswordScreen(
+                forgotPasswordViewModel = forgotPasswordViewModel,
                 onBackClick = {
                     navController.popBackStack()
                 }
@@ -59,12 +82,20 @@ fun AppNavigation(
         }
 
         composable(AppRoutes.Register.route) {
+            val registerViewModel: RegisterViewModel = viewModel()
+            val state by registerViewModel.uiState.collectAsState()
+
+            if (state.navigate) {
+                navController.navigate(AppRoutes.Feed.route) {
+                    popUpTo(AppRoutes.Login.route) { inclusive = true }
+                }
+                //Este es el metodo que resetea el navigate a false, sin este metodo
+                //la aplicacion se congela, ya que detecta el navigate en true otra vez y hace muchas recompisciones
+                registerViewModel.onNavigationConsumed()
+            }
+
             RegisterScreen(
-                onRegisterClick = {
-                    navController.navigate(AppRoutes.Feed.route) {
-                        popUpTo(AppRoutes.Login.route) { inclusive = true }
-                    }
-                },
+                registerViewModel = registerViewModel,
                 onLoginClick = {
                     navController.popBackStack()
                 }
@@ -73,7 +104,9 @@ fun AppNavigation(
 
         // --- Flujo Principal de la App ---
         composable(AppRoutes.Feed.route) {
+            val feedViewModel: FeedViewModel = viewModel()
             FeedScreen(
+                feedViewModel = feedViewModel,
                 onProductClick = { productId ->
                     navController.navigate(AppRoutes.ArticleDetail.createRoute(productId))
                 }
@@ -81,7 +114,9 @@ fun AppNavigation(
         }
 
         composable(AppRoutes.Explore.route) {
+            val exploreViewModel: ExploreViewModel = viewModel()
             ExploreScreen(
+                exploreViewModel = exploreViewModel,
                 onProductClick = { productId ->
                     navController.navigate(AppRoutes.ArticleDetail.createRoute(productId))
                 }
@@ -95,7 +130,8 @@ fun AppNavigation(
         }
 
         composable(AppRoutes.Notifications.route) {
-            NotificationScreen()
+            val notificationViewModel: NotificationViewModel = viewModel()
+            NotificationScreen(notificationViewModel = notificationViewModel)
         }
 
         composable(AppRoutes.Profile.route) {
@@ -131,11 +167,35 @@ fun AppNavigation(
                 ?.getString(AppRoutes.ArticleDetail.ARG_PRODUCT_ID)
                 .orEmpty()
 
+            val detailViewModel: DetailViewModel = viewModel()
+
             ItemDetailScreen(
                 productId = productId,
+                detailViewModel = detailViewModel,
                 onBackClick = { navController.popBackStack() },
                 onWriteReviewClick = {
-                    navController.navigate(AppRoutes.Review.route)
+                    navController.navigate(AppRoutes.CreateReview.createRoute(productId))
+                }
+            )
+        }
+
+        composable(
+            route = AppRoutes.CreateReview.route,
+            arguments = listOf(
+                navArgument(AppRoutes.CreateReview.ARG_PRODUCT_ID) {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments
+                ?.getString(AppRoutes.CreateReview.ARG_PRODUCT_ID)
+                .orEmpty()
+
+            CreateReviewScreen(
+                productId = productId,
+                onBackClick = { navController.popBackStack() },
+                onReviewSubmitted = {
+                    navController.popBackStack()
                 }
             )
         }

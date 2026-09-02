@@ -13,14 +13,20 @@ import com.example.kloth.ui.screens.detail.components.review.RatingsAndReviewsSe
 
 @Composable
 fun ItemDetailScreenContent(
+    // Variables de estado (Datos que vienen del ViewModel)
     product: ProductDetailData,
-    onBackClick: () -> Unit = {},
+
+    // Métodos para manejar el estado (Eventos que suben al ViewModel)
     onFavoriteClick: () -> Unit = {},
+
+    // Navegación y otros eventos
+    onBackClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onAddToCartClick: () -> Unit = {},
     onWriteReviewClick: () -> Unit = {},
     onLikeReviewClick: (String) -> Unit = {},
     onCommentReviewClick: (String) -> Unit = {},
+    
     modifier: Modifier = Modifier
 ) {
     LazyColumn(

@@ -6,21 +6,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
-import com.example.kloth.R
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kloth.ui.screens.editProfile.components.EditProfileTopBar
 
 @Composable
 fun EditProfileScreen(
     modifier: Modifier = Modifier,
-    onCancelClick: () -> Unit = {}
+    onCancelClick: () -> Unit = {},
+    viewModel: EditProfileViewModel = viewModel()
 ) {
-    val defaultUsername = stringResource(R.string.edit_profile_mock_username)
-    var username by remember { mutableStateOf(defaultUsername) }
-    var bio by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var location by remember { mutableStateOf("") }
-    var website by remember { mutableStateOf("") }
+    val uiState by viewModel.uiState.collectAsState()
 
     Surface(
         modifier = modifier.fillMaxSize(),
@@ -29,21 +24,22 @@ fun EditProfileScreen(
         Column(modifier = Modifier.fillMaxSize()) {
             EditProfileTopBar(onCancelClick = onCancelClick)
             EditProfileScreenContent(
-                username = username,
-                onUsernameChange = { username = it },
-                bio = bio,
-                onBioChange = { bio = it },
-                email = email,
-                onEmailChange = { email = it },
-                location = location,
-                onLocationChange = { location = it },
-                website = website,
-                onWebsiteChange = { website = it },
-                onSaveClick = { /* TODO: Implement save logic */ },
-                onDeleteAccount = { /* TODO: Implement delete logic */ },
+                username = uiState.username,
+                onUsernameChange = { viewModel.updateUsername(it) },
+                bio = uiState.bio,
+                onBioChange = { viewModel.updateBio(it) },
+                email = uiState.email,
+                onEmailChange = { viewModel.updateEmail(it) },
+                location = uiState.location,
+                onLocationChange = { viewModel.updateLocation(it) },
+                website = uiState.website,
+                onWebsiteChange = { viewModel.updateWebsite(it) },
+
+                //Preguntar si se le pone navegación a donde llevbaría
+                onSaveClick = { /* Implementar save logic */ },
+                onDeleteAccount = { /* Implementar delete logic */ },
                 modifier = Modifier.weight(1f)
             )
         }
     }
 }
-

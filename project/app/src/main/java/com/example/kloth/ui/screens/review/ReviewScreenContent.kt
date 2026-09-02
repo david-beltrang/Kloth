@@ -1,13 +1,10 @@
 package com.example.kloth.ui.screens.review
 
-import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -19,24 +16,22 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.res.stringResource
 import com.example.kloth.R
-import com.example.kloth.data.ResenasDataLocal
 import com.example.kloth.data.ReviewData
 import com.example.kloth.ui.screens.review.components.CommentInputField
 import com.example.kloth.ui.screens.review.components.CommentItem
 import com.example.kloth.ui.screens.review.components.MainReviewItem
-import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun ReviewScreenContent(
     resena: ReviewData,
     nuevoComentarioTexto: String,
     ordenMasRecientes: Boolean,
+    yaComento: Boolean,
     onTextoComentarioChange: (String) -> Unit,
     onEnviarComentario: () -> Unit,
     onLikeResena: () -> Unit,
@@ -46,8 +41,6 @@ fun ReviewScreenContent(
     onBackClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val yaComento = resena.comentariosList.any { it.isMyComment }
-
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -122,4 +115,3 @@ fun ReviewScreenContent(
         )
     }
 }
-

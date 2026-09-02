@@ -1,24 +1,29 @@
 package com.example.kloth.ui.screens.forgotPassword
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 
 @Composable
 fun ForgotPasswordScreen(
+    forgotPasswordViewModel: ForgotPasswordViewModel,
     modifier: Modifier = Modifier,
     onBackClick: () -> Unit = {}
 ) {
-    var email by remember { mutableStateOf("") }
+    val state by forgotPasswordViewModel.uiState.collectAsState()
 
     ForgotPasswordScreenContent(
         modifier = modifier,
-        email = email,
-        onEmailChange = { email = it },
-        onSendClick = {},
+
+        // Variables de estado
+        email = state.email,
+
+        // Métodos del ViewModel para manejar el estado
+        onEmailChange = { forgotPasswordViewModel.onEmailChange(it) },
+        onSendClick = { forgotPasswordViewModel.onSendClick() },
+
+        // Navegación
         onBackClick = onBackClick
     )
 }

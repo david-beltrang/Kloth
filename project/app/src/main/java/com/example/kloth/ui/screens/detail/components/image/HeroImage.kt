@@ -10,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -19,16 +20,17 @@ import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun HeroImage(
-    imageModel: Any?, // Acepta Int (Resource) o String (URL)
+    imageModel: Any?,
     modifier: Modifier = Modifier,
     bottomCornerRadius: Dp = 32.dp,
-    contentDescription: String = "Imagen principal del producto"
+    contentDescription: String = stringResource(R.string.cd_hero_image)
 ) {
     Box(
         modifier = modifier
             .clip(RoundedCornerShape(bottomStart = bottomCornerRadius, bottomEnd = bottomCornerRadius))
             .background(MaterialTheme.colorScheme.surfaceVariant)
     ) {
+        //Se usa async para que mno se trabe la UI, carga asíncrona
         AsyncImage(
             model = imageModel,
             contentDescription = contentDescription,

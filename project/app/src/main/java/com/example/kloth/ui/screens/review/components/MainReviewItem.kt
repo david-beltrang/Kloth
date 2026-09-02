@@ -26,14 +26,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kloth.R
 import com.example.kloth.data.ResenasDataLocal
 import com.example.kloth.data.ReviewData
-import com.example.kloth.ui.theme.KlothTheme
 import com.example.kloth.ui.theme.GoldStar
+import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun MainReviewItem(
@@ -57,11 +59,10 @@ fun MainReviewItem(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-                // Flecha de regreso pegada al avatar
                 IconButton(onClick = onBackClick) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                        contentDescription = "Volver",
+                        contentDescription = stringResource(R.string.cd_back),
                         tint = MaterialTheme.colorScheme.onBackground
                     )
                 }
@@ -122,7 +123,7 @@ fun MainReviewItem(
                 IconButton(onClick = onLikeClick, modifier = Modifier.size(24.dp)) {
                     Icon(
                         imageVector = if (resena.isLikedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
-                        contentDescription = "Me gusta",
+                        contentDescription = stringResource(R.string.cd_like),
                         tint = if (resena.isLikedByMe) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }

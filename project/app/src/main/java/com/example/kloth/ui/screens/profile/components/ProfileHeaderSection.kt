@@ -38,6 +38,7 @@ fun ProfileHeaderSection(
     ) {
         Spacer(modifier = Modifier.height(8.dp))
 
+        //Se usa async para que mno se trabe la UI, carga asíncrona
         AsyncImage(
             model = "https://lh3.googleusercontent.com/aida-public/AB6AXuDBMyCAVr9pWrd_sDsyfrx2v7B_wwZXc4En_Hj06fTPAnAoiyn85C9FsH8p6U6PiT3-zoF2ygVqjkcaxTd2qvb0dJco59T-gId4rhTYZRrypPBw7D21cyI8jziwbOHXhi6RvASwrKdMXNtFM4PZ4vmw0j-UQYyz-l9jQO_PKjkApgQurneLQYUD05xXGaJiFbJ7J7lnhsLCcMpV1reEReT6SL0W_OBqa0a_7S4P7IwHGSYytO0DdrGagg",
             contentDescription = stringResource(R.string.cd_profile_photo),

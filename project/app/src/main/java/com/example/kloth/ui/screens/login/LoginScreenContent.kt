@@ -35,11 +35,18 @@ import com.example.kloth.ui.utils.KlothTextField
 
 @Composable
 fun LoginScreenContent(
+    // Variables de estado (Datos del ViewModel)
     email: String,
     password: String,
+    isPasswordVisible: Boolean,
+    
+    // Métodos para manejar el estado (Eventos)
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
+    onPasswordToggleClick: () -> Unit,
     onLoginClick: () -> Unit,
+    
+    // Navegación y otros eventos
     onForgotPasswordClick: () -> Unit,
     onRegisterClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -65,8 +72,11 @@ fun LoginScreenContent(
                 Spacer(modifier = Modifier.height(40.dp))
 
                 KlothTextField(
+                    // Estado y Eventos elevados
                     value = email,
                     onValueChange = onEmailChange,
+                    
+                    // Estética y Configuración
                     placeholder = stringResource(R.string.login_email_placeholder),
                     leadingIcon = Icons.Outlined.Email,
                     keyboardOptions = KeyboardOptions(
@@ -78,8 +88,13 @@ fun LoginScreenContent(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 KlothTextField(
+                    // Estado y Eventos elevados
                     value = password,
                     onValueChange = onPasswordChange,
+                    isPasswordVisible = isPasswordVisible,
+                    onPasswordToggleClick = onPasswordToggleClick,
+                    
+                    // Estética y Configuración
                     placeholder = stringResource(R.string.login_password_placeholder),
                     leadingIcon = Icons.Outlined.Lock,
                     isPassword = true,
