@@ -20,8 +20,10 @@ fun ProfileScreen(
         color = MaterialTheme.colorScheme.background
     ) {
         ProfileScreenContent(
+            //metodos de estado
             selectedTabIndex = uiState.selectedTabIndex,
             onTabSelected = { viewModel.onTabSelected(it) },
+            //navegacion
             onEditProfileClick = onEditProfileClick,
             modifier = Modifier.fillMaxSize()
         )

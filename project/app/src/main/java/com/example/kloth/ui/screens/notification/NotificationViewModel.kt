@@ -11,6 +11,7 @@ class NotificationViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(NotificationState())
     val uiState: StateFlow<NotificationState> = _uiState
 
+    //Init paea cargar todas las notificaciones, no necesita ID
     init {
         loadNotifications()
     }

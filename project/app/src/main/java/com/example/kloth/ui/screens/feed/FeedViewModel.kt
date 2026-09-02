@@ -11,6 +11,7 @@ class FeedViewModel : ViewModel() {
     private val _uiState = MutableStateFlow(FeedState())
     val uiState: StateFlow<FeedState> = _uiState
 
+    //Usamos init para cargar todos los posts, esta funcion de getAllPosts no recibe parametros
     init {
         getAllPosts()
     }

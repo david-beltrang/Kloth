@@ -62,6 +62,7 @@ fun ItemDetailScreen(
 
     ItemDetailScreenContent(
         // Variables de estado (Datos)
+        //Aqui se maneja el null assertion
         product = state.product!!,
 
         // Métodos para manejar el estado (Eventos)

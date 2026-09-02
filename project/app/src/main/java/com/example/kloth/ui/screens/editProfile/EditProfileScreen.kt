@@ -34,6 +34,8 @@ fun EditProfileScreen(
                 onLocationChange = { viewModel.updateLocation(it) },
                 website = uiState.website,
                 onWebsiteChange = { viewModel.updateWebsite(it) },
+
+                //Preguntar si se le pone navegación a donde llevbaría
                 onSaveClick = { /* Implementar save logic */ },
                 onDeleteAccount = { /* Implementar delete logic */ },
                 modifier = Modifier.weight(1f)

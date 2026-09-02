@@ -36,6 +36,8 @@ fun CreateArticleScreen(
             onCiudadChange = { viewModel.onCiudadChanged(it) },
             onPaisChange = { viewModel.onPaisChanged(it) },
             onOrganizadorChange = { viewModel.onOrganizadorChanged(it) },
+
+            //Navegacion y logica de publicar lista para implmentar
             onPublicarClick = {
                 viewModel.publishArticle(onSuccess = onPublicarClick)
             },
