@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kloth.R
 import com.example.kloth.ui.screens.detail.components.ProductCatalogCard
 import com.example.kloth.ui.screens.explore.components.CategoryChip
@@ -26,7 +27,7 @@ import com.example.kloth.ui.utils.KlothBottomNavigation
 @Composable
 fun ExploreScreenPreview() {
     KlothTheme(darkTheme = false) {
-        ExploreScreen()
+        ExploreScreen(exploreViewModel = viewModel())
     }
 }
 
@@ -39,7 +40,7 @@ fun ExploreScreenPreview() {
 @Composable
 fun ExploreScreenDarkPreview() {
     KlothTheme(darkTheme = true) {
-        ExploreScreen()
+        ExploreScreen(exploreViewModel = viewModel())
     }
 }
 

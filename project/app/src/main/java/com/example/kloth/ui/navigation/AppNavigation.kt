@@ -1,7 +1,10 @@
 package com.example.kloth.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -11,10 +14,13 @@ import com.example.kloth.ui.screens.createArticle.CreateArticleScreen
 import com.example.kloth.ui.screens.detail.ItemDetailScreen
 import com.example.kloth.ui.screens.editProfile.EditProfileScreen
 import com.example.kloth.ui.screens.explore.ExploreScreen
+import com.example.kloth.ui.screens.explore.ExploreViewModel
 import com.example.kloth.ui.screens.feed.FeedScreen
 import com.example.kloth.ui.screens.forgotPassword.ForgotPasswordScreen
+import com.example.kloth.ui.screens.forgotPassword.ForgotPasswordViewModel
 import com.example.kloth.ui.screens.login.LoginScreen
 import com.example.kloth.ui.screens.notification.NotificationScreen
+import com.example.kloth.ui.screens.notification.NotificationViewModel
 import com.example.kloth.ui.screens.profile.ProfileScreen
 import com.example.kloth.ui.screens.register.RegisterScreen
 import com.example.kloth.ui.screens.review.ReviewScreen
@@ -51,7 +57,16 @@ fun AppNavigation(
         }
 
         composable(AppRoutes.ForgotPassword.route) {
+            val forgotPasswordViewModel: ForgotPasswordViewModel = viewModel()
+            val state by forgotPasswordViewModel.uiState.collectAsState()
+
+            if (state.navigateBack) {
+                navController.popBackStack()
+                forgotPasswordViewModel.onNavigationConsumed()
+            }
+
             ForgotPasswordScreen(
+                forgotPasswordViewModel = forgotPasswordViewModel,
                 onBackClick = {
                     navController.popBackStack()
                 }
@@ -81,7 +96,9 @@ fun AppNavigation(
         }
 
         composable(AppRoutes.Explore.route) {
+            val exploreViewModel: ExploreViewModel = viewModel()
             ExploreScreen(
+                exploreViewModel = exploreViewModel,
                 onProductClick = { productId ->
                     navController.navigate(AppRoutes.ArticleDetail.createRoute(productId))
                 }
@@ -95,7 +112,8 @@ fun AppNavigation(
         }
 
         composable(AppRoutes.Notifications.route) {
-            NotificationScreen()
+            val notificationViewModel: NotificationViewModel = viewModel()
+            NotificationScreen(notificationViewModel = notificationViewModel)
         }
 
         composable(AppRoutes.Profile.route) {
