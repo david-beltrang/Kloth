@@ -109,7 +109,7 @@ git clone https://github.com/david-beltrang/Kloth.git
 cd Kloth
 ```
 
-2. Abre la carpeta **`project/`** en Android Studio (File → Open → selecciona `project`).
+2. Abre la carpeta **`project/`** en Android Studio realiza (File → Open → selecciona `project`).
 3. Espera a que Gradle sincronice las dependencias.
 4. Ejecuta la app en un emulador o dispositivo (`Run`).
 
