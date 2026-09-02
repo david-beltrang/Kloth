@@ -1,6 +1,7 @@
 package com.example.kloth.ui.screens.login
 
 import androidx.lifecycle.ViewModel
+import com.example.kloth.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -27,7 +28,7 @@ class LoginViewModel : ViewModel() {
             _uiState.update { 
                 it.copy(
                     showMessage = true, 
-                    errorMessage = "Por favor, completa todos los campos" 
+                    errorMessageRes = R.string.login_error_empty_fields 
                 ) 
             }
         } else {
