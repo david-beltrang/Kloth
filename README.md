@@ -20,7 +20,7 @@ A diferencia de una red social tradicional basada solo en publicaciones, Kloth c
 | **Publicación** | Prendas, Outfits | Contenido personal del usuario; aparece en su perfil |
 | **Catálogo** | Marcas, Eventos | Registro compartido y reutilizable por toda la comunidad |
 
-Sobre cualquier artículo se pueden buscar, ver detalle, calificar (0–5), reseñar, comentar y dar like.
+Sobre cualquier artículo se pueden buscar, ver detalle, calificar (0–5) estrellas, reseñar, comentar y dar like.
 
 ---
 
@@ -41,14 +41,23 @@ Documentación completa de requisitos y reglas de negocio: [`docs/requirements.m
 
 ## Estado actual
 
-La app está en fase de **UI / prototipo visual**. Las pantallas usan datos de ejemplo; la navegación entre pantallas está desactivada temporalmente (se alterna la pantalla activa desde `MainActivity`).
+- Login, registro y recuperación de contraseña
 
-| Pantalla | Descripción |
-|----------|-------------|
-| **Feed** | Timeline con tabs (Following / For You), posts y bottom navigation |
-| **Explore** | Catálogo con búsqueda, chips de categoría y filtros |
-| **Item Detail** | Hero image, info del producto, ratings y reseñas |
-| **Profile** | Header de usuario, stats y tabs de contenido |
+- Feed con tabs de Following y For You
+
+- Buscar y explorar artículos con filtros por categoría
+
+- Detalle de artículo con rating y reseñas
+
+- Crear prendas, outfits, marcas y eventos
+
+- Comentarios con respuestas (2 niveles), likes y seguimiento
+
+- Notificaciones de seguidores, likes, comentarios y menciones
+
+- Perfil con stats, publicaciones y artículos calificados
+
+La navegación entre pantallas está implementada y funciona. Los datos por ahora son mock — todavía no hay backend.
 
 ---
 
@@ -60,34 +69,37 @@ La app está en fase de **UI / prototipo visual**. Las pantallas usan datos de e
 | **Jetpack Compose** + Material 3 | UI declarativa |
 | **Android Gradle Plugin** | Build del proyecto |
 | **Coil** | Carga de imágenes |
-| **AndroidX Lifecycle / Activity Compose** | Ciclo de vida y host Compose |
-
-- **minSdk**: 26  
-- **targetSdk / compileSdk**: 37  
-- **applicationId**: `com.example.kloth`
 
 ---
 
 ## Estructura del repositorio
 
 ```text
+
 Kloth/
-├── docs/                     # Documentación del producto y del equipo
-│   ├── functional-spec.md    # Especificación funcional
-│   ├── requirements.md       # Requisitos funcionales y no funcionales
-│   ├── workflow.md           # Git workflow y Conventional Commits
-│   ├── diagrams/             # Diagramas de dominio
-│   └── logo/                 # Assets de marca
-├── project/                  # Proyecto Android (abrir esta carpeta en Android Studio)
-│   └── app/src/main/java/com/example/kloth/
-│       ├── MainActivity.kt
-│       ├── data/             # Modelos de datos (mock)
-│       ├── navigation/       # Nav graph (pendiente de activar)
-│       └── ui/
-│           ├── components/   # Componentes reutilizables
-│           ├── screens/      # Feed, Explore, Detail, Profile
-│           └── theme/        # Colores, tipografía y tema
+
+├── docs/               # Specs, diagramas y logo
+
+├── project/            # El proyecto Android (abrir esta en Android Studio)
+
+│   └── app/src/main/java/com/example/kloth/
+
+│       ├── data/       # Modelos mock
+
+│       ├── ui/
+
+│       │   ├── screens/    # Feed, Explore, Detail, Profile, Auth, etc.
+
+│       │   ├── components/ # Componentes reutilizables
+
+│       │   ├── navigation/ # Nav graph
+
+│       │   └── theme/      # Colores y tipografía
+
+│       └── ...
+
 └── README.md
+
 ```
 
 ---
