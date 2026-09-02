@@ -42,4 +42,12 @@ object ResenasDataLocal {
     )
 
     val resenaDetalleSeleccionada = defaultReviewsList.first()
+
+    /**
+     * Busca una reseña por su ID dentro de la lista local.
+     * Si no la encuentra, retorna la reseña seleccionada por defecto.
+     */
+    fun obtenerResenaPorId(id: String): ReviewData? {
+        return defaultReviewsList.find { it.id == id } ?: resenaDetalleSeleccionada
+    }
 }

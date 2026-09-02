@@ -15,29 +15,30 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
 
-/*
-  Estos son los 3 tipos de publicaciones que nuestra app permite crear.
- */
 enum class ArticleType {
     PRENDA, OUTFIT, EVENTO
 }
 
-/**
- * Este es el formulario principal. Es STATELESS (no tiene memoria interna).
- * Recibe todos los valores y las funciones para avisar cuando cambian.
- */
 @Composable
 fun FormArticle(
     selectedType: ArticleType,
@@ -68,51 +69,109 @@ fun FormArticle(
             .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(20.dp)
     ) {
-        // campos que siempre van
         FormInput(
-            label = "Nombre",
+            label = stringResource(R.string.label_nombre),
             value = nombre,
             onValueChange = onNombreChange,
-            placeholder = "Nombre del artículo",
+            placeholder = stringResource(R.string.placeholder_nombre),
             required = true
         )
 
         FormInput(
-            label = "Descripción",
+            label = stringResource(R.string.label_descripcion),
             value = descripcion,
             onValueChange = onDescripcionChange,
-            placeholder = "Describe este artículo...",
+            placeholder = stringResource(R.string.placeholder_descripcion),
             singleLine = false,
             minLines = 4,
             maxLines = 6,
             maxLength = 500
         )
 
-        // campos que cambian segun la categoria
         AnimatedContent(targetState = selectedType, label = "form_transition") { type ->
             Column(verticalArrangement = Arrangement.spacedBy(20.dp)) {
                 when (type) {
                     ArticleType.PRENDA -> {
-                        FormInput(label = "Marca", value = marca, onValueChange = onMarcaChange, placeholder = "Marca o diseñador")
-                        FormInput(label = "Categoría", value = "", onValueChange = {}, placeholder = "Seleccionar categoría", required = true, isSelector = true)
-                        FormInput(label = "Color", value = color, onValueChange = onColorChange, placeholder = "Color principal")
-                        FormInput(label = "Precio", value = precio, onValueChange = onPrecioChange, placeholder = "0.00", prefix = "€", keyboardType = KeyboardType.Number)
+                        FormInput(
+                            label = stringResource(R.string.label_marca),
+                            value = marca,
+                            onValueChange = onMarcaChange,
+                            placeholder = stringResource(R.string.placeholder_marca)
+                        )
+                        FormInput(
+                            label = stringResource(R.string.label_categoria),
+                            value = "",
+                            onValueChange = {},
+                            placeholder = stringResource(R.string.placeholder_categoria),
+                            required = true,
+                            isSelector = true
+                        )
+                        FormInput(
+                            label = stringResource(R.string.label_color_field),
+                            value = color,
+                            onValueChange = onColorChange,
+                            placeholder = stringResource(R.string.placeholder_color)
+                        )
+                        FormInput(
+                            label = stringResource(R.string.label_precio),
+                            value = precio,
+                            onValueChange = onPrecioChange,
+                            placeholder = stringResource(R.string.placeholder_precio),
+                            prefix = stringResource(R.string.currency_symbol),
+                            keyboardType = KeyboardType.Number
+                        )
                     }
                     ArticleType.OUTFIT -> {
-                        FormInput(label = "Estilo", value = estilo, onValueChange = onEstiloChange, placeholder = "Seleccionar estilo", isSelector = true)
+                        FormInput(
+                            label = stringResource(R.string.label_estilo),
+                            value = estilo,
+                            onValueChange = onEstiloChange,
+                            placeholder = stringResource(R.string.placeholder_estilo),
+                            isSelector = true
+                        )
                     }
                     ArticleType.EVENTO -> {
-                        FormInput(label = "Ciudad", value = ciudad, onValueChange = onCiudadChange, placeholder = "Ciudad del evento")
-                        FormInput(label = "País", value = pais, onValueChange = onPaisChange, placeholder = "País del evento")
-                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        FormInput(
+                            label = stringResource(R.string.label_ciudad),
+                            value = ciudad,
+                            onValueChange = onCiudadChange,
+                            placeholder = stringResource(R.string.placeholder_ciudad)
+                        )
+                        FormInput(
+                            label = stringResource(R.string.label_pais),
+                            value = pais,
+                            onValueChange = onPaisChange,
+                            placeholder = stringResource(R.string.placeholder_pais)
+                        )
+                        Row(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(12.dp)
+                        ) {
                             Box(modifier = Modifier.weight(1f)) {
-                                FormInput(label = "Inicio", value = "", onValueChange = {}, placeholder = "DD/MM/AA", isSelector = true)
+                                FormInput(
+                                    label = stringResource(R.string.label_inicio),
+                                    value = "",
+                                    onValueChange = {},
+                                    placeholder = stringResource(R.string.placeholder_fecha),
+                                    isSelector = true
+                                )
                             }
                             Box(modifier = Modifier.weight(1f)) {
-                                FormInput(label = "Fin", value = "", onValueChange = {}, placeholder = "DD/MM/AA", isSelector = true)
+                                FormInput(
+                                    label = stringResource(R.string.label_fin),
+                                    value = "",
+                                    onValueChange = {},
+                                    placeholder = stringResource(R.string.placeholder_fecha),
+                                    isSelector = true
+                                )
                             }
                         }
-                        FormInput(label = "Organizador", value = organizador, onValueChange = onOrganizadorChange, placeholder = "Nombre del organizador")
+                        FormInput(
+                            label = stringResource(R.string.label_organizador),
+                            value = organizador,
+                            onValueChange = onOrganizadorChange,
+                            placeholder = stringResource(R.string.placeholder_organizador)
+                        )
                     }
                 }
             }
@@ -120,7 +179,6 @@ fun FormArticle(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        // Botón final
         Button(
             onClick = onPublicarClick,
             modifier = Modifier
@@ -133,7 +191,7 @@ fun FormArticle(
             )
         ) {
             Text(
-                text = "Publicar",
+                text = stringResource(R.string.btn_publicar),
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp
             )
@@ -141,9 +199,6 @@ fun FormArticle(
     }
 }
 
-/*
-Componente visual para las entradas de texto.
- */
 @Composable
 fun FormInput(
     label: String,
@@ -215,9 +270,6 @@ fun FormInput(
         }
     }
 }
-
-// Previews con datos estáticos para visualización
-
 @Preview(showBackground = true, name = "Form - Prenda")
 @Composable
 fun FormArticlePrendaPreview() {

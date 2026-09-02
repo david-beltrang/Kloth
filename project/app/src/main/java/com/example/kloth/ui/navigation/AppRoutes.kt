@@ -36,8 +36,13 @@ sealed class AppRoutes(val route: String) {
     /** Edición de perfil. */
     object EditProfile : AppRoutes("edit_profile")
 
-    /** Reseñas del artículo. */
-    object Review : AppRoutes("review")
+    /** Reseñas del artículo. Requiere el identificador único de la reseña. */
+    object Review : AppRoutes("${REVIEW_BASE_ROUTE}/{${REVIEW_ARG_ID}}") {
+        const val ARG_REVIEW_ID = REVIEW_ARG_ID
+
+        /** Construye la ruta concreta para una reseña específica. */
+        fun createRoute(reviewId: String): String = "${REVIEW_BASE_ROUTE}/$reviewId"
+    }
 
     /**
      * Detalle de artículo. Requiere el identificador único del artículo,
@@ -50,9 +55,20 @@ sealed class AppRoutes(val route: String) {
         fun createRoute(productId: String): String = "${ARTICLE_BASE_ROUTE}/$productId"
     }
 
+    /** Pantalla para redactar una nueva reseña de un producto específico. */
+    object CreateReview : AppRoutes("${CREATE_REVIEW_BASE_ROUTE}/{${CREATE_REVIEW_ARG_PRODUCT_ID}}") {
+        const val ARG_PRODUCT_ID = CREATE_REVIEW_ARG_PRODUCT_ID
+
+        fun createRoute(productId: String): String = "${CREATE_REVIEW_BASE_ROUTE}/$productId"
+    }
+
     companion object {
-        /** Segmento base de la ruta de detalle y nombre de su argumento. */
+        /** Segmento base y argumentos de rutas parametrizadas. */
         private const val ARTICLE_BASE_ROUTE = "article"
         private const val ARTICLE_ARG_PRODUCT_ID = "productId"
+        private const val CREATE_REVIEW_BASE_ROUTE = "create_review"
+        private const val CREATE_REVIEW_ARG_PRODUCT_ID = "productId"
+        private const val REVIEW_BASE_ROUTE = "review"
+        private const val REVIEW_ARG_ID = "reviewId"
     }
 }
