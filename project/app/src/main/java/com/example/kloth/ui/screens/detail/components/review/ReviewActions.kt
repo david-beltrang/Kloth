@@ -11,9 +11,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
@@ -35,7 +37,7 @@ fun ReviewActions(
         ) {
             Icon(
                 imageVector = Icons.Outlined.ThumbUp,
-                contentDescription = "Likes",
+                contentDescription = stringResource(R.string.cd_likes),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(14.dp)
             )
@@ -55,7 +57,7 @@ fun ReviewActions(
         ) {
             Icon(
                 imageVector = Icons.Outlined.ChatBubbleOutline,
-                contentDescription = "Comentarios",
+                contentDescription = stringResource(R.string.cd_comments),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(14.dp)
             )

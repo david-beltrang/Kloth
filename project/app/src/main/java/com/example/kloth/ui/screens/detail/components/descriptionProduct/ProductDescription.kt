@@ -8,10 +8,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
@@ -21,7 +23,7 @@ fun ProductDescription(
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
         Text(
-            text = "Descripción",
+            text = stringResource(R.string.detail_description_title),
             fontSize = 16.sp,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onBackground

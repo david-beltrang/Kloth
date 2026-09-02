@@ -174,4 +174,29 @@
     <string name="edit_profile_btn_delete_account">Eliminar cuenta</string>
     <string name="edit_profile_danger_zone_desc">Esta acción no se puede deshacer. Tus publicaciones se eliminarán permanentemente y tus reseñas pasarán a mostrarse como \"Usuario eliminado\".</string>
     <string name="edit_profile_mock_username">alex_style</string>
+
+    <!-- Detail Section -->
+    <string name="detail_section_reviews_title">Valoraciones</string>
+    <string name="detail_write_review_btn">Escribir\nreseña</string>
+    <string name="detail_description_title">Descripción</string>
+    <string name="detail_spec_color">COLOR</string>
+    <string name="detail_spec_category">CATEGORÍA</string>
+    <string name="cd_hero_image">Imagen principal del producto</string>
+    <string name="cd_back">Volver</string>
+    <string name="cd_remove_favorite">Quitar de favoritos</string>
+    <string name="cd_add_favorite">Añadir a favoritos</string>
+    <string name="cd_share">Compartir</string>
+    <string name="cd_likes">Likes</string>
+    <string name="cd_comments">Comentarios</string>
+
+    <!-- Create Review -->
+    <string name="create_review_loading">Publicando...</string>
+    <string name="create_review_rating_label">Tu calificación</string>
+    <string name="create_review_opinion_label">Tu opinión / análisis</string>
+    <string name="create_review_placeholder">Escribe tu reseña aquí (requerido)…</string>
+    <string name="create_review_required">Campo obligatorio</string>
+
+    <!-- Auth Errors -->
+    <string name="login_error_empty_fields">Por favor, completa todos los campos</string>
+    <string name="register_error_empty_fields">Todos los campos son obligatorios</string>
 </resources>

@@ -81,7 +81,7 @@ fun CreateReviewScreenContent(
                 )
             ) {
                 Text(
-                    text = if (uiState.isLoading) "Publicando..." else stringResource(R.string.btn_publicar),
+                    text = if (uiState.isLoading) stringResource(R.string.create_review_loading) else stringResource(R.string.btn_publicar),
                     fontWeight = FontWeight.Bold,
                     fontSize = 14.sp
                 )
@@ -110,7 +110,7 @@ fun CreateReviewScreenContent(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "Tu calificación",
+                text = stringResource(R.string.create_review_rating_label),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -140,7 +140,7 @@ fun CreateReviewScreenContent(
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(
-                text = "Tu opinión / análisis",
+                text = stringResource(R.string.create_review_opinion_label),
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Bold,
                 color = MaterialTheme.colorScheme.onSurface
@@ -154,7 +154,7 @@ fun CreateReviewScreenContent(
                     onValueChange = onReviewTextChanged,
                     placeholder = {
                         Text(
-                            text = "Escribe tu reseña aquí (requerido)...",
+                            text = stringResource(R.string.create_review_placeholder),
                             fontSize = 14.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
                         )
@@ -184,7 +184,7 @@ fun CreateReviewScreenContent(
             Spacer(modifier = Modifier.height(6.dp))
 
             Text(
-                text = "Campo obligatorio",
+                text = stringResource(R.string.create_review_required),
                 fontSize = 12.sp,
                 color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f),
                 modifier = Modifier.padding(start = 2.dp)
