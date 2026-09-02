@@ -43,7 +43,7 @@ fun ReviewProductSummaryCard(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .height(175.dp) // Altura exacta para replicar la proporción alta y amplia de tu captura
+            .height(175.dp)
             .clip(cardShape)
             .background(MaterialTheme.colorScheme.surfaceContainerLow)
             .border(
@@ -52,7 +52,7 @@ fun ReviewProductSummaryCard(
                 shape = cardShape
             )
     ) {
-        // Imagen vertical con ancho definido para mantener la proporción exacta de tu diseño
+        //Se usa async para que mno se trabe la UI, carga asíncrona
         AsyncImage(
             model = imageRes ?: imageUrl,
             contentDescription = stringResource(R.string.cd_product_image),
@@ -70,7 +70,7 @@ fun ReviewProductSummaryCard(
             contentScale = ContentScale.Crop
         )
 
-        // Contenido de texto con el espacio amplio y cómodo de la captura
+        // Contenido de texto
         Column(
             modifier = Modifier
                 .weight(1f)

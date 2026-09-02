@@ -1,30 +1,19 @@
 package com.example.kloth.ui.screens.createReview
 
 import android.util.Log
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.kloth.data.FakeArticle
-import com.example.kloth.ui.navigation.AppRoutes
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class CreateReviewViewModel(
-    savedStateHandle: SavedStateHandle
-) : ViewModel() {
-
-    private val productId: String = checkNotNull(savedStateHandle[AppRoutes.CreateReview.ARG_PRODUCT_ID])
+class CreateReviewViewModel : ViewModel() {
 
     private val _uiState = MutableStateFlow(CreateReviewState())
     val uiState: StateFlow<CreateReviewState> = _uiState.asStateFlow()
 
-    init {
-        Log.d("CreateReviewVM", "ID recibido por SavedStateHandle: '$productId'")
-        loadProductData(productId)
-    }
-
-    private fun loadProductData(id: String) {
+    fun loadProductData(id: String) {
         val product = FakeArticle.obtenerProductoPorId(id)
 
         if (product != null) {
@@ -41,7 +30,7 @@ class CreateReviewViewModel(
             }
             Log.d("CreateReviewVM", "Producto cargado exitosamente: ${product.title}")
         } else {
-            Log.e("CreateReviewVM", "¡ERROR! No se encontró ningún producto en FakeArticle con el ID: '$id'")
+            Log.e("CreateReviewVM", "No se encontró ningún producto en FakeArticle con el ID: '$id'")
         }
     }
 
@@ -57,7 +46,7 @@ class CreateReviewViewModel(
 
     fun submitReview(onSuccess: () -> Unit) {
         _uiState.update { it.copy(isLoading = true) }
-        // Aquí iría tu lógica de guardado en base de datos o API
+        // Aquí iría la lógica de persistencia
         _uiState.update { it.copy(isLoading = false) }
         onSuccess()
     }

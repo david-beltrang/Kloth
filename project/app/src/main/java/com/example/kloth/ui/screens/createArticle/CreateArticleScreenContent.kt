@@ -24,7 +24,10 @@ import com.example.kloth.ui.screens.explore.components.CategoryChip
  */
 @Composable
 fun CreateArticleScreenContent(
+    //variables de estado
     uiState: CreateArticleState,
+
+    //Metodos de estado
     onTypeChange: (ArticleType) -> Unit,
     onAddPhotoClick: () -> Unit,
     onDeletePhoto: (Int) -> Unit,

@@ -12,7 +12,10 @@ import com.example.kloth.ui.navigation.AppRoutes
 import com.example.kloth.ui.utils.KlothBottomNavigation
 import com.example.kloth.ui.utils.KlothTopAppBar
 
-// orquestador principal, define el scaffold con topbar y bottombar
+/**
+ * Orquestador principal de la aplicación.
+ * Define la estructura base con TopBar y BottomBar sincronizadas con la navegación.
+ */
 @Composable
 fun KlothApp() {
     val navController = rememberNavController()
@@ -21,7 +24,7 @@ fun KlothApp() {
 
     Scaffold(
         topBar = {
-            // Se oculta la barra superior en pantallas que no la requieren (Login, Edición)
+            // La barra superior se oculta en pantallas de autenticación o edición
             if (currentRoute != AppRoutes.Login.route &&
                 currentRoute != AppRoutes.EditProfile.route
             ) {
@@ -29,33 +32,12 @@ fun KlothApp() {
             }
         },
         bottomBar = {
-            // Se oculta la navegación inferior en la pantalla de Login
-            if (currentRoute != AppRoutes.Login.route) {
-                KlothBottomNavigation(
-                    selectedItem = when (currentRoute) {
-                        AppRoutes.Feed.route -> 0
-                        AppRoutes.Explore.route -> 1
-                        AppRoutes.CreateArticle.route -> 2
-                        AppRoutes.Notifications.route -> 3
-                        AppRoutes.Profile.route, AppRoutes.EditProfile.route -> 4
-                        else -> -1
-                    },
-                    onItemSelected = { index ->
-                        val target = when (index) {
-                            0 -> AppRoutes.Feed
-                            1 -> AppRoutes.Explore
-                            2 -> AppRoutes.CreateArticle
-                            3 -> AppRoutes.Notifications
-                            else -> AppRoutes.Profile
-                        }
-                        navController.navigate(target.route) {
-                            // Vuelve a la raiz del area principal preservando el estado de cada tab
-                            popUpTo(AppRoutes.Feed.route) { saveState = true }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
-                )
+            // La navegación inferior solo se muestra en el flujo principal de la app
+            if (currentRoute != AppRoutes.Login.route && 
+                currentRoute != AppRoutes.Register.route &&
+                currentRoute != AppRoutes.ForgotPassword.route
+            ) {
+                KlothBottomNavigation(navController = navController)
             }
         }
     ) { innerPadding ->

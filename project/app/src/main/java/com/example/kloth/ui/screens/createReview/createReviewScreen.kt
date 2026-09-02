@@ -6,6 +6,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun CreateReviewScreen(
+    productId: String,
     onBackClick: () -> Unit,
     onReviewSubmitted: () -> Unit,
     modifier: Modifier = Modifier,
@@ -13,12 +14,17 @@ fun CreateReviewScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    // Carga de datos al entrar en la composición usando el ID recibido
+    LaunchedEffect(productId) {
+        viewModel.loadProductData(productId)
+    }
+
     CreateReviewScreenContent(
         uiState = uiState,
         onBackClick = onBackClick,
         onSubmitClick = { viewModel.submitReview(onSuccess = onReviewSubmitted) },
-        onRatingSelected = viewModel::onRatingSelected,
-        onReviewTextChanged = viewModel::onReviewTextChanged,
+        onRatingSelected = { viewModel.onRatingSelected(it) },
+        onReviewTextChanged = { viewModel.onReviewTextChanged(it) },
         modifier = modifier
     )
 }

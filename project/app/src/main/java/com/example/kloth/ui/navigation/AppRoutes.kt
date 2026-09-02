@@ -31,33 +31,32 @@ sealed class AppRoutes(val route: String) {
     object EditProfile : AppRoutes("edit_profile")
 
     // resena de articulo, lleva el id como argumento
-    object Review : AppRoutes("${REVIEW_BASE_ROUTE}/{${REVIEW_ARG_ID}}") {
-        const val ARG_REVIEW_ID = REVIEW_ARG_ID
+    object Review : AppRoutes("${RouteConstants.REVIEW_BASE_ROUTE}/{${RouteConstants.REVIEW_ARG_ID}}") {
+        const val ARG_REVIEW_ID = RouteConstants.REVIEW_ARG_ID
 
-        fun createRoute(reviewId: String): String = "${REVIEW_BASE_ROUTE}/$reviewId"
+        fun createRoute(reviewId: String): String = "${RouteConstants.REVIEW_BASE_ROUTE}/$reviewId"
     }
 
     // detalle de articulo, lleva el id como argumento
-    object ArticleDetail : AppRoutes("${ARTICLE_BASE_ROUTE}/{${ARTICLE_ARG_PRODUCT_ID}}") {
-        const val ARG_PRODUCT_ID = ARTICLE_ARG_PRODUCT_ID
+    object ArticleDetail : AppRoutes("${RouteConstants.ARTICLE_BASE_ROUTE}/{${RouteConstants.ARTICLE_ARG_PRODUCT_ID}}") {
+        const val ARG_PRODUCT_ID = RouteConstants.ARTICLE_ARG_PRODUCT_ID
 
-        fun createRoute(productId: String): String = "${ARTICLE_BASE_ROUTE}/$productId"
+        fun createRoute(productId: String): String = "${RouteConstants.ARTICLE_BASE_ROUTE}/$productId"
     }
 
     // crear resena para un producto especifico
-    object CreateReview : AppRoutes("${CREATE_REVIEW_BASE_ROUTE}/{${CREATE_REVIEW_ARG_PRODUCT_ID}}") {
-        const val ARG_PRODUCT_ID = CREATE_REVIEW_ARG_PRODUCT_ID
-
-        fun createRoute(productId: String): String = "${CREATE_REVIEW_BASE_ROUTE}/$productId"
+    object CreateReview : AppRoutes("${RouteConstants.CREATE_REVIEW_BASE_ROUTE}/{${RouteConstants.CREATE_REVIEW_ARG_PRODUCT_ID}}") {
+        const val ARG_PRODUCT_ID = RouteConstants.CREATE_REVIEW_ARG_PRODUCT_ID
+        fun createRoute(productId: String): String = "${RouteConstants.CREATE_REVIEW_BASE_ROUTE}/$productId"
     }
+}
 
-    companion object {
-        // constantes para rutas con argumentos
-        private const val ARTICLE_BASE_ROUTE = "article"
-        private const val ARTICLE_ARG_PRODUCT_ID = "productId"
-        private const val CREATE_REVIEW_BASE_ROUTE = "create_review"
-        private const val CREATE_REVIEW_ARG_PRODUCT_ID = "productId"
-        private const val REVIEW_BASE_ROUTE = "review"
-        private const val REVIEW_ARG_ID = "reviewId"
-    }
+// Objeto normal para constantes de rutas
+object RouteConstants {
+    const val ARTICLE_BASE_ROUTE = "article"
+    const val ARTICLE_ARG_PRODUCT_ID = "productId"
+    const val CREATE_REVIEW_BASE_ROUTE = "create_review"
+    const val CREATE_REVIEW_ARG_PRODUCT_ID = "productId"
+    const val REVIEW_BASE_ROUTE = "review"
+    const val REVIEW_ARG_ID = "reviewId"
 }

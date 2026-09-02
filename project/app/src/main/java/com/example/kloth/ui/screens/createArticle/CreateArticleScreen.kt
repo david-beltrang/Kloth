@@ -20,19 +20,22 @@ fun CreateArticleScreen(
         color = MaterialTheme.colorScheme.background
     ) {
         CreateArticleScreenContent(
+            //El state para variables de estado
             uiState = uiState,
-            onTypeChange = viewModel::onTypeSelected,
-            onAddPhotoClick = viewModel::onAddPhotoMock,
-            onDeletePhoto = viewModel::onDeletePhoto,
-            onNombreChange = viewModel::onNombreChanged,
-            onDescripcionChange = viewModel::onDescripcionChanged,
-            onMarcaChange = viewModel::onMarcaChanged,
-            onColorChange = viewModel::onColorChanged,
-            onPrecioChange = viewModel::onPrecioChanged,
-            onEstiloChange = viewModel::onEstiloChanged,
-            onCiudadChange = viewModel::onCiudadChanged,
-            onPaisChange = viewModel::onPaisChanged,
-            onOrganizadorChange = viewModel::onOrganizadorChanged,
+
+            //metodos de estado
+            onTypeChange = { viewModel.onTypeSelected(it) },
+            onAddPhotoClick = { viewModel.onAddPhotoMock() },
+            onDeletePhoto = { viewModel.onDeletePhoto(it) },
+            onNombreChange = { viewModel.onNombreChanged(it) },
+            onDescripcionChange = { viewModel.onDescripcionChanged(it) },
+            onMarcaChange = { viewModel.onMarcaChanged(it) },
+            onColorChange = { viewModel.onColorChanged(it) },
+            onPrecioChange = { viewModel.onPrecioChanged(it) },
+            onEstiloChange = { viewModel.onEstiloChanged(it) },
+            onCiudadChange = { viewModel.onCiudadChanged(it) },
+            onPaisChange = { viewModel.onPaisChanged(it) },
+            onOrganizadorChange = { viewModel.onOrganizadorChanged(it) },
             onPublicarClick = {
                 viewModel.publishArticle(onSuccess = onPublicarClick)
             },

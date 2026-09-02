@@ -30,6 +30,7 @@ fun HeroImage(
             .clip(RoundedCornerShape(bottomStart = bottomCornerRadius, bottomEnd = bottomCornerRadius))
             .background(MaterialTheme.colorScheme.surfaceVariant)
     ) {
+        //Se usa async para que mno se trabe la UI, carga asíncrona
         AsyncImage(
             model = imageModel,
             contentDescription = contentDescription,

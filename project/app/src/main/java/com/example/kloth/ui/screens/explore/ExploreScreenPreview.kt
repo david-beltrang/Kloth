@@ -43,14 +43,6 @@ fun ExploreScreenDarkPreview() {
     }
 }
 
-@Preview(name = "Explore Components - Bottom Nav", showBackground = true)
-@Composable
-fun ExploreBottomNavPreview() {
-    KlothTheme {
-        KlothBottomNavigation(selectedItem = 1)
-    }
-}
-
 @Preview(name = "Explore Components - Search Bar", showBackground = true)
 @Composable
 fun ExploreSearchBarPreview() {

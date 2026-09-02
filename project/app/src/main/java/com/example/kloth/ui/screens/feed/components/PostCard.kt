@@ -94,6 +94,7 @@ private fun PostHeader(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
+            //Se usa async para que mno se trabe la UI
             AsyncImage(
                 model = avatarUrl,
                 contentDescription = stringResource(R.string.content_desc_avatar),
@@ -128,6 +129,7 @@ private fun PostContent(
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier) {
+        //Se usa async para que mno se trabe la UI, carga asíncrona
         AsyncImage(
             model = imageModel,
             contentDescription = stringResource(R.string.content_desc_post_image),

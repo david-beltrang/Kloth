@@ -77,6 +77,9 @@ fun AppNavigation(
                 navController.navigate(AppRoutes.Feed.route) {
                     popUpTo(AppRoutes.Login.route) { inclusive = true }
                 }
+                //Este es el metodo que resetea el navigate a false, sin este metodo
+                //la aplicacion se congela, ya que detecta el navigate en true otra vez y hace muchas recompisciones
+                registerViewModel.onNavigationConsumed()
             }
 
             RegisterScreen(
@@ -168,8 +171,13 @@ fun AppNavigation(
                     type = NavType.StringType
                 }
             )
-        ) {
+        ) { backStackEntry ->
+            val productId = backStackEntry.arguments
+                ?.getString(AppRoutes.CreateReview.ARG_PRODUCT_ID)
+                .orEmpty()
+
             CreateReviewScreen(
+                productId = productId,
                 onBackClick = { navController.popBackStack() },
                 onReviewSubmitted = {
                     navController.popBackStack()
