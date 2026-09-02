@@ -31,9 +31,7 @@ link de referencia: https://kotlinlang.org/api/compose-multiplatform/material3/a
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KlothTopAppBar(
-    modifier: Modifier = Modifier,
-    notificationCount: Int = 0
-
+    modifier: Modifier = Modifier
 ) {
     val logoResource = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) {
         R.drawable.logo_blanco
@@ -50,39 +48,6 @@ fun KlothTopAppBar(
                 modifier = Modifier.size(130.dp)
             )
         },
-        actions = {
-            IconButton(onClick = { /* TODO */ }) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = stringResource(id = R.string.content_desc_search)
-                )
-            }
-            BadgedBox(
-                badge = {
-                    if (notificationCount > 0) {
-                        Badge(
-                            containerColor = RedInferno,
-                            contentColor = Color.White,
-                            modifier = Modifier
-                                .size(14.dp)
-                                .offset(x = (-4).dp, y = 4.dp) // Movemos el badge hacia adentro
-                        ) {
-                            Text(
-                                text = notificationCount.toString(),
-                                fontSize = 9.sp
-                            )
-                        }
-                    }
-                }
-            ) {
-                IconButton(onClick = { /* TODO */ }) {
-                    Icon(
-                        imageVector = Icons.Default.Notifications,
-                        contentDescription = stringResource(id = R.string.content_desc_notifications)
-                    )
-                }
-            }
-        },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.surface
         )
@@ -93,7 +58,7 @@ fun KlothTopAppBar(
 @Composable
 fun KlothTopAppBarPreview() {
     KlothTheme(darkTheme = false) {
-        KlothTopAppBar(notificationCount = 5)
+        KlothTopAppBar()
     }
 }
 
@@ -101,6 +66,6 @@ fun KlothTopAppBarPreview() {
 @Composable
 fun KlothTopAppBarDarkPreview() {
     KlothTheme(darkTheme = true) {
-        KlothTopAppBar(notificationCount = 5)
+        KlothTopAppBar()
     }
 }

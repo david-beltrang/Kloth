@@ -78,10 +78,7 @@ fun ItemDetailScreen(
     )
 }
 
-/**
- * Estado de error mostrado cuando el identificador recibido no corresponde
- * a ningun articulo del catalogo.
- */
+// estado de error cuando el id no corresponde a ningun articulo
 @Composable
 private fun ProductNotFoundContent(
     onBackClick: () -> Unit,

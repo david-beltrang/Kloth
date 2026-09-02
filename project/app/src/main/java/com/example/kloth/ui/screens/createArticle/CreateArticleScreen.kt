@@ -1,62 +1,41 @@
 package com.example.kloth.ui.screens.createArticle
 
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
-import com.example.kloth.R
-import com.example.kloth.ui.screens.createArticle.components.ArticleType
+import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun CreateArticleScreen(
     onPublicarClick: () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: CreateArticleViewModel = viewModel()
 ) {
-    // state hoisting
-    var selectedType by remember { mutableStateOf(ArticleType.PRENDA) }
-    val photos = remember { mutableStateListOf(R.drawable.abrigo_negro, R.drawable.bolso_cuero) }
-    
-    var nombre by remember { mutableStateOf("") }
-    var descripcion by remember { mutableStateOf("") }
-    var marca by remember { mutableStateOf("") }
-    var color by remember { mutableStateOf("") }
-    var precio by remember { mutableStateOf("") }
-    var estilo by remember { mutableStateOf("") }
-    var ciudad by remember { mutableStateOf("") }
-    var pais by remember { mutableStateOf("") }
-    var organizador by remember { mutableStateOf("") }
+    val uiState by viewModel.uiState.collectAsState()
 
     Surface(
         modifier = modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
         CreateArticleScreenContent(
-            selectedType = selectedType,
-            onTypeChange = { selectedType = it },
-            photos = photos,
-            onDeletePhoto = { index -> photos.removeAt(index) },
-            nombre = nombre,
-            onNombreChange = { nombre = it },
-            descripcion = descripcion,
-            onDescripcionChange = { descripcion = it },
-            marca = marca,
-            onMarcaChange = { marca = it },
-            color = color,
-            onColorChange = { color = it },
-            precio = precio,
-            onPrecioChange = { precio = it },
-            estilo = estilo,
-            onEstiloChange = { estilo = it },
-            ciudad = ciudad,
-            onCiudadChange = { ciudad = it },
-            pais = pais,
-            onPaisChange = { pais = it },
-            organizador = organizador,
-            onOrganizadorChange = { organizador = it },
-            onPublicarClick = onPublicarClick,
+            uiState = uiState,
+            onTypeChange = viewModel::onTypeSelected,
+            onAddPhotoClick = viewModel::onAddPhotoMock,
+            onDeletePhoto = viewModel::onDeletePhoto,
+            onNombreChange = viewModel::onNombreChanged,
+            onDescripcionChange = viewModel::onDescripcionChanged,
+            onMarcaChange = viewModel::onMarcaChanged,
+            onColorChange = viewModel::onColorChanged,
+            onPrecioChange = viewModel::onPrecioChanged,
+            onEstiloChange = viewModel::onEstiloChanged,
+            onCiudadChange = viewModel::onCiudadChanged,
+            onPaisChange = viewModel::onPaisChanged,
+            onOrganizadorChange = viewModel::onOrganizadorChanged,
+            onPublicarClick = {
+                viewModel.publishArticle(onSuccess = onPublicarClick)
+            },
             modifier = Modifier.fillMaxSize()
         )
     }

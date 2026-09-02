@@ -1,42 +1,41 @@
 package com.example.kloth.ui.screens.createArticle
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.kloth.ui.screens.createArticle.components.*
+import com.example.kloth.R
+import com.example.kloth.ui.screens.createArticle.components.ArticleType
+import com.example.kloth.ui.screens.createArticle.components.CardCreateArticle
+import com.example.kloth.ui.screens.createArticle.components.FormArticle
+import com.example.kloth.ui.screens.createArticle.components.PhotoCarrusel
 import com.example.kloth.ui.screens.explore.components.CategoryChip
-import java.util.Locale
 
 /**
- * Contenido sin estado de la pantalla. Los estados viven hoisted en CreateArticleScreen,
- * y este composable solo dibuja a partir de los parámetros y callbacks recibidos.
+ * Contenido sin estado de la pantalla. Dibuja a partir del objeto UiState recibido.
  */
 @Composable
 fun CreateArticleScreenContent(
-    selectedType: ArticleType,
+    uiState: CreateArticleState,
     onTypeChange: (ArticleType) -> Unit,
-    photos: List<Int>,
+    onAddPhotoClick: () -> Unit,
     onDeletePhoto: (Int) -> Unit,
-    nombre: String,
     onNombreChange: (String) -> Unit,
-    descripcion: String,
     onDescripcionChange: (String) -> Unit,
-    marca: String,
     onMarcaChange: (String) -> Unit,
-    color: String,
     onColorChange: (String) -> Unit,
-    precio: String,
     onPrecioChange: (String) -> Unit,
-    estilo: String,
     onEstiloChange: (String) -> Unit,
-    ciudad: String,
     onCiudadChange: (String) -> Unit,
-    pais: String,
     onPaisChange: (String) -> Unit,
-    organizador: String,
     onOrganizadorChange: (String) -> Unit,
     onPublicarClick: () -> Unit,
     modifier: Modifier = Modifier
@@ -46,53 +45,60 @@ fun CreateArticleScreenContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        // 1. Selector de Categorías (Chips con OnClick por parámetro)
+        // 1. Selector de Categorías
         Row(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             ArticleType.entries.forEach { type ->
+                val typeName = when (type) {
+                    ArticleType.PRENDA -> stringResource(R.string.type_prenda)
+                    ArticleType.OUTFIT -> stringResource(R.string.type_outfit)
+                    ArticleType.EVENTO -> stringResource(R.string.type_evento)
+                }
                 CategoryChip(
-                    text = type.name.lowercase().replaceFirstChar { it.titlecase(Locale.ROOT) },
-                    isSelected = selectedType == type,
+                    text = typeName,
+                    isSelected = uiState.selectedType == type,
                     onClick = { onTypeChange(type) }
                 )
             }
         }
 
-        // 2. Card de imagen (OnClick por parámetro)
+        // 2. Card de imagen
         CardCreateArticle(
-            onClick = { /* Lógica para añadir foto */ }
+            onClick = onAddPhotoClick
         )
 
-        // 3. Carrusel (Callback por parámetro para borrar)
-        if (photos.isNotEmpty()) {
+        // 3. Carrusel
+        if (uiState.photos.isNotEmpty()) {
             PhotoCarrusel(
-                photos = photos,
+                photos = uiState.photos,
                 onDeletePhoto = onDeletePhoto
             )
         }
 
-        // 4. Formulario (State Hoisting Puro: recibe datos y callbacks)
+        // 4. Formulario
         FormArticle(
-            selectedType = selectedType,
-            nombre = nombre,
+            selectedType = uiState.selectedType,
+            nombre = uiState.nombre,
             onNombreChange = onNombreChange,
-            descripcion = descripcion,
+            descripcion = uiState.descripcion,
             onDescripcionChange = onDescripcionChange,
-            marca = marca,
+            marca = uiState.marca,
             onMarcaChange = onMarcaChange,
-            color = color,
+            color = uiState.color,
             onColorChange = onColorChange,
-            precio = precio,
+            precio = uiState.precio,
             onPrecioChange = onPrecioChange,
-            estilo = estilo,
+            estilo = uiState.estilo,
             onEstiloChange = onEstiloChange,
-            ciudad = ciudad,
+            ciudad = uiState.ciudad,
             onCiudadChange = onCiudadChange,
-            pais = pais,
+            pais = uiState.pais,
             onPaisChange = onPaisChange,
-            organizador = organizador,
+            organizador = uiState.organizador,
             onOrganizadorChange = onOrganizadorChange,
             onPublicarClick = onPublicarClick
         )

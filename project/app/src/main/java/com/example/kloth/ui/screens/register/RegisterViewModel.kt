@@ -1,6 +1,7 @@
 package com.example.kloth.ui.screens.register
 
 import androidx.lifecycle.ViewModel
+import com.example.kloth.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -33,7 +34,7 @@ class RegisterViewModel: ViewModel() {
             _uiState.value.password.isEmpty() ||
             _uiState.value.confirmPassword.isEmpty()
         ){
-            _uiState.update { it.copy(mostrarMensaje = true, errorMessage = "Todos los campos son obligatorios") }
+            _uiState.update { it.copy(mostrarMensaje = true, errorMessageRes = R.string.register_error_empty_fields) }
         } else {
             _uiState.update { it.copy(navigate = true) }
         }

@@ -12,10 +12,7 @@ import com.example.kloth.ui.navigation.AppRoutes
 import com.example.kloth.ui.utils.KlothBottomNavigation
 import com.example.kloth.ui.utils.KlothTopAppBar
 
-/**
- * Orquestador principal de la interfaz de usuario.
- * Define el Scaffold global con la TopBar y BottomBar compartidas.
- */
+// orquestador principal, define el scaffold con topbar y bottombar
 @Composable
 fun KlothApp() {
     val navController = rememberNavController()

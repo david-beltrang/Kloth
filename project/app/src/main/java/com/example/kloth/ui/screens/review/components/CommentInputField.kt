@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -26,6 +27,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,11 +52,11 @@ fun CommentInputField(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 12.dp),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = androidx.compose.foundation.layout.Arrangement.spacedBy(12.dp)
+            horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.abrigo_negro),
-                contentDescription = "Avatar Usuario",
+                contentDescription = stringResource(R.string.cd_user_avatar),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(36.dp)
@@ -79,14 +81,14 @@ fun CommentInputField(
             ) {
                 if (deshabilitado) {
                     Text(
-                        text = "Ya no puedes hacer más comentarios",
+                        text = stringResource(R.string.disabled_comment_placeholder),
                         fontSize = 13.sp,
                         color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)
                     )
                 } else {
                     if (texto.isEmpty()) {
                         Text(
-                            text = "Haz un comentario...",
+                            text = stringResource(R.string.placeholder_add_comment),
                             fontSize = 13.sp,
                             color = MaterialTheme.colorScheme.onSurfaceVariant
                         )
@@ -113,7 +115,7 @@ fun CommentInputField(
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.Send,
-                        contentDescription = "Enviar",
+                        contentDescription = stringResource(R.string.cd_send_comment),
                         tint = if (!deshabilitado && texto.isNotBlank()) MaterialTheme.colorScheme.primary
                         else MaterialTheme.colorScheme.outlineVariant,
                         modifier = Modifier.size(18.dp)

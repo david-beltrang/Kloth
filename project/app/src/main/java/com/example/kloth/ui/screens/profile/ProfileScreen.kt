@@ -5,21 +5,23 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun ProfileScreen(
     onEditProfileClick: () -> Unit = {},
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewModel: ProfileViewModel = viewModel()
 ) {
-    var selectedTabIndex by remember { mutableIntStateOf(0) }
+    val uiState by viewModel.uiState.collectAsState()
     
     Surface(
         modifier = modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
         ProfileScreenContent(
-            selectedTabIndex = selectedTabIndex,
-            onTabSelected = { selectedTabIndex = it },
+            selectedTabIndex = uiState.selectedTabIndex,
+            onTabSelected = { viewModel.onTabSelected(it) },
             onEditProfileClick = onEditProfileClick,
             modifier = Modifier.fillMaxSize()
         )

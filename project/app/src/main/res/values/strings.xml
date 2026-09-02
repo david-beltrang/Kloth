@@ -100,8 +100,46 @@
 
     <!-- Create Article Screen -->
     <string name="create_article_title">Crear publicación</string>
+    <string name="type_prenda">Prenda</string>
+    <string name="type_outfit">Outfit</string>
+    <string name="type_evento">Evento</string>
+    <string name="add_photo_title">Añadir Foto</string>
+    <string name="add_photo_subtitle">Toca para subir imágenes</string>
+    <string name="label_nombre">Nombre</string>
+    <string name="placeholder_nombre">Nombre del artículo</string>
+    <string name="label_descripcion">Descripción</string>
+    <string name="placeholder_descripcion">Describe este artículo...</string>
+    <string name="label_marca">Marca</string>
+    <string name="placeholder_marca">Marca o diseñador</string>
+    <string name="label_categoria">Categoría</string>
+    <string name="placeholder_categoria">Seleccionar categoría</string>
+    <string name="label_color_field">Color</string>
+    <string name="placeholder_color">Color principal</string>
+    <string name="label_precio">Precio</string>
+    <string name="placeholder_precio">0.00</string>
+    <string name="currency_symbol">€</string>
+    <string name="label_estilo">Estilo</string>
+    <string name="placeholder_estilo">Seleccionar estilo</string>
+    <string name="label_ciudad">Ciudad</string>
+    <string name="placeholder_ciudad">Ciudad del evento</string>
+    <string name="label_pais">País</string>
+    <string name="placeholder_pais">País del evento</string>
+    <string name="label_inicio">Inicio</string>
+    <string name="label_fin">Fin</string>
+    <string name="placeholder_fecha">DD/MM/AA</string>
+    <string name="label_organizador">Organizador</string>
+    <string name="placeholder_organizador">Nombre del organizador</string>
+    <string name="btn_publicar">Publicar</string>
+    <string name="cd_delete_photo">Eliminar imagen</string>
 
     <!-- Review Screen -->
+    <string name="cd_like">Me gusta</string>
+    <string name="cd_user_avatar">Avatar de usuario</string>
+    <string name="cd_delete_comment">Eliminar comentario</string>
+    <string name="cd_send_comment">Enviar comentario</string>
+    <string name="placeholder_add_comment">Haz un comentario...</string>
+    <string name="disabled_comment_placeholder">Ya no puedes hacer más comentarios</string>
+    <string name="time_now">Ahora</string>
     <string name="label_comments_count">%1$d comentarios</string>
     <string name="label_order_recent">Más recientes ▼</string>
     <string name="label_order_old">Más antiguos ▲</string>
@@ -136,4 +174,27 @@
     <string name="edit_profile_btn_delete_account">Eliminar cuenta</string>
     <string name="edit_profile_danger_zone_desc">Esta acción no se puede deshacer. Tus publicaciones se eliminarán permanentemente y tus reseñas pasarán a mostrarse como \"Usuario eliminado\".</string>
     <string name="edit_profile_mock_username">alex_style</string>
+
+    <!-- Detail Section -->
+    <string name="detail_section_reviews_title">Valoraciones</string>
+    <string name="detail_write_review_btn">Escribir\nreseña</string>
+    <string name="detail_description_title">Descripción</string>
+    <string name="detail_spec_color">COLOR</string>
+    <string name="detail_spec_category">CATEGORÍA</string>
+    <string name="cd_hero_image">Imagen principal del producto</string>
+    <string name="cd_remove_favorite">Quitar de favoritos</string>
+    <string name="cd_add_favorite">Añadir a favoritos</string>
+    <string name="cd_likes">Likes</string>
+    <string name="cd_comments">Comentarios</string>
+
+    <!-- Create Review -->
+    <string name="create_review_loading">Publicando...</string>
+    <string name="create_review_rating_label">Tu calificación</string>
+    <string name="create_review_opinion_label">Tu opinión / análisis</string>
+    <string name="create_review_placeholder">Escribe tu reseña aquí (requerido)…</string>
+    <string name="create_review_required">Campo obligatorio</string>
+
+    <!-- Auth Errors -->
+    <string name="login_error_empty_fields">Por favor, completa todos los campos</string>
+    <string name="register_error_empty_fields">Todos los campos son obligatorios</string>
 </resources>

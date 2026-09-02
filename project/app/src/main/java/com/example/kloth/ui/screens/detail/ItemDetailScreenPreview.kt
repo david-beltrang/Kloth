@@ -3,7 +3,7 @@ package com.example.kloth.ui.screens.detail
 import android.content.res.Configuration
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import com.example.kloth.data.FakeArticle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kloth.ui.theme.KlothTheme
 
 @Preview(
@@ -14,9 +14,9 @@ import com.example.kloth.ui.theme.KlothTheme
 @Composable
 fun ItemDetailScreenPreview() {
     KlothTheme(darkTheme = false) {
-        // Usamos el Content directamente con datos de prueba
-        ItemDetailScreenContent(
-            product = FakeArticle.abrigoNegro
+        ItemDetailScreen(
+            productId = "abrigo_negro",
+            detailViewModel = viewModel()
         )
     }
 }
@@ -30,8 +30,9 @@ fun ItemDetailScreenPreview() {
 @Composable
 fun ItemDetailScreenDarkPreview() {
     KlothTheme(darkTheme = true) {
-        ItemDetailScreenContent(
-            product = FakeArticle.abrigoNegro
+        ItemDetailScreen(
+            productId = "abrigo_negro",
+            detailViewModel = viewModel()
         )
     }
 }
