@@ -182,10 +182,8 @@
     <string name="detail_spec_color">COLOR</string>
     <string name="detail_spec_category">CATEGORÍA</string>
     <string name="cd_hero_image">Imagen principal del producto</string>
-    <string name="cd_back">Volver</string>
     <string name="cd_remove_favorite">Quitar de favoritos</string>
     <string name="cd_add_favorite">Añadir a favoritos</string>
-    <string name="cd_share">Compartir</string>
     <string name="cd_likes">Likes</string>
     <string name="cd_comments">Comentarios</string>
 
