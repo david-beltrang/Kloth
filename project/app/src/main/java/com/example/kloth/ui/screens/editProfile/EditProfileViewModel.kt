@@ -2,7 +2,6 @@ package com.example.kloth.ui.screens.editProfile
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.kloth.ui.screens.editProfile.EditProfileState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
