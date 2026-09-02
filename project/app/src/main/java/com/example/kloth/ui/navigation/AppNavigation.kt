@@ -27,10 +27,7 @@ import com.example.kloth.ui.screens.register.RegisterScreen
 import com.example.kloth.ui.screens.register.RegisterViewModel
 import com.example.kloth.ui.screens.review.ReviewScreen
 
-/**
- * Componente central de navegación de la aplicación.
- * Configura el NavHost y conecta las pantallas mediante callbacks.
- */
+// configuracion del navHost con todas las pantallas
 @Composable
 fun AppNavigation(
     navController: NavHostController,

@@ -7,6 +7,7 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
@@ -14,7 +15,7 @@ import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun HeroImageSection(
-    imageModel: Any?, // Acepta Int (Resource) o String (URL)
+    imageModel: Any?,
     isFavorite: Boolean = false,
     onBackClick: () -> Unit = {},
     onFavoriteClick: () -> Unit = {},
@@ -34,7 +35,7 @@ fun HeroImageSection(
         // Botón de Volver
         ActionButton(
             icon = Icons.AutoMirrored.Filled.ArrowBack,
-            contentDescription = "Volver",
+            contentDescription = stringResource(R.string.cd_back),
             onClick = onBackClick,
             modifier = Modifier
                 .align(Alignment.TopStart)
