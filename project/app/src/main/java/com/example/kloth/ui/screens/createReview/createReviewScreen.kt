@@ -1,9 +1,7 @@
 package com.example.kloth.ui.screens.createReview
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
@@ -13,7 +11,7 @@ fun CreateReviewScreen(
     modifier: Modifier = Modifier,
     viewModel: CreateReviewViewModel = viewModel()
 ) {
-    val uiState by viewModel.uiState.collectAsStateWithLifecycle()
+    val uiState by viewModel.uiState.collectAsState()
 
     CreateReviewScreenContent(
         uiState = uiState,
