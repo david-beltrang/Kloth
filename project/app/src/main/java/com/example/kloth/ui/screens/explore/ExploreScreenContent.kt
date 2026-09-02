@@ -28,7 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
-import com.example.kloth.data.FakeArticle
+import com.example.kloth.data.ProductDetailData
 import com.example.kloth.ui.screens.detail.components.ProductCatalogCard
 import com.example.kloth.ui.screens.explore.components.CategoryChip
 import com.example.kloth.ui.screens.explore.components.FilterChip
@@ -36,10 +36,16 @@ import com.example.kloth.ui.screens.explore.components.SearchBar
 
 @Composable
 fun ExploreScreenContent(
-    modifier: Modifier = Modifier,
+    // Variables de estado (Datos que vienen del ViewModel)
+    products: List<ProductDetailData>,
     selectedCategoryIndex: Int,
+
+    // Métodos para manejar el estado (Eventos)
     onCategorySelected: (Int) -> Unit,
+
+    // Navegación
     onProductClick: (String) -> Unit = {},
+    modifier: Modifier = Modifier,
 ) {
     val categoryResIds = listOf(
         R.string.category_prendas,
@@ -140,8 +146,7 @@ fun ExploreScreenContent(
             }
         }
 
-        // Ahora mostramos dinámicamente todos los productos del catálogo
-        items(FakeArticle.allProducts) { product ->
+        items(products) { product ->
             ProductCatalogCard(
                 title = product.title,
                 category = product.categoryTag,
