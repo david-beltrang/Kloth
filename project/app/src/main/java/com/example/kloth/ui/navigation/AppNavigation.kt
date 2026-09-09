@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
@@ -43,7 +44,7 @@ fun AppNavigation(
     ) {
         // --- Flujo de Autenticación ---
         composable(AppRoutes.Login.route) {
-            val loginViewModel: LoginViewModel = viewModel()
+            val loginViewModel: LoginViewModel = hiltViewModel()
             val state by loginViewModel.uiState.collectAsState()
 
             if (state.navigate) {
@@ -65,7 +66,7 @@ fun AppNavigation(
         }
 
         composable(AppRoutes.ForgotPassword.route) {
-            val forgotPasswordViewModel: ForgotPasswordViewModel = viewModel()
+            val forgotPasswordViewModel: ForgotPasswordViewModel = hiltViewModel()
             val state by forgotPasswordViewModel.uiState.collectAsState()
 
             if (state.navigateBack) {
@@ -82,7 +83,7 @@ fun AppNavigation(
         }
 
         composable(AppRoutes.Register.route) {
-            val registerViewModel: RegisterViewModel = viewModel()
+            val registerViewModel: RegisterViewModel = hiltViewModel()
             val state by registerViewModel.uiState.collectAsState()
 
             if (state.navigate) {
@@ -104,7 +105,7 @@ fun AppNavigation(
 
         // --- Flujo Principal de la App ---
         composable(AppRoutes.Feed.route) {
-            val feedViewModel: FeedViewModel = viewModel()
+            val feedViewModel: FeedViewModel = hiltViewModel()
             FeedScreen(
                 feedViewModel = feedViewModel,
                 onProductClick = { productId ->
@@ -114,7 +115,7 @@ fun AppNavigation(
         }
 
         composable(AppRoutes.Explore.route) {
-            val exploreViewModel: ExploreViewModel = viewModel()
+            val exploreViewModel: ExploreViewModel = hiltViewModel()
             ExploreScreen(
                 exploreViewModel = exploreViewModel,
                 onProductClick = { productId ->
@@ -130,7 +131,7 @@ fun AppNavigation(
         }
 
         composable(AppRoutes.Notifications.route) {
-            val notificationViewModel: NotificationViewModel = viewModel()
+            val notificationViewModel: NotificationViewModel = hiltViewModel()
             NotificationScreen(notificationViewModel = notificationViewModel)
         }
 
@@ -167,7 +168,7 @@ fun AppNavigation(
                 ?.getString(AppRoutes.ArticleDetail.ARG_PRODUCT_ID)
                 .orEmpty()
 
-            val detailViewModel: DetailViewModel = viewModel()
+            val detailViewModel: DetailViewModel = hiltViewModel()
 
             ItemDetailScreen(
                 productId = productId,

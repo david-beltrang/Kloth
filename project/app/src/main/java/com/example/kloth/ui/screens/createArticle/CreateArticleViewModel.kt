@@ -3,12 +3,14 @@ package com.example.kloth.ui.screens.createArticle
 import androidx.lifecycle.ViewModel
 import com.example.kloth.R
 import com.example.kloth.ui.screens.createArticle.components.ArticleType
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-
-class CreateArticleViewModel : ViewModel() {
+@HiltViewModel
+class CreateArticleViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow(CreateArticleState())
     val uiState: StateFlow<CreateArticleState> = _uiState.asStateFlow()

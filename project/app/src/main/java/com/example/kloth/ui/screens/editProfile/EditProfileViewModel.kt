@@ -2,13 +2,15 @@ package com.example.kloth.ui.screens.editProfile
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-
+@HiltViewModel
 // ViewModel para gestionar el estado de la edición de perfil.
-class EditProfileViewModel : ViewModel() {
+class EditProfileViewModel @Inject constructor() : ViewModel() {
     private val _uiState = MutableStateFlow(EditProfileState())
     val uiState: StateFlow<EditProfileState> = _uiState.asStateFlow()
 
