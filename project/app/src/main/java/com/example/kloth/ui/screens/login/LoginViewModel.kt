@@ -1,14 +1,20 @@
 package com.example.kloth.ui.screens.login
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.kloth.R
+import com.example.kloth.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+
 @HiltViewModel
-class LoginViewModel @Inject constructor() : ViewModel() {
+class LoginViewModel @Inject constructor(
+    private val authRepository: AuthRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginState())
     val uiState: StateFlow<LoginState> = _uiState
@@ -34,8 +40,17 @@ class LoginViewModel @Inject constructor() : ViewModel() {
                 ) 
             }
         } else {
-            // Aquí iría la validación con el servidor, por ahora simulamos éxito
-            _uiState.update { it.copy(navigate = true) }
+            viewModelScope.launch{
+                try{
+                    authRepository.signIn(
+                        _uiState.value.email,
+                        _uiState.value.password
+                    )
+                    _uiState.update { it.copy(navigate = true) }
+                }catch(e: Exception){
+                    _uiState.update { it.copy(errorMessageRes = R.string.login_error_generic, showMessage = true) }
+                }
+            }
         }
     }
 

@@ -17,7 +17,7 @@ class RegisterViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    //Declarar variable privada para el e3stado y no repetir mutableStateFlow
+    //Declarar variable privada para el estado y no repetir mutableStateFlow
     private val _uiState = MutableStateFlow(RegisterState())
     val uiState: StateFlow<RegisterState> = _uiState
 

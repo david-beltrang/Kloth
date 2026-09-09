@@ -5,7 +5,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
@@ -27,13 +26,13 @@ import com.example.kloth.ui.screens.login.LoginViewModel
 import com.example.kloth.ui.screens.notification.NotificationScreen
 import com.example.kloth.ui.screens.notification.NotificationViewModel
 import com.example.kloth.ui.screens.profile.ProfileScreen
+import com.example.kloth.ui.screens.profile.ProfileViewModel
 import com.example.kloth.ui.screens.register.RegisterScreen
 import com.example.kloth.ui.screens.register.RegisterViewModel
 import com.example.kloth.ui.screens.review.ReviewScreen
 import com.example.kloth.ui.screens.splash.SplashScreen
 import com.example.kloth.ui.screens.splash.SplashViewModel
 
-// configuracion del navHost con todas las pantallas
 @Composable
 fun AppNavigation(
     navController: NavHostController,
@@ -157,7 +156,18 @@ fun AppNavigation(
         }
 
         composable(AppRoutes.Profile.route) {
+            val profileViewModel: ProfileViewModel = hiltViewModel()
+            val state by profileViewModel.uiState.collectAsState()
+
+            if (state.navigate) {
+                navController.navigate(AppRoutes.Login.route) {
+                    popUpTo(0) { inclusive = true }
+                }
+                profileViewModel.onNavigationConsumed()
+            }
+
             ProfileScreen(
+                viewModel = profileViewModel,
                 onEditProfileClick = {
                     navController.navigate(AppRoutes.EditProfile.route)
                 }

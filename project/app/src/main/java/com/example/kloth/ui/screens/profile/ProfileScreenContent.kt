@@ -23,9 +23,11 @@ import com.example.kloth.ui.screens.profile.components.ProfileHeaderSection
 
 @Composable
 fun ProfileScreenContent(
+    email: String,
     selectedTabIndex: Int,
     onTabSelected: (Int) -> Unit,
     onEditProfileClick: () -> Unit,
+    onLogoutClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
 
@@ -48,7 +50,11 @@ fun ProfileScreenContent(
                     .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f))
                     .padding(top = 8.dp, bottom = 8.dp)
             ) {
-                ProfileHeaderSection(onEditProfileClick = onEditProfileClick)
+                ProfileHeaderSection(
+                    email = email,
+                    onEditProfileClick = onEditProfileClick,
+                    onLogoutClick = onLogoutClick
+                )
 
                 Spacer(modifier = Modifier.height(8.dp))
 

@@ -37,7 +37,7 @@ import com.example.kloth.ui.utils.KlothTextField
 
 @Composable
 fun RegisterScreenContent(
-    // Variables de estado (Datos)
+    // Variables de estado osea Datos
     fullName: String,
     email: String,
     password: String,
@@ -45,7 +45,7 @@ fun RegisterScreenContent(
     isPasswordVisible: Boolean,
     isConfirmPasswordVisible: Boolean,
 
-    // Métodos para manejar el estado (Eventos)
+    // Métodos para manejar el estado
     onFullNameChange: (String) -> Unit,
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,

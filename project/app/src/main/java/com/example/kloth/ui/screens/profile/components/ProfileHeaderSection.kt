@@ -29,8 +29,10 @@ import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun ProfileHeaderSection(
+    email: String,
     modifier: Modifier = Modifier,
-    onEditProfileClick: () -> Unit = {}
+    onEditProfileClick: () -> Unit = {},
+    onLogoutClick: () -> Unit = {}
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -66,7 +68,7 @@ fun ProfileHeaderSection(
         Spacer(modifier = Modifier.height(4.dp))
 
         Text(
-            text = stringResource(R.string.mock_profile_username),
+            text = email,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -173,6 +175,26 @@ fun ProfileHeaderSection(
             )
         }
 
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Logout Button
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .clip(RoundedCornerShape(999.dp))
+                .border(1.dp, MaterialTheme.colorScheme.error, RoundedCornerShape(999.dp))
+                .clickable { onLogoutClick() }
+                .padding(vertical = 14.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = stringResource(R.string.profile_logout),
+                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
+                color = MaterialTheme.colorScheme.error
+            )
+        }
+
         Spacer(modifier = Modifier.height(8.dp))
     }
 }
@@ -205,7 +227,7 @@ private fun ProfileStatItem(
 @Composable
 fun ProfileHeaderSectionPreview() {
     KlothTheme(darkTheme = false) {
-        ProfileHeaderSection()
+        ProfileHeaderSection(email = "test@example.com")
     }
 }
 
@@ -213,6 +235,6 @@ fun ProfileHeaderSectionPreview() {
 @Composable
 fun ProfileHeaderSectionDarkPreview() {
     KlothTheme(darkTheme = true) {
-        ProfileHeaderSection()
+        ProfileHeaderSection(email = "test@example.com")
     }
 }

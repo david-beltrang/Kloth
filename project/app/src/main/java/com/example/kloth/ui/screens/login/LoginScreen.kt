@@ -28,7 +28,7 @@ fun LoginScreen(
         onPasswordToggleClick = { loginViewModel.togglePasswordVisibility() },
         onLoginClick = { loginViewModel.onLoginClick() },
 
-        // Navegación (estos vienen desde AppNavigation)
+        // Navegación
         onForgotPasswordClick = onForgotPasswordClick,
         onRegisterClick = onRegisterClick
     )

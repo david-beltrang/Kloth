@@ -35,12 +35,11 @@ import com.example.kloth.ui.utils.KlothTextField
 
 @Composable
 fun LoginScreenContent(
-    // Variables de estado (Datos del ViewModel)
     email: String,
     password: String,
     isPasswordVisible: Boolean,
     
-    // Métodos para manejar el estado (Eventos)
+    // Métodos para manejar el estado
     onEmailChange: (String) -> Unit,
     onPasswordChange: (String) -> Unit,
     onPasswordToggleClick: () -> Unit,
