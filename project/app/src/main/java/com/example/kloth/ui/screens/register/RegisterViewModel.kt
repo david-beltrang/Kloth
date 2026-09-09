@@ -2,11 +2,13 @@ package com.example.kloth.ui.screens.register
 
 import androidx.lifecycle.ViewModel
 import com.example.kloth.R
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-
-class RegisterViewModel: ViewModel() {
+@HiltViewModel
+class RegisterViewModel @Inject constructor() : ViewModel() {
 
     //Declarar variable privada para el e3stado y no repetir mutableStateFlow
     private val _uiState = MutableStateFlow(RegisterState())

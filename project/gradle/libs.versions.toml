@@ -6,12 +6,12 @@ junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.11.0"
 activityCompose = "1.8.0"
-kotlin = "2.2.10"
+kotlin = "2.1.0"
 composeBom = "2026.02.01"
 navigation = "2.9.8"
 
 googleServices = "4.4.2"
-googleKotlinKsp = "2.3.6"
+googleKotlinKsp = "2.1.0-1.0.29"
 firebaseCrashlytics = "3.0.2"
 firebaseBom = "33.7.0"
 dagger = "2.60.1"
@@ -34,9 +34,9 @@ androidx-compose-material-icons-extended = { group = "androidx.compose.material"
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version = "2.6.0" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 
-dagger-hilt = { module = "com.google.dagger:hilt-android", version = "2.59.2"}
-dagger-kapt = { module = "com.google.dagger:hilt-android-compiler", version = "2.59.2"}
-hilt-compose-navigation = { module = "androix.hilt:hilt-navigation-compose", version = "1.2.0"}
+dagger-hilt = { module = "com.google.dagger:hilt-android", version = "2.60.1"}
+dagger-kapt = { module = "com.google.dagger:hilt-android-compiler", version = "2.60.1"}
+hilt-compose-navigation = { module = "androidx.hilt:hilt-navigation-compose", version = "1.2.0"}
 
 firebase-analytics = { module = "com.google.firebase:firebase-analytics"}
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom"}
@@ -46,7 +46,9 @@ firebase-firestore = { module = "com.google.firebase:firebase-firestore"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlin-kapt = { id = "org.jetbrains.kotlin.kapt", version.ref = "kotlin" }
 
 dagger = {id = "com.google.dagger.hilt.android", version.ref = "dagger"}
 google-ksp = {id = "com.google.devtools.ksp", version.ref = "googleKotlinKsp"}

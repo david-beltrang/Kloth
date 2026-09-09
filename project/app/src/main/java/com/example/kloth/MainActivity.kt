@@ -5,11 +5,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.kloth.ui.theme.KlothTheme
+import dagger.hilt.android.AndroidEntryPoint
 
 /**
  * Punto de entrada principal de la aplicación.
  * Mantiene el código mínimo delegando la orquestación a [KlothApp].
  */
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

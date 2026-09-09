@@ -2,11 +2,13 @@ package com.example.kloth.ui.screens.detail
 
 import androidx.lifecycle.ViewModel
 import com.example.kloth.data.FakeArticle
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
-
-class DetailViewModel : ViewModel() {
+@HiltViewModel
+class DetailViewModel @Inject constructor() : ViewModel() {
 
     private val _uiState = MutableStateFlow(DetailState())
     val uiState: StateFlow<DetailState> = _uiState

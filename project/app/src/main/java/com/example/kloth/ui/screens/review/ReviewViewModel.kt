@@ -6,12 +6,15 @@ import com.example.kloth.R
 import com.example.kloth.data.ComentarioReviewData
 import com.example.kloth.data.ResenasDataLocal
 import com.example.kloth.ui.navigation.AppRoutes
+import dagger.hilt.android.lifecycle.HiltViewModel
+import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class ReviewViewModel(
+@HiltViewModel
+class ReviewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
