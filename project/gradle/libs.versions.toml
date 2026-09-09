@@ -1,5 +1,5 @@
 [versions]
-agp = "9.3.1"
+agp = "9.3.2"
 coreKtx = "1.10.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
@@ -10,6 +10,11 @@ kotlin = "2.2.10"
 composeBom = "2026.02.01"
 navigation = "2.9.8"
 
+googleServices = "4.4.2"
+googleKotlinKsp = "2.3.6"
+firebaseCrashlytics = "3.0.2"
+firebaseBom = "33.7.0"
+dagger = "2.60.1"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -29,7 +34,22 @@ androidx-compose-material-icons-extended = { group = "androidx.compose.material"
 coil-compose = { group = "io.coil-kt", name = "coil-compose", version = "2.6.0" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigation" }
 
+dagger-hilt = { module = "com.google.dagger:hilt-android", version = "2.59.2"}
+dagger-kapt = { module = "com.google.dagger:hilt-android-compiler", version = "2.59.2"}
+hilt-compose-navigation = { module = "androix.hilt:hilt-navigation-compose", version = "1.2.0"}
+
+firebase-analytics = { module = "com.google.firebase:firebase-analytics"}
+firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom"}
+firebase-auth = { module = "com.google.firebase:firebase-auth"}
+firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics"}
+firebase-firestore = { module = "com.google.firebase:firebase-firestore"}
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 
+dagger = {id = "com.google.dagger.hilt.android", version.ref = "dagger"}
+google-ksp = {id = "com.google.devtools.ksp", version.ref = "googleKotlinKsp"}
+firebase-crashlytics = {id = "com.google.firebase.crashlytics", version.ref = "firebaseCrashlytics"}
+kotlin-serialization = {id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin"}
+google-services = { id = "com.google.gms.google-services", version.ref = "googleServices"}
