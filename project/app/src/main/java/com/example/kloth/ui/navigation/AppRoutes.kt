@@ -3,6 +3,9 @@ package com.example.kloth.ui.navigation
 // definicion de rutas de la app
 sealed class AppRoutes(val route: String) {
 
+    // splash: decide si hay sesion y redirige
+    object Splash : AppRoutes("splash")
+
     // login
     object Login : AppRoutes("login")
 

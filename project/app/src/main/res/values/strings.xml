@@ -72,6 +72,9 @@
     <string name="section_reviews">Valoraciones y Reseñas</string>
     <string name="btn_write_review">Escribir reseña</string>
 
+    <!-- Splash Screen -->
+    <string name="splash_loading">Cargando</string>
+
     <!-- Login Screen -->
     <string name="login_subtitle">Tu comunidad de moda</string>
     <string name="login_email_placeholder">Correo electrónico</string>

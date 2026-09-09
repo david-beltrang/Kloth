@@ -30,6 +30,8 @@ import com.example.kloth.ui.screens.profile.ProfileScreen
 import com.example.kloth.ui.screens.register.RegisterScreen
 import com.example.kloth.ui.screens.register.RegisterViewModel
 import com.example.kloth.ui.screens.review.ReviewScreen
+import com.example.kloth.ui.screens.splash.SplashScreen
+import com.example.kloth.ui.screens.splash.SplashViewModel
 
 // configuracion del navHost con todas las pantallas
 @Composable
@@ -39,9 +41,28 @@ fun AppNavigation(
 ) {
     NavHost(
         navController = navController,
-        startDestination = AppRoutes.Login.route,
+        startDestination = AppRoutes.Splash.route,
         modifier = modifier
     ) {
+        composable(AppRoutes.Splash.route) {
+            val splashViewModel: SplashViewModel = hiltViewModel()
+            val state by splashViewModel.uiState.collectAsState()
+
+            if (state.navigateToFeed) {
+                navController.navigate(AppRoutes.Feed.route) {
+                    popUpTo(AppRoutes.Splash.route) { inclusive = true }
+                }
+                splashViewModel.onNavigationConsumed()
+            } else if (state.navigateToLogin) {
+                navController.navigate(AppRoutes.Login.route) {
+                    popUpTo(AppRoutes.Splash.route) { inclusive = true }
+                }
+                splashViewModel.onNavigationConsumed()
+            }
+
+            SplashScreen(splashViewModel = splashViewModel)
+        }
+
         // --- Flujo de Autenticación ---
         composable(AppRoutes.Login.route) {
             val loginViewModel: LoginViewModel = hiltViewModel()
