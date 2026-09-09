@@ -1,7 +1,7 @@
 package com.example.kloth.ui.screens.review
 
-import com.example.kloth.data.ResenasDataLocal
-import com.example.kloth.data.ReviewData
+import com.example.kloth.data.local.ResenasDataLocal
+import com.example.kloth.data.local.ReviewData
 
 data class ReviewState(
     val resena: ReviewData = ResenasDataLocal.resenaDetalleSeleccionada,

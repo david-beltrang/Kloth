@@ -3,8 +3,8 @@ package com.example.kloth.ui.screens.review
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import com.example.kloth.R
-import com.example.kloth.data.ComentarioReviewData
-import com.example.kloth.data.ResenasDataLocal
+import com.example.kloth.data.local.ComentarioReviewData
+import com.example.kloth.data.local.ResenasDataLocal
 import com.example.kloth.ui.navigation.AppRoutes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject

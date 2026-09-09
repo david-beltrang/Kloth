@@ -1,4 +1,4 @@
-package com.example.kloth.data
+package com.example.kloth.data.local
 
 enum class TipoNotificacion {
     NUEVO_SEGUIDOR,

@@ -1,7 +1,7 @@
 package com.example.kloth.ui.screens.feed
 
 import androidx.lifecycle.ViewModel
-import com.example.kloth.data.FakeArticle
+import com.example.kloth.data.local.FakeArticle
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow

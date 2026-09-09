@@ -1,14 +1,21 @@
 package com.example.kloth.ui.screens.register
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.kloth.R
+import com.example.kloth.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.scopes.ViewModelScoped
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+
 @HiltViewModel
-class RegisterViewModel @Inject constructor() : ViewModel() {
+class RegisterViewModel @Inject constructor(
+    private val authRepository: AuthRepository
+) : ViewModel() {
 
     //Declarar variable privada para el e3stado y no repetir mutableStateFlow
     private val _uiState = MutableStateFlow(RegisterState())
@@ -38,7 +45,19 @@ class RegisterViewModel @Inject constructor() : ViewModel() {
         ){
             _uiState.update { it.copy(mostrarMensaje = true, errorMessageRes = R.string.register_error_empty_fields) }
         } else {
-            _uiState.update { it.copy(navigate = true) }
+            viewModelScope.launch {
+                try{
+                    authRepository.signUp(_uiState.value.email, _uiState.value.password)
+                    _uiState.update { it.copy(navigate = true) }
+                }catch (e: Exception){
+                    _uiState.update {
+                        it.copy(
+                            mostrarMensaje = true,
+                            errorMessageRes = R.string.register_error_generic
+                        )
+                    }
+                }
+            }
         }
     }
 

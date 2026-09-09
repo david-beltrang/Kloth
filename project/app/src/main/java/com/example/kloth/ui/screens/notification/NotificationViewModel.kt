@@ -1,7 +1,7 @@
 package com.example.kloth.ui.screens.notification
 
 import androidx.lifecycle.ViewModel
-import com.example.kloth.data.NotificacionesDataLocal
+import com.example.kloth.data.local.NotificacionesDataLocal
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -15,10 +15,8 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.example.kloth.R
-import com.example.kloth.data.FakeArticle
+import com.example.kloth.data.local.FakeArticle
 import com.example.kloth.ui.screens.detail.components.ProductCatalogCard
 import com.example.kloth.ui.screens.feed.components.ProfileTabRow
 import com.example.kloth.ui.screens.profile.components.ProfileHeaderSection

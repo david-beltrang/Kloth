@@ -13,8 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
 import com.example.kloth.R
-import com.example.kloth.data.ReviewData
-import com.example.kloth.data.ResenasDataLocal.defaultReviewsList
+import com.example.kloth.data.local.ReviewData
+import com.example.kloth.data.local.ResenasDataLocal.defaultReviewsList
 import com.example.kloth.ui.screens.detail.components.RatingStars
 import com.example.kloth.ui.theme.KlothTheme
 

@@ -29,8 +29,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kloth.R
-import com.example.kloth.data.ComentarioReviewData
-import com.example.kloth.data.ComentariosDataLocal
+import com.example.kloth.data.local.ComentarioReviewData
+import com.example.kloth.data.local.ComentariosDataLocal
 import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
