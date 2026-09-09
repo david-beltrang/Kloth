@@ -25,7 +25,10 @@ fun KlothApp() {
     Scaffold(
         topBar = {
             // La barra superior se oculta en pantallas de autenticación o edición
-            if (currentRoute != AppRoutes.Login.route &&
+            if (currentRoute != AppRoutes.Splash.route &&
+                currentRoute != AppRoutes.Login.route &&
+                currentRoute != AppRoutes.Register.route &&
+                currentRoute != AppRoutes.ForgotPassword.route &&
                 currentRoute != AppRoutes.EditProfile.route
             ) {
                 KlothTopAppBar()
@@ -33,7 +36,8 @@ fun KlothApp() {
         },
         bottomBar = {
             // La navegación inferior solo se muestra en el flujo principal de la app
-            if (currentRoute != AppRoutes.Login.route && 
+            if (currentRoute != AppRoutes.Splash.route &&
+                currentRoute != AppRoutes.Login.route &&
                 currentRoute != AppRoutes.Register.route &&
                 currentRoute != AppRoutes.ForgotPassword.route
             ) {
