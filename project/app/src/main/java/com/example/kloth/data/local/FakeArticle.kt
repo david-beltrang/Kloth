@@ -1,4 +1,4 @@
-package com.example.kloth.data
+package com.example.kloth.data.local
 
 import com.example.kloth.R
 

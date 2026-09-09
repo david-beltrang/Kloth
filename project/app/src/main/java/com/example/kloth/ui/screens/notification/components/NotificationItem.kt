@@ -23,8 +23,8 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.kloth.data.NotificacionUI
-import com.example.kloth.data.TipoNotificacion
+import com.example.kloth.data.local.NotificacionUI
+import com.example.kloth.data.local.TipoNotificacion
 import com.example.kloth.ui.theme.KlothTheme
 
 /**

@@ -6,7 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.kloth.data.ProductDetailData
+import com.example.kloth.data.local.ProductDetailData
 import com.example.kloth.ui.screens.detail.components.descriptionProduct.GeneralInfoSection
 import com.example.kloth.ui.screens.detail.components.image.HeroImageSection
 import com.example.kloth.ui.screens.detail.components.review.RatingsAndReviewsSection

@@ -1,6 +1,6 @@
 package com.example.kloth.ui.screens.explore
 
-import com.example.kloth.data.ProductDetailData
+import com.example.kloth.data.local.ProductDetailData
 
 data class ExploreState(
     val products: List<ProductDetailData> = emptyList(),

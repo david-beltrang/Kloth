@@ -1,7 +1,6 @@
-package com.example.kloth.data
+package com.example.kloth.data.local
 
 import androidx.annotation.DrawableRes
-import com.example.kloth.R
 
 data class ProductDetailData(
     val id: String,

@@ -1,6 +1,6 @@
 package com.example.kloth.ui.screens.feed
 
-import com.example.kloth.data.PostItem
+import com.example.kloth.data.local.PostItem
 
 data class FeedState(
     val posts: List<PostItem> = emptyList(),

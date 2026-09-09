@@ -197,4 +197,5 @@
     <!-- Auth Errors -->
     <string name="login_error_empty_fields">Por favor, completa todos los campos</string>
     <string name="register_error_empty_fields">Todos los campos son obligatorios</string>
+    <string name="register_error_generic">Ocurrió un error al crear tu cuenta. Inténtalo de nuevo</string>
 </resources>

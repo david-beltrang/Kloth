@@ -21,7 +21,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kloth.R
-import com.example.kloth.data.ReviewData
+import com.example.kloth.data.local.ReviewData
 import com.example.kloth.ui.screens.review.components.CommentInputField
 import com.example.kloth.ui.screens.review.components.CommentItem
 import com.example.kloth.ui.screens.review.components.MainReviewItem

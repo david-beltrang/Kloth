@@ -1,4 +1,4 @@
-package com.example.kloth.data
+package com.example.kloth.data.local
 
 /**
  * Representa una publicación en el Feed social.

@@ -8,7 +8,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.kloth.data.PostItem
+import com.example.kloth.data.local.PostItem
 import com.example.kloth.ui.screens.feed.components.PostCard
 
 @Composable

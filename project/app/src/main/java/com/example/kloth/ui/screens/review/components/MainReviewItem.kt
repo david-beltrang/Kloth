@@ -32,8 +32,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kloth.R
-import com.example.kloth.data.ResenasDataLocal
-import com.example.kloth.data.ReviewData
+import com.example.kloth.data.local.ResenasDataLocal
+import com.example.kloth.data.local.ReviewData
 import com.example.kloth.ui.theme.GoldStar
 import com.example.kloth.ui.theme.KlothTheme
 
