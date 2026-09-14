@@ -12,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.luminance
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -30,59 +31,22 @@ link de referencia: https://kotlinlang.org/api/compose-multiplatform/material3/a
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KlothTopAppBar(
-    modifier: Modifier = Modifier,
-    notificationCount: Int = 0
-
+    modifier: Modifier = Modifier
 ) {
+    val logoResource = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) {
+        R.drawable.logo_blanco
+    } else {
+        R.drawable.logo_negro
+    }
+
     CenterAlignedTopAppBar(
         modifier = modifier.height(100.dp),
         title = {
             Image(
-                painter = painterResource(id = R.drawable.klogo),
+                painter = painterResource(id = logoResource),
                 contentDescription = stringResource(id = R.string.app_name),
                 modifier = Modifier.size(130.dp)
             )
-        },
-        navigationIcon = {
-            IconButton(onClick = { /* TODO */ }) {
-                Icon(
-                    imageVector = Icons.Default.ArrowBack,
-                    contentDescription = stringResource(id = R.string.content_desc_back)
-                )
-            }
-        },
-        actions = {
-            IconButton(onClick = { /* TODO */ }) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = stringResource(id = R.string.content_desc_search)
-                )
-            }
-            BadgedBox(
-                badge = {
-                    if (notificationCount > 0) {
-                        Badge(
-                            containerColor = RedInferno,
-                            contentColor = Color.White,
-                            modifier = Modifier
-                                .size(14.dp)
-                                .offset(x = (-4).dp, y = 4.dp) // Movemos el badge hacia adentro
-                        ) {
-                            Text(
-                                text = notificationCount.toString(),
-                                fontSize = 9.sp
-                            )
-                        }
-                    }
-                }
-            ) {
-                IconButton(onClick = { /* TODO */ }) {
-                    Icon(
-                        imageVector = Icons.Default.Notifications,
-                        contentDescription = stringResource(id = R.string.content_desc_notifications)
-                    )
-                }
-            }
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.surface
@@ -90,10 +54,18 @@ fun KlothTopAppBar(
     )
 }
 
-@Preview
+@Preview(name = "Light Mode")
 @Composable
 fun KlothTopAppBarPreview() {
-    KlothTheme {
-        KlothTopAppBar(notificationCount = 5)
+    KlothTheme(darkTheme = false) {
+        KlothTopAppBar()
+    }
+}
+
+@Preview(name = "Dark Mode", uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun KlothTopAppBarDarkPreview() {
+    KlothTheme(darkTheme = true) {
+        KlothTopAppBar()
     }
 }

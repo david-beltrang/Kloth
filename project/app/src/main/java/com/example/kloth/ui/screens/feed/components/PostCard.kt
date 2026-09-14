@@ -2,6 +2,7 @@ package com.example.kloth.ui.screens.feed.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -15,7 +16,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
@@ -26,29 +26,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.kloth.R
+import com.example.kloth.data.local.FakeArticle
+import com.example.kloth.data.local.PostItem
 import com.example.kloth.ui.theme.KlothTheme
 import com.example.kloth.ui.theme.RedInferno
-import com.example.kloth.ui.theme.StarYellow
-import com.example.kloth.ui.theme.Sunset
+import com.example.kloth.ui.theme.GoldStar
 
 @Composable
 fun PostCard(
-    creatorName: String, //Nombre del usuarui
-    timeAgo: String, //Hace cuanto se publicó el artículo
-    avatarUrl: String, // URL de la foto de perfil
-    postImageUrl: String, // URL de la imagen del post
-    title: String, //Titulo de la publicacion
-    rating: String, //Calificacion de la publicacion
-    reviewCount: Int, //Cantidad de reseñas
-    comments: String, //Cantidad de comentarios
-    description: String, //Descripcion de la pumlicacion
-    tags: List<String>, //Lista de tags
-    category: String, //Categoria o tipo del artículo
-    categoryColor: Color, //Color de la etiqueta de la categoria del articulo
+    post: PostItem,
+    onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Card(
-        modifier = modifier.padding(10.dp),
+        modifier = modifier
+            .padding(10.dp)
+            .clickable { onClick() },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainerLowest
@@ -59,32 +52,28 @@ fun PostCard(
         )
     ) {
         Column {
-            // Creator Header
             PostHeader(
-                name = creatorName,
-                time = timeAgo,
-                avatarUrl = avatarUrl,
+                name = post.creatorName,
+                time = post.timeAgo,
+                avatarUrl = post.avatarUrl,
                 modifier = Modifier.padding(16.dp)
             )
 
-            // Content (Image)
             PostContent(
-                imageUrl = postImageUrl,
-                category = category,
-                categoryColor = categoryColor,
+                imageModel = post.product.imageUrl ?: post.product.imageRes,
+                category = post.product.categoryTag,
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(0.8f)
             )
 
-            // Footer Content
             PostFooter(
-                title = title,
-                rating = rating,
-                reviewCount = reviewCount,
-                comments = comments,
-                description = description,
-                tags = tags,
+                title = post.product.title,
+                rating = post.product.averageRating,
+                reviewCount = post.product.reviewsCountText,
+                comments = post.commentsCount,
+                description = post.product.description,
+                tags = post.tags,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -104,9 +93,10 @@ private fun PostHeader(
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
+            //Se usa async para que mno se trabe la UI
             AsyncImage(
                 model = avatarUrl,
-                contentDescription = "Avatar",
+                contentDescription = stringResource(R.string.content_desc_avatar),
                 modifier = Modifier
                     .size(40.dp)
                     .clip(CircleShape)
@@ -133,22 +123,22 @@ private fun PostHeader(
 
 @Composable
 private fun PostContent(
-    imageUrl: String,
+    imageModel: Any?,
     category: String,
-    categoryColor: Color,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier) {
+        //Se usa async para que mno se trabe la UI, carga asíncrona
         AsyncImage(
-            model = imageUrl,
-            contentDescription = "Post Image",
+            model = imageModel,
+            contentDescription = stringResource(R.string.content_desc_post_image),
             modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop
         )
         
         KlothBadge(
             text = category,
-            containerColor = categoryColor,
+            containerColor = RedInferno,
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(16.dp)
@@ -160,8 +150,8 @@ private fun PostContent(
 @Composable
 private fun PostFooter(
     title: String,
-    rating: String,
-    reviewCount: Int,
+    rating: Float,
+    reviewCount: String,
     comments: String,
     description: String,
     tags: List<String>,
@@ -185,18 +175,18 @@ private fun PostFooter(
                     Icon(
                         imageVector = Icons.Default.Star,
                         contentDescription = null,
-                        tint = StarYellow,
+                        tint = GoldStar,
                         modifier = Modifier.size(16.dp)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = rating,
+                        text = rating.toString(),
                         style = MaterialTheme.typography.labelLarge,
                         color = MaterialTheme.colorScheme.primary
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                     Text(
-                        text = stringResource(R.string.label_reviews, reviewCount),
+                        text = reviewCount,
                         style = MaterialTheme.typography.labelSmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -227,9 +217,9 @@ private fun PostFooter(
         ) {
             items(tags) { tag ->
                 KlothBadge(
-                    text = "#$tag",
-                    containerColor = Sunset,
-                    contentColor = MaterialTheme.colorScheme.onSurfaceVariant
+                    text = stringResource(R.string.label_tag_prefix, tag),
+                    containerColor = MaterialTheme.colorScheme.secondaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                 )
             }
         }
@@ -268,18 +258,7 @@ private fun SocialAction(
 fun PostCardPreview() {
     KlothTheme {
         PostCard(
-            creatorName = "Elias Thorne",
-            timeAgo = "2 hours ago",
-            avatarUrl = "https://lh3.googleusercontent.com/aida-public/AB6AXuDBMyCAVr9pWrd_sDsyfrx2v7B_wwZXc4En_Hj06fTPAnAoiyn85C9FsH8p6U6PiT3-zoF2ygVqjkcaxTd2qvb0dJco59T-gId4rhTYZRrypPBw7D21cyI8jziwbOHXhi6RvASwrKdMXNtFM4PZ4vmw0j-UQYyz-l9jQO_PKjkApgQurneLQYUD05xXGaJiFbJ7J7lnhsLCcMpV1reEReT6SL0W_OBqa0a_7S4P7IwHGSYytO0DdrGagg",
-            postImageUrl = "https://lh3.googleusercontent.com/aida-public/AB6AXuDpW3hTQoK-jwp_QytcmHQOJubOsBnRcVsFRLEcNgPdJCKBG-Az5EM7-DRqTigUiaQ6z8HyWpQaHZUwssvqN8KO_vvC8raEh0FUbOpUv2AXfPTNpcyQktFe7wSFGEyhbhuVrHh0loG-el0Ziv7BFu3YgwsjMTEzkEsjjHKuEE4VW43CRnM6mepoinTZokHM9SxVv_FfSXm_48q454nLpntqlr6ieAxDR6VBbjzF9cH3h3UimDgRUF9Tng",
-            title = "Sculpted Obsidian Ensemble",
-            rating = "4.8",
-            reviewCount = 124,
-            comments = "42",
-            description = stringResource(R.string.mock_description),
-            tags = listOf("minimalist", "fall24", "obsidian"),
-            category = stringResource(R.string.badge_couture),
-            categoryColor = RedInferno,
+            post = FakeArticle.posts.first(),
             modifier = Modifier.padding(16.dp)
         )
     }

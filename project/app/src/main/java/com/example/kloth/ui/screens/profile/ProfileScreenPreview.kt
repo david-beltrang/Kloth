@@ -2,6 +2,7 @@ package com.example.kloth.ui.screens.profile
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kloth.ui.theme.KlothTheme
 
 @Preview(
@@ -11,7 +12,20 @@ import com.example.kloth.ui.theme.KlothTheme
 )
 @Composable
 fun ProfileScreenPreview() {
-    KlothTheme {
-        ProfileScreen()
+    KlothTheme(darkTheme = false) {
+        ProfileScreen(viewModel = viewModel())
+    }
+}
+
+@Preview(
+    name = "Profile Screen - Dark",
+    showBackground = true,
+    showSystemUi = true,
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+fun ProfileScreenDarkPreview() {
+    KlothTheme(darkTheme = true) {
+        ProfileScreen(viewModel = viewModel())
     }
 }

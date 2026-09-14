@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">NEBULOSITY</string>
+    <string name="app_name">KLOTHz</string>
 
     <!-- Navigation -->
     <string name="nav_home">Home</string>
@@ -54,6 +54,7 @@
     <string name="profile_following">Seguidos</string>
     <string name="profile_reviews">Reseñas</string>
     <string name="profile_publications">Publicaciones</string>
+    <string name="profile_logout">Cerrar sesión</string>
     <string name="mock_profile_name">Elena Vancouvé</string>
     <string name="mock_profile_username">\@elenav_styling</string>
     <string name="mock_profile_bio">Arquitecta de siluetas. Minimalista por naturaleza, moda por elección.</string>
@@ -63,13 +64,143 @@
 
     <!-- Detail Screen -->
     <string name="detail_title">Detalle de Artículo</string>
+    <string name="detail_not_found_title">Art&#237;culo no encontrado</string>
+    <string name="detail_not_found_desc">El art&#237;culo que buscas no est&#225; disponible o fue eliminado.</string>
+    <string name="detail_not_found_back">Volver</string>
     <string name="label_color">Color</string>
     <string name="label_category">Categoría</string>
     <string name="label_description">Descripción</string>
     <string name="section_reviews">Valoraciones y Reseñas</string>
     <string name="btn_write_review">Escribir reseña</string>
 
+    <!-- Splash Screen -->
+    <string name="splash_loading">Cargando</string>
+
+    <!-- Login Screen -->
+    <string name="login_subtitle">Tu comunidad de moda</string>
+    <string name="login_email_placeholder">Correo electrónico</string>
+    <string name="login_password_placeholder">Contraseña</string>
+    <string name="login_button">Ingresar</string>
+    <string name="login_forgot_password">¿Olvidaste tu contraseña?</string>
+    <string name="login_or">o</string>
+    <string name="login_no_account">¿No tienes cuenta?</string>
+    <string name="login_create_account">Regístrate</string>
+    <string name="cd_logo">Logo de Kloth</string>
+    <string name="cd_toggle_password">Mostrar u ocultar contraseña</string>
+
+    <!-- Register Screen -->
+    <string name="register_title">Crear cuenta</string>
+    <string name="register_name_placeholder">Nombre completo</string>
+    <string name="register_confirm_password_placeholder">Confirmar contraseña</string>
+    <string name="register_button">Registrarse</string>
+    <string name="register_has_account">¿Ya tienes cuenta?</string>
+    <string name="register_login">Inicia sesión</string>
+
+    <!-- Forgot Password Screen -->
+    <string name="forgot_password_title">¿Olvidaste tu contraseña?</string>
+    <string name="forgot_password_instruction">Ingresa tu correo electrónico para enviarte las instrucciones de recuperación.</string>
+    <string name="forgot_password_button">Enviar correo</string>
+    <string name="forgot_password_back_login">Volver al inicio de sesión</string>
+
+    <!-- Create Article Screen -->
+    <string name="create_article_title">Crear publicación</string>
+    <string name="type_prenda">Prenda</string>
+    <string name="type_outfit">Outfit</string>
+    <string name="type_evento">Evento</string>
+    <string name="add_photo_title">Añadir Foto</string>
+    <string name="add_photo_subtitle">Toca para subir imágenes</string>
+    <string name="label_nombre">Nombre</string>
+    <string name="placeholder_nombre">Nombre del artículo</string>
+    <string name="label_descripcion">Descripción</string>
+    <string name="placeholder_descripcion">Describe este artículo...</string>
+    <string name="label_marca">Marca</string>
+    <string name="placeholder_marca">Marca o diseñador</string>
+    <string name="label_categoria">Categoría</string>
+    <string name="placeholder_categoria">Seleccionar categoría</string>
+    <string name="label_color_field">Color</string>
+    <string name="placeholder_color">Color principal</string>
+    <string name="label_precio">Precio</string>
+    <string name="placeholder_precio">0.00</string>
+    <string name="currency_symbol">€</string>
+    <string name="label_estilo">Estilo</string>
+    <string name="placeholder_estilo">Seleccionar estilo</string>
+    <string name="label_ciudad">Ciudad</string>
+    <string name="placeholder_ciudad">Ciudad del evento</string>
+    <string name="label_pais">País</string>
+    <string name="placeholder_pais">País del evento</string>
+    <string name="label_inicio">Inicio</string>
+    <string name="label_fin">Fin</string>
+    <string name="placeholder_fecha">DD/MM/AA</string>
+    <string name="label_organizador">Organizador</string>
+    <string name="placeholder_organizador">Nombre del organizador</string>
+    <string name="btn_publicar">Publicar</string>
+    <string name="cd_delete_photo">Eliminar imagen</string>
+
+    <!-- Review Screen -->
+    <string name="cd_like">Me gusta</string>
+    <string name="cd_user_avatar">Avatar de usuario</string>
+    <string name="cd_delete_comment">Eliminar comentario</string>
+    <string name="cd_send_comment">Enviar comentario</string>
+    <string name="placeholder_add_comment">Haz un comentario...</string>
+    <string name="disabled_comment_placeholder">Ya no puedes hacer más comentarios</string>
+    <string name="time_now">Ahora</string>
+    <string name="label_comments_count">%1$d comentarios</string>
+    <string name="label_order_recent">Más recientes ▼</string>
+    <string name="label_order_old">Más antiguos ▲</string>
+    <string name="content_desc_avatar">Avatar del usuario</string>
+    <string name="content_desc_post_image">Imagen de la publicación</string>
+    <string name="label_tag_prefix">#%1$s</string>
+
+    <!-- Notifications -->
+    <string name="label_follow">Seguir</string>
+    <string name="label_following">Siguiendo</string>
+
     <!-- Mock Data -->
     <string name="mock_description">Una pieza maestra de sastrería contemporánea. Este abrigo ha sido confeccionado con 100% cachemira italiana de origen sostenible, ofreciendo una caída impecable y una suavidad inigualable.</string>
     <string name="mock_price">$280.000 COP</string>
+
+    <!-- Edit Profile Screen -->
+    <string name="edit_profile_title">Editar perfil</string>
+    <string name="edit_profile_cancel">Cancelar</string>
+    <string name="edit_profile_save">Guardar</string>
+    <string name="edit_profile_change_photo">Cambiar foto</string>
+    <string name="edit_profile_label_username">Nombre de usuario</string>
+    <string name="edit_profile_label_bio">Biografía</string>
+    <string name="edit_profile_placeholder_bio">Apasionado por la moda urbana y streetwear. Compartiendo looks y descubriendo marcas emergentes.</string>
+    <string name="edit_profile_label_email">Correo electrónico</string>
+    <string name="edit_profile_placeholder_email">alex@kloth.app</string>
+    <string name="edit_profile_label_location">Ubicación</string>
+    <string name="edit_profile_placeholder_location">Ciudad, País</string>
+    <string name="edit_profile_label_website">Sitio web</string>
+    <string name="edit_profile_placeholder_website">https://</string>
+    <string name="edit_profile_btn_save">Guardar cambios</string>
+    <string name="edit_profile_danger_zone_title">Zona de peligro</string>
+    <string name="edit_profile_btn_delete_account">Eliminar cuenta</string>
+    <string name="edit_profile_danger_zone_desc">Esta acción no se puede deshacer. Tus publicaciones se eliminarán permanentemente y tus reseñas pasarán a mostrarse como \"Usuario eliminado\".</string>
+    <string name="edit_profile_mock_username">alex_style</string>
+
+    <!-- Detail Section -->
+    <string name="detail_section_reviews_title">Valoraciones</string>
+    <string name="detail_write_review_btn">Escribir\nreseña</string>
+    <string name="detail_description_title">Descripción</string>
+    <string name="detail_spec_color">COLOR</string>
+    <string name="detail_spec_category">CATEGORÍA</string>
+    <string name="cd_hero_image">Imagen principal del producto</string>
+    <string name="cd_remove_favorite">Quitar de favoritos</string>
+    <string name="cd_add_favorite">Añadir a favoritos</string>
+    <string name="cd_likes">Likes</string>
+    <string name="cd_comments">Comentarios</string>
+
+    <!-- Create Review -->
+    <string name="create_review_loading">Publicando...</string>
+    <string name="create_review_rating_label">Tu calificación</string>
+    <string name="create_review_opinion_label">Tu opinión / análisis</string>
+    <string name="create_review_placeholder">Escribe tu reseña aquí (requerido)…</string>
+    <string name="create_review_required">Campo obligatorio</string>
+
+    <!-- Auth Errors -->
+    <string name="login_error_empty_fields">Por favor, completa todos los campos</string>
+    <string name="register_error_empty_fields">Todos los campos son obligatorios</string>
+    <string name="register_error_generic">Ocurrió un error al crear tu cuenta. Inténtalo de nuevo</string>
+    <string name="login_error_generic">Error al iniciar sesion</string>
 </resources>

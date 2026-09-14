@@ -29,7 +29,10 @@ import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun ProfileHeaderSection(
-    modifier: Modifier = Modifier
+    email: String,
+    modifier: Modifier = Modifier,
+    onEditProfileClick: () -> Unit = {},
+    onLogoutClick: () -> Unit = {}
 ) {
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -37,6 +40,7 @@ fun ProfileHeaderSection(
     ) {
         Spacer(modifier = Modifier.height(8.dp))
 
+        //Se usa async para que mno se trabe la UI, carga asíncrona
         AsyncImage(
             model = "https://lh3.googleusercontent.com/aida-public/AB6AXuDBMyCAVr9pWrd_sDsyfrx2v7B_wwZXc4En_Hj06fTPAnAoiyn85C9FsH8p6U6PiT3-zoF2ygVqjkcaxTd2qvb0dJco59T-gId4rhTYZRrypPBw7D21cyI8jziwbOHXhi6RvASwrKdMXNtFM4PZ4vmw0j-UQYyz-l9jQO_PKjkApgQurneLQYUD05xXGaJiFbJ7J7lnhsLCcMpV1reEReT6SL0W_OBqa0a_7S4P7IwHGSYytO0DdrGagg",
             contentDescription = stringResource(R.string.cd_profile_photo),
@@ -64,7 +68,7 @@ fun ProfileHeaderSection(
         Spacer(modifier = Modifier.height(4.dp))
 
         Text(
-            text = stringResource(R.string.mock_profile_username),
+            text = email,
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant
         )
@@ -160,7 +164,7 @@ fun ProfileHeaderSection(
                 .padding(horizontal = 16.dp)
                 .clip(RoundedCornerShape(999.dp))
                 .background(MaterialTheme.colorScheme.primary)
-                .clickable { /* TODO */ }
+                .clickable { onEditProfileClick() }
                 .padding(vertical = 14.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -168,6 +172,26 @@ fun ProfileHeaderSection(
                 text = stringResource(R.string.profile_edit),
                 style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
                 color = MaterialTheme.colorScheme.onPrimary
+            )
+        }
+
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Logout Button
+        Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .clip(RoundedCornerShape(999.dp))
+                .border(1.dp, MaterialTheme.colorScheme.error, RoundedCornerShape(999.dp))
+                .clickable { onLogoutClick() }
+                .padding(vertical = 14.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = stringResource(R.string.profile_logout),
+                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
+                color = MaterialTheme.colorScheme.error
             )
         }
 
@@ -202,7 +226,15 @@ private fun ProfileStatItem(
 @Preview(showBackground = true)
 @Composable
 fun ProfileHeaderSectionPreview() {
-    KlothTheme {
-        ProfileHeaderSection()
+    KlothTheme(darkTheme = false) {
+        ProfileHeaderSection(email = "test@example.com")
+    }
+}
+
+@Preview(showBackground = true, uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun ProfileHeaderSectionDarkPreview() {
+    KlothTheme(darkTheme = true) {
+        ProfileHeaderSection(email = "test@example.com")
     }
 }

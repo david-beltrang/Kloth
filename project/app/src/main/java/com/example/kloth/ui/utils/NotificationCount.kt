@@ -14,6 +14,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kloth.R
+import com.example.kloth.ui.theme.KlothTheme
 import com.example.kloth.ui.theme.RedInferno
 
 @Composable
@@ -49,7 +50,17 @@ fun NotificationCount(
 }
 
 @Composable
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Light Mode")
 fun NotificationCountPreview(){
-    NotificationCount()
+    KlothTheme {
+        NotificationCount()
+    }
+}
+
+@Composable
+@Preview(showBackground = true, name = "Dark Mode", uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
+fun NotificationCountDarkPreview(){
+    KlothTheme(darkTheme = true) {
+        NotificationCount()
+    }
 }
