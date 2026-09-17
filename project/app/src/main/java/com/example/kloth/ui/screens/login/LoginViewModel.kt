@@ -36,19 +36,21 @@ class LoginViewModel @Inject constructor(
             _uiState.update { 
                 it.copy(
                     showMessage = true, 
-                    errorMessageRes = R.string.login_error_empty_fields 
+                    credentialsMessage = "Por favor ingresa todos los campos"
                 ) 
             }
         } else {
             viewModelScope.launch{
-                try{
-                    authRepository.signIn(
-                        _uiState.value.email,
-                        _uiState.value.password
-                    )
-                    _uiState.update { it.copy(navigate = true) }
-                }catch(e: Exception){
-                    _uiState.update { it.copy(errorMessageRes = R.string.login_error_generic, showMessage = true) }
+                val result = authRepository.signIn(
+                    _uiState.value.email,
+                    _uiState.value.password
+                )
+
+                if(result.isSuccess){
+                    _uiState.update { it.copy(navigate = true)}
+                } else {
+                    val mensaje = result.exceptionOrNull()?.message ?: "Error al iniciar sesión"
+                    _uiState.update {it.copy(showMessage = true, errorMessage = mensaje)}
                 }
             }
         }
