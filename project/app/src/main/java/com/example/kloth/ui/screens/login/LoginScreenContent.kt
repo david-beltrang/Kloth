@@ -29,6 +29,7 @@ import com.example.kloth.R
 import com.example.kloth.ui.screens.login.components.LoginForgotPassword
 import com.example.kloth.ui.screens.login.components.LoginHeader
 import com.example.kloth.ui.screens.login.components.LoginOrDivider
+import com.example.kloth.ui.utils.AuthErrorMessage
 import com.example.kloth.ui.utils.AuthRedirectPrompt
 import com.example.kloth.ui.utils.KlothPrimaryButton
 import com.example.kloth.ui.utils.KlothTextField
@@ -44,6 +45,9 @@ fun LoginScreenContent(
     onPasswordChange: (String) -> Unit,
     onPasswordToggleClick: () -> Unit,
     onLoginClick: () -> Unit,
+    
+    // Errores
+    errorMessage: String = "",
     
     // Navegación y otros eventos
     onForgotPasswordClick: () -> Unit,
@@ -112,6 +116,8 @@ fun LoginScreenContent(
                 Spacer(modifier = Modifier.height(8.dp))
 
                 LoginForgotPassword(onClick = onForgotPasswordClick)
+
+                AuthErrorMessage(message = errorMessage)
 
                 Spacer(modifier = Modifier.height(32.dp))
 

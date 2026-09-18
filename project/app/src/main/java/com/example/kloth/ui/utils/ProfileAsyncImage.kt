@@ -1,3 +1,5 @@
+package com.example.kloth.ui.utils
+
 import com.example.kloth.R
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape

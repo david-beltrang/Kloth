@@ -31,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.example.kloth.R
 import com.example.kloth.ui.screens.login.components.LoginHeader
 import com.example.kloth.ui.screens.login.components.LoginOrDivider
+import com.example.kloth.ui.utils.AuthErrorMessage
 import com.example.kloth.ui.utils.AuthRedirectPrompt
 import com.example.kloth.ui.utils.KlothPrimaryButton
 import com.example.kloth.ui.utils.KlothTextField
@@ -52,6 +53,9 @@ fun RegisterScreenContent(
     onConfirmPasswordChange: (String) -> Unit,
     onPasswordToggleClick: () -> Unit,
     onConfirmPasswordToggleClick: () -> Unit,
+    
+    // Errores
+    errorMessage: String = "",
 
     // Navegación
     onRegisterClick: () -> Unit,
@@ -156,6 +160,8 @@ fun RegisterScreenContent(
                         }
                     )
                 )
+
+                AuthErrorMessage(message = errorMessage)
 
                 Spacer(modifier = Modifier.height(32.dp))
 

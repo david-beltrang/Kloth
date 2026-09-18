@@ -20,11 +20,11 @@ class LoginViewModel @Inject constructor(
     val uiState: StateFlow<LoginState> = _uiState
 
     fun onEmailChange(email: String) {
-        _uiState.update { it.copy(email = email) }
+        _uiState.update { it.copy(email = email, showMessage = false, errorMessage = "") }
     }
 
     fun onPasswordChange(password: String) {
-        _uiState.update { it.copy(password = password) }
+        _uiState.update { it.copy(password = password, showMessage = false, errorMessage = "") }
     }
 
     fun togglePasswordVisibility() {
@@ -36,10 +36,11 @@ class LoginViewModel @Inject constructor(
             _uiState.update { 
                 it.copy(
                     showMessage = true, 
-                    credentialsMessage = "Por favor ingresa todos los campos"
+                    errorMessage = "Por favor ingresa todos los campos"
                 ) 
             }
         } else {
+            _uiState.update { it.copy(isLoading = true, showMessage = false, errorMessage = "") }
             viewModelScope.launch{
                 val result = authRepository.signIn(
                     _uiState.value.email,
@@ -47,10 +48,10 @@ class LoginViewModel @Inject constructor(
                 )
 
                 if(result.isSuccess){
-                    _uiState.update { it.copy(navigate = true)}
+                    _uiState.update { it.copy(navigate = true, isLoading = false)}
                 } else {
                     val mensaje = result.exceptionOrNull()?.message ?: "Error al iniciar sesión"
-                    _uiState.update {it.copy(showMessage = true, errorMessage = mensaje)}
+                    _uiState.update {it.copy(showMessage = true, errorMessage = mensaje, isLoading = false)}
                 }
             }
         }

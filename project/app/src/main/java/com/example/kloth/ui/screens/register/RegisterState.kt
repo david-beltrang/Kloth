@@ -9,8 +9,8 @@ data class RegisterState(
     val password: String = "",
     val confirmPassword: String = "",
     val navigate: Boolean = false,
-    val mostrarMensaje: Boolean = false,
-    @StringRes val errorMessageRes: Int = 0,
+    val showMessage: Boolean = false,
+    val errorMessage: String = "",
     val isPasswordVisible: Boolean = false,
     val isConfirmPasswordVisible: Boolean = false
 )

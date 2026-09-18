@@ -1,10 +1,15 @@
 package com.example.kloth.data.repository
 
+import android.net.Uri
 import com.example.kloth.data.dataresource.AuthRemoteDataSource
 import com.example.kloth.ui.screens.forgotPassword.ForgotPasswordState
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
+import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.UserProfileChangeRequest
+import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class AuthRepository @Inject constructor(
@@ -28,13 +33,25 @@ class AuthRepository @Inject constructor(
         }
     }
 
-    suspend fun signUp(email: String,password: String){
-        authRemoteDataSource.signUp(email, password)
+    suspend fun signUp(email: String,password: String): Result<Unit> {
+        return try{
+            authRemoteDataSource.signUp(email, password)
+            Result.success(Unit)
+        }catch(e: FirebaseAuthUserCollisionException){
+            Result.failure(Exception("El correo ya está registrado"))
+        }catch(e: FirebaseAuthWeakPasswordException){
+            Result.failure(Exception("La contraseña es muy debil"))
+        }catch(e: FirebaseAuthInvalidCredentialsException){
+            Result.failure(Exception("El correo esta mal formado"))
+        } catch(e: Exception){
+            Result.failure(Exception("Error al registrarse"))
+        }
     }
 
     fun signOut(){
         authRemoteDataSource.signOut()
     }
+
 
     //suspend fun forgotPassword(email: String){
     //    authRemoteDataSource.forgotPassword(email)

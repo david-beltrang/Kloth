@@ -10,6 +10,5 @@ data class LoginState(
     val isLoading: Boolean = false,
     val navigate: Boolean = false,
     val errorMessage: String = "",
-    val credentialsMessage: String = "",
     val showMessage: Boolean = false
 )

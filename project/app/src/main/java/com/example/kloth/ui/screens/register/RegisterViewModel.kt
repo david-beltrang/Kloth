@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.kloth.R
 import com.example.kloth.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.scopes.ViewModelScoped
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,43 +16,54 @@ class RegisterViewModel @Inject constructor(
     private val authRepository: AuthRepository
 ) : ViewModel() {
 
-    //Declarar variable privada para el estado y no repetir mutableStateFlow
     private val _uiState = MutableStateFlow(RegisterState())
     val uiState: StateFlow<RegisterState> = _uiState
 
-    //Logica de negocio de los campos y reaccionar a eventoss
     fun onFullNameChange(input: String) {
-        _uiState.update {it.copy(fullName = input)}
-    }
-    fun onEmailChange(input: String) {
-        _uiState.update {it.copy(email = input)}
-    }
-    fun onPasswordChange(input: String) {
-        _uiState.update {it.copy(password = input)}
-    }
-    fun onConfirmPasswordChange(input: String) {
-        _uiState.update {it.copy(confirmPassword = input)}
+        _uiState.update { it.copy(fullName = input, showMessage = false, errorMessage = "") }
     }
 
-    //Evitar navegacion
-    fun registerButtonPressed(){
-        if(
+    fun onEmailChange(input: String) {
+        _uiState.update { it.copy(email = input, showMessage = false, errorMessage = "") }
+    }
+
+    fun onPasswordChange(input: String) {
+        _uiState.update { it.copy(password = input, showMessage = false, errorMessage = "") }
+    }
+
+    fun onConfirmPasswordChange(input: String) {
+        _uiState.update { it.copy(confirmPassword = input, showMessage = false, errorMessage = "") }
+    }
+
+    fun registerButtonPressed() {
+        if (
             _uiState.value.fullName.isEmpty() ||
             _uiState.value.email.isEmpty() ||
             _uiState.value.password.isEmpty() ||
             _uiState.value.confirmPassword.isEmpty()
-        ){
-            _uiState.update { it.copy(mostrarMensaje = true, errorMessageRes = R.string.register_error_empty_fields) }
+        ) {
+            _uiState.update {
+                it.copy(
+                    showMessage = true,
+                    errorMessage = "Todos los campos son obligatorios"
+                )
+            }
         } else {
+            _uiState.update { it.copy(showMessage = false, errorMessage = "") }
             viewModelScope.launch {
-                try{
-                    authRepository.signUp(_uiState.value.email, _uiState.value.password)
+                val result = authRepository.signUp(
+                    _uiState.value.email,
+                    _uiState.value.password
+                )
+
+                if (result.isSuccess) {
                     _uiState.update { it.copy(navigate = true) }
-                }catch (e: Exception){
+                } else {
+                    val mensaje = result.exceptionOrNull()?.message ?: "Error al registrarse"
                     _uiState.update {
                         it.copy(
-                            mostrarMensaje = true,
-                            errorMessageRes = R.string.register_error_generic
+                            showMessage = true,
+                            errorMessage = mensaje
                         )
                     }
                 }
@@ -62,7 +72,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     fun onMessageShown() {
-        _uiState.update { it.copy(mostrarMensaje = false) }
+        _uiState.update { it.copy(showMessage = false) }
     }
 
     fun onNavigationConsumed() {

@@ -32,6 +32,9 @@ fun RegisterScreen(
         onPasswordToggleClick = { registerViewModel.togglePasswordVisibility() },
         onConfirmPasswordToggleClick = { registerViewModel.toggleConfirmPasswordVisibility() },
 
+        // Errores
+        errorMessage = if (state.showMessage) state.errorMessage else "",
+
         //Navegacion
         onRegisterClick = { registerViewModel.registerButtonPressed() },
         onLoginClick = onLoginClick

@@ -1,18 +1,49 @@
 package com.example.kloth.ui.screens.editProfile
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.kloth.data.repository.AuthRepository
+import com.example.kloth.data.repository.StorageRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+
 @HiltViewModel
 // ViewModel para gestionar el estado de la edición de perfil.
-class EditProfileViewModel @Inject constructor() : ViewModel() {
+class EditProfileViewModel @Inject constructor(
+    private val authRepository: AuthRepository,
+    private val storageRepository: StorageRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow(EditProfileState())
     val uiState: StateFlow<EditProfileState> = _uiState.asStateFlow()
+
+    init {
+        // Inicializar con la URL actual del usuario
+        _uiState.update { 
+            it.copy(profileImageUrl = authRepository.currentUser?.photoUrl?.toString())
+        }
+    }
+
+    // Funcion para subir imagen
+    fun onImagePicked(uri: Uri) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(profileImageUrl = uri.toString(), isLoading = true) }
+
+            val result = storageRepository.uploadProfileImage(uri)
+
+            if (result.isSuccess) {
+                _uiState.update { it.copy(profileImageUrl = result.getOrNull(), isLoading = false) }
+            } else {
+                _uiState.update { it.copy(isLoading = false) }
+            }
+        }
+    }
 
     // Funcion para actualizar el Username
     fun updateUsername(input: String) {

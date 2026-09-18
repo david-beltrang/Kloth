@@ -6,14 +6,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kloth.ui.screens.editProfile.components.EditProfileTopBar
 
 @Composable
 fun EditProfileScreen(
     modifier: Modifier = Modifier,
     onCancelClick: () -> Unit = {},
-    viewModel: EditProfileViewModel = viewModel()
+    viewModel: EditProfileViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -34,6 +34,9 @@ fun EditProfileScreen(
                 onLocationChange = { viewModel.updateLocation(it) },
                 website = uiState.website,
                 onWebsiteChange = { viewModel.updateWebsite(it) },
+                profileImageUrl = uiState.profileImageUrl,
+                isLoading = uiState.isLoading,
+                onImagePicked = { viewModel.onImagePicked(it) },
 
                 //Preguntar si se le pone navegación a donde llevbaría
                 onSaveClick = { /* Implementar save logic */ },
