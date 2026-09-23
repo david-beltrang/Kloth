@@ -8,7 +8,6 @@ import javax.inject.Inject
 class StorageRemoteDataSource @Inject constructor(
     private val storage: FirebaseStorage
 ) {
-
     suspend fun uploadImage(path: String, uri: Uri): String{
         val imageRef = storage.reference.child(path)
         imageRef.putFile(uri).await()
