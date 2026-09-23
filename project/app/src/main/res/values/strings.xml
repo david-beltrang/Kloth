@@ -202,5 +202,6 @@
     <string name="login_error_empty_fields">Por favor, completa todos los campos</string>
     <string name="register_error_empty_fields">Todos los campos son obligatorios</string>
     <string name="register_error_generic">Ocurrió un error al crear tu cuenta. Inténtalo de nuevo</string>
-    <string name="login_error_generic">Error al iniciar sesion</string>
+    <string name="login_error_generic">Credenciales incorrectas o error de conexión</string>
+    <string name="auth_error_password_short">La contraseña debe tener al menos 6 caracteres</string>
 </resources>
