@@ -5,7 +5,6 @@ import androidx.lifecycle.viewModelScope
 import com.example.kloth.R
 import com.example.kloth.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.scopes.ViewModelScoped
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,31 +22,39 @@ class RegisterViewModel @Inject constructor(
 
     //Logica de negocio de los campos y reaccionar a eventoss
     fun onFullNameChange(input: String) {
-        _uiState.update {it.copy(fullName = input)}
+        _uiState.update {it.copy(fullName = input, mostrarMensaje = false)}
     }
     fun onEmailChange(input: String) {
-        _uiState.update {it.copy(email = input)}
+        _uiState.update {it.copy(email = input, mostrarMensaje = false)}
     }
     fun onPasswordChange(input: String) {
-        _uiState.update {it.copy(password = input)}
+        _uiState.update {it.copy(password = input, mostrarMensaje = false)}
     }
     fun onConfirmPasswordChange(input: String) {
-        _uiState.update {it.copy(confirmPassword = input)}
+        _uiState.update {it.copy(confirmPassword = input, mostrarMensaje = false)}
     }
 
     //Evitar navegacion
     fun registerButtonPressed(){
+        val state = _uiState.value
         if(
-            _uiState.value.fullName.isEmpty() ||
-            _uiState.value.email.isEmpty() ||
-            _uiState.value.password.isEmpty() ||
-            _uiState.value.confirmPassword.isEmpty()
+            state.fullName.isEmpty() ||
+            state.email.isEmpty() ||
+            state.password.isEmpty() ||
+            state.confirmPassword.isEmpty()
         ){
             _uiState.update { it.copy(mostrarMensaje = true, errorMessageRes = R.string.register_error_empty_fields) }
+        } else if (state.password.length < 6) {
+            _uiState.update {
+                it.copy(
+                    mostrarMensaje = true,
+                    errorMessageRes = R.string.auth_error_password_short
+                )
+            }
         } else {
             viewModelScope.launch {
                 try{
-                    authRepository.signUp(_uiState.value.email, _uiState.value.password)
+                    authRepository.signUp(state.email, state.password)
                     _uiState.update { it.copy(navigate = true) }
                 }catch (e: Exception){
                     _uiState.update {

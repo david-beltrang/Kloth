@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
 import com.example.kloth.ui.screens.login.components.LoginHeader
@@ -44,6 +45,7 @@ fun RegisterScreenContent(
     confirmPassword: String,
     isPasswordVisible: Boolean,
     isConfirmPasswordVisible: Boolean,
+    errorMessage: String,
 
     // Métodos para manejar el estado
     onFullNameChange: (String) -> Unit,
@@ -156,6 +158,17 @@ fun RegisterScreenContent(
                         }
                     )
                 )
+
+                if (errorMessage.isNotEmpty()) {
+                    Spacer(modifier = Modifier.height(16.dp))
+                    Text(
+                        text = errorMessage,
+                        color = MaterialTheme.colorScheme.error,
+                        style = MaterialTheme.typography.bodySmall,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.fillMaxWidth()
+                    )
+                }
 
                 Spacer(modifier = Modifier.height(32.dp))
 

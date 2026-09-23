@@ -4,6 +4,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 
 @Composable
 fun RegisterScreen(
@@ -12,6 +13,12 @@ fun RegisterScreen(
     onLoginClick: () -> Unit = {}
 ) {
     val state by registerViewModel.uiState.collectAsState()
+    
+    val errorMessage = if (state.mostrarMensaje && state.errorMessageRes != 0) {
+        stringResource(state.errorMessageRes)
+    } else {
+        ""
+    }
 
     RegisterScreenContent(
         modifier = modifier,
@@ -23,6 +30,7 @@ fun RegisterScreen(
         confirmPassword = state.confirmPassword,
         isPasswordVisible = state.isPasswordVisible,
         isConfirmPasswordVisible = state.isConfirmPasswordVisible,
+        errorMessage = errorMessage,
 
         //Metodos del View Model para manejar el estado
         onFullNameChange = { registerViewModel.onFullNameChange(it) },
