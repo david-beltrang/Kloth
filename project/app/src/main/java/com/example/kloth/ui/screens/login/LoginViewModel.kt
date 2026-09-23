@@ -20,11 +20,11 @@ class LoginViewModel @Inject constructor(
     val uiState: StateFlow<LoginState> = _uiState
 
     fun onEmailChange(email: String) {
-        _uiState.update { it.copy(email = email) }
+        _uiState.update { it.copy(email = email, showMessage = false) }
     }
 
     fun onPasswordChange(password: String) {
-        _uiState.update { it.copy(password = password) }
+        _uiState.update { it.copy(password = password, showMessage = false) }
     }
 
     fun togglePasswordVisibility() {
@@ -32,20 +32,27 @@ class LoginViewModel @Inject constructor(
     }
 
     fun onLoginClick() {
-        if (_uiState.value.email.isEmpty() || _uiState.value.password.isEmpty()) {
+        val email = _uiState.value.email
+        val password = _uiState.value.password
+
+        if (email.isEmpty() || password.isEmpty()) {
             _uiState.update { 
                 it.copy(
                     showMessage = true, 
                     errorMessageRes = R.string.login_error_empty_fields 
                 ) 
             }
+        } else if (password.length < 6) {
+            _uiState.update {
+                it.copy(
+                    showMessage = true,
+                    errorMessageRes = R.string.auth_error_password_short
+                )
+            }
         } else {
             viewModelScope.launch{
                 try{
-                    authRepository.signIn(
-                        _uiState.value.email,
-                        _uiState.value.password
-                    )
+                    authRepository.signIn(email, password)
                     _uiState.update { it.copy(navigate = true) }
                 }catch(e: Exception){
                     _uiState.update { it.copy(errorMessageRes = R.string.login_error_generic, showMessage = true) }
