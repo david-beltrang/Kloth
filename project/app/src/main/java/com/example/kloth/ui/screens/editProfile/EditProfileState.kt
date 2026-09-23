@@ -7,5 +7,5 @@ data class EditProfileState (
     val location: String = "",
     val website: String = "",
     val profileImageUrl: String? = null,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
 )

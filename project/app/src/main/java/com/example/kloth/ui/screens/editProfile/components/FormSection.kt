@@ -1,7 +1,6 @@
 package com.example.kloth.ui.screens.editProfile.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
@@ -28,7 +27,6 @@ fun FormSection(
     website: String,
     onWebsiteChange: (String) -> Unit,
     modifier: Modifier = Modifier,
-    onSaveClick: () -> Unit = {}
 ) {
     Column(modifier = modifier.padding(horizontal = 20.dp)) {
         EditProfileTextField(
@@ -79,27 +77,6 @@ fun FormSection(
             placeholder = stringResource(R.string.edit_profile_placeholder_website),
             leadingIcon = Icons.Outlined.Public
         )
-
-        Spacer(modifier = Modifier.height(24.dp))
-
-        Button(
-            onClick = onSaveClick,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(50.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
-            ),
-            shape = RoundedCornerShape(12.dp),
-            enabled = true 
-        ) {
-            Text(
-                text = stringResource(R.string.edit_profile_btn_save),
-                fontWeight = FontWeight.Bold,
-                fontSize = 15.sp
-            )
-        }
     }
 }
 

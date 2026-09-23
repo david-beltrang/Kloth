@@ -27,7 +27,6 @@ fun EditProfileScreenContent(
     profileImageUrl: String?,
     isLoading: Boolean,
     onImagePicked: (Uri) -> Unit,
-    onSaveClick: () -> Unit,
     onDeleteAccount: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -57,8 +56,7 @@ fun EditProfileScreenContent(
             location = location,
             onLocationChange = onLocationChange,
             website = website,
-            onWebsiteChange = onWebsiteChange,
-            onSaveClick = onSaveClick
+            onWebsiteChange = onWebsiteChange
         )
 
         Spacer(modifier = Modifier.height(32.dp))
