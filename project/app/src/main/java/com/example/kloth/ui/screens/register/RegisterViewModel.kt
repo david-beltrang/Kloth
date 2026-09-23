@@ -1,10 +1,12 @@
 package com.example.kloth.ui.screens.register
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kloth.R
 import com.example.kloth.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +15,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(RegisterState())
@@ -45,7 +48,7 @@ class RegisterViewModel @Inject constructor(
             _uiState.update {
                 it.copy(
                     showMessage = true,
-                    errorMessage = "Todos los campos son obligatorios"
+                    errorMessage = context.getString(R.string.register_error_empty_fields)
                 )
             }
         } else {
@@ -59,7 +62,7 @@ class RegisterViewModel @Inject constructor(
                 if (result.isSuccess) {
                     _uiState.update { it.copy(navigate = true) }
                 } else {
-                    val mensaje = result.exceptionOrNull()?.message ?: "Error al registrarse"
+                    val mensaje = result.exceptionOrNull()?.message ?: context.getString(R.string.register_error_generic)
                     _uiState.update {
                         it.copy(
                             showMessage = true,

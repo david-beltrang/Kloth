@@ -1,10 +1,12 @@
 package com.example.kloth.ui.screens.login
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kloth.R
 import com.example.kloth.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,7 +15,8 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    @ApplicationContext private val context: Context
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginState())
@@ -36,7 +39,7 @@ class LoginViewModel @Inject constructor(
             _uiState.update { 
                 it.copy(
                     showMessage = true, 
-                    errorMessage = "Por favor ingresa todos los campos"
+                    errorMessage = context.getString(R.string.login_error_empty_fields)
                 ) 
             }
         } else {
@@ -50,7 +53,7 @@ class LoginViewModel @Inject constructor(
                 if(result.isSuccess){
                     _uiState.update { it.copy(navigate = true, isLoading = false)}
                 } else {
-                    val mensaje = result.exceptionOrNull()?.message ?: "Error al iniciar sesión"
+                    val mensaje = result.exceptionOrNull()?.message ?: context.getString(R.string.login_error_generic)
                     _uiState.update {it.copy(showMessage = true, errorMessage = mensaje, isLoading = false)}
                 }
             }

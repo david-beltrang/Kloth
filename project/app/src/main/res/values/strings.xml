@@ -203,4 +203,12 @@
     <string name="register_error_empty_fields">Todos los campos son obligatorios</string>
     <string name="register_error_generic">Ocurrió un error al crear tu cuenta. Inténtalo de nuevo</string>
     <string name="login_error_generic">Error al iniciar sesion</string>
+    <string name="auth_error_invalid_credentials">Credenciales incorrectas</string>
+    <string name="auth_error_user_not_found">El usuario no existe</string>
+    <string name="auth_error_email_already_registered">El correo ya está registrado</string>
+    <string name="auth_error_weak_password">La contraseña es muy debil</string>
+    <string name="auth_error_invalid_email">El correo esta mal formado</string>
+
+    <!-- Storage Errors -->
+    <string name="storage_error_user_not_logged_in">No user logged in</string>
 </resources>
