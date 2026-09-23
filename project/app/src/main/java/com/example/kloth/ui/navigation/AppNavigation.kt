@@ -176,7 +176,12 @@ fun AppNavigation(
 
         composable(AppRoutes.EditProfile.route) {
             EditProfileScreen(
-                onCancelClick = { navController.popBackStack() }
+                onCancelClick = { navController.popBackStack() },
+                onSaveClick = {
+                    navController.navigate(AppRoutes.Profile.route) {
+                        popUpTo(AppRoutes.Profile.route) { inclusive = true }
+                    }
+                }
             )
         }
 
