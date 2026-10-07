@@ -17,19 +17,19 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
+import com.example.kloth.ui.utils.ProfileAsyncImage
 
 @Composable
 fun ProfileHeaderSection(
     email: String,
+    profileImageUrl: String?,
     modifier: Modifier = Modifier,
     onEditProfileClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {}
@@ -40,21 +40,16 @@ fun ProfileHeaderSection(
     ) {
         Spacer(modifier = Modifier.height(8.dp))
 
-        //Se usa async para que mno se trabe la UI, carga asíncrona
-        AsyncImage(
-            model = "https://lh3.googleusercontent.com/aida-public/AB6AXuDBMyCAVr9pWrd_sDsyfrx2v7B_wwZXc4En_Hj06fTPAnAoiyn85C9FsH8p6U6PiT3-zoF2ygVqjkcaxTd2qvb0dJco59T-gId4rhTYZRrypPBw7D21cyI8jziwbOHXhi6RvASwrKdMXNtFM4PZ4vmw0j-UQYyz-l9jQO_PKjkApgQurneLQYUD05xXGaJiFbJ7J7lnhsLCcMpV1reEReT6SL0W_OBqa0a_7S4P7IwHGSYytO0DdrGagg",
-            contentDescription = stringResource(R.string.cd_profile_photo),
-            contentScale = ContentScale.Crop,
+        ProfileAsyncImage(
+            profileImage = profileImageUrl ?: "",
+            size = 100,
             modifier = Modifier
-                .size(100.dp)
                 .border(
                     width = 2.dp,
                     color = MaterialTheme.colorScheme.outlineVariant,
                     shape = CircleShape
                 )
                 .padding(3.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.secondaryContainer)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -227,7 +222,7 @@ private fun ProfileStatItem(
 @Composable
 fun ProfileHeaderSectionPreview() {
     KlothTheme(darkTheme = false) {
-        ProfileHeaderSection(email = "test@example.com")
+        ProfileHeaderSection(email = "test@example.com", profileImageUrl = null)
     }
 }
 
@@ -235,6 +230,6 @@ fun ProfileHeaderSectionPreview() {
 @Composable
 fun ProfileHeaderSectionDarkPreview() {
     KlothTheme(darkTheme = true) {
-        ProfileHeaderSection(email = "test@example.com")
+        ProfileHeaderSection(email = "test@example.com", profileImageUrl = null)
     }
 }

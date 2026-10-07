@@ -24,6 +24,7 @@ import com.example.kloth.ui.screens.profile.components.ProfileHeaderSection
 @Composable
 fun ProfileScreenContent(
     email: String,
+    profileImageUrl: String?,
     selectedTabIndex: Int,
     onTabSelected: (Int) -> Unit,
     onEditProfileClick: () -> Unit,
@@ -52,6 +53,7 @@ fun ProfileScreenContent(
             ) {
                 ProfileHeaderSection(
                     email = email,
+                    profileImageUrl = profileImageUrl,
                     onEditProfileClick = onEditProfileClick,
                     onLogoutClick = onLogoutClick
                 )

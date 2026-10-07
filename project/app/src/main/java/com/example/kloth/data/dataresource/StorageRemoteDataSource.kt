@@ -13,5 +13,4 @@ class StorageRemoteDataSource @Inject constructor(
         imageRef.putFile(uri).await()
         return imageRef.downloadUrl.await().toString()
     }
-
 }

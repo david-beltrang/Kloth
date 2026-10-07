@@ -23,6 +23,7 @@ fun ProfileScreen(
         ProfileScreenContent(
             //metodos de estado
             email = uiState.email,
+            profileImageUrl = uiState.profileImageUrl,
             selectedTabIndex = uiState.selectedTabIndex,
             onTabSelected = { viewModel.onTabSelected(it) },
             //navegacion

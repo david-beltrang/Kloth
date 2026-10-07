@@ -1,6 +1,7 @@
 package com.example.kloth.data.dataresource
 
 import android.net.Uri
+import androidx.core.net.toUri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
@@ -15,13 +16,16 @@ class AuthRemoteDataSource @Inject constructor(
         get() = auth.currentUser
 
     suspend fun updateProfileImage(photoUrl: String): Unit {
-        val uri = Uri.parse(photoUrl)
-        currentUser?.updateProfile(
+        val user = currentUser ?: return
+        val uri = photoUrl.toUri()
+        user.updateProfile(
             UserProfileChangeRequest.Builder()
                 .setPhotoUri(uri)
                 .build()
-        )?.await()
+        ).await()
+        user.reload().await()
     }
+
     suspend fun signIn(email: String, password: String){
         auth.signInWithEmailAndPassword(email, password).await()
     }
