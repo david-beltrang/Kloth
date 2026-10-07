@@ -28,6 +28,7 @@ fun ReviewItem(
             authorName = review.authorName,
             timeAgo = review.timeAgo,
             avatarRes = review.avatarRes,
+            avatarUrl = review.avatarUrl,
             rating = review.rating
         )
 

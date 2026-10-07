@@ -2,14 +2,15 @@ package com.example.kloth.ui.screens.feed
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.kloth.data.local.FakeArticle
 import com.example.kloth.ui.theme.KlothTheme
 
+// Las previews usan datos de ejemplo: no pueden llamar al backend ni crear el ViewModel con Hilt
 @Preview(showBackground = true, name = "Light Mode")
 @Composable
 fun FeedScreenPreview() {
     KlothTheme(darkTheme = false) {
-        FeedScreen(feedViewModel = viewModel())
+        FeedScreenContent(mockPosts = FakeArticle.posts, onProductClick = {})
     }
 }
 
@@ -17,6 +18,6 @@ fun FeedScreenPreview() {
 @Composable
 fun FeedScreenDarkPreview() {
     KlothTheme(darkTheme = true) {
-        FeedScreen(feedViewModel = viewModel())
+        FeedScreenContent(mockPosts = FakeArticle.posts, onProductClick = {})
     }
 }
