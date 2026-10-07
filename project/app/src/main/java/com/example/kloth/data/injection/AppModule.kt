@@ -21,8 +21,8 @@ object AppModule {
     @Provides
     fun provideRetrofit(): Retrofit = Retrofit.Builder()
         .baseUrl("http://10.0.2.2:3000/") // backend local visto desde el emulador; http sin S y slash final
-        .addConverterFactory(ScalarsConverterFactory.create()) // lee texto plano
         .addConverterFactory(GsonConverterFactory.create()) // lee JSON
+        .addConverterFactory(ScalarsConverterFactory.create()) // lee texto plano
         .build()
 
     // Hilt no sabe crear los servicios: se crean una sola vez con retrofit.create(...)

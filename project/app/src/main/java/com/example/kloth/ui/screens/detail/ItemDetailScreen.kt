@@ -53,14 +53,14 @@ fun ItemDetailScreen(
     }
 
     // El backend respondio con error o no hay conexion
-    if (state.error != null) {
+    if (state.errorMessage != null) {
         Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 modifier = Modifier.padding(32.dp)
             ) {
                 Text(
-                    text = state.error ?: "",
+                    text = state.errorMessage ?: "",
                     style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Center
                 )

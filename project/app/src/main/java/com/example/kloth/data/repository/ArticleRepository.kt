@@ -24,6 +24,9 @@ class ArticleRepository @Inject constructor(
     @ApplicationContext private val context: Context
 ) {
 
+    // Los catch especificos van primero y el general al final; al usuario se le muestra
+    // un mensaje amigable y la excepcion original queda en el Logcat para depurar.
+
     // Feed: articulos con su creador, calificacion promedio y numero de resenas.
     // Las tres peticiones van en paralelo (async + await) y se combinan al final.
     suspend fun getFeedPosts(): Result<List<PostItem>> = try {
@@ -49,8 +52,12 @@ class ArticleRepository @Inject constructor(
                 }
         }
         Result.success(posts)
-    } catch (e: Exception) {
-        Result.failure(friendlyError(e))
+    } catch (e: HttpException) { // el backend respondio con error (404, 500...)
+        Log.e(TAG, "Error del backend al cargar el feed", e)
+        Result.failure(Exception(context.getString(R.string.network_error_server, e.code())))
+    } catch (e: Exception) { // sin conexion, servidor apagado, tiempo agotado...
+        Log.e(TAG, "No se pudo conectar al cargar el feed", e)
+        Result.failure(Exception(context.getString(R.string.network_error_connection)))
     }
 
     // Detalle: el articulo y sus resenas (comentarios), con el nombre y la foto de cada autor
@@ -67,23 +74,17 @@ class ArticleRepository @Inject constructor(
             )
         }
         Result.success(detail)
-    } catch (e: Exception) {
-        Result.failure(friendlyError(e))
+    } catch (e: HttpException) { // el backend respondio con error
+        Log.e(TAG, "Error del backend al cargar el articulo $id", e)
+        val message = if (e.code() == 404) context.getString(R.string.network_error_not_found)
+        else context.getString(R.string.network_error_server, e.code())
+        Result.failure(Exception(message))
+    } catch (e: Exception) { // sin conexion, servidor apagado, tiempo agotado...
+        Log.e(TAG, "No se pudo conectar al cargar el articulo $id", e)
+        Result.failure(Exception(context.getString(R.string.network_error_connection)))
     }
 
-    // Mensajes para el usuario en vez de la excepcion cruda (los especificos primero)
-    private fun friendlyError(e: Exception): Exception {
-        // La excepcion original queda en el Logcat para depurar; al usuario se le muestra un mensaje amigable
-        Log.e("ArticleRepository", "Error al consultar el backend", e)
-        return userMessage(e)
-    }
-
-    private fun userMessage(e: Exception): Exception = when {
-        e is HttpException && e.code() == 404 ->
-            Exception(context.getString(R.string.network_error_not_found))
-        e is HttpException ->
-            Exception(context.getString(R.string.network_error_server, e.code()))
-        else -> // sin conexion, servidor apagado, tiempo agotado...
-            Exception(context.getString(R.string.network_error_connection))
+    private companion object {
+        const val TAG = "ArticleRepository"
     }
 }

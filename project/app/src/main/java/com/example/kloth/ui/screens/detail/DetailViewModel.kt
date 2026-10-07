@@ -20,17 +20,17 @@ class DetailViewModel @Inject constructor(
 
     // A diferencia de Feed, no usamos init porque dependemos de un ID que llega después
     fun loadProduct(productId: String) {
-        _uiState.update { it.copy(isLoading = true, error = null) }
+        _uiState.update { it.copy(isLoading = true, errorMessage = null) }
 
         viewModelScope.launch {
             val result = articleRepository.getArticleDetail(productId)
             if (result.isSuccess) {
                 _uiState.update {
-                    it.copy(product = result.getOrNull(), isLoading = false, error = null)
+                    it.copy(product = result.getOrNull(), isLoading = false, errorMessage = null)
                 }
             } else {
                 _uiState.update {
-                    it.copy(product = null, isLoading = false, error = result.exceptionOrNull()?.message)
+                    it.copy(product = null, isLoading = false, errorMessage = result.exceptionOrNull()?.message)
                 }
             }
         }
