@@ -211,4 +211,10 @@
 
     <!-- Storage Errors -->
     <string name="storage_error_user_not_logged_in">No user logged in</string>
+
+    <!-- Backend (Retrofit) Errors -->
+    <string name="network_error_not_found">El artículo no existe o fue eliminado</string>
+    <string name="network_error_server">Error del servidor (%1$d). Inténtalo más tarde</string>
+    <string name="network_error_connection">No se pudo conectar con el servidor</string>
+    <string name="feed_retry">Reintentar</string>
 </resources>

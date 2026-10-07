@@ -15,6 +15,7 @@ googleKotlinKsp = "2.1.0-1.0.29"
 firebaseCrashlytics = "3.0.2"
 firebaseBom = "33.7.0"
 dagger = "2.60.1"
+retrofit = "2.11.0"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -46,6 +47,10 @@ firebase-auth = { module = "com.google.firebase:firebase-auth"}
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics"}
 firebase-firestore = { module = "com.google.firebase:firebase-firestore"}
 firebase-storage = { module = "com.google.firebase:firebase-storage" }
+
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+retrofit-converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
