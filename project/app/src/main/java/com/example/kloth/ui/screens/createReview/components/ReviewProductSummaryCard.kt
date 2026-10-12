@@ -70,7 +70,6 @@ fun ReviewProductSummaryCard(
             contentScale = ContentScale.Crop
         )
 
-        // Contenido de texto
         Column(
             modifier = Modifier
                 .weight(1f)

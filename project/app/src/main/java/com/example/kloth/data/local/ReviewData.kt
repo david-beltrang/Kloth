@@ -5,13 +5,17 @@ import com.example.kloth.R
 
 data class ReviewData(
     val id: String,
+    val productId: String = "",
+    val userId: Int = 0,
     val authorName: String,
     val timeAgo: String,
-    @get:DrawableRes val avatarRes: Int,
+    val avatarUrl: String? = null,
+    @get:DrawableRes val avatarRes: Int? = null,
     val rating: Float,
     val reviewText: String,
     val likesCount: Int = 0,
     val isLikedByMe: Boolean = false,
+    val isMyReview: Boolean = false,
     val commentsCountText: String = "0",
     val comentariosList: List<ComentarioReviewData> = emptyList()
 )

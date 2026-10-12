@@ -32,6 +32,8 @@ fun ReviewScreenContent(
     nuevoComentarioTexto: String,
     ordenMasRecientes: Boolean,
     yaComento: Boolean,
+    isSending: Boolean = false,
+    errorMessage: String? = null,
     onTextoComentarioChange: (String) -> Unit,
     onEnviarComentario: () -> Unit,
     onLikeResena: () -> Unit,
@@ -39,6 +41,9 @@ fun ReviewScreenContent(
     onEliminarComentario: (String) -> Unit,
     onToggleOrden: () -> Unit,
     onBackClick: () -> Unit,
+    onEditClick: () -> Unit = {},
+    onDeleteClick: () -> Unit = {},
+    onProfileClick: (Int) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -55,7 +60,10 @@ fun ReviewScreenContent(
                 MainReviewItem(
                     resena = resena,
                     onLikeClick = onLikeResena,
-                    onBackClick = onBackClick
+                    onBackClick = onBackClick,
+                    onEditClick = onEditClick,
+                    onDeleteClick = onDeleteClick,
+                    onProfileClick = { onProfileClick(resena.userId) }
                 )
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             }
@@ -98,7 +106,8 @@ fun ReviewScreenContent(
                 CommentItem(
                     comentario = comentario,
                     onLikeClick = { onLikeComentario(comentario.id) },
-                    onDeleteClick = { onEliminarComentario(comentario.id) }
+                    onDeleteClick = { onEliminarComentario(comentario.id) },
+                    onProfileClick = { onProfileClick(comentario.userId) }
                 )
                 HorizontalDivider(
                     color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
@@ -107,11 +116,20 @@ fun ReviewScreenContent(
             }
         }
 
+        if (errorMessage != null) {
+            Text(
+                text = stringResource(R.string.state_error, errorMessage),
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 4.dp)
+            )
+        }
+
         CommentInputField(
             texto = nuevoComentarioTexto,
             onTextoChange = onTextoComentarioChange,
             onSendClick = onEnviarComentario,
-            deshabilitado = yaComento
+            deshabilitado = yaComento || isSending
         )
     }
 }

@@ -1,41 +1,48 @@
 package com.example.kloth.ui.screens.review
 
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.example.kloth.R
-import com.example.kloth.data.local.ComentarioReviewData
-import com.example.kloth.data.local.ResenasDataLocal
-import com.example.kloth.ui.navigation.AppRoutes
+import androidx.lifecycle.viewModelScope
+import com.example.kloth.data.Session
+import com.example.kloth.data.repository.CommentRepository
+import com.example.kloth.data.repository.ReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ReviewViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
+    private val reviewRepository: ReviewRepository,
+    private val commentRepository: CommentRepository
 ) : ViewModel() {
 
-    // Recupera el ID si viene de la navegación
-    private val reviewId: String? = savedStateHandle[AppRoutes.Review.ARG_REVIEW_ID]
+    // ID de la reseña, llega desde la pantalla vía loadReview
+    private var reviewId: String? = null
 
     private val _uiState = MutableStateFlow(ReviewState())
     val uiState: StateFlow<ReviewState> = _uiState.asStateFlow()
 
-    init {
-        // Carga la reseña si el ID existe en la navegación
-        reviewId?.let { id ->
-            loadReview(id)
-        }
-    }
+    fun loadReview(reviewId: String) {
+        this.reviewId = reviewId
+        viewModelScope.launch {
+            _uiState.update { it.copy(isLoading = true, errorMessage = null) }
 
-    private fun loadReview(id: String) {
-        val resenaEncontrada = ResenasDataLocal.obtenerResenaPorId(id)
-        resenaEncontrada?.let { resena ->
-            _uiState.update { currentState ->
-                currentState.copy(resena = resena)
+            val result = reviewRepository.getReviewWithComments(reviewId)
+
+            if (result.isSuccess) {
+                _uiState.update {
+                    it.copy(resena = result.getOrNull() ?: it.resena, isLoading = false)
+                }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = result.exceptionOrNull()?.message ?: "Error desconocido"
+                    )
+                }
             }
         }
     }
@@ -46,69 +53,140 @@ class ReviewViewModel @Inject constructor(
 
     fun onEnviarComentario() {
         val currentState = _uiState.value
-        if (currentState.nuevoComentarioTexto.isNotBlank() && !currentState.yaComento) {
-            val nuevoComentario = ComentarioReviewData(
-                id = "my_c_${System.currentTimeMillis()}",
-                authorName = "Tú",
-                timeAgo = "Ahora",
-                avatarRes = R.drawable.abrigo_negro,
-                commentText = currentState.nuevoComentarioTexto,
-                likesCount = 0,
-                isMyComment = true
+        val reviewId = reviewId ?: return
+        if (currentState.nuevoComentarioTexto.isBlank() || currentState.yaComento) return
+
+        viewModelScope.launch {
+            _uiState.update { it.copy(isSending = true, errorMessage = null) }
+
+            val result = commentRepository.createComment(
+                reviewId = reviewId,
+                text = currentState.nuevoComentarioTexto.trim(),
+                userId = Session.CURRENT_USER_ID
             )
 
-            val listaActualizada = if (currentState.ordenMasRecientes) {
-                listOf(nuevoComentario) + currentState.resena.comentariosList
+            if (result.isSuccess) {
+                val nuevoComentario = result.getOrNull()
+                _uiState.update { state ->
+                    val lista = if (nuevoComentario == null) {
+                        state.resena.comentariosList
+                    } else if (state.ordenMasRecientes) {
+                        listOf(nuevoComentario) + state.resena.comentariosList
+                    } else {
+                        state.resena.comentariosList + nuevoComentario
+                    }
+                    state.copy(
+                        resena = state.resena.copy(comentariosList = lista),
+                        nuevoComentarioTexto = "",
+                        isSending = false
+                    )
+                }
             } else {
-                currentState.resena.comentariosList + nuevoComentario
-            }
-
-            _uiState.update {
-                it.copy(
-                    resena = it.resena.copy(comentariosList = listaActualizada),
-                    nuevoComentarioTexto = ""
-                )
+                _uiState.update {
+                    it.copy(
+                        isSending = false,
+                        errorMessage = result.exceptionOrNull()?.message ?: "Error desconocido"
+                    )
+                }
             }
         }
     }
 
     fun onLikeResena() {
-        _uiState.update { currentState ->
-            val resenaActual = currentState.resena
-            val nuevoLiked = !resenaActual.isLikedByMe
-            val nuevoCount = if (nuevoLiked) resenaActual.likesCount + 1 else resenaActual.likesCount - 1
-            currentState.copy(
-                resena = resenaActual.copy(
-                    isLikedByMe = nuevoLiked,
-                    likesCount = nuevoCount
-                )
-            )
+        val current = _uiState.value.resena
+        val reviewId = reviewId ?: return
+        val nuevoLiked = !current.isLikedByMe
+        val nuevoCount = if (nuevoLiked) current.likesCount + 1 else current.likesCount - 1
+
+        // Optimista: se pinta al instante y se persiste en el backend
+        _uiState.update {
+            it.copy(resena = it.resena.copy(isLikedByMe = nuevoLiked, likesCount = nuevoCount))
+        }
+
+        viewModelScope.launch {
+            val result = reviewRepository.likeReview(reviewId, nuevoCount)
+            if (result.isFailure) {
+                _uiState.update {
+                    it.copy(
+                        resena = it.resena.copy(
+                            isLikedByMe = current.isLikedByMe,
+                            likesCount = current.likesCount
+                        ),
+                        errorMessage = result.exceptionOrNull()?.message ?: "Error desconocido"
+                    )
+                }
+            }
         }
     }
 
     fun onLikeComentario(id: String) {
+        val comentario = _uiState.value.resena.comentariosList.find { it.id == id } ?: return
+        val nuevoLiked = !comentario.isLikedByMe
+        val nuevoCount = if (nuevoLiked) comentario.likesCount + 1 else comentario.likesCount - 1
+
         _uiState.update { currentState ->
             val comentariosActualizados = currentState.resena.comentariosList.map { c ->
-                if (c.id == id) {
-                    val nuevoLiked = !c.isLikedByMe
-                    c.copy(
-                        isLikedByMe = nuevoLiked,
-                        likesCount = if (nuevoLiked) c.likesCount + 1 else c.likesCount - 1
-                    )
-                } else c
+                if (c.id == id) c.copy(isLikedByMe = nuevoLiked, likesCount = nuevoCount) else c
             }
             currentState.copy(
                 resena = currentState.resena.copy(comentariosList = comentariosActualizados)
             )
         }
+
+        viewModelScope.launch {
+            val result = commentRepository.likeComment(id, nuevoCount)
+            if (result.isFailure) {
+                _uiState.update { currentState ->
+                    val revertidos = currentState.resena.comentariosList.map { c ->
+                        if (c.id == id) {
+                            c.copy(isLikedByMe = comentario.isLikedByMe, likesCount = comentario.likesCount)
+                        } else c
+                    }
+                    currentState.copy(
+                        resena = currentState.resena.copy(comentariosList = revertidos),
+                        errorMessage = result.exceptionOrNull()?.message ?: "Error desconocido"
+                    )
+                }
+            }
+        }
     }
 
     fun onEliminarComentario(id: String) {
+        val previos = _uiState.value.resena.comentariosList
+
         _uiState.update { currentState ->
             val comentariosActualizados = currentState.resena.comentariosList.filterNot { it.id == id }
             currentState.copy(
                 resena = currentState.resena.copy(comentariosList = comentariosActualizados)
             )
+        }
+
+        viewModelScope.launch {
+            val result = commentRepository.deleteComment(id)
+            if (result.isFailure) {
+                _uiState.update {
+                    it.copy(
+                        resena = it.resena.copy(comentariosList = previos),
+                        errorMessage = result.exceptionOrNull()?.message ?: "Error desconocido"
+                    )
+                }
+            }
+        }
+    }
+
+    fun onDeleteReview(onSuccess: () -> Unit = {}) {
+        val reviewId = reviewId ?: return
+        viewModelScope.launch {
+            val result = reviewRepository.deleteReview(reviewId)
+            if (result.isSuccess) {
+                onSuccess()
+            } else {
+                _uiState.update {
+                    it.copy(
+                        errorMessage = result.exceptionOrNull()?.message ?: "Error desconocido"
+                    )
+                }
+            }
         }
     }
 

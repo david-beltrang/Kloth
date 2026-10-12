@@ -1,5 +1,6 @@
 package com.example.kloth.ui.screens.detail.components.review
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -15,20 +16,25 @@ import com.example.kloth.ui.theme.KlothTheme
 @Composable
 fun ReviewItem(
     review: ReviewData,
+    onClick: () -> Unit = {},
     onLikeClick: () -> Unit = {},
     onCommentClick: () -> Unit = {},
+    onProfileClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier
             .fillMaxWidth()
+            .clickable { onClick() }
             .padding(vertical = 8.dp)
     ) {
         ReviewHeader(
             authorName = review.authorName,
             timeAgo = review.timeAgo,
+            avatarUrl = review.avatarUrl,
             avatarRes = review.avatarRes,
-            rating = review.rating
+            rating = review.rating,
+            onProfileClick = onProfileClick
         )
 
         Spacer(modifier = Modifier.height(8.dp))
