@@ -22,6 +22,7 @@ import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -146,15 +147,31 @@ fun ExploreScreenContent(
             }
         }
 
-        items(products) { product ->
-            ProductCatalogCard(
-                title = product.title,
-                category = product.categoryTag,
-                rating = product.averageRating.toString(),
-                reviews = product.reviewsCountText.filter { it.isDigit() }, // Limpiamos "(128 reseñas)" a "128"
-                imageModel = product.imageUrl ?: product.imageRes,
-                onClick = { onProductClick(product.id) }
-            )
+        if (products.isEmpty()) {
+            item(span = { GridItemSpan(2) }) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(top = 32.dp, bottom = 32.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = stringResource(R.string.state_empty_products),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        } else {
+            items(products) { product ->
+                ProductCatalogCard(
+                    title = product.title,
+                    category = product.categoryTag,
+                    rating = product.averageRating.toString(),
+                    reviews = product.reviewsCountText.filter { it.isDigit() }, // Limpiamos "(128 reseñas)" a "128"
+                    imageModel = product.imageUrl ?: product.imageRes,
+                    onClick = { onProductClick(product.id) }
+                )
+            }
         }
     }
 }
