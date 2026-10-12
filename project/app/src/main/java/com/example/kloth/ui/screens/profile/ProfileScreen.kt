@@ -11,10 +11,19 @@ import androidx.compose.ui.Modifier
 fun ProfileScreen(
     viewModel: ProfileViewModel,
     onEditProfileClick: () -> Unit = {},
+    onProductClick: (String) -> Unit = {},
+    onCommentReviewClick: (String) -> Unit = {},
+    onBackClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    
+
+    // La pantalla es la que dispara la carga: cada vez que se entra (o se vuelve
+    // de una pantalla encima) se refresca para mostrar datos actualizados.
+    LaunchedEffect(Unit) {
+        viewModel.loadProfile()
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -24,11 +33,20 @@ fun ProfileScreen(
             //metodos de estado
             email = uiState.email,
             profileImageUrl = uiState.profileImageUrl,
+            profileUserName = uiState.profileUserName,
+            isCurrentUser = uiState.isCurrentUser,
             selectedTabIndex = uiState.selectedTabIndex,
             onTabSelected = { viewModel.onTabSelected(it) },
             //navegacion
             onEditProfileClick = onEditProfileClick,
             onLogoutClick = { viewModel.logOutButtonPressed() },
+            onBackClick = onBackClick,
+            userArticles = uiState.userArticles,
+            userReviews = uiState.userReviews,
+            isLoadingArticles = uiState.isLoadingArticles,
+            isLoadingReviews = uiState.isLoadingReviews,
+            onProductClick = onProductClick,
+            onCommentReviewClick = onCommentReviewClick,
             modifier = Modifier.fillMaxSize()
         )
     }

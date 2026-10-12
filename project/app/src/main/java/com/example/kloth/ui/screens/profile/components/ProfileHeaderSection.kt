@@ -31,6 +31,8 @@ fun ProfileHeaderSection(
     email: String,
     profileImageUrl: String?,
     modifier: Modifier = Modifier,
+    displayName: String? = null,
+    showActions: Boolean = true,
     onEditProfileClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {}
 ) {
@@ -55,7 +57,7 @@ fun ProfileHeaderSection(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = stringResource(R.string.mock_profile_name),
+            text = displayName ?: stringResource(R.string.mock_profile_name),
             style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onSurface
         )
@@ -153,41 +155,43 @@ fun ProfileHeaderSection(
         Spacer(modifier = Modifier.height(16.dp))
 
         // RF-05: modificar perfil (acción pendiente)
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .clip(RoundedCornerShape(999.dp))
-                .background(MaterialTheme.colorScheme.primary)
-                .clickable { onEditProfileClick() }
-                .padding(vertical = 14.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(R.string.profile_edit),
-                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
-                color = MaterialTheme.colorScheme.onPrimary
-            )
-        }
+        if (showActions) {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .clip(RoundedCornerShape(999.dp))
+                    .background(MaterialTheme.colorScheme.primary)
+                    .clickable { onEditProfileClick() }
+                    .padding(vertical = 14.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.profile_edit),
+                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
 
-        Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-        // Logout Button
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .clip(RoundedCornerShape(999.dp))
-                .border(1.dp, MaterialTheme.colorScheme.error, RoundedCornerShape(999.dp))
-                .clickable { onLogoutClick() }
-                .padding(vertical = 14.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(R.string.profile_logout),
-                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
-                color = MaterialTheme.colorScheme.error
-            )
+            // Logout Button
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .clip(RoundedCornerShape(999.dp))
+                    .border(1.dp, MaterialTheme.colorScheme.error, RoundedCornerShape(999.dp))
+                    .clickable { onLogoutClick() }
+                    .padding(vertical = 14.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.profile_logout),
+                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
