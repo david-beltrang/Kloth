@@ -67,6 +67,11 @@ dependencies {
     implementation(libs.hilt.compose.navigation)
     ksp(libs.dagger.kapt)
 
+    //Retrofit
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.squareup.retrofit2:converter-scalars:2.9.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.9.0")
+
     //Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore)
