@@ -7,11 +7,13 @@ data class ComentarioReviewData(
     val id: String,
     val authorName: String,
     val timeAgo: String,
-    @DrawableRes val avatarRes: Int,
+    val avatarUrl: String? = null,
+    @DrawableRes val avatarRes: Int? = null,
     val commentText: String,
     val likesCount: Int = 0,
     val isLikedByMe: Boolean = false,
-    val isMyComment: Boolean = false
+    val isMyComment: Boolean = false,
+    val userId: Int = 0
 )
 
 object ComentariosDataLocal {

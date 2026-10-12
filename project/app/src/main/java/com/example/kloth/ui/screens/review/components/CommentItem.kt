@@ -2,6 +2,7 @@ package com.example.kloth.ui.screens.review.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -32,12 +33,14 @@ import com.example.kloth.R
 import com.example.kloth.data.local.ComentarioReviewData
 import com.example.kloth.data.local.ComentariosDataLocal
 import com.example.kloth.ui.theme.KlothTheme
+import com.example.kloth.ui.utils.AvatarImage
 
 @Composable
 fun CommentItem(
     comentario: ComentarioReviewData,
     onLikeClick: () -> Unit,
     onDeleteClick: () -> Unit,
+    onProfileClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -47,13 +50,12 @@ fun CommentItem(
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.Top
     ) {
-        Image(
-            painter = painterResource(id = comentario.avatarRes),
+        AvatarImage(
+            url = comentario.avatarUrl,
+            fallbackRes = comentario.avatarRes,
             contentDescription = comentario.authorName,
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(32.dp)
-                .clip(CircleShape)
+            size = 32,
+            modifier = Modifier.clickable { onProfileClick() }
         )
 
         Column(modifier = Modifier.weight(1f)) {
