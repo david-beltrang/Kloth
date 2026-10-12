@@ -53,7 +53,6 @@ fun CreateReviewScreenContent(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
     ) {
-        // Barra de navegación superior
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -90,7 +89,6 @@ fun CreateReviewScreenContent(
 
         HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f))
 
-        // Cuerpo con scroll
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -136,7 +134,16 @@ fun CreateReviewScreenContent(
             }
 
             Spacer(modifier = Modifier.height(24.dp))
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f))
+        HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.3f))
+
+        if (uiState.errorMessage != null) {
+            Text(
+                text = stringResource(R.string.state_error, uiState.errorMessage),
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            )
+        }
             Spacer(modifier = Modifier.height(24.dp))
 
             Text(

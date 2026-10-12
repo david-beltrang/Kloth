@@ -5,25 +5,29 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun CreateArticleScreen(
     onPublicarClick: () -> Unit = {},
     modifier: Modifier = Modifier,
-    viewModel: CreateArticleViewModel = viewModel()
+    viewModel: CreateArticleViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
+
+    LaunchedEffect(uiState.navigateBack) {
+        if (uiState.navigateBack) {
+            onPublicarClick()
+        }
+    }
 
     Surface(
         modifier = modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
     ) {
         CreateArticleScreenContent(
-            //El state para variables de estado
             uiState = uiState,
 
-            //metodos de estado
             onTypeChange = { viewModel.onTypeSelected(it) },
             onAddPhotoClick = { viewModel.onAddPhotoMock() },
             onDeletePhoto = { viewModel.onDeletePhoto(it) },
@@ -36,10 +40,12 @@ fun CreateArticleScreen(
             onCiudadChange = { viewModel.onCiudadChanged(it) },
             onPaisChange = { viewModel.onPaisChanged(it) },
             onOrganizadorChange = { viewModel.onOrganizadorChanged(it) },
+            onTagInputChange = { viewModel.onTagInputChange(it) },
+            onAddTag = { viewModel.onAddTag() },
+            onRemoveTag = { viewModel.onRemoveTag(it) },
 
-            //Navegacion y logica de publicar lista para implmentar
             onPublicarClick = {
-                viewModel.publishArticle(onSuccess = onPublicarClick)
+                viewModel.publishArticle()
             },
             modifier = Modifier.fillMaxSize()
         )

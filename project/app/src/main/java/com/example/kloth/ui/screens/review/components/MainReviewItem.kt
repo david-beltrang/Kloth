@@ -1,20 +1,23 @@
 package com.example.kloth.ui.screens.review.components
 
 import android.content.res.Configuration
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Delete
+import androidx.compose.material.icons.outlined.Edit
 import androidx.compose.material.icons.outlined.ModeComment
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -23,9 +26,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -36,12 +36,16 @@ import com.example.kloth.data.local.ResenasDataLocal
 import com.example.kloth.data.local.ReviewData
 import com.example.kloth.ui.theme.GoldStar
 import com.example.kloth.ui.theme.KlothTheme
+import com.example.kloth.ui.utils.AvatarImage
 
 @Composable
 fun MainReviewItem(
     resena: ReviewData,
     onLikeClick: () -> Unit,
     onBackClick: () -> Unit,
+    onEditClick: () -> Unit = {},
+    onDeleteClick: () -> Unit = {},
+    onProfileClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -67,13 +71,12 @@ fun MainReviewItem(
                     )
                 }
 
-                Image(
-                    painter = painterResource(id = resena.avatarRes),
+                AvatarImage(
+                    url = resena.avatarUrl,
+                    fallbackRes = resena.avatarRes,
                     contentDescription = resena.authorName,
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .size(40.dp)
-                        .clip(CircleShape)
+                    size = 40,
+                    modifier = Modifier.clickable { onProfileClick() }
                 )
 
                 Column(modifier = Modifier.padding(start = 8.dp)) {
@@ -91,7 +94,7 @@ fun MainReviewItem(
                 }
             }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(2.dp), verticalAlignment = Alignment.CenterVertically) {
                 repeat(5) { index ->
                     Icon(
                         imageVector = Icons.Default.Star,
@@ -99,6 +102,26 @@ fun MainReviewItem(
                         modifier = Modifier.size(16.dp),
                         tint = if (index < resena.rating.toInt()) GoldStar else MaterialTheme.colorScheme.outlineVariant
                     )
+                }
+
+                if (resena.isMyReview) {
+                    Spacer(modifier = Modifier.width(4.dp))
+                    IconButton(onClick = onEditClick, modifier = Modifier.size(28.dp)) {
+                        Icon(
+                            imageVector = Icons.Outlined.Edit,
+                            contentDescription = stringResource(R.string.cd_edit_review),
+                            tint = MaterialTheme.colorScheme.primary,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
+                    IconButton(onClick = onDeleteClick, modifier = Modifier.size(28.dp)) {
+                        Icon(
+                            imageVector = Icons.Outlined.Delete,
+                            contentDescription = stringResource(R.string.cd_delete_review),
+                            tint = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
                 }
             }
         }

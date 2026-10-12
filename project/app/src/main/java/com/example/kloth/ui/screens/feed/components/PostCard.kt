@@ -36,6 +36,7 @@ import com.example.kloth.ui.theme.GoldStar
 fun PostCard(
     post: PostItem,
     onClick: () -> Unit = {},
+    onCommentClick: () -> Unit = onClick,
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -74,6 +75,7 @@ fun PostCard(
                 comments = post.commentsCount,
                 description = post.product.description,
                 tags = post.tags,
+                onCommentClick = onCommentClick,
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -155,6 +157,7 @@ private fun PostFooter(
     comments: String,
     description: String,
     tags: List<String>,
+    onCommentClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -197,7 +200,8 @@ private fun PostFooter(
                 SocialAction(
                     icon = Icons.Default.ChatBubbleOutline,
                     count = comments,
-                    contentDescription = stringResource(R.string.content_desc_comment)
+                    contentDescription = stringResource(R.string.content_desc_comment),
+                    onClick = onCommentClick
                 )
             }
         }
@@ -231,13 +235,14 @@ private fun SocialAction(
     icon: ImageVector,
     count: String,
     contentDescription: String,
+    onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        IconButton(onClick = { /* TODO */ }, modifier = Modifier.size(24.dp)) {
+        IconButton(onClick = onClick, modifier = Modifier.size(24.dp)) {
             Icon(
                 imageVector = icon,
                 contentDescription = contentDescription,

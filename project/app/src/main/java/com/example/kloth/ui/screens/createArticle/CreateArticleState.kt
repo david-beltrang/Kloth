@@ -14,5 +14,9 @@ data class CreateArticleState(
     val ciudad: String = "",
     val pais: String = "",
     val organizador: String = "",
-    val isPublishing: Boolean = false
+    val tags: List<String> = emptyList(),
+    val tagInput: String = "",
+    val isPublishing: Boolean = false,
+    val errorMessage: String? = null,
+    val navigateBack: Boolean = false
 )

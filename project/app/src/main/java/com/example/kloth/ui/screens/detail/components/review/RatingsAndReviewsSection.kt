@@ -26,6 +26,7 @@ fun RatingsAndReviewsSection(
     onWriteReviewClick: () -> Unit = {},
     onLikeReviewClick: (String) -> Unit = {},
     onCommentReviewClick: (String) -> Unit = {},
+    onProfileClick: (Int) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -94,8 +95,10 @@ fun RatingsAndReviewsSection(
         reviewsList.forEachIndexed { index, review ->
             ReviewItem(
                 review = review,
+                onClick = { onCommentReviewClick(review.id) },
                 onLikeClick = { onLikeReviewClick(review.id) },
-                onCommentClick = { onCommentReviewClick(review.id) }
+                onCommentClick = { onCommentReviewClick(review.id) },
+                onProfileClick = { onProfileClick(review.userId) }
             )
 
             if (index < reviewsList.size - 1) {

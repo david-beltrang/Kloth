@@ -12,11 +12,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.kloth.R
 import com.example.kloth.ui.screens.createArticle.components.ArticleType
 import com.example.kloth.ui.screens.createArticle.components.CardCreateArticle
 import com.example.kloth.ui.screens.createArticle.components.FormArticle
 import com.example.kloth.ui.screens.createArticle.components.PhotoCarrusel
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import com.example.kloth.ui.screens.explore.components.CategoryChip
 
 /**
@@ -24,10 +27,8 @@ import com.example.kloth.ui.screens.explore.components.CategoryChip
  */
 @Composable
 fun CreateArticleScreenContent(
-    //variables de estado
     uiState: CreateArticleState,
 
-    //Metodos de estado
     onTypeChange: (ArticleType) -> Unit,
     onAddPhotoClick: () -> Unit,
     onDeletePhoto: (Int) -> Unit,
@@ -40,6 +41,9 @@ fun CreateArticleScreenContent(
     onCiudadChange: (String) -> Unit,
     onPaisChange: (String) -> Unit,
     onOrganizadorChange: (String) -> Unit,
+    onTagInputChange: (String) -> Unit,
+    onAddTag: () -> Unit,
+    onRemoveTag: (String) -> Unit,
     onPublicarClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -48,7 +52,6 @@ fun CreateArticleScreenContent(
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
     ) {
-        // 1. Selector de Categorías
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -69,12 +72,10 @@ fun CreateArticleScreenContent(
             }
         }
 
-        // 2. Card de imagen
         CardCreateArticle(
             onClick = onAddPhotoClick
         )
 
-        // 3. Carrusel
         if (uiState.photos.isNotEmpty()) {
             PhotoCarrusel(
                 photos = uiState.photos,
@@ -82,7 +83,15 @@ fun CreateArticleScreenContent(
             )
         }
 
-        // 4. Formulario
+        if (uiState.errorMessage != null) {
+            Text(
+                text = stringResource(R.string.state_error, uiState.errorMessage),
+                fontSize = 12.sp,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(horizontal = 16.dp)
+            )
+        }
+
         FormArticle(
             selectedType = uiState.selectedType,
             nombre = uiState.nombre,
@@ -103,6 +112,11 @@ fun CreateArticleScreenContent(
             onPaisChange = onPaisChange,
             organizador = uiState.organizador,
             onOrganizadorChange = onOrganizadorChange,
+            tags = uiState.tags,
+            tagInput = uiState.tagInput,
+            onTagInputChange = onTagInputChange,
+            onAddTag = onAddTag,
+            onRemoveTag = onRemoveTag,
             onPublicarClick = onPublicarClick
         )
     }

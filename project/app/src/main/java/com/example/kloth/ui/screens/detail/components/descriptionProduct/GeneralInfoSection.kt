@@ -11,11 +11,11 @@ import com.example.kloth.ui.theme.KlothTheme
 @Composable
 fun GeneralInfoSection(
     categoryTag: String,
-    price: String,
+    price: String?,
     title: String,
-    brand: String,
-    colorName: String,
-    categoryName: String,
+    brand: String?,
+    colorName: String?,
+    categoryName: String?,
     description: String,
     modifier: Modifier = Modifier
 ) {

@@ -1,7 +1,11 @@
 package com.example.kloth.ui.screens.createArticle
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.kloth.R
+import com.example.kloth.data.Session
+import com.example.kloth.data.dto.CreateArticleDto
+import com.example.kloth.data.repository.ArticleRepository
 import com.example.kloth.ui.screens.createArticle.components.ArticleType
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
@@ -9,8 +13,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+
 @HiltViewModel
-class CreateArticleViewModel @Inject constructor() : ViewModel() {
+class CreateArticleViewModel @Inject constructor(
+    private val articleRepository: ArticleRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CreateArticleState())
     val uiState: StateFlow<CreateArticleState> = _uiState.asStateFlow()
@@ -55,6 +63,25 @@ class CreateArticleViewModel @Inject constructor() : ViewModel() {
         _uiState.update { it.copy(organizador = organizador) }
     }
 
+    fun onTagInputChange(value: String) {
+        _uiState.update { it.copy(tagInput = value) }
+    }
+
+    fun onAddTag() {
+        _uiState.update { state ->
+            val tag = state.tagInput.trim().removePrefix("#").replace(" ", "-").lowercase()
+            if (tag.isEmpty() || state.tags.contains(tag)) {
+                state.copy(tagInput = "")
+            } else {
+                state.copy(tags = state.tags + tag, tagInput = "")
+            }
+        }
+    }
+
+    fun onRemoveTag(tag: String) {
+        _uiState.update { it.copy(tags = it.tags - tag) }
+    }
+
     fun onAddPhotoMock() {
         _uiState.update { currentState ->
             val updatedPhotos = currentState.photos + R.drawable.camiseta_gymshark
@@ -73,8 +100,35 @@ class CreateArticleViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun publishArticle(onSuccess: () -> Unit) {
-        // Lógica simulada de publicación
-        onSuccess()
+    fun publishArticle() {
+        val state = _uiState.value
+        if (state.isPublishing) return
+
+        viewModelScope.launch {
+            _uiState.update { it.copy(isPublishing = true, errorMessage = null) }
+
+            val result = articleRepository.createArticle(
+                CreateArticleDto(
+                    typeArticle = state.selectedType.name,
+                    title = state.nombre.trim(),
+                    description = state.descripcion.trim(),
+                    idUser = Session.CURRENT_USER_ID,
+                    imageArticle = "",
+                    eliminated = false,
+                    tags = state.tags
+                )
+            )
+
+            if (result.isSuccess) {
+                _uiState.update { it.copy(isPublishing = false, navigateBack = true) }
+            } else {
+                _uiState.update {
+                    it.copy(
+                        isPublishing = false,
+                        errorMessage = result.exceptionOrNull()?.message ?: "Error desconocido"
+                    )
+                }
+            }
+        }
     }
 }

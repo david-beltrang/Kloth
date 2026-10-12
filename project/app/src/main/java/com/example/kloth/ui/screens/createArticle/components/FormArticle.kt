@@ -4,25 +4,33 @@ import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.FilterChip
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -39,6 +47,7 @@ enum class ArticleType {
     PRENDA, OUTFIT, EVENTO
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun FormArticle(
     selectedType: ArticleType,
@@ -60,6 +69,11 @@ fun FormArticle(
     onPaisChange: (String) -> Unit,
     organizador: String,
     onOrganizadorChange: (String) -> Unit,
+    tags: List<String>,
+    tagInput: String,
+    onTagInputChange: (String) -> Unit,
+    onAddTag: () -> Unit,
+    onRemoveTag: (String) -> Unit,
     onPublicarClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -177,6 +191,14 @@ fun FormArticle(
             }
         }
 
+        TagsSection(
+            tags = tags,
+            tagInput = tagInput,
+            onTagInputChange = onTagInputChange,
+            onAddTag = onAddTag,
+            onRemoveTag = onRemoveTag
+        )
+
         Spacer(modifier = Modifier.height(24.dp))
 
         Button(
@@ -270,6 +292,81 @@ fun FormInput(
         }
     }
 }
+@Composable
+private fun TagsSection(
+    tags: List<String>,
+    tagInput: String,
+    onTagInputChange: (String) -> Unit,
+    onAddTag: () -> Unit,
+    onRemoveTag: (String) -> Unit,
+    modifier: Modifier = Modifier
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(8.dp)
+    ) {
+        Text(
+            text = stringResource(R.string.label_tags),
+            style = MaterialTheme.typography.bodyMedium,
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            fontWeight = FontWeight.Medium
+        )
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            TextField(
+                value = tagInput,
+                onValueChange = onTagInputChange,
+                modifier = Modifier.weight(1f),
+                placeholder = {
+                    Text(
+                        text = stringResource(R.string.placeholder_tags),
+                        color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.5f)
+                    )
+                },
+                singleLine = true,
+                colors = TextFieldDefaults.colors(
+                    focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
+                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
+                    disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.4f),
+                    focusedIndicatorColor = Color.Transparent,
+                    unfocusedIndicatorColor = Color.Transparent,
+                    disabledIndicatorColor = Color.Transparent,
+                ),
+                shape = RoundedCornerShape(12.dp)
+            )
+            IconButton(onClick = onAddTag) {
+                Icon(
+                    imageVector = Icons.Default.Add,
+                    contentDescription = stringResource(R.string.cd_add_tag),
+                    tint = MaterialTheme.colorScheme.primary
+                )
+            }
+        }
+
+        if (tags.isNotEmpty()) {
+            FlowRow(
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                tags.forEach { tag ->
+                    FilterChip(
+                        selected = false,
+                        onClick = { onRemoveTag(tag) },
+                        label = { Text(text = "#$tag") },
+                        trailingIcon = {
+                            Icon(
+                                imageVector = Icons.Default.Close,
+                                contentDescription = null,
+                                modifier = Modifier.size(14.dp)
+                            )
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+
 @Preview(showBackground = true, name = "Form - Prenda")
 @Composable
 fun FormArticlePrendaPreview() {
@@ -285,6 +382,8 @@ fun FormArticlePrendaPreview() {
             ciudad = "", onCiudadChange = {},
             pais = "", onPaisChange = {},
             organizador = "", onOrganizadorChange = {},
+            tags = emptyList(), tagInput = "",
+            onTagInputChange = {}, onAddTag = {}, onRemoveTag = {},
             onPublicarClick = {},
             modifier = Modifier.verticalScroll(rememberScrollState())
         )
@@ -306,6 +405,8 @@ fun FormArticleOutfitPreview() {
             ciudad = "", onCiudadChange = {},
             pais = "", onPaisChange = {},
             organizador = "", onOrganizadorChange = {},
+            tags = listOf("streetwear", "casual"), tagInput = "",
+            onTagInputChange = {}, onAddTag = {}, onRemoveTag = {},
             onPublicarClick = {},
             modifier = Modifier.verticalScroll(rememberScrollState())
         )
@@ -327,6 +428,8 @@ fun FormArticleEventoPreview() {
             ciudad = "", onCiudadChange = {},
             pais = "", onPaisChange = {},
             organizador = "", onOrganizadorChange = {},
+            tags = emptyList(), tagInput = "",
+            onTagInputChange = {}, onAddTag = {}, onRemoveTag = {},
             onPublicarClick = {},
             modifier = Modifier.verticalScroll(rememberScrollState())
         )

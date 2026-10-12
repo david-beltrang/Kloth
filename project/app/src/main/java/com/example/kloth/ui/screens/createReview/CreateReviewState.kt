@@ -11,7 +11,8 @@ data class CreateReviewState(
     val rating: Int = 0,
     val reviewText: String = "",
     val maxTextLength: Int = 500,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null
 ) {
     val isFormValid: Boolean
         get() = rating > 0 && reviewText.isNotBlank() && !isLoading

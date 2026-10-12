@@ -18,9 +18,9 @@ import com.example.kloth.ui.theme.KlothTheme
 @Composable
 fun ProductHeader(
     categoryTag: String,
-    price: String,
+    price: String?,
     title: String,
-    brand: String,
+    brand: String?,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -42,12 +42,14 @@ fun ProductHeader(
                     fontWeight = FontWeight.Medium
                 )
             }
-            Text(
-                text = price,
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold,
-                color = MaterialTheme.colorScheme.onBackground
-            )
+            if (price != null) {
+                Text(
+                    text = price,
+                    fontSize = 22.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = MaterialTheme.colorScheme.onBackground
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -59,12 +61,14 @@ fun ProductHeader(
             color = MaterialTheme.colorScheme.onBackground,
             lineHeight = 26.sp
         )
-        Spacer(modifier = Modifier.height(2.dp))
-        Text(
-            text = brand,
-            fontSize = 14.sp,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
+        if (brand != null) {
+            Spacer(modifier = Modifier.height(2.dp))
+            Text(
+                text = brand,
+                fontSize = 14.sp,
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
     }
 }
 
