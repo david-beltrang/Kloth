@@ -15,6 +15,7 @@ googleKotlinKsp = "2.1.0-1.0.29"
 firebaseCrashlytics = "3.0.2"
 firebaseBom = "33.7.0"
 dagger = "2.60.1"
+retrofit = "2.11.0"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -39,6 +40,10 @@ lifecycleViewmodelCompose = { group = "androidx.lifecycle", name = "lifecycle-vi
 dagger-hilt = { module = "com.google.dagger:hilt-android", version = "2.60.1"}
 dagger-kapt = { module = "com.google.dagger:hilt-android-compiler", version = "2.60.1"}
 hilt-compose-navigation = { module = "androidx.hilt:hilt-navigation-compose", version = "1.2.0"}
+
+retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+retrofit-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit" }
 
 firebase-analytics = { module = "com.google.firebase:firebase-analytics"}
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom"}

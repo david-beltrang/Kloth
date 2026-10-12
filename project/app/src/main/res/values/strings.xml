@@ -48,7 +48,7 @@
     <!-- Profile Screen -->
     <string name="title_profile">Perfil</string>
     <string name="profile_tab_posts">Publicaciones</string>
-    <string name="profile_tab_rated">Artículos calificados</string>
+    <string name="profile_tab_rated">Mis reseñas</string>
     <string name="profile_edit">Editar perfil</string>
     <string name="profile_followers">Seguidores</string>
     <string name="profile_following">Seguidos</string>
@@ -133,8 +133,20 @@
     <string name="placeholder_fecha">DD/MM/AA</string>
     <string name="label_organizador">Organizador</string>
     <string name="placeholder_organizador">Nombre del organizador</string>
+    <string name="label_tags">Etiquetas</string>
+    <string name="placeholder_tags">Añadir etiqueta</string>
+    <string name="cd_add_tag">Añadir etiqueta</string>
     <string name="btn_publicar">Publicar</string>
     <string name="cd_delete_photo">Eliminar imagen</string>
+    <string name="cd_edit_review">Editar reseña</string>
+    <string name="cd_delete_review">Eliminar reseña</string>
+
+    <!-- Network states -->
+    <string name="state_loading">Cargando…</string>
+    <string name="state_error">Error: %1$s</string>
+    <string name="btn_retry">Reintentar</string>
+    <string name="state_empty_posts">Aún no hay publicaciones</string>
+    <string name="state_empty_products">No hay artículos en esta categoría</string>
 
     <!-- Review Screen -->
     <string name="cd_like">Me gusta</string>
