@@ -1,38 +1,51 @@
 package com.example.kloth.ui.screens.feed
 
 import androidx.lifecycle.ViewModel
-import com.example.kloth.data.local.FakeArticle
+import com.example.kloth.data.repository.ArticleRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import jakarta.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import androidx.lifecycle.viewModelScope
+
 @HiltViewModel
-class FeedViewModel @Inject constructor() : ViewModel() {
+class FeedViewModel @Inject constructor(
+    private val articleRepository: ArticleRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(FeedState())
     val uiState: StateFlow<FeedState> = _uiState
 
-    //Usamos init para cargar todos los posts, esta funcion de getAllPosts no recibe parametros
-    init {
-        getAllPosts()
-    }
+    fun getAllPosts() {
+        viewModelScope.launch {
+            val silent = _uiState.value.posts.isNotEmpty()
+            if (!silent) {
+                _uiState.update { it.copy(isLoading = true, errorMessage = null) }
+            }
 
-    // El ViewModel es el único que habla con el Modelo (FakeArticle)
-    private fun getAllPosts() {
-        _uiState.update { it.copy(isLoading = true) }
-        
-        val allPosts = FakeArticle.posts
-        
-        _uiState.update { 
-            it.copy(
-                posts = allPosts,
-                isLoading = false
-            ) 
+            val result = articleRepository.getFeedPosts()
+
+            if (result.isSuccess) {
+                _uiState.update {
+                    it.copy(
+                        posts = result.getOrNull() ?: emptyList(),
+                        isLoading = false,
+                        errorMessage = null
+                    )
+                }
+            } else if (!silent) {
+                _uiState.update {
+                    it.copy(
+                        isLoading = false,
+                        errorMessage = result.exceptionOrNull()?.message ?: "Error desconocido"
+                    )
+                }
+            }
         }
     }
 
-    // Lógica para manejar eventos de click - siguiendo o para ti
     fun onTabSelected(index: Int) {
         _uiState.update { it.copy(selectedTabIndex = index) }
     }

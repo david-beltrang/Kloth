@@ -16,6 +16,12 @@ fun FeedScreen(
 ) {
     // Escuchar el estado del ViewModel
     val state by feedViewModel.uiState.collectAsState()
+
+    // La pantalla es la que dispara la carga: cada vez que se entra (o se vuelve
+    // de una pantalla encima) se refresca para mostrar datos actualizados.
+    LaunchedEffect(Unit) {
+        feedViewModel.getAllPosts()
+    }
     
     Surface(
         modifier = modifier.fillMaxSize(),
@@ -28,9 +34,14 @@ fun FeedScreen(
             )
             FeedScreenContent(
                 // Variables de estado (Datos)
-                mockPosts = state.posts,
+                posts = state.posts,
+                isLoading = state.isLoading,
+                errorMessage = state.errorMessage,
 
-                // Navegación y Eventos
+                // Eventos
+                onRetry = { feedViewModel.getAllPosts() },
+
+                // Navegación
                 onProductClick = onProductClick
             )
         }
