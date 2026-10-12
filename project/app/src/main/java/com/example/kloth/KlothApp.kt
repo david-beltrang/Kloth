@@ -24,7 +24,6 @@ fun KlothApp() {
 
     Scaffold(
         topBar = {
-            // La barra superior se oculta en pantallas de autenticación o edición
             if (currentRoute != AppRoutes.Splash.route &&
                 currentRoute != AppRoutes.Login.route &&
                 currentRoute != AppRoutes.Register.route &&
@@ -35,13 +34,22 @@ fun KlothApp() {
             }
         },
         bottomBar = {
-            // La navegación inferior solo se muestra en el flujo principal de la app
             if (currentRoute != AppRoutes.Splash.route &&
                 currentRoute != AppRoutes.Login.route &&
                 currentRoute != AppRoutes.Register.route &&
                 currentRoute != AppRoutes.ForgotPassword.route
             ) {
-                KlothBottomNavigation(navController = navController)
+                KlothBottomNavigation(
+                    currentRoute = currentRoute,
+                    onTabClick = { route ->
+                        if (currentRoute != route.route) {
+                            navController.navigate(route.route) {
+                                popUpTo(0) { inclusive = true }
+                                launchSingleTop = true
+                            }
+                        }
+                    }
+                )
             }
         }
     ) { innerPadding ->

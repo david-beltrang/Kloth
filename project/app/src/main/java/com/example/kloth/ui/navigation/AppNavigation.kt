@@ -1,6 +1,7 @@
 package com.example.kloth.ui.navigation
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -47,31 +48,34 @@ fun AppNavigation(
             val splashViewModel: SplashViewModel = hiltViewModel()
             val state by splashViewModel.uiState.collectAsState()
 
-            if (state.navigateToFeed) {
-                navController.navigate(AppRoutes.Feed.route) {
-                    popUpTo(AppRoutes.Splash.route) { inclusive = true }
+            LaunchedEffect(state.navigateToFeed, state.navigateToLogin) {
+                if (state.navigateToFeed) {
+                    navController.navigate(AppRoutes.Feed.route) {
+                        popUpTo(AppRoutes.Splash.route) { inclusive = true }
+                    }
+                    splashViewModel.onNavigationConsumed()
+                } else if (state.navigateToLogin) {
+                    navController.navigate(AppRoutes.Login.route) {
+                        popUpTo(AppRoutes.Splash.route) { inclusive = true }
+                    }
+                    splashViewModel.onNavigationConsumed()
                 }
-                splashViewModel.onNavigationConsumed()
-            } else if (state.navigateToLogin) {
-                navController.navigate(AppRoutes.Login.route) {
-                    popUpTo(AppRoutes.Splash.route) { inclusive = true }
-                }
-                splashViewModel.onNavigationConsumed()
             }
 
             SplashScreen(splashViewModel = splashViewModel)
         }
 
-        // --- Flujo de Autenticación ---
         composable(AppRoutes.Login.route) {
             val loginViewModel: LoginViewModel = hiltViewModel()
             val state by loginViewModel.uiState.collectAsState()
 
-            if (state.navigate) {
-                navController.navigate(AppRoutes.Feed.route) {
-                    popUpTo(AppRoutes.Login.route) { inclusive = true }
+            LaunchedEffect(state.navigate) {
+                if (state.navigate) {
+                    navController.navigate(AppRoutes.Feed.route) {
+                        popUpTo(AppRoutes.Login.route) { inclusive = true }
+                    }
+                    loginViewModel.onNavigationConsumed()
                 }
-                loginViewModel.onNavigationConsumed()
             }
 
             LoginScreen(
@@ -89,9 +93,11 @@ fun AppNavigation(
             val forgotPasswordViewModel: ForgotPasswordViewModel = hiltViewModel()
             val state by forgotPasswordViewModel.uiState.collectAsState()
 
-            if (state.navigateBack) {
-                navController.popBackStack()
-                forgotPasswordViewModel.onNavigationConsumed()
+            LaunchedEffect(state.navigateBack) {
+                if (state.navigateBack) {
+                    navController.popBackStack()
+                    forgotPasswordViewModel.onNavigationConsumed()
+                }
             }
 
             ForgotPasswordScreen(
@@ -106,13 +112,13 @@ fun AppNavigation(
             val registerViewModel: RegisterViewModel = hiltViewModel()
             val state by registerViewModel.uiState.collectAsState()
 
-            if (state.navigate) {
-                navController.navigate(AppRoutes.Feed.route) {
-                    popUpTo(AppRoutes.Login.route) { inclusive = true }
+            LaunchedEffect(state.navigate) {
+                if (state.navigate) {
+                    navController.navigate(AppRoutes.Feed.route) {
+                        popUpTo(AppRoutes.Login.route) { inclusive = true }
+                    }
+                    registerViewModel.onNavigationConsumed()
                 }
-                //Este es el metodo que resetea el navigate a false, sin este metodo
-                //la aplicacion se congela, ya que detecta el navigate en true otra vez y hace muchas recompisciones
-                registerViewModel.onNavigationConsumed()
             }
 
             RegisterScreen(
@@ -123,7 +129,6 @@ fun AppNavigation(
             )
         }
 
-        // --- Flujo Principal de la App ---
         composable(AppRoutes.Feed.route) {
             val feedViewModel: FeedViewModel = hiltViewModel()
             FeedScreen(
@@ -159,17 +164,25 @@ fun AppNavigation(
             val profileViewModel: ProfileViewModel = hiltViewModel()
             val state by profileViewModel.uiState.collectAsState()
 
-            if (state.navigate) {
-                navController.navigate(AppRoutes.Login.route) {
-                    popUpTo(0) { inclusive = true }
+            LaunchedEffect(state.navigate) {
+                if (state.navigate) {
+                    navController.navigate(AppRoutes.Login.route) {
+                        popUpTo(0) { inclusive = true }
+                    }
+                    profileViewModel.onNavigationConsumed()
                 }
-                profileViewModel.onNavigationConsumed()
             }
 
             ProfileScreen(
                 viewModel = profileViewModel,
                 onEditProfileClick = {
                     navController.navigate(AppRoutes.EditProfile.route)
+                },
+                onProductClick = { productId ->
+                    navController.navigate(AppRoutes.ArticleDetail.createRoute(productId))
+                },
+                onCommentReviewClick = { reviewId ->
+                    navController.navigate(AppRoutes.Review.createRoute(reviewId))
                 }
             )
         }
@@ -185,10 +198,58 @@ fun AppNavigation(
             )
         }
 
-        // --- Pantallas de Detalle y Reseñas ---
-        composable(AppRoutes.Review.route) {
+        composable(
+            route = AppRoutes.UserProfile.route,
+            arguments = listOf(
+                navArgument(AppRoutes.UserProfile.ARG_USER_ID) {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val userId = backStackEntry.arguments
+                ?.getString(AppRoutes.UserProfile.ARG_USER_ID)
+                ?: ""
+
+            LaunchedEffect(userId) {
+                if (userId.isBlank()) {
+                    navController.popBackStack()
+                }
+            }
+
+            val userProfileViewModel: ProfileViewModel = hiltViewModel()
+
+            ProfileScreen(
+                viewModel = userProfileViewModel,
+                onBackClick = { navController.popBackStack() },
+                onProductClick = { productId ->
+                    navController.navigate(AppRoutes.ArticleDetail.createRoute(productId))
+                },
+                onCommentReviewClick = { reviewId ->
+                    navController.navigate(AppRoutes.Review.createRoute(reviewId))
+                }
+            )
+        }
+
+        composable(
+            route = AppRoutes.Review.route,
+            arguments = listOf(
+                navArgument(AppRoutes.Review.ARG_REVIEW_ID) {
+                    type = NavType.StringType
+                }
+            )
+        ) { backStackEntry ->
+            val reviewId = backStackEntry.arguments
+                ?.getString(AppRoutes.Review.ARG_REVIEW_ID)
+
             ReviewScreen(
-                onBackClick = { navController.popBackStack() }
+                reviewId = reviewId,
+                onBackClick = { navController.popBackStack() },
+                onEditClick = { productId, reviewId ->
+                    navController.navigate(AppRoutes.CreateReview.createRoute(productId, reviewId))
+                },
+                onProfileClick = { userId ->
+                    navController.navigate(AppRoutes.UserProfile.createRoute(userId.toString()))
+                }
             )
         }
 
@@ -212,6 +273,12 @@ fun AppNavigation(
                 onBackClick = { navController.popBackStack() },
                 onWriteReviewClick = {
                     navController.navigate(AppRoutes.CreateReview.createRoute(productId))
+                },
+                onCommentReviewClick = { reviewId ->
+                    navController.navigate(AppRoutes.Review.createRoute(reviewId))
+                },
+                onProfileClick = { userId ->
+                    navController.navigate(AppRoutes.UserProfile.createRoute(userId.toString()))
                 }
             )
         }
@@ -221,15 +288,23 @@ fun AppNavigation(
             arguments = listOf(
                 navArgument(AppRoutes.CreateReview.ARG_PRODUCT_ID) {
                     type = NavType.StringType
+                },
+                navArgument(AppRoutes.CreateReview.ARG_REVIEW_ID) {
+                    type = NavType.StringType
+                    nullable = true
+                    defaultValue = null
                 }
             )
         ) { backStackEntry ->
             val productId = backStackEntry.arguments
                 ?.getString(AppRoutes.CreateReview.ARG_PRODUCT_ID)
                 .orEmpty()
+            val reviewId = backStackEntry.arguments
+                ?.getString(AppRoutes.CreateReview.ARG_REVIEW_ID)
 
             CreateReviewScreen(
                 productId = productId,
+                reviewId = reviewId,
                 onBackClick = { navController.popBackStack() },
                 onReviewSubmitted = {
                     navController.popBackStack()

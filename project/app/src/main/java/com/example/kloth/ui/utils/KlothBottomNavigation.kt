@@ -14,13 +14,10 @@ import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.example.kloth.R
 import com.example.kloth.ui.navigation.AppRoutes
 import com.example.kloth.ui.theme.KlothTheme
@@ -28,12 +25,10 @@ import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun KlothBottomNavigation(
-    navController: NavHostController,
+    currentRoute: String?,
+    onTabClick: (AppRoutes) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val backStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute = backStackEntry?.destination?.route
-
     val items = listOf(
         BottomNavItem(AppRoutes.Feed, Icons.Filled.Home, Icons.Outlined.Home, R.string.nav_home),
         BottomNavItem(AppRoutes.Explore, Icons.Filled.Search, Icons.Outlined.Search, R.string.nav_explore),
@@ -42,27 +37,24 @@ fun KlothBottomNavigation(
         BottomNavItem(AppRoutes.Profile, Icons.Filled.Person, Icons.Outlined.Person, R.string.nav_profile)
     )
 
-    NavigationBar(
+ NavigationBar(
         modifier = modifier.height(64.dp),
         containerColor = MaterialTheme.colorScheme.surface,
         contentColor = MaterialTheme.colorScheme.onSurface,
         tonalElevation = 0.dp
     ) {
         items.forEach { item ->
-            val isSelected = currentRoute == item.route.route ||
-                           (item.route == AppRoutes.Profile && currentRoute == AppRoutes.EditProfile.route)
+            val isSelected = when (item.route) {
+                AppRoutes.Profile ->
+                    currentRoute == AppRoutes.Profile.route ||
+                        currentRoute == AppRoutes.EditProfile.route ||
+                        currentRoute?.startsWith(AppRoutes.UserProfile.route.substringBefore("/")) == true
+                else -> currentRoute == item.route.route
+            }
 
             NavigationBarItem(
                 selected = isSelected,
-                onClick = {
-                    if (currentRoute != item.route.route) {
-                        navController.navigate(item.route.route) {
-                            popUpTo(AppRoutes.Feed.route) { saveState = true }
-                            launchSingleTop = true
-                            restoreState = true
-                        }
-                    }
-                },
+                onClick = { onTabClick(item.route) },
                 icon = {
                     if (item.route == AppRoutes.Notifications) {
                         NotificationCount(
@@ -97,17 +89,21 @@ private data class BottomNavItem(
 @Preview(showBackground = true, name = "Light Mode")
 @Composable
 fun KlothBottomNavigationPreview() {
-    val navController = androidx.navigation.compose.rememberNavController()
     KlothTheme(darkTheme = false) {
-        KlothBottomNavigation(navController = navController)
+        KlothBottomNavigation(
+            currentRoute = AppRoutes.Feed.route,
+            onTabClick = {}
+        )
     }
 }
 
 @Preview(showBackground = true, name = "Dark Mode", uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun KlothBottomNavigationDarkPreview() {
-    val navController = androidx.navigation.compose.rememberNavController()
     KlothTheme(darkTheme = true) {
-        KlothBottomNavigation(navController = navController)
+        KlothBottomNavigation(
+            currentRoute = AppRoutes.Profile.route,
+            onTabClick = {}
+        )
     }
 }
