@@ -26,6 +26,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
+import com.example.kloth.ui.components.ErrorState
 
 @Composable
 fun ItemDetailScreen(
@@ -35,12 +36,12 @@ fun ItemDetailScreen(
     onBackClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onAddToCartClick: () -> Unit = {},
-    onWriteReviewClick: () -> Unit = {}
+    onWriteReviewClick: () -> Unit = {},
+    onCommentReviewClick: (String) -> Unit = {},
+    onProfileClick: (Int) -> Unit = {}
 ) {
-    // Escuchar el estado del ViewModel
     val state by detailViewModel.uiState.collectAsState()
 
-    // Por ahra usamos el LaunchedEffect porque la vista depende de un ID
     LaunchedEffect(productId) {
         detailViewModel.loadProduct(productId)
     }
@@ -49,6 +50,15 @@ fun ItemDetailScreen(
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
         }
+        return
+    }
+
+    if (state.product == null && state.error != null) {
+        ErrorState(
+            message = state.error.orEmpty(),
+            onRetry = { detailViewModel.retry() },
+            modifier = modifier
+        )
         return
     }
 
@@ -61,25 +71,24 @@ fun ItemDetailScreen(
     }
 
     ItemDetailScreenContent(
-        // Variables de estado (Datos)
-        //Aqui se maneja el null assertion
         product = state.product!!,
+        isLoadingReviews = state.isLoadingReviews,
+        reviewsError = state.error,
+        onRetryReviews = { detailViewModel.retry() },
 
-        // Métodos para manejar el estado (Eventos)
         onFavoriteClick = { detailViewModel.toggleFavorite() },
 
-        // Navegación y otros eventos
         onBackClick = onBackClick,
         onShareClick = onShareClick,
         onAddToCartClick = onAddToCartClick,
         onWriteReviewClick = onWriteReviewClick,
         onLikeReviewClick = { reviewId -> /* Accion like resena */ },
-        onCommentReviewClick = { reviewId -> /* Accion comentar resena */ },
+        onCommentReviewClick = onCommentReviewClick,
+        onProfileClick = onProfileClick,
         modifier = modifier
     )
 }
 
-// estado de error cuando el id no corresponde a ningun articulo
 @Composable
 private fun ProductNotFoundContent(
     onBackClick: () -> Unit,
