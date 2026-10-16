@@ -73,6 +73,9 @@ dependencies {
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
 
+    //firestore
+    implementation("com.google.firebase:firebase-firestore")
+
 
 
 }
