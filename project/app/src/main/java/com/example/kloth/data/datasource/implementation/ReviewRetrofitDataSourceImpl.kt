@@ -1,7 +1,7 @@
-package com.example.kloth.data.dataresource.implementation
+package com.example.kloth.data.datasource.implementation
 
-import com.example.kloth.data.dataresource.ReviewRemoteDataSource
-import com.example.kloth.data.dataresource.services.ReviewRetrofitService
+import com.example.kloth.data.datasource.ReviewRemoteDataSource
+import com.example.kloth.data.datasource.services.ReviewRetrofitService
 import com.example.kloth.data.dto.ReviewDto
 import javax.inject.Inject
 

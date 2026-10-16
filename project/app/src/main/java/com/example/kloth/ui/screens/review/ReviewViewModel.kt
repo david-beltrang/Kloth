@@ -7,7 +7,7 @@ import com.example.kloth.data.local.ComentarioReviewData
 import com.example.kloth.data.local.ResenasDataLocal
 import com.example.kloth.ui.navigation.AppRoutes
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

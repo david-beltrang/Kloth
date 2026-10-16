@@ -4,7 +4,9 @@ data class ProfileState(
     val selectedTabIndex: Int = 0,
     val navigate: Boolean = false,
     val email: String = "",
-
-    //imagen de perfil
+    val username: String? = null,
+    val bio: String? = null,
+    val location: String? = null,
+    val website: String? = null,
     val profileImageUrl: String? = null
 )

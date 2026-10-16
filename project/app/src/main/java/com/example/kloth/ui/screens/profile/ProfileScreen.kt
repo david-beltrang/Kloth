@@ -21,12 +21,14 @@ fun ProfileScreen(
             .background(MaterialTheme.colorScheme.background)
     ) {
         ProfileScreenContent(
-            //metodos de estado
             email = uiState.email,
+            username = uiState.username,
+            bio = uiState.bio,
+            location = uiState.location,
+            website = uiState.website,
             profileImageUrl = uiState.profileImageUrl,
             selectedTabIndex = uiState.selectedTabIndex,
             onTabSelected = { viewModel.onTabSelected(it) },
-            //navegacion
             onEditProfileClick = onEditProfileClick,
             onLogoutClick = { viewModel.logOutButtonPressed() },
             modifier = Modifier.fillMaxSize()

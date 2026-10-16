@@ -1,8 +1,8 @@
 package com.example.kloth.data.injection
 
-import com.example.kloth.data.dataresource.services.ArticleRetrofitService
-import com.example.kloth.data.dataresource.services.ReviewRetrofitService
-import com.example.kloth.data.dataresource.services.UserRetrofitService
+import com.example.kloth.data.datasource.services.ArticleRetrofitService
+import com.example.kloth.data.datasource.services.ReviewRetrofitService
+import com.example.kloth.data.datasource.services.UserRetrofitService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

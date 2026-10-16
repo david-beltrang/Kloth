@@ -29,11 +29,20 @@ import com.example.kloth.ui.utils.ProfileAsyncImage
 @Composable
 fun ProfileHeaderSection(
     email: String,
+    username: String?,
+    bio: String?,
+    location: String?,
+    website: String?,
     profileImageUrl: String?,
     modifier: Modifier = Modifier,
     onEditProfileClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {}
 ) {
+    val displayName = if (!username.isNullOrBlank()) username else email.substringBefore("@").replaceFirstChar { it.uppercase() }
+    val displayBio = if (!bio.isNullOrBlank()) bio else "Mejora tu biografía para que otros te conozcan"
+    val displayLocation = if (!location.isNullOrBlank()) location else "Añade tu ubicación"
+    val displayWebsite = if (!website.isNullOrBlank()) website else "Añade un sitio web"
+
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -55,7 +64,7 @@ fun ProfileHeaderSection(
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = stringResource(R.string.mock_profile_name),
+            text = displayName,
             style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onSurface
         )
@@ -71,11 +80,13 @@ fun ProfileHeaderSection(
         Spacer(modifier = Modifier.height(12.dp))
 
         Text(
-            text = stringResource(R.string.mock_profile_bio),
+            text = displayBio,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = if (bio.isNullOrBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = 32.dp)
+            modifier = Modifier
+                .padding(horizontal = 32.dp)
+                .clickable { onEditProfileClick() }
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -84,7 +95,10 @@ fun ProfileHeaderSection(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.clickable { onEditProfileClick() }
+            ) {
                 Icon(
                     imageVector = Icons.Default.LocationOn,
                     contentDescription = null,
@@ -93,12 +107,15 @@ fun ProfileHeaderSection(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = stringResource(R.string.mock_profile_location),
+                    text = displayLocation,
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = if (location.isNullOrBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.clickable { onEditProfileClick() }
+            ) {
                 Icon(
                     imageVector = Icons.Default.Link,
                     contentDescription = null,
@@ -107,9 +124,9 @@ fun ProfileHeaderSection(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = stringResource(R.string.mock_profile_website),
+                    text = displayWebsite,
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = if (website.isNullOrBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -152,7 +169,7 @@ fun ProfileHeaderSection(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // RF-05: modificar perfil (acción pendiente)
+        // RF-05: modificar perfil
         Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -222,7 +239,14 @@ private fun ProfileStatItem(
 @Composable
 fun ProfileHeaderSectionPreview() {
     KlothTheme(darkTheme = false) {
-        ProfileHeaderSection(email = "test@example.com", profileImageUrl = null)
+        ProfileHeaderSection(
+            email = "test@example.com",
+            username = null,
+            bio = null,
+            location = null,
+            website = null,
+            profileImageUrl = null
+        )
     }
 }
 
@@ -230,6 +254,13 @@ fun ProfileHeaderSectionPreview() {
 @Composable
 fun ProfileHeaderSectionDarkPreview() {
     KlothTheme(darkTheme = true) {
-        ProfileHeaderSection(email = "test@example.com", profileImageUrl = null)
+        ProfileHeaderSection(
+            email = "test@example.com",
+            username = null,
+            bio = null,
+            location = null,
+            website = null,
+            profileImageUrl = null
+        )
     }
 }

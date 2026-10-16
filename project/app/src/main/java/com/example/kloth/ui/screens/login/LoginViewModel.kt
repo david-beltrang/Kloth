@@ -2,10 +2,9 @@ package com.example.kloth.ui.screens.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kloth.R
 import com.example.kloth.data.repository.AuthRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -39,23 +38,28 @@ class LoginViewModel @Inject constructor(
             _uiState.update { 
                 it.copy(
                     showMessage = true, 
-                    errorMessageRes = R.string.login_error_empty_fields 
+                    errorMessage = "Por favor, completa todos los campos"
                 ) 
             }
         } else if (password.length < 6) {
             _uiState.update {
                 it.copy(
                     showMessage = true,
-                    errorMessageRes = R.string.auth_error_password_short
+                    errorMessage = "La contraseña debe tener al menos 6 caracteres"
                 )
             }
         } else {
-            viewModelScope.launch{
-                try{
-                    authRepository.signIn(email, password)
+            viewModelScope.launch {
+                val result = authRepository.signIn(email, password)
+                if (result.isSuccess) {
                     _uiState.update { it.copy(navigate = true) }
-                }catch(e: Exception){
-                    _uiState.update { it.copy(errorMessageRes = R.string.login_error_generic, showMessage = true) }
+                } else {
+                    _uiState.update {
+                        it.copy(
+                            errorMessage = result.exceptionOrNull()?.message ?: "Credenciales incorrectas o error de conexión",
+                            showMessage = true
+                        )
+                    }
                 }
             }
         }

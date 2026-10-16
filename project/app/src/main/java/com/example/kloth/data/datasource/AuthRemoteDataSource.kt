@@ -1,6 +1,5 @@
-package com.example.kloth.data.dataresource
+package com.example.kloth.data.datasource
 
-import android.net.Uri
 import androidx.core.net.toUri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser

@@ -1,4 +1,4 @@
-package com.example.kloth.data.dataresource
+package com.example.kloth.data.datasource
 
 import android.net.Uri
 import com.google.firebase.storage.FirebaseStorage

@@ -3,8 +3,8 @@ package com.example.kloth.data.repository
 import android.content.Context
 import android.net.Uri
 import com.example.kloth.R
-import com.example.kloth.data.dataresource.AuthRemoteDataSource
-import com.example.kloth.data.dataresource.StorageRemoteDataSource
+import com.example.kloth.data.datasource.AuthRemoteDataSource
+import com.example.kloth.data.datasource.StorageRemoteDataSource
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 

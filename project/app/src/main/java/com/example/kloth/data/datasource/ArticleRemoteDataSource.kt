@@ -1,4 +1,4 @@
-package com.example.kloth.data.dataresource
+package com.example.kloth.data.datasource
 
 import com.example.kloth.data.dto.ArticleDto
 import com.example.kloth.data.dto.ReviewDto
