@@ -52,6 +52,30 @@ fun ItemDetailScreen(
         return
     }
 
+    // El backend respondio con error o no hay conexion
+    if (state.errorMessage != null) {
+        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(32.dp)
+            ) {
+                Text(
+                    text = state.errorMessage ?: "",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                TextButton(onClick = { detailViewModel.loadProduct(productId) }) {
+                    Text(text = stringResource(R.string.feed_retry))
+                }
+                TextButton(onClick = onBackClick) {
+                    Text(text = stringResource(R.string.detail_not_found_back))
+                }
+            }
+        }
+        return
+    }
+
     if (state.product == null) {
         ProductNotFoundContent(
             onBackClick = onBackClick,

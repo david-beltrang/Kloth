@@ -5,5 +5,5 @@ import com.example.kloth.data.local.ProductDetailData
 data class DetailState(
     val product: ProductDetailData? = null,
     val isLoading: Boolean = false,
-    val error: String? = null
+    val errorMessage: String? = null
 )

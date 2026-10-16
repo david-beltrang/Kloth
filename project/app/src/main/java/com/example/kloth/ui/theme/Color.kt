@@ -29,3 +29,5 @@ val TransparentBlack30 = Color(0x4D000000)
 
 //Color rating estrellas
 val GoldStar = Color(0xFFFFB800)
+val StarYellow = Color(0xFFFFB800)
+val Sunset = Color(0xFFFF5C00)

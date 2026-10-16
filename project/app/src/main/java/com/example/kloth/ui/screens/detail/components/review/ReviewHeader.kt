@@ -1,7 +1,6 @@
 package com.example.kloth.ui.screens.detail.components.review
 
 import androidx.annotation.DrawableRes
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -16,6 +15,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.kloth.R
 import com.example.kloth.ui.screens.detail.components.RatingStars
 import com.example.kloth.ui.theme.KlothTheme
@@ -26,7 +26,8 @@ fun ReviewHeader(
     timeAgo: String,
     @DrawableRes avatarRes: Int,
     rating: Float,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    avatarUrl: String? = null
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -34,8 +35,10 @@ fun ReviewHeader(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
-            Image(
-                painter = painterResource(id = avatarRes),
+            // Si llega la URL del backend se carga con Coil; si no, o si falla, se usa el recurso local
+            AsyncImage(
+                model = avatarUrl ?: avatarRes,
+                error = painterResource(id = avatarRes),
                 contentDescription = authorName,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier

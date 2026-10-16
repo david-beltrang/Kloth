@@ -31,12 +31,15 @@ fun GeneralInfoSection(
             brand = brand
         )
 
-        Spacer(modifier = Modifier.height(16.dp))
+        // Los articulos del backend todavia no traen color ni categoria: se ocultan si vienen vacios
+        if (colorName.isNotBlank() || categoryName.isNotBlank()) {
+            Spacer(modifier = Modifier.height(16.dp))
 
-        ProductSpecCards(
-            colorName = colorName,
-            categoryName = categoryName
-        )
+            ProductSpecCards(
+                colorName = colorName,
+                categoryName = categoryName
+            )
+        }
 
         Spacer(modifier = Modifier.height(20.dp))
 

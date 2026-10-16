@@ -37,6 +37,9 @@ fun LoginScreen(
         onPasswordToggleClick = { loginViewModel.togglePasswordVisibility() },
         onLoginClick = { loginViewModel.onLoginClick() },
 
+        // Errores
+        errorMessage = if (state.showMessage) state.errorMessage else "",
+
         // Navegación
         onForgotPasswordClick = onForgotPasswordClick,
         onRegisterClick = onRegisterClick

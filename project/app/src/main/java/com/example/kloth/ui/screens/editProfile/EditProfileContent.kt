@@ -1,5 +1,6 @@
 package com.example.kloth.ui.screens.editProfile
 
+import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -23,7 +24,9 @@ fun EditProfileScreenContent(
     onLocationChange: (String) -> Unit,
     website: String,
     onWebsiteChange: (String) -> Unit,
-    onSaveClick: () -> Unit,
+    profileImageUrl: String?,
+    isLoading: Boolean,
+    onImagePicked: (Uri) -> Unit,
     onDeleteAccount: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -36,7 +39,9 @@ fun EditProfileScreenContent(
         Spacer(modifier = Modifier.height(24.dp))
 
         ProfileImageEditor(
-            onImageChange = { /* TODO */ }
+            profileImageUrl = profileImageUrl,
+            isLoading = isLoading,
+            onImageChange = onImagePicked
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -51,8 +56,7 @@ fun EditProfileScreenContent(
             location = location,
             onLocationChange = onLocationChange,
             website = website,
-            onWebsiteChange = onWebsiteChange,
-            onSaveClick = onSaveClick
+            onWebsiteChange = onWebsiteChange
         )
 
         Spacer(modifier = Modifier.height(32.dp))
