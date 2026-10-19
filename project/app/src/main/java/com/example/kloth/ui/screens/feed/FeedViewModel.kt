@@ -22,6 +22,9 @@ class FeedViewModel @Inject constructor(
 
     init {
         getAllPosts()
+        viewModelScope.launch {
+            articleRepository.articlesChanged.collect { getAllPosts() }
+        }
     }
 
     // Carga en curso: si se pide de nuevo (reintentar o permiso recien aceptado) se cancela la anterior

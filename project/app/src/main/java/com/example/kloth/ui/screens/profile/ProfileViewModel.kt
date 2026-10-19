@@ -12,6 +12,8 @@ import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -31,13 +33,16 @@ class ProfileViewModel @Inject constructor(
 
     init {
         loadUserProfile()
+        loadUserArticles()
+        viewModelScope.launch {
+            articleRepository.articlesChanged.collect{ loadUserArticles()}
+        }
     }
 
     private fun loadUserProfile() {
         viewModelScope.launch {
             val userId = authRepository.currentUser?.uid ?: return@launch
 
-            // 1. Cargar datos del usuari
             userRepository.getUserById(userId).onSuccess { user ->
                 _uiState.update {
                     it.copy(
@@ -51,13 +56,16 @@ class ProfileViewModel @Inject constructor(
                     )
                 }
             }
+        }
+    }
 
-            // 2. Cargar los artículos y filtrar únicamente los de este usuario
+    private fun loadUserArticles() {
+        viewModelScope.launch {
+            val userId = authRepository.currentUser?.uid ?: return@launch
+
             articleRepository.getFeedPosts().onSuccess { posts ->
                 val myPosts = posts.filter { it.product.creatorId == userId }
-                _uiState.update {
-                    it.copy(userArticles = myPosts)
-                }
+                _uiState.update { it.copy(userArticles = myPosts) }
             }
         }
     }

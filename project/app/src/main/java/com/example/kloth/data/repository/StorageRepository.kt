@@ -6,6 +6,7 @@ import com.example.kloth.R
 import com.example.kloth.data.datasource.services.AuthRemoteDataSource
 import com.example.kloth.data.datasource.services.StorageRemoteDataSource
 import dagger.hilt.android.qualifiers.ApplicationContext
+import java.util.UUID
 import javax.inject.Inject
 
 class StorageRepository @Inject constructor(
@@ -24,6 +25,19 @@ class StorageRepository @Inject constructor(
             auth.updateProfileImage(url)
             Result.success(url)
         } catch (e: Exception){
+            Result.failure(e)
+        }
+    }
+
+    suspend fun uploadArticleImage(uri: Uri): Result<String> {
+        return try {
+            val userId = auth.currentUser?.uid
+                ?: return Result.failure(Exception(context.getString(R.string.storage_error_user_not_logged_in)))
+
+            val path = "articleImages/$userId/${UUID.randomUUID()}.jpg"
+            val url = storage.uploadImage(path, uri)
+            Result.success(url)
+        } catch (e: Exception) {
             Result.failure(e)
         }
     }

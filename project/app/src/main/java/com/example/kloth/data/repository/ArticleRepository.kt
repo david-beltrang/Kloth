@@ -10,14 +10,22 @@ import com.example.kloth.data.local.ArticleInfo
 import com.example.kloth.data.local.PostItem
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import retrofit2.HttpException
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class ArticleRepository @Inject constructor(
     private val articleDataSource: ArticleFirestoreDataSourceImpl,
     private val userRepository: UserRepository,
     private val reviewDataSource: ReviewRetrofitDataSourceImpl
 ) {
+    private val _articlesChanged = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    /** Avisa cada vez que se crea un artículo, para que las pantallas vuelvan a cargar. */
+    val articlesChanged: SharedFlow<Unit> = _articlesChanged.asSharedFlow()
 
     suspend fun getFeedPosts(): Result<List<PostItem>> = try {
         val posts = coroutineScope {
@@ -72,6 +80,7 @@ class ArticleRepository @Inject constructor(
 
     suspend fun createArticle(dto: CreateArticleDto): Result<Unit> = try {
         articleDataSource.createArticle(dto)
+        _articlesChanged.tryEmit(Unit)
         Result.success(Unit)
     } catch (e: Exception) {
         Log.e(TAG, "No se pudo crear el articulo", e)

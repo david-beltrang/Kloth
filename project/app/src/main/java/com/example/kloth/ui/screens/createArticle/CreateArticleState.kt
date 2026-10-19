@@ -1,10 +1,11 @@
 package com.example.kloth.ui.screens.createArticle
 
+import android.net.Uri
 import com.example.kloth.R
 import com.example.kloth.ui.screens.createArticle.components.ArticleType
 data class CreateArticleState(
     val selectedType: ArticleType = ArticleType.PRENDA,
-    val photos: List<Int> = listOf(R.drawable.abrigo_negro, R.drawable.bolso_cuero),
+    val photos: List<Uri> = emptyList(),
     val nombre: String = "",
     val descripcion: String = "",
     val marca: String = "",
@@ -18,4 +19,5 @@ data class CreateArticleState(
     val sitioWeb: String = "",
     val paisOrigen: String = "",
     val anioFundacion: String = "",
-)
+
+    )

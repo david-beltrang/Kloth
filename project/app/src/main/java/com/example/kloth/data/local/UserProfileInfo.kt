@@ -6,5 +6,7 @@ data class UserProfileInfo(
     val username: String?,
     val email: String,
     val bio: String?,
+    val location: String?,
+    val website: String?,
     val profileImageUrl: String?
 )
