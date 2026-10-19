@@ -2,7 +2,7 @@ package com.example.kloth.data.repository
 
 import android.content.Context
 import com.example.kloth.R
-import com.example.kloth.data.datasource.AuthRemoteDataSource
+import com.example.kloth.data.datasource.services.AuthRemoteDataSource
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException
 import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException

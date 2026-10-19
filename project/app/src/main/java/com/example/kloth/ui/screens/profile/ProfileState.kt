@@ -1,5 +1,7 @@
 package com.example.kloth.ui.screens.profile
 
+import com.example.kloth.data.local.PostItem
+
 data class ProfileState(
     val selectedTabIndex: Int = 0,
     val navigate: Boolean = false,
@@ -8,5 +10,6 @@ data class ProfileState(
     val bio: String? = null,
     val location: String? = null,
     val website: String? = null,
-    val profileImageUrl: String? = null
+    val profileImageUrl: String? = null,
+    val userArticles: List<PostItem> = emptyList()
 )

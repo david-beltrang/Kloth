@@ -1,4 +1,4 @@
-package com.example.kloth.ui.navigation
+  package com.example.kloth.ui.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -170,6 +170,9 @@ fun AppNavigation(
                 viewModel = profileViewModel,
                 onEditProfileClick = {
                     navController.navigate(AppRoutes.EditProfile.route)
+                },
+                onProductClick = { productId ->
+                    navController.navigate(AppRoutes.ArticleDetail.createRoute(productId))
                 }
             )
         }

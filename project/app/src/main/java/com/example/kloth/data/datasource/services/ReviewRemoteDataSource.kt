@@ -1,4 +1,4 @@
-package com.example.kloth.data.datasource
+package com.example.kloth.data.datasource.services
 
 import com.example.kloth.data.dto.ReviewDto
 

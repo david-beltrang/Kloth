@@ -1,8 +1,8 @@
 package com.example.kloth.data.dto
 
 import com.example.kloth.R
+import com.example.kloth.data.local.ArticleInfo
 import com.example.kloth.data.local.PostItem
-import com.example.kloth.data.local.ProductDetailData
 import com.example.kloth.data.local.ReviewData
 import java.time.Duration
 import java.time.Instant
@@ -12,50 +12,58 @@ import java.util.Locale
 // Si el backend cambia un nombre de columna, solo se toca el DTO y este archivo.
 // Nota: el backend guarda los textos como CHAR(n) y los devuelve rellenos de espacios, por eso el trim().
 
-fun ArticleDto.toPostItem(creator: UserDto?, reviews: List<ReviewDto>, usersById: Map<Int, UserDto>): PostItem =
-    PostItem(
-        id = articleId.toString(),
-        creatorName = creator?.username?.trim() ?: DELETED_USER,
+fun ArticleInfo.toPostItem(
+    creator: UserDtoGeneric?,
+    reviews: List<ReviewDto>,
+    usersById: Map<String, UserDtoGeneric>
+): PostItem {
+    val creatorProfile = creator?.toUserProfileInfo()
+    return PostItem(
+        id = id,
+        creatorName = creatorProfile?.username?.trim() ?: DELETED_USER,
         timeAgo = timeAgo(createdAt),
-        avatarUrl = creator?.imageURL ?: "",
+        avatarUrl = creatorProfile?.profileImageUrl ?: "",
         commentsCount = reviews.size.toString(),
         tags = emptyList(),
-        product = toProductDetailData(reviews, usersById)
+        product = withReviews(reviews, usersById)
     )
+}
 
-fun ArticleDto.toProductDetailData(reviews: List<ReviewDto>, usersById: Map<Int, UserDto>): ProductDetailData =
-    ProductDetailData(
-        id = articleId.toString(),
-        title = title.trim(),
-        // El backend todavia no devuelve marca, precio, color ni categoria (tablas de subtipos vacias)
-        brand = "",
-        price = "",
-        categoryTag = typeLabel(typeArticle),
-        colorName = "",
-        categoryName = "",
-        description = description.trim(),
-        imageUrl = imageArticle,
-        averageRating = averageRating(reviews),
+fun ArticleInfo.withReviews(reviews: List<ReviewDto>, usersById: Map<String, UserDtoGeneric>): ArticleInfo =
+    copy(
+        averageRating = calculateAverageRating(reviews),
         reviewsCountText = reviewsCountText(reviews.size),
-        reviewsList = reviews.map { it.toReviewData(usersById[it.userId]) }
+        reviewsList = reviews.map { it.toReviewData(usersById[it.userId.toString()]) }
     )
 
-fun ReviewDto.toReviewData(author: UserDto?): ReviewData =
-    ReviewData(
+fun ReviewDto.toReviewData(author: UserDtoGeneric?): ReviewData {
+    val authorProfile = author?.toUserProfileInfo()
+    return ReviewData(
         id = reviewId.toString(),
-        authorName = author?.username?.trim() ?: DELETED_USER,
+        authorName = authorProfile?.username?.trim() ?: DELETED_USER,
         timeAgo = timeAgo(createdAt),
         avatarRes = R.drawable.profile, // se muestra si el autor no tiene foto
-        avatarUrl = author?.imageURL,
+        avatarUrl = authorProfile?.profileImageUrl,
         rating = rating.toFloat(),
         reviewText = text?.trim() ?: ""
     )
+}
 
 private const val DELETED_USER = "Usuario eliminado"
 
 // PRENDA -> "Prenda", igual que la etiqueta que ya mostraba la app
-private fun typeLabel(typeArticle: String): String =
+fun typeLabel(typeArticle: String): String =
     typeArticle.trim().lowercase().replaceFirstChar { it.titlecase(Locale.getDefault()) }
+
+// 129.9 -> "$129,90"
+fun formatPrice(price: Double): String =
+    "$" + String.format(Locale.getDefault(), "%,.2f", price)
+
+private fun calculateAverageRating(reviews: List<ReviewDto>): Float {
+    if (reviews.isEmpty()) return 0f
+    val average = reviews.map { it.rating }.average()
+    return Math.round(average * 10) / 10f // un decimal: 4.5
+}
 
 private fun averageRating(reviews: List<ReviewDto>): Float {
     if (reviews.isEmpty()) return 0f

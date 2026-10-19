@@ -6,11 +6,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun ProfileScreen(
-    viewModel: ProfileViewModel,
+    viewModel: ProfileViewModel = hiltViewModel(),
     onEditProfileClick: () -> Unit = {},
+    onProductClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -28,9 +30,11 @@ fun ProfileScreen(
             website = uiState.website,
             profileImageUrl = uiState.profileImageUrl,
             selectedTabIndex = uiState.selectedTabIndex,
+            userArticles = uiState.userArticles,
             onTabSelected = { viewModel.onTabSelected(it) },
             onEditProfileClick = onEditProfileClick,
             onLogoutClick = { viewModel.logOutButtonPressed() },
+            onProductClick = onProductClick,
             modifier = Modifier.fillMaxSize()
         )
     }

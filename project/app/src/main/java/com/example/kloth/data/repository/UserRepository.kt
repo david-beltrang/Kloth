@@ -1,21 +1,31 @@
 package com.example.kloth.data.repository
 
+import android.util.Log
 import com.example.kloth.data.datasource.implementation.firestore.UserFirestoreDataSourceImpl
+import com.example.kloth.data.dto.ArticleDtoGeneric
 import com.example.kloth.data.dto.RegisterUserDto
-import com.example.kloth.data.dto.UserDto
+import com.example.kloth.data.dto.UserDtoGeneric
+import com.example.kloth.data.local.UserProfileInfo
 import javax.inject.Inject
 
 class UserRepository @Inject constructor(
     private val userDataSource: UserFirestoreDataSourceImpl
 ) {
-    suspend fun getAllUsers(): List<UserDto> = userDataSource.getAllUsers()
+    suspend fun getAllUsers(): List<UserDtoGeneric> = userDataSource.getAllUsers()
 
-    suspend fun getUserById(id: String): UserDto = userDataSource.getUserById(id)
+    suspend fun getUserById(id: String): Result<UserProfileInfo> {
+        return try {
+            val user = userDataSource.getUserById(id)
+            val userProfileInfo = user.toUserProfileInfo()
+            Result.success(userProfileInfo)
+        } catch (e: Exception) {
+            Log.e("TAG", "getUserById: ${e.message}")
+            Result.failure(e)
+        }
+    }
 
     suspend fun registerUser(
         fullName: String,
-        email: String,
-        password: String,
         userId: String,
         imageURL: String? = null,
         biography: String? = null,
@@ -25,8 +35,6 @@ class UserRepository @Inject constructor(
         return try {
             val registerUserDto = RegisterUserDto(
                 fullName = fullName,
-                email = email,
-                password = password,
                 imageURL = imageURL,
                 biography = biography,
                 location = location,
@@ -34,6 +42,15 @@ class UserRepository @Inject constructor(
             )
             userDataSource.registerUser(registerUserDto, userId)
             Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun getUserArticles(userId: String): Result<List<ArticleDtoGeneric>> {
+        return try {
+            val articles = userDataSource.getUserArticles(userId)
+            Result.success(articles)
         } catch (e: Exception) {
             Result.failure(e)
         }

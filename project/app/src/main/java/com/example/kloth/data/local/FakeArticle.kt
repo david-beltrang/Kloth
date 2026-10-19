@@ -9,7 +9,7 @@ import com.example.kloth.R
 object FakeArticle {
 
     // Artículos detallados (utilizados en Detail y Explore)
-    val abrigoNegro = ProductDetailData(
+    val abrigoNegro = ArticleInfo(
         id = "abrigo_negro",
         title = "Abrigo Lunar Negro",
         brand = "Maison de l'Éther",
@@ -23,7 +23,7 @@ object FakeArticle {
         reviewsCountText = "(128 reseñas)"
     )
 
-    val camisetaGymshark = ProductDetailData(
+    val camisetaGymshark = ArticleInfo(
         id = "camiseta_gymshark",
         title = "Camiseta GymShark",
         brand = "Gymshark",
@@ -37,7 +37,7 @@ object FakeArticle {
         reviewsCountText = "(84 reseñas)"
     )
 
-    val camisetaBarcelona = ProductDetailData(
+    val camisetaBarcelona = ArticleInfo(
         id = "camiseta_barcelona",
         title = "Jersey Barcelona",
         brand = "FC Barcelona",
@@ -51,7 +51,7 @@ object FakeArticle {
         reviewsCountText = "(42 reseñas)"
     )
 
-    val bolsoCuero = ProductDetailData(
+    val bolsoCuero = ArticleInfo(
         id = "bolso_cuero",
         title = "Bolso Cuero",
         brand = "Cuero & Co.",
@@ -66,7 +66,7 @@ object FakeArticle {
     )
 
     // Detalles vinculados a los posts del Feed con sus URLs originales
-    val detailSuit = ProductDetailData(
+    val detailSuit = ArticleInfo(
         id = "post_suit_1",
         title = "Suit elegante negro",
         brand = "Atelier Noir",
@@ -80,7 +80,7 @@ object FakeArticle {
         reviewsCountText = "(124 reseñas)"
     )
 
-    val detailVestido = ProductDetailData(
+    val detailVestido = ArticleInfo(
         id = "post_vestido_2",
         title = "Vestido blanco largo",
         brand = "Casa Lumière",
@@ -94,7 +94,7 @@ object FakeArticle {
         reviewsCountText = "(89 reseñas)"
     )
 
-    val detailCozy = ProductDetailData(
+    val detailCozy = ArticleInfo(
         id = "post_cozy_3",
         title = "Outfit cotidiano cozy",
         brand = "Retro Denim Co.",
@@ -108,7 +108,7 @@ object FakeArticle {
         reviewsCountText = "(210 reseñas)"
     )
 
-    val detailAccesorios = ProductDetailData(
+    val detailAccesorios = ArticleInfo(
         id = "post_acc_4",
         title = "Accesorios dorados",
         brand = "Aurum Atelier",
@@ -122,7 +122,7 @@ object FakeArticle {
         reviewsCountText = "(56 reseñas)"
     )
 
-    val detailStreetwear = ProductDetailData(
+    val detailStreetwear = ArticleInfo(
         id = "post_street_5",
         title = "Streetwear urbano",
         brand = "Urban Threads",
@@ -136,7 +136,7 @@ object FakeArticle {
         reviewsCountText = "(145 reseñas)"
     )
 
-    val detailPrimavera = ProductDetailData(
+    val detailPrimavera = ArticleInfo(
         id = "post_primavera_6",
         title = "Colección Primavera",
         brand = "Fleur & Co.",
@@ -226,6 +226,6 @@ object FakeArticle {
      * Resuelve el artículo correspondiente a un identificador.
      * Devuelve null si el id no existe o no es válido.
      */
-    fun obtenerProductoPorId(productId: String): ProductDetailData? =
+    fun obtenerProductoPorId(productId: String): ArticleInfo? =
         allProducts.firstOrNull { it.id == productId }
 }

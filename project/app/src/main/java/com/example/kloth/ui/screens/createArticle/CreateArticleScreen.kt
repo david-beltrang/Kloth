@@ -5,13 +5,14 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 
 @Composable
 fun CreateArticleScreen(
     onPublicarClick: () -> Unit = {},
     modifier: Modifier = Modifier,
-    viewModel: CreateArticleViewModel = viewModel()
+    viewModel: CreateArticleViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -36,6 +37,9 @@ fun CreateArticleScreen(
             onCiudadChange = { viewModel.onCiudadChanged(it) },
             onPaisChange = { viewModel.onPaisChanged(it) },
             onOrganizadorChange = { viewModel.onOrganizadorChanged(it) },
+            onSitioWebChange = { viewModel.onSitioWebChanged(it) },
+            onPaisOrigenChange = { viewModel.onPaisOrigenChanged(it) },
+            onAnioFundacionChange = { viewModel.onAnioFundacionChanged(it) },
 
             //Navegacion y logica de publicar lista para implmentar
             onPublicarClick = {

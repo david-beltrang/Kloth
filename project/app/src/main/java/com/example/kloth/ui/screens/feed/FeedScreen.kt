@@ -17,12 +17,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.kloth.R
 import com.example.kloth.ui.screens.feed.components.FeedTabRow
 
 @Composable
 fun FeedScreen(
-    feedViewModel: FeedViewModel,
+    feedViewModel: FeedViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
     onProductClick: (String) -> Unit = {}
 ) {

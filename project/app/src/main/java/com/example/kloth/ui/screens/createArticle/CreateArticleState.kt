@@ -14,5 +14,8 @@ data class CreateArticleState(
     val ciudad: String = "",
     val pais: String = "",
     val organizador: String = "",
-    val isPublishing: Boolean = false
+    val isPublishing: Boolean = false,
+    val sitioWeb: String = "",
+    val paisOrigen: String = "",
+    val anioFundacion: String = "",
 )

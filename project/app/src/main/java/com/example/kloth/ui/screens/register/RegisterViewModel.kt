@@ -58,8 +58,6 @@ class RegisterViewModel @Inject constructor(
                     val userId = authRepository.currentUser?.uid ?: throw Exception("No se pudo obtener el usuario actual")
                     userRepository.registerUser(
                         fullName = state.fullName,
-                        email = state.email,
-                        password = state.password,
                         userId = userId
                     )
 

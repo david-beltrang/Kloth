@@ -103,6 +103,13 @@
     <string name="forgot_password_back_login">Volver al inicio de sesión</string>
 
     <!-- Create Article Screen -->
+    <string name="type_marca">Marca</string>
+    <string name="label_sitio_web">Sitio web</string>
+    <string name="placeholder_sitio_web">https://www.ejemplo.com</string>
+    <string name="label_pais_origen">País de origen</string>
+    <string name="placeholder_pais_origen">Ej. Italia</string>
+    <string name="label_anio_fundacion">Año de fundación</string>
+    <string name="placeholder_anio_fundacion">Ej. 1913</string>
     <string name="create_article_title">Crear publicación</string>
     <string name="type_prenda">Prenda</string>
     <string name="type_outfit">Outfit</string>

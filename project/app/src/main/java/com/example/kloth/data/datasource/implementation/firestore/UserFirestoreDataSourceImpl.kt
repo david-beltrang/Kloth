@@ -1,22 +1,31 @@
 package com.example.kloth.data.datasource.implementation.firestore
 
-import com.example.kloth.data.datasource.UserRemoteDataSource
+import com.example.kloth.data.datasource.services.UserRemoteDataSource
 import com.example.kloth.data.dto.RegisterUserDto
-import com.example.kloth.data.dto.UserDto
-import com.google.firebase.crashlytics.internal.model.CrashlyticsReport
+import com.example.kloth.data.dto.UserDtoGeneric
+import com.example.kloth.data.dto.UserFirestoreDto
 import com.google.firebase.firestore.FirebaseFirestore
+import com.example.kloth.data.dto.ArticleDtoGeneric
+import com.example.kloth.data.dto.ArticleFirestoreDto
 import javax.inject.Inject
 import kotlinx.coroutines.tasks.await
 
-class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFirestore): UserRemoteDataSource {
-    override suspend fun getAllUsers(): List<UserDto> {
-        TODO()
+class   UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFirestore): UserRemoteDataSource {
+    override suspend fun getAllUsers(): List<UserDtoGeneric> {
+        return try {
+            db.collection("users").get().await().documents.mapNotNull { doc ->
+                doc.toObject(UserFirestoreDto::class.java)?.copy(userId = doc.id)
+            }
+        } catch (e: Exception) {
+            emptyList()
+        }
     }
 
-    override suspend fun getUserById(id: String): UserDto {
+    override suspend fun getUserById(id: String): UserDtoGeneric {
         val docRef = db.collection("users").document(id)
         val respuesta = docRef.get().await()
-        return respuesta.toObject(UserDto::class.java) ?: throw Exception("No se pudo obtener el usuario")
+        return respuesta.toObject(UserFirestoreDto::class.java)?.copy(userId = respuesta.id)
+            ?: throw Exception("No se pudo obtener el usuario")
     }
 
     override suspend fun registerUser(
@@ -28,5 +37,16 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
         //A ese documento insertele el usuario registerUserDto
         val docRef = db.collection("users").document(userId)
         docRef.set(registerUserDto).await()
+    }
+
+    override suspend fun getUserArticles(userId: String): List<ArticleDtoGeneric> {
+        return db.collection("articles")
+            .whereEqualTo("idUser", userId)
+            .get()
+            .await()
+            .documents
+            .mapNotNull { doc ->
+                doc.toObject(ArticleFirestoreDto::class.java)?.copy(articleId = doc.id)
+            }
     }
 }

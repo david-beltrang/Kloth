@@ -11,5 +11,5 @@ data class PostItem(
     val avatarUrl: String,
     val commentsCount: String,
     val tags: List<String>,
-    val product: ProductDetailData
+    val product: ArticleInfo
 )

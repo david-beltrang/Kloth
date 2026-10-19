@@ -12,11 +12,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.kloth.data.local.FakeArticle
+import com.example.kloth.data.local.PostItem
 import com.example.kloth.ui.screens.detail.components.ProductCatalogCard
 import com.example.kloth.ui.screens.feed.components.ProfileTabRow
 import com.example.kloth.ui.screens.profile.components.ProfileHeaderSection
@@ -30,8 +32,10 @@ fun ProfileScreenContent(
     website: String?,
     profileImageUrl: String?,
     selectedTabIndex: Int,
+    userArticles: List<PostItem>,
     onTabSelected: (Int) -> Unit,
     onEditProfileClick: () -> Unit,
+    onProductClick: (String) -> Unit,
     onLogoutClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -78,37 +82,14 @@ fun ProfileScreenContent(
         }
 
         if (selectedTabIndex == 0) {
-            // Publicaciones (Usando datos de FakeArticle)
-            item {
-                val p = FakeArticle.detailSuit
+            items(userArticles) { post ->
+                val p = post.product
                 ProductCatalogCard(
                     title = p.title,
                     category = p.categoryTag,
-                    rating = p.averageRating.toString(),
-                    reviews = p.reviewsCountText.filter { it.isDigit() },
-                    imageModel = p.imageUrl ?: p.imageRes,
-                    onClick = { }
-                )
-            }
-            item {
-                val p = FakeArticle.detailVestido
-                ProductCatalogCard(
-                    title = p.title,
-                    category = p.categoryTag,
-                    rating = p.averageRating.toString(),
-                    reviews = p.reviewsCountText.filter { it.isDigit() },
-                    imageModel = p.imageUrl ?: p.imageRes,
-                    onClick = { }
-                )
-            }
-            item {
-                val p = FakeArticle.detailStreetwear
-                ProductCatalogCard(
-                    title = p.title,
-                    category = p.categoryTag,
-                    rating = p.averageRating.toString(),
-                    reviews = p.reviewsCountText.filter { it.isDigit() },
-                    imageModel = p.imageUrl ?: p.imageRes,
+                    rating = "0.0",
+                    reviews = "0",
+                    imageModel = p.imageUrl ?: "",
                     onClick = { }
                 )
             }
@@ -133,7 +114,7 @@ fun ProfileScreenContent(
                     rating = p.averageRating.toString(),
                     reviews = p.reviewsCountText.filter { it.isDigit() },
                     imageModel = p.imageUrl ?: p.imageRes,
-                    onClick = { }
+                    onClick = { onProductClick(p.id)}
                 )
             }
         }

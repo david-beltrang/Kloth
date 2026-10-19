@@ -28,7 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
-import com.example.kloth.data.local.ProductDetailData
+import com.example.kloth.data.local.ArticleInfo
 import com.example.kloth.ui.screens.detail.components.ProductCatalogCard
 import com.example.kloth.ui.screens.explore.components.CategoryChip
 import com.example.kloth.ui.screens.explore.components.FilterChip
@@ -37,7 +37,7 @@ import com.example.kloth.ui.screens.explore.components.SearchBar
 @Composable
 fun ExploreScreenContent(
     // Variables de estado (Datos que vienen del ViewModel)
-    products: List<ProductDetailData>,
+    products: List<ArticleInfo>,
     selectedCategoryIndex: Int,
 
     // Métodos para manejar el estado (Eventos)

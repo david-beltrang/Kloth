@@ -1,67 +1,67 @@
 package com.example.kloth.data.repository
 
 import android.util.Log
-import com.example.kloth.data.datasource.implementation.ArticleRetrofitDataSourceImpl
-import com.example.kloth.data.datasource.implementation.ReviewRetrofitDataSourceImpl
+import com.example.kloth.data.datasource.implementation.firestore.ArticleFirestoreDataSourceImpl
+import com.example.kloth.data.datasource.implementation.retrofit.ReviewRetrofitDataSourceImpl
+import com.example.kloth.data.dto.CreateArticleDto
 import com.example.kloth.data.dto.toPostItem
-import com.example.kloth.data.dto.toProductDetailData
+import com.example.kloth.data.dto.withReviews
+import com.example.kloth.data.local.ArticleInfo
 import com.example.kloth.data.local.PostItem
-import com.example.kloth.data.local.ProductDetailData
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import retrofit2.HttpException
 import javax.inject.Inject
 
 class ArticleRepository @Inject constructor(
-    private val articleDataSource: ArticleRetrofitDataSourceImpl,
+    private val articleDataSource: ArticleFirestoreDataSourceImpl,
     private val userRepository: UserRepository,
     private val reviewDataSource: ReviewRetrofitDataSourceImpl
 ) {
 
     suspend fun getFeedPosts(): Result<List<PostItem>> = try {
         val posts = coroutineScope {
-            val articles = async { articleDataSource.getAllArticles() }
-            val users = async { userRepository.getAllUsers() }
-            val reviews = async { reviewDataSource.getAllReviews() }
+            val articles = async { runCatching { articleDataSource.getAllArticles() }.getOrDefault(emptyList()) }
+            val users = async { runCatching { userRepository.getAllUsers() }.getOrDefault(emptyList()) }
+            val reviews = async { runCatching { reviewDataSource.getAllReviews() }.getOrDefault(emptyList()) }
 
-            val usersById = users.await().associateBy { it.userId }
+            val usersById = users.await().associateBy { it.toUserProfileInfo().id }
             val reviewsByArticle = reviews.await()
                 .filter { it.eliminated != true }
-                .groupBy { it.articleId }
+                .groupBy { it.articleId.toString() }
 
             articles.await()
+                .map { it.toArticleInfo() }
                 .filter { !it.eliminated }
                 .sortedByDescending { it.createdAt }
                 .map { article ->
                     article.toPostItem(
-                        creator = usersById[article.idUser],
-                        reviews = reviewsByArticle[article.articleId].orEmpty(),
+                        creator = usersById[article.creatorId],
+                        reviews = reviewsByArticle[article.id].orEmpty(),
                         usersById = usersById
                     )
                 }
         }
         Result.success(posts)
-    } catch (e: HttpException) {
-        Log.e(TAG, "Error del backend al cargar el feed", e)
-        Result.failure(e)
-    } catch (e: Exception) {
-        Log.e(TAG, "No se pudo conectar al cargar el feed", e)
-        Result.failure(e)
+    } catch (e: Throwable) {
+        Log.e("TAG", "Error al cargar el feed", e)
+        Result.failure(e as? Exception ?: Exception(e))
     }
 
-    suspend fun getArticleDetail(id: String): Result<ProductDetailData> = try {
+    suspend fun getArticleDetail(id: String): Result<ArticleInfo> = try {
         val detail = coroutineScope {
             val article = async { articleDataSource.getArticleById(id) }
             val reviews = async { articleDataSource.getArticleReviews(id) }
             val users = async { userRepository.getAllUsers() }
 
-            val usersById = users.await().associateBy { it.userId }
-            article.await().toProductDetailData(
+            val usersById = users.await().associateBy { it.toUserProfileInfo().id  }
+            article.await().toArticleInfo().withReviews(
                 reviews = reviews.await().filter { it.eliminated != true },
                 usersById = usersById
             )
         }
         Result.success(detail)
+
     } catch (e: HttpException) {
         Log.e(TAG, "Error del backend al cargar el articulo $id", e)
         Result.failure(e)
@@ -69,6 +69,15 @@ class ArticleRepository @Inject constructor(
         Log.e(TAG, "No se pudo conectar al cargar el articulo $id", e)
         Result.failure(e)
     }
+
+    suspend fun createArticle(dto: CreateArticleDto): Result<Unit> = try {
+        articleDataSource.createArticle(dto)
+        Result.success(Unit)
+    } catch (e: Exception) {
+        Log.e(TAG, "No se pudo crear el articulo", e)
+        Result.failure(e)
+    }
+
 
     private companion object {
         const val TAG = "ArticleRepository"

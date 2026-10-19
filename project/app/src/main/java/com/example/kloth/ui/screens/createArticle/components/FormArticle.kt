@@ -1,5 +1,6 @@
 package com.example.kloth.ui.screens.createArticle.components
 
+import android.provider.ContactsContract
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -36,7 +37,7 @@ import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
 
 enum class ArticleType {
-    PRENDA, OUTFIT, EVENTO
+    PRENDA, OUTFIT, EVENTO, MARCA
 }
 
 @Composable
@@ -60,8 +61,14 @@ fun FormArticle(
     onPaisChange: (String) -> Unit,
     organizador: String,
     onOrganizadorChange: (String) -> Unit,
+    sitioWeb: String,
+    onSitioWebChange: (String) -> Unit,
+    paisOrigen: String,
+    onPaisOrigenChange: (String) -> Unit,
+    anioFundacion: String,
+    onAnioFundacionChange: (String) -> Unit,
     onPublicarClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Column(
         modifier = modifier
@@ -172,6 +179,32 @@ fun FormArticle(
                             onValueChange = onOrganizadorChange,
                             placeholder = stringResource(R.string.placeholder_organizador)
                         )
+                    }
+                    ArticleType.MARCA -> {
+                        FormInput(
+                            label = stringResource(R.string.label_sitio_web),
+                            value = sitioWeb,
+                            onValueChange = onSitioWebChange,
+                            placeholder = stringResource(R.string.placeholder_sitio_web),
+                            keyboardType = KeyboardType.Uri
+                        )
+                        FormInput(
+                            label = stringResource(R.string.label_pais_origen),
+                            value = paisOrigen,
+                            onValueChange = onPaisOrigenChange,
+                            placeholder = stringResource(R.string.placeholder_pais_origen)
+                        )
+                        FormInput(
+                            label = stringResource(R.string.label_anio_fundacion),
+                            value = anioFundacion,
+                            onValueChange = onAnioFundacionChange,
+                            placeholder = stringResource(R.string.placeholder_anio_fundacion),
+                            keyboardType = KeyboardType.Number,
+                            maxLength = 4
+                        )
+                    }
+                    else -> {
+
                     }
                 }
             }
@@ -285,6 +318,9 @@ fun FormArticlePrendaPreview() {
             ciudad = "", onCiudadChange = {},
             pais = "", onPaisChange = {},
             organizador = "", onOrganizadorChange = {},
+            sitioWeb = "", onSitioWebChange = {},
+            paisOrigen = "", onPaisOrigenChange = {},
+            anioFundacion = "", onAnioFundacionChange = {},
             onPublicarClick = {},
             modifier = Modifier.verticalScroll(rememberScrollState())
         )
@@ -306,6 +342,9 @@ fun FormArticleOutfitPreview() {
             ciudad = "", onCiudadChange = {},
             pais = "", onPaisChange = {},
             organizador = "", onOrganizadorChange = {},
+            sitioWeb = "", onSitioWebChange = {},
+            paisOrigen = "", onPaisOrigenChange = {},
+            anioFundacion = "", onAnioFundacionChange = {},
             onPublicarClick = {},
             modifier = Modifier.verticalScroll(rememberScrollState())
         )
@@ -327,6 +366,33 @@ fun FormArticleEventoPreview() {
             ciudad = "", onCiudadChange = {},
             pais = "", onPaisChange = {},
             organizador = "", onOrganizadorChange = {},
+            sitioWeb = "", onSitioWebChange = {},
+            paisOrigen = "", onPaisOrigenChange = {},
+            anioFundacion = "", onAnioFundacionChange = {},
+            onPublicarClick = {},
+            modifier = Modifier.verticalScroll(rememberScrollState())
+        )
+    }
+}
+
+@Preview(showBackground = true, name = "Form - Marca")
+@Composable
+fun FormArticleMarcaPreview() {
+    KlothTheme {
+        FormArticle(
+            selectedType = ArticleType.MARCA,
+            nombre = "", onNombreChange = {},
+            descripcion = "", onDescripcionChange = {},
+            marca = "", onMarcaChange = {},
+            color = "", onColorChange = {},
+            precio = "", onPrecioChange = {},
+            estilo = "", onEstiloChange = {},
+            ciudad = "", onCiudadChange = {},
+            pais = "", onPaisChange = {},
+            organizador = "", onOrganizadorChange = {},
+            sitioWeb = "", onSitioWebChange = {},
+            paisOrigen = "", onPaisOrigenChange = {},
+            anioFundacion = "", onAnioFundacionChange = {},
             onPublicarClick = {},
             modifier = Modifier.verticalScroll(rememberScrollState())
         )

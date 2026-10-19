@@ -3,6 +3,7 @@ package com.example.kloth.ui.screens.profile
 import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kloth.data.repository.ArticleRepository
 import com.example.kloth.data.repository.AuthRepository
 import com.example.kloth.data.repository.StorageRepository
 import com.example.kloth.data.repository.UserRepository
@@ -18,7 +19,8 @@ import kotlinx.coroutines.launch
 class ProfileViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val storageRepository: StorageRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val articleRepository: ArticleRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileState(
         email = authRepository.currentUser?.email ?: "",
@@ -34,20 +36,28 @@ class ProfileViewModel @Inject constructor(
     private fun loadUserProfile() {
         viewModelScope.launch {
             val userId = authRepository.currentUser?.uid ?: return@launch
-            try {
-                val userDto = userRepository.getUserById(userId)
+
+            // 1. Cargar datos del usuari
+            userRepository.getUserById(userId).onSuccess { user ->
                 _uiState.update {
                     it.copy(
-                        username = userDto.username.takeIf { name -> name.isNotBlank() },
-                        bio = userDto.biography,
+                        username = user.username?.takeIf { name -> name.isNotBlank() },
+                        bio = user.bio,
                         location = null,
                         website = null,
-                        email = userDto.email.ifBlank { it.email },
-                        profileImageUrl = userDto.imageURL?.takeIf { url -> url.isNotBlank() } ?: it.profileImageUrl
+                        email = user.email.ifBlank { it.email },
+                        profileImageUrl = user.profileImageUrl?.takeIf { url -> url.isNotBlank() }
+                            ?: it.profileImageUrl
                     )
                 }
-            } catch (e: Exception) {
-                // Ignore or log error
+            }
+
+            // 2. Cargar los artículos y filtrar únicamente los de este usuario
+            articleRepository.getFeedPosts().onSuccess { posts ->
+                val myPosts = posts.filter { it.product.creatorId == userId }
+                _uiState.update {
+                    it.copy(userArticles = myPosts)
+                }
             }
         }
     }
