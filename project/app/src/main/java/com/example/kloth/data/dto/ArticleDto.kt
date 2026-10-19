@@ -160,3 +160,21 @@ data class ArticleFirestoreDto(
         )
     }
 }
+
+/* Solo lo que se puede editar. Lo demás (fecha de creación, creador, tags) no se toca. */
+data class UpdateArticleDto(
+    val title: String,
+    val description: String,
+    val imageArticle: String,
+    val updatedAt: String,
+    val brand: String? = null,
+    val color: String? = null,
+    val price: Double? = null,
+    val style: String? = null,
+    val city: String? = null,
+    val country: String? = null,
+    val organizer: String? = null,
+    val website: String? = null,
+    val originCountry: String? = null,
+    val foundedAt: Int? = null
+)

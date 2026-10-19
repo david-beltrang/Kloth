@@ -11,5 +11,6 @@ data class ProfileState(
     val location: String? = null,
     val website: String? = null,
     val profileImageUrl: String? = null,
-    val userArticles: List<PostItem> = emptyList()
+    val userArticles: List<PostItem> = emptyList(),
+    val reviewedArticles: List<PostItem> = emptyList()
 )

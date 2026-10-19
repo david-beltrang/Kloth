@@ -1,6 +1,7 @@
 package com.example.kloth.ui.screens.createArticle.components
 
 import android.provider.ContactsContract
+import androidx.annotation.StringRes
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -69,6 +70,8 @@ fun FormArticle(
     onAnioFundacionChange: (String) -> Unit,
     onPublicarClick: () -> Unit,
     modifier: Modifier = Modifier,
+    @StringRes buttonTextRes: Int = R.string.btn_publicar,
+    buttonEnabled: Boolean = true,
 ) {
     Column(
         modifier = modifier
@@ -214,6 +217,7 @@ fun FormArticle(
 
         Button(
             onClick = onPublicarClick,
+            enabled = buttonEnabled,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
@@ -224,7 +228,7 @@ fun FormArticle(
             )
         ) {
             Text(
-                text = stringResource(R.string.btn_publicar),
+                text = stringResource(buttonTextRes),
                 fontWeight = FontWeight.Bold,
                 fontSize = 16.sp
             )

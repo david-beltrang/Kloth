@@ -1,8 +1,10 @@
 package com.example.kloth.ui.screens.profile
 
 import android.net.Uri
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kloth.data.local.PostItem
 import com.example.kloth.data.repository.ArticleRepository
 import com.example.kloth.data.repository.AuthRepository
 import com.example.kloth.data.repository.StorageRepository
@@ -48,12 +50,17 @@ class ProfileViewModel @Inject constructor(
                     it.copy(
                         username = user.username?.takeIf { name -> name.isNotBlank() },
                         bio = user.bio,
-                        location = null,
-                        website = null,
+                        location = user.location,
+                        website = user.website,
                         email = user.email.ifBlank { it.email },
                         profileImageUrl = user.profileImageUrl?.takeIf { url -> url.isNotBlank() }
                             ?: it.profileImageUrl
                     )
+                }
+
+                val authPhoto = authRepository.currentUser?.photoUrl?.toString()
+                if (user.profileImageUrl.isNullOrBlank() && !authPhoto.isNullOrBlank()){
+                    userRepository.updateProfileImage(userId,authPhoto)
                 }
             }
         }
@@ -64,8 +71,18 @@ class ProfileViewModel @Inject constructor(
             val userId = authRepository.currentUser?.uid ?: return@launch
 
             articleRepository.getFeedPosts().onSuccess { posts ->
+                // 1. Artículos creados por el usuario
                 val myPosts = posts.filter { it.product.creatorId == userId }
-                _uiState.update { it.copy(userArticles = myPosts) }
+
+                // 2. Artículos en los que el usuario ha escrito una reseña
+                //val reviewedPosts = posts.filter { post ->
+                //    post.reviews.any { review -> review.userId == userId }
+                //}
+                _uiState.update {
+                    it.copy(
+                        userArticles = myPosts,
+                       // reviewedArticles = reviewedPosts
+                    ) }
             }
         }
     }
@@ -83,12 +100,22 @@ class ProfileViewModel @Inject constructor(
         _uiState.update { it.copy(navigate = false) }
     }
 
-    fun uploadImageToFirebase(uri: Uri){
+    fun uploadImageToFirebase(uri: Uri) {
         viewModelScope.launch {
-            val result = storageRepository.uploadProfileImage(uri)
-            if (result.isSuccess){
-                _uiState.update { it.copy(profileImageUrl = result.getOrNull())}
+            val userId = authRepository.currentUser?.uid ?: return@launch
+            storageRepository.uploadProfileImage(uri).onSuccess { url ->
+                _uiState.update { it.copy(profileImageUrl = url) }
+                userRepository.updateProfileImage(userId, url)   // sincroniza el documento del usuario
             }
         }
     }
+
+    fun deleteArticle(post: PostItem) {
+        viewModelScope.launch {
+            articleRepository.deleteArticle(post.product.id, post.product.imageUrl)
+                .onFailure { Log.e("ProfileViewModel", "No se pudo eliminar el articulo", it) }
+            // La lista se recarga sola: ArticleRepository avisa con articlesChanged
+        }
+    }
+
 }

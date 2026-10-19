@@ -5,6 +5,7 @@ import com.example.kloth.data.dto.ArticleRetrofitDto
 import com.example.kloth.data.dto.CreateArticleDto
 import com.example.kloth.data.dto.ReviewDto
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.Path
@@ -22,4 +23,10 @@ interface ArticleRetrofitService {
 
     @POST("/articles")
     suspend fun createArticle(@Body dto: CreateArticleDto)
+
+    @POST("/articles/{id}")
+    suspend fun updateArticle(@Path("id") id: String, @Body dto: CreateArticleDto)
+
+    @DELETE("/articles/{id}")
+    suspend fun deleteArticle(@Path("id") id: String)
 }

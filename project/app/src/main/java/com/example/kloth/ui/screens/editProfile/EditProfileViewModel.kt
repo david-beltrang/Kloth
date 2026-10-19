@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kloth.data.repository.AuthRepository
 import com.example.kloth.data.repository.StorageRepository
+import com.example.kloth.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +20,8 @@ import kotlinx.coroutines.launch
 // ViewModel para gestionar el estado de la edición de perfil.
 class EditProfileViewModel @Inject constructor(
     private val authRepository: AuthRepository,
-    private val storageRepository: StorageRepository
+    private val storageRepository: StorageRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(EditProfileState())
     val uiState: StateFlow<EditProfileState> = _uiState.asStateFlow()
@@ -36,10 +38,14 @@ class EditProfileViewModel @Inject constructor(
         viewModelScope.launch {
             _uiState.update { it.copy(profileImageUrl = uri.toString(), isLoading = true) }
 
+            val userId = authRepository.currentUser?.uid.toString()
             val result = storageRepository.uploadProfileImage(uri)
 
             if (result.isSuccess) {
-                _uiState.update { it.copy(profileImageUrl = result.getOrNull(), isLoading = false) }
+                val url = result.getOrThrow()
+                userRepository.updateProfileImage(userId,url)
+                    .onFailure { Log.e("EditProfileViewModel", "Error al actualizar la imagen de perfil") }
+                _uiState.update { it.copy(profileImageUrl = url, isLoading = false) }
             } else {
                 _uiState.update { it.copy(isLoading = false) }
             }

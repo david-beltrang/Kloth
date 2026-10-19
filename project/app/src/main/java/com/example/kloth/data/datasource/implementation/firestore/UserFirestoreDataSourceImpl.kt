@@ -49,4 +49,8 @@ class   UserFirestoreDataSourceImpl @Inject constructor(private val db: Firebase
                 doc.toObject(ArticleFirestoreDto::class.java)?.copy(articleId = doc.id)
             }
     }
+
+    override suspend fun updateProfileImage(userId: String, imageUrl: String) {
+        db.collection("users").document(userId).update("imageURL", imageUrl).await()
+    }
 }

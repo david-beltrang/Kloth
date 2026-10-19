@@ -5,7 +5,9 @@ import com.example.kloth.data.dto.ArticleDtoGeneric
 import com.example.kloth.data.dto.ArticleFirestoreDto
 import com.example.kloth.data.dto.CreateArticleDto
 import com.example.kloth.data.dto.ReviewDto
+import com.example.kloth.data.dto.UpdateArticleDto
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import jakarta.inject.Inject
 import kotlinx.coroutines.tasks.await
 
@@ -30,6 +32,14 @@ class ArticleFirestoreDataSourceImpl @Inject constructor(
 
     override suspend fun getArticleReviews(id: String): List<ReviewDto> {
         return emptyList()
+    }
+
+    override suspend fun updateArticle(id: String, article: UpdateArticleDto) {
+        db.collection("articles").document(id).set(article, SetOptions.merge()).await()
+    }
+
+    override suspend fun deleteArticle(id: String) {
+        db.collection("articles").document(id).delete().await()
     }
 
 }

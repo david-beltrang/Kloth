@@ -6,11 +6,18 @@ import com.example.kloth.data.dto.ArticleDtoGeneric
 import com.example.kloth.data.dto.RegisterUserDto
 import com.example.kloth.data.dto.UserDtoGeneric
 import com.example.kloth.data.local.UserProfileInfo
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class UserRepository @Inject constructor(
     private val userDataSource: UserFirestoreDataSourceImpl
 ) {
+    private val _usersChanged = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
+    val usersChanged: SharedFlow<Unit> = _usersChanged.asSharedFlow()
     suspend fun getAllUsers(): List<UserDtoGeneric> = userDataSource.getAllUsers()
 
     suspend fun getUserById(id: String): Result<UserProfileInfo> {
@@ -51,6 +58,16 @@ class UserRepository @Inject constructor(
         return try {
             val articles = userDataSource.getUserArticles(userId)
             Result.success(articles)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    suspend fun updateProfileImage(userId: String, imageUrl: String): Result<Unit> {
+        return try {
+            userDataSource.updateProfileImage(userId, imageUrl)
+            _usersChanged.tryEmit(Unit)
+            Result.success(Unit)
         } catch (e: Exception) {
             Result.failure(e)
         }

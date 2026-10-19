@@ -5,6 +5,7 @@ import com.example.kloth.data.datasource.services.ArticleRetrofitService
 import com.example.kloth.data.dto.ArticleDtoGeneric
 import com.example.kloth.data.dto.CreateArticleDto
 import com.example.kloth.data.dto.ReviewDto
+import com.example.kloth.data.dto.UpdateArticleDto
 import javax.inject.Inject
 
 class ArticleRetrofitDataSourceImpl @Inject constructor(
@@ -16,4 +17,12 @@ class ArticleRetrofitDataSourceImpl @Inject constructor(
         service.getArticleReviews(id)
 
     override suspend fun createArticle(article: CreateArticleDto) = service.createArticle(article)
+
+    override suspend fun updateArticle(id: String, article: UpdateArticleDto) {
+        throw UnsupportedOperationException("Los artículos se editan en Firestore")
+    }
+
+    override suspend fun deleteArticle(id: String) {
+        TODO("Not yet implemented")
+    }
 }

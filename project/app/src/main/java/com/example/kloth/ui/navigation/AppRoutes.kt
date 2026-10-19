@@ -23,6 +23,12 @@ sealed class AppRoutes(val route: String) {
 
     // crear publicacion (tab 2)
     object CreateArticle : AppRoutes("create_article")
+    // En AppRoutes.kt
+    object EditArticle : AppRoutes("${RouteConstants.EDIT_ARTICLE_BASE_ROUTE}/{${RouteConstants.ARTICLE_ARG_PRODUCT_ID}}") {
+        const val ARG_ARTICLE_ID = RouteConstants.ARTICLE_ARG_PRODUCT_ID
+
+        fun createRoute(productId: String): String = "${RouteConstants.EDIT_ARTICLE_BASE_ROUTE}/$productId"
+    }
 
     // notificaciones (tab 3)
     object Notifications : AppRoutes("notifications")
@@ -62,4 +68,6 @@ object RouteConstants {
     const val CREATE_REVIEW_ARG_PRODUCT_ID = "productId"
     const val REVIEW_BASE_ROUTE = "review"
     const val REVIEW_ARG_ID = "reviewId"
+
+    const val EDIT_ARTICLE_BASE_ROUTE = "edit_article"
 }

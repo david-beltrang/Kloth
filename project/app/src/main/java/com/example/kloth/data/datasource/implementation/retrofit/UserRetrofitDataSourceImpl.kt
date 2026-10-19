@@ -19,4 +19,8 @@ class UserRetrofitDataSourceImpl @Inject constructor(
     override suspend fun getUserArticles(userId: String): List<ArticleDtoGeneric> {
         TODO("Not yet implemented")
     }
+
+    override suspend fun updateProfileImage(userId: String, imageUrl: String) {
+        TODO("Not yet implemented")
+    }
 }

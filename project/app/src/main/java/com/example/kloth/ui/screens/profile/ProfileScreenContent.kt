@@ -2,6 +2,7 @@ package com.example.kloth.ui.screens.profile
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -15,12 +16,14 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.kloth.data.local.FakeArticle
 import com.example.kloth.data.local.PostItem
 import com.example.kloth.ui.screens.detail.components.ProductCatalogCard
 import com.example.kloth.ui.screens.feed.components.ProfileTabRow
+import com.example.kloth.ui.screens.profile.components.ArticleOptionsMenu
 import com.example.kloth.ui.screens.profile.components.ProfileHeaderSection
 
 @Composable
@@ -33,11 +36,14 @@ fun ProfileScreenContent(
     profileImageUrl: String?,
     selectedTabIndex: Int,
     userArticles: List<PostItem>,
+    reviewedArticles: List<PostItem>,
     onTabSelected: (Int) -> Unit,
     onEditProfileClick: () -> Unit,
     onProductClick: (String) -> Unit,
+    onDeleteArticleClick: (PostItem) -> Unit,
+    onEditArticleClick: (String) -> Unit,
     onLogoutClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
 
     LazyVerticalGrid(
@@ -66,6 +72,10 @@ fun ProfileScreenContent(
                     location = location,
                     website = website,
                     profileImageUrl = profileImageUrl,
+                    publicationsCount = userArticles.size,
+                    followersCount = 0,
+                    followingCount = 0,
+                    reviewsCount = reviewedArticles.size,
                     onEditProfileClick = onEditProfileClick,
                     onLogoutClick = onLogoutClick
                 )
@@ -82,39 +92,34 @@ fun ProfileScreenContent(
         }
 
         if (selectedTabIndex == 0) {
-            items(userArticles) { post ->
+            items(userArticles, key = { it.id }) { post ->
+                val p = post.product
+                Box {
+                    ProductCatalogCard(
+                        title = p.title,
+                        category = p.categoryTag,
+                        rating = p.averageRating.toString(),
+                        reviews = p.reviewsCountText.filter { it.isDigit() },
+                        imageModel = p.imageUrl ?: p.imageRes,
+                        onClick = { onProductClick(p.id) }
+                    )
+                    ArticleOptionsMenu(
+                        onEditClick = { onEditArticleClick(p.id) },
+                        onDeleteClick = { onDeleteArticleClick(post) },
+                        modifier = Modifier.align(Alignment.TopStart)
+                    )
+                }
+            }
+        } else {
+            items(reviewedArticles, key = { it.id }) { post ->
                 val p = post.product
                 ProductCatalogCard(
                     title = p.title,
                     category = p.categoryTag,
-                    rating = "0.0",
-                    reviews = "0",
-                    imageModel = p.imageUrl ?: "",
-                    onClick = { }
-                )
-            }
-        } else {
-            // Artículos calificados
-            item {
-                val p = FakeArticle.abrigoNegro
-                ProductCatalogCard(
-                    title = p.title,
-                    category = p.categoryTag,
                     rating = p.averageRating.toString(),
                     reviews = p.reviewsCountText.filter { it.isDigit() },
                     imageModel = p.imageUrl ?: p.imageRes,
-                    onClick = { }
-                )
-            }
-            item {
-                val p = FakeArticle.camisetaGymshark
-                ProductCatalogCard(
-                    title = p.title,
-                    category = p.categoryTag,
-                    rating = p.averageRating.toString(),
-                    reviews = p.reviewsCountText.filter { it.isDigit() },
-                    imageModel = p.imageUrl ?: p.imageRes,
-                    onClick = { onProductClick(p.id)}
+                    onClick = { onProductClick(p.id) }
                 )
             }
         }

@@ -20,7 +20,8 @@ class StorageRepository @Inject constructor(
             val userId = auth.currentUser?.uid ?: return Result.failure(Exception(context.getString(R.string.storage_error_user_not_logged_in)))
 
             val path = "profileImages/$userId.jpg"
-            val url = storage.uploadImage(path, uri)
+            val baseUrl = storage.uploadImage(path, uri)
+            val url = if (baseUrl.contains("?")) "$baseUrl&v=${System.currentTimeMillis()}" else "$baseUrl?v=${System.currentTimeMillis()}"
 
             auth.updateProfileImage(url)
             Result.success(url)
@@ -40,5 +41,12 @@ class StorageRepository @Inject constructor(
         } catch (e: Exception) {
             Result.failure(e)
         }
+    }
+
+    suspend fun deleteImage(url: String): Result<Unit> = try {
+        storage.deleteImage(url)
+        Result.success(Unit)
+    } catch (e: Exception) {
+        Result.failure(e)
     }
 }

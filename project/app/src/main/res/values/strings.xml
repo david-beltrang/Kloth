@@ -142,6 +142,14 @@
     <string name="placeholder_organizador">Nombre del organizador</string>
     <string name="btn_publicar">Publicar</string>
     <string name="cd_delete_photo">Eliminar imagen</string>
+    <string name="article_options">Opciones del artículo</string>
+    <string name="article_menu_edit">Editar artículo</string>
+    <string name="article_menu_delete">Eliminar artículo</string>
+    <string name="article_delete_title">¿Eliminar artículo?</string>
+    <string name="article_delete_message">Se eliminará el artículo y su imagen. Esta acción no se puede deshacer.</string>
+    <string name="article_delete_confirm">Eliminar</string>
+    <string name="article_delete_cancel">Cancelar</string>
+    <string name="btn_guardar_cambios">Guardar cambios</string>
 
     <!-- Review Screen -->
     <string name="cd_like">Me gusta</string>
@@ -205,6 +213,10 @@
     <string name="create_review_placeholder">Escribe tu reseña aquí (requerido)…</string>
     <string name="create_review_required">Campo obligatorio</string>
 
+    <!-- Edit Article -->
+    <string name="edit_article_error">No se pudo cargar el artículo: %1$s</string>
+    <string name="edit_article_retry">Reintentar</string>
+
     <!-- Auth Errors -->
     <string name="login_error_empty_fields">Por favor, completa todos los campos</string>
     <string name="register_error_empty_fields">Todos los campos son obligatorios</string>
@@ -223,4 +235,5 @@
     <string name="network_error_not_found">No se encontró el recurso</string>
     <string name="storage_error_user_not_logged_in">Usuario no autenticado</string>
     <string name="feed_retry">Reintentar</string>
+    <string name="close">Cerrar\n</string>
 </resources>

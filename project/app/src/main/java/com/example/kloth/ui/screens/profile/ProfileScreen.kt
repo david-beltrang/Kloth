@@ -7,12 +7,15 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.kloth.data.local.PostItem
 
 @Composable
 fun ProfileScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
     onEditProfileClick: () -> Unit = {},
     onProductClick: (String) -> Unit = {},
+    onDeleteArticleClick: (PostItem) -> Unit = {},
+    onEditArticleClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -31,10 +34,13 @@ fun ProfileScreen(
             profileImageUrl = uiState.profileImageUrl,
             selectedTabIndex = uiState.selectedTabIndex,
             userArticles = uiState.userArticles,
+            reviewedArticles = uiState.reviewedArticles,
             onTabSelected = { viewModel.onTabSelected(it) },
             onEditProfileClick = onEditProfileClick,
             onLogoutClick = { viewModel.logOutButtonPressed() },
             onProductClick = onProductClick,
+            onDeleteArticleClick = onDeleteArticleClick,
+            onEditArticleClick = onEditArticleClick,
             modifier = Modifier.fillMaxSize()
         )
     }

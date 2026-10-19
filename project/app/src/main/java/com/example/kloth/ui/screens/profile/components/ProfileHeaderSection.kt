@@ -34,6 +34,10 @@ fun ProfileHeaderSection(
     location: String?,
     website: String?,
     profileImageUrl: String?,
+    publicationsCount: Int = 0,
+    followersCount: Int = 0,
+    followingCount: Int = 0,
+    reviewsCount: Int = 0,
     modifier: Modifier = Modifier,
     onEditProfileClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {}
@@ -145,19 +149,19 @@ fun ProfileHeaderSection(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             ProfileStatItem(
-                value = "124",
+                value = publicationsCount.toString(),
                 label = stringResource(R.string.profile_publications)
             )
             ProfileStatItem(
-                value = "12.8k",
+                value = followersCount.toString(),
                 label = stringResource(R.string.profile_followers)
             )
             ProfileStatItem(
-                value = "842",
+                value = followersCount.toString(),
                 label = stringResource(R.string.profile_following)
             )
             ProfileStatItem(
-                value = "48",
+                value = reviewsCount.toString(),
                 label = stringResource(R.string.profile_reviews)
             )
         }
@@ -245,7 +249,11 @@ fun ProfileHeaderSectionPreview() {
             bio = null,
             location = null,
             website = null,
-            profileImageUrl = null
+            profileImageUrl = null,
+            publicationsCount = 5,
+            followersCount = 120,
+            followingCount = 80,
+            reviewsCount = 3
         )
     }
 }
@@ -260,7 +268,11 @@ fun ProfileHeaderSectionDarkPreview() {
             bio = null,
             location = null,
             website = null,
-            profileImageUrl = null
+            profileImageUrl = null,
+            publicationsCount = 5,
+            followersCount = 120,
+            followingCount = 80,
+            reviewsCount = 3
         )
     }
 }

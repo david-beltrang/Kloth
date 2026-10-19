@@ -13,4 +13,8 @@ class StorageRemoteDataSource @Inject constructor(
         imageRef.putFile(uri).await()
         return imageRef.downloadUrl.await().toString()
     }
+
+    suspend fun deleteImage(url: String) {
+        storage.getReferenceFromUrl(url).delete().await()
+    }
 }

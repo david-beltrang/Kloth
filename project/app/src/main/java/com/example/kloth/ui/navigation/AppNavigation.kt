@@ -14,6 +14,8 @@ import com.example.kloth.ui.screens.createArticle.CreateArticleScreen
 import com.example.kloth.ui.screens.createReview.CreateReviewScreen
 import com.example.kloth.ui.screens.detail.DetailViewModel
 import com.example.kloth.ui.screens.detail.ItemDetailScreen
+import com.example.kloth.ui.screens.editArticle.EditArticleScreen
+import com.example.kloth.ui.screens.editArticle.EditArticleViewModel
 import com.example.kloth.ui.screens.editProfile.EditProfileScreen
 import com.example.kloth.ui.screens.explore.ExploreScreen
 import com.example.kloth.ui.screens.explore.ExploreViewModel
@@ -173,7 +175,15 @@ fun AppNavigation(
                 },
                 onProductClick = { productId ->
                     navController.navigate(AppRoutes.ArticleDetail.createRoute(productId))
+                } ,
+                onEditArticleClick = { productId ->
+                    navController.navigate(AppRoutes.EditArticle.createRoute(productId))
+                },
+                onDeleteArticleClick = { productId ->
+                    // Ejecuta la eliminación en el ViewModel
+                    profileViewModel.deleteArticle(productId)
                 }
+
             )
         }
 
@@ -237,6 +247,19 @@ fun AppNavigation(
                 onReviewSubmitted = {
                     navController.popBackStack()
                 }
+            )
+        }
+
+        composable(
+            route = AppRoutes.EditArticle.route,
+            arguments = listOf(
+                navArgument(AppRoutes.EditArticle.ARG_ARTICLE_ID) { type = NavType.StringType }
+            )
+        ) {
+            val editArticleViewModel: EditArticleViewModel = hiltViewModel()
+            EditArticleScreen(
+                onSaved = { navController.popBackStack() },
+                onCloseClick = {navController.popBackStack()}
             )
         }
     }

@@ -9,4 +9,5 @@ interface UserRemoteDataSource {
     suspend fun getUserById(id: String): UserDtoGeneric
     suspend fun registerUser(registerUserDto: RegisterUserDto, userId : String): Unit
     suspend fun getUserArticles(userId: String): List<ArticleDtoGeneric>
+    suspend fun updateProfileImage(userId: String, imageUrl: String)
 }
