@@ -16,7 +16,7 @@ data class ArticleInfo(
     val averageRating: Float = 4.9f,
     val reviewsCountText: String = "(124 reseñas)",
     val isFavorite: Boolean = false,
-    val reviewsList: List<ReviewData> = ResenasDataLocal.defaultReviewsList,
+    val reviewsList: List<ReviewData> = emptyList(),
 
     val tags: List<String> = emptyList(),
     val createdAt: String? = null,

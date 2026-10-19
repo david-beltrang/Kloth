@@ -1,9 +1,7 @@
 package com.example.kloth.data.dto
 
-import com.example.kloth.R
 import com.example.kloth.data.local.ArticleInfo
 import com.example.kloth.data.local.PostItem
-import com.example.kloth.data.local.ReviewData
 import java.time.Duration
 import java.time.Instant
 import java.util.Locale
@@ -14,7 +12,7 @@ import java.util.Locale
 
 fun ArticleInfo.toPostItem(
     creator: UserDtoGeneric?,
-    reviews: List<ReviewDto>,
+    reviews: List<ReviewDtoGeneric>,
     usersById: Map<String, UserDtoGeneric>
 ): PostItem {
     val creatorProfile = creator?.toUserProfileInfo()
@@ -29,25 +27,19 @@ fun ArticleInfo.toPostItem(
     )
 }
 
-fun ArticleInfo.withReviews(reviews: List<ReviewDto>, usersById: Map<String, UserDtoGeneric>): ArticleInfo =
+fun ArticleInfo.withReviews(reviews: List<ReviewDtoGeneric>, usersById: Map<String, UserDtoGeneric>): ArticleInfo =
     copy(
         averageRating = calculateAverageRating(reviews),
         reviewsCountText = reviewsCountText(reviews.size),
-        reviewsList = reviews.map { it.toReviewData(usersById[it.userId.toString()]) }
+        reviewsList = reviews.map { review ->
+            val userIdStr = when (review) {
+                is ReviewRetrofitDto -> review.userId.toString()
+                is ReviewFirestoreDto -> review.userId
+                else -> ""
+            }
+            review.toReviewData(usersById[userIdStr])
+        }
     )
-
-fun ReviewDto.toReviewData(author: UserDtoGeneric?): ReviewData {
-    val authorProfile = author?.toUserProfileInfo()
-    return ReviewData(
-        id = reviewId.toString(),
-        authorName = authorProfile?.username?.trim() ?: DELETED_USER,
-        timeAgo = timeAgo(createdAt),
-        avatarRes = R.drawable.profile, // se muestra si el autor no tiene foto
-        avatarUrl = authorProfile?.profileImageUrl,
-        rating = rating.toFloat(),
-        reviewText = text?.trim() ?: ""
-    )
-}
 
 private const val DELETED_USER = "Usuario eliminado"
 
@@ -59,36 +51,31 @@ fun typeLabel(typeArticle: String): String =
 fun formatPrice(price: Double): String =
     "$" + String.format(Locale.getDefault(), "%,.2f", price)
 
-private fun calculateAverageRating(reviews: List<ReviewDto>): Float {
+private fun calculateAverageRating(reviews: List<ReviewDtoGeneric>): Float {
     if (reviews.isEmpty()) return 0f
-    val average = reviews.map { it.rating }.average()
-    return Math.round(average * 10) / 10f // un decimal: 4.5
-}
-
-private fun averageRating(reviews: List<ReviewDto>): Float {
-    if (reviews.isEmpty()) return 0f
-    val average = reviews.map { it.rating }.average()
-    return Math.round(average * 10) / 10f // un decimal: 4.5
+    val ratings = reviews.map { it.rating.toFloat() }
+    val average = ratings.average()
+    return Math.round(average * 10) / 10f
 }
 
 private fun reviewsCountText(count: Int): String =
     if (count == 1) "(1 reseña)" else "($count reseñas)"
 
 // "2026-09-20T00:00:00.000Z" -> "Hace 17 días"
-private fun timeAgo(createdAt: String?): String {
+fun timeAgo(createdAt: String?): String {
     if (createdAt.isNullOrBlank()) return ""
     return try {
         val minutes = Duration.between(Instant.parse(createdAt), Instant.now()).toMinutes()
         when {
             minutes < 1 -> "Hace un momento"
             minutes < 60 -> "Hace $minutes min"
-            minutes < 60 * 24 -> "Hace ${minutes / 60} h"
-            minutes < 60 * 24 * 2 -> "Hace 1 día"
-            minutes < 60 * 24 * 30 -> "Hace ${minutes / (60 * 24)} días"
-            minutes < 60 * 24 * 60 -> "Hace 1 mes"
-            else -> "Hace ${minutes / (60 * 24 * 30)} meses"
+            minutes < 24 * 60 -> "Hace ${minutes / 60} h"
+            minutes < 48 * 60 -> "Hace 1 día"
+            minutes < 30 * 24 * 60 -> "Hace ${minutes / (24 * 60)} días"
+            minutes < 60 * 24 * 30 -> "Hace 1 mes"
+            else -> "Hace ${minutes / (24 * 60 * 30)} meses"
         }
     } catch (e: Exception) {
-        "" // si la fecha no tiene el formato esperado no se muestra
+        ""
     }
 }

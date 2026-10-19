@@ -3,7 +3,7 @@ package com.example.kloth.data.datasource.services
 import com.example.kloth.data.dto.ArticleDtoGeneric
 import com.example.kloth.data.dto.ArticleRetrofitDto
 import com.example.kloth.data.dto.CreateArticleDto
-import com.example.kloth.data.dto.ReviewDto
+import com.example.kloth.data.dto.ReviewDtoGeneric
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
@@ -19,7 +19,7 @@ interface ArticleRetrofitService {
     suspend fun getArticleById(@Path("id") id: String): ArticleDtoGeneric
 
     @GET("/articles/{id}/reviews")
-    suspend fun getArticleReviews(@Path("id") id: String): List<ReviewDto>
+    suspend fun getArticleReviews(@Path("id") id: String): List<ReviewDtoGeneric>
 
     @POST("/articles")
     suspend fun createArticle(@Body dto: CreateArticleDto)
