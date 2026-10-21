@@ -92,6 +92,16 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
             .get().await().documents.map { it.id }.toSet()
     }
 
+    suspend fun getFollowedUsers(userId: String, listType: String): List<UserDtoGeneric> {
+        val relationship = if (listType == "followers") "followers" else "following"
+        val ids = db.collection("users").document(userId).collection(relationship)
+            .get().await().documents.map { it.id }
+        return ids.mapNotNull { id ->
+            db.collection("users").document(id).get().await()
+                .toObject(UserFirestoreDto::class.java)?.copy(userId = id)
+        }
+    }
+
     suspend fun followOrUnfollowUser(currentUserId: String, targetUserId: String): UserFollowState {
         val currentUserRef = db.collection("users").document(currentUserId)
         val targetUserRef = db.collection("users").document(targetUserId)
