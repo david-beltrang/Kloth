@@ -7,8 +7,11 @@ import com.example.kloth.data.dto.UpdateReviewDto
 
 interface ReviewRemoteDataSource {
     suspend fun getAllReviews(): List<ReviewDtoGeneric>
-    suspend fun getReviewById(id: String): ReviewDtoGeneric
+    suspend fun getReviewById(id: String, currentUserId: String = ""): ReviewDtoGeneric
     suspend fun createReview(dto: CreateReviewDto)
     suspend fun updateReview(id: String, dto: UpdateReviewDto)
     suspend fun deleteReview(id: String)
+
+    //nuevos
+    suspend fun sendOrDeleteLike(reviewId: String, userId: String): Unit
 }

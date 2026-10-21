@@ -12,7 +12,7 @@ class ReviewRetrofitDataSourceImpl @Inject constructor(
     private val service: ReviewRetrofitService
 ) : ReviewRemoteDataSource {
     override suspend fun getAllReviews(): List<ReviewRetrofitDto> = service.getReviews()
-    override suspend fun getReviewById(id: String): ReviewRetrofitDto {
+    override suspend fun getReviewById(id: String, currentUserId: String): ReviewRetrofitDto {
         TODO("Not yet implemented")
     }
 
@@ -28,6 +28,10 @@ class ReviewRetrofitDataSourceImpl @Inject constructor(
     }
 
     override suspend fun deleteReview(id: String) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun sendOrDeleteLike(reviewId: String, userId: String) {
         TODO("Not yet implemented")
     }
 }

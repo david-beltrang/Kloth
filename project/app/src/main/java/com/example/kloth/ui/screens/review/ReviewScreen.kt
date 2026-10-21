@@ -23,7 +23,9 @@ fun ReviewScreen(
         yaComento = state.yaComento,
         onTextoComentarioChange = { reviewViewModel.onTextoComentarioChange(it) },
         onEnviarComentario = { reviewViewModel.onEnviarComentario() },
-        onLikeResena = { reviewViewModel.onLikeResena() },
+        onLikeResena = {
+            reviewViewModel.sendOrDeleteReviewLike(state.resena.id, state.currentUserId)
+        },
         onLikeComentario = { reviewViewModel.onLikeComentario(it) },
         onEliminarComentario = { reviewViewModel.onEliminarComentario(it) },
         onToggleOrden = { reviewViewModel.onToggleOrden() },

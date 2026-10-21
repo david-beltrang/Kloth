@@ -13,7 +13,7 @@ class ArticleRetrofitDataSourceImpl @Inject constructor(
 ) : ArticleRemoteDataSource {
     override suspend fun getAllArticles(): List<ArticleDtoGeneric> = service.getArticles()
     override suspend fun getArticleById(id: String): ArticleDtoGeneric = service.getArticleById(id)
-    override suspend fun getArticleReviews(id: String): List<ReviewDtoGeneric> =
+    override suspend fun getArticleReviews(id: String, currentUserId: String): List<ReviewDtoGeneric> =
         service.getArticleReviews(id)
 
     override suspend fun createArticle(article: CreateArticleDto) = service.createArticle(article)

@@ -12,7 +12,7 @@ data class ReviewData(
     val rating: Float,
     val reviewText: String,
     val likesCount: Int = 0,
-    val isLikedByMe: Boolean = false,
+    val liked: Boolean = false,
     val commentsCountText: String = "0",
     val comentariosList: List<ComentarioReviewData> = emptyList()
 )

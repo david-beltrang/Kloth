@@ -45,9 +45,9 @@ class ReviewRepository @Inject constructor(
         Result.failure(e as? Exception ?: Exception(e))
     }
 
-    suspend fun getReviewById(id: String): Result<ReviewData> = try {
+    suspend fun getReviewById(id: String, currentUserId: String = ""): Result<ReviewData> = try {
         val detail = coroutineScope {
-            val reviewDeferred = async { reviewDataSource.getReviewById(id) }
+            val reviewDeferred = async { reviewDataSource.getReviewById(id, currentUserId) }
             val usersDeferred = async { userRepository.getAllUsers() }
 
             val usersById = usersDeferred.await().associateBy { it.toUserProfileInfo().id }
@@ -99,6 +99,15 @@ class ReviewRepository @Inject constructor(
         Result.success(Unit)
     } catch (e: Exception) {
         Log.e(TAG, "No se pudo eliminar la reseña $id", e)
+        Result.failure(e)
+    }
+
+    // No emite reviewsChanged: al dar like solo se actualiza el estado local de la pantalla
+    suspend fun sendOrDeleteReviewLike(reviewId: String, userId: String): Result<Unit> = try {
+        reviewDataSource.sendOrDeleteLike(reviewId, userId)
+        Result.success(Unit)
+    } catch (e: Exception) {
+        Log.e(TAG, "No se pudo dar o quitar el like a la reseña $reviewId", e)
         Result.failure(e)
     }
 

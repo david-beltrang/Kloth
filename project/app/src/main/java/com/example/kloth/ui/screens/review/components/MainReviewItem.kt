@@ -121,9 +121,9 @@ fun MainReviewItem(
             ) {
                 IconButton(onClick = onLikeClick, modifier = Modifier.size(24.dp)) {
                     Icon(
-                        imageVector = if (resena.isLikedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+                        imageVector = if (resena.liked) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                         contentDescription = stringResource(R.string.cd_like),
-                        tint = if (resena.isLikedByMe) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
+                        tint = if (resena.liked)MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 Text(

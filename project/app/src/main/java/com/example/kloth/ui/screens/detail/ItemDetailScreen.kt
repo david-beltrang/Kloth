@@ -98,7 +98,9 @@ fun ItemDetailScreen(
         onShareClick = onShareClick,
         onAddToCartClick = onAddToCartClick,
         onWriteReviewClick = onWriteReviewClick,
-        onLikeReviewClick = { reviewId -> /* Accion like resena */ },
+        onLikeReviewClick = { reviewId ->
+            detailViewModel.sendOrDeleteReviewLike(reviewId, state.currentUserId)
+        },
         onCommentReviewClick = onReviewClick,
         modifier = modifier
     )

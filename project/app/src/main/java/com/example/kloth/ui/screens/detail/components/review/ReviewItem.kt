@@ -46,6 +46,7 @@ fun ReviewItem(
         ReviewActions(
             likesCount = review.likesCount,
             commentsText = review.commentsCountText,
+            isLiked = review.liked,
             onLikeClick = onLikeClick,
             onCommentClick = onCommentClick
         )

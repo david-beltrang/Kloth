@@ -61,10 +61,10 @@ class ArticleRepository @Inject constructor(
         Result.failure(e as? Exception ?: Exception(e))
     }
 
-    suspend fun getArticleDetail(id: String): Result<ArticleInfo> = try {
+    suspend fun getArticleDetail(id: String, currentUserId: String = ""): Result<ArticleInfo> = try {
         val detail = coroutineScope {
             val article = async { articleDataSource.getArticleById(id) }
-            val reviews = async { articleDataSource.getArticleReviews(id) }
+            val reviews = async { articleDataSource.getArticleReviews(id, currentUserId) }
             val users = async { userRepository.getAllUsers() }
 
             val usersById = users.await().associateBy { it.toUserProfileInfo().id  }

@@ -53,7 +53,9 @@ data class ReviewFirestoreDto(
     val likesCount: Int = 0,
     val createdAt: String? = null,
     val updatedAt: String? = null,
-    override val eliminated: Boolean = false
+    override val eliminated: Boolean = false,
+    //nuevo
+    var liked: Boolean = false
 ) : ReviewDtoGeneric() {
 
     override fun articleKey(): String = articleId
@@ -69,7 +71,8 @@ data class ReviewFirestoreDto(
             avatarUrl = authorProfile?.profileImageUrl,
             rating = rating.toFloat(),
             reviewText = text?.trim().orEmpty(),
-            likesCount = likesCount
+            likesCount = likesCount,
+            liked = liked
         )
     }
 }

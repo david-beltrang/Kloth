@@ -13,7 +13,8 @@ data class ReviewState(
         reviewText = ""
     ),
     val nuevoComentarioTexto: String = "",
-    val ordenMasRecientes: Boolean = true
+    val ordenMasRecientes: Boolean = true,
+    val currentUserId: String = ""
 ) {
     val yaComento: Boolean
         get() = resena.comentariosList.any { it.isMyComment }

@@ -34,14 +34,24 @@ class ArticleFirestoreDataSourceImpl @Inject constructor(
         db.collection("articles").add(article).await()
     }
 
-    override suspend fun getArticleReviews(id: String): List<ReviewDtoGeneric> {
+    override suspend fun getArticleReviews(id: String, currentUserId: String): List<ReviewDtoGeneric> {
         val snapshot = db.collection("reviews")
             .whereEqualTo("articleId", id)
             .get()
             .await()
 
         return snapshot.documents.mapNotNull { doc ->
-            doc.toObject(ReviewFirestoreDto::class.java)?.copy(reviewId = doc.id)
+            val review = doc.toObject(ReviewFirestoreDto::class.java)?.copy(reviewId = doc.id)
+
+            if (review != null && currentUserId.isNotEmpty()) {
+                // Verifica si el usuario ya dio like a esta reseña
+                val likeSnapshot = doc.reference.collection("likes").document(currentUserId).get().await()
+                if (likeSnapshot.exists()) {
+                    review.liked = true
+                }
+            }
+
+            review
         }
     }
 

@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kloth.R
 import com.example.kloth.data.local.ComentarioReviewData
+import com.example.kloth.data.repository.AuthRepository
 import com.example.kloth.data.repository.ReviewRepository
 import com.example.kloth.ui.navigation.AppRoutes
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,7 +19,8 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class ReviewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
-    private val reviewRepository: ReviewRepository
+    private val reviewRepository: ReviewRepository,
+    private val authRepository: AuthRepository
 ) : ViewModel() {
 
     // Recupera el ID si viene de la navegación
@@ -28,6 +30,8 @@ class ReviewViewModel @Inject constructor(
     val uiState: StateFlow<ReviewState> = _uiState.asStateFlow()
 
     init {
+        _uiState.update { it.copy(currentUserId = authRepository.currentUser?.uid.orEmpty()) }
+
         // Carga la reseña si el ID existe en la navegación
         reviewId?.let { id ->
             loadReview(id)
@@ -36,7 +40,7 @@ class ReviewViewModel @Inject constructor(
 
     private fun loadReview(id: String) {
         viewModelScope.launch {
-            reviewRepository.getReviewById(id).onSuccess { resena ->
+            reviewRepository.getReviewById(id, _uiState.value.currentUserId).onSuccess { resena ->
                 _uiState.update { currentState ->
                     currentState.copy(resena = resena)
                 }
@@ -76,17 +80,19 @@ class ReviewViewModel @Inject constructor(
         }
     }
 
-    fun onLikeResena() {
-        _uiState.update { currentState ->
-            val resenaActual = currentState.resena
-            val nuevoLiked = !resenaActual.isLikedByMe
-            val nuevoCount = if (nuevoLiked) resenaActual.likesCount + 1 else resenaActual.likesCount - 1
-            currentState.copy(
-                resena = resenaActual.copy(
-                    isLikedByMe = nuevoLiked,
-                    likesCount = nuevoCount
-                )
-            )
+    fun sendOrDeleteReviewLike(reviewId: String, userId: String) {
+        viewModelScope.launch {
+            val result = reviewRepository.sendOrDeleteReviewLike(reviewId, userId)
+            if (result.isSuccess) {
+                _uiState.update {
+                    it.copy(
+                        resena = it.resena.copy(
+                            liked = !it.resena.liked,
+                            likesCount = if (it.resena.liked) it.resena.likesCount - 1 else it.resena.likesCount + 1
+                        )
+                    )
+                }
+            }
         }
     }
 
