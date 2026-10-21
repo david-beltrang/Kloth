@@ -75,8 +75,8 @@ data class ReviewFirestoreDto(
 }
 
 data class CreateReviewDto(
-    val userId: Int,
-    val articleId: Int,
+    val userId: String,
+    val articleId: String,
     val rating: Int,
     val text: String?,
     val createdAt: String,

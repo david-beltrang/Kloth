@@ -2,7 +2,7 @@ package com.example.kloth.ui.screens.createReview
 
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
-import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun CreateReviewScreen(
@@ -10,7 +10,7 @@ fun CreateReviewScreen(
     onBackClick: () -> Unit,
     onReviewSubmitted: () -> Unit,
     modifier: Modifier = Modifier,
-    viewModel: CreateReviewViewModel = viewModel()
+    viewModel: CreateReviewViewModel = hiltViewModel()
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
@@ -19,10 +19,18 @@ fun CreateReviewScreen(
         viewModel.loadProductData(productId)
     }
 
+    // Cuando la reseña se guarda, se vuelve al detalle
+    LaunchedEffect(uiState.isSubmitted) {
+        if (uiState.isSubmitted) {
+            onReviewSubmitted()
+            viewModel.onSubmittedConsumed()
+        }
+    }
+
     CreateReviewScreenContent(
         uiState = uiState,
         onBackClick = onBackClick,
-        onSubmitClick = { viewModel.submitReview(onSuccess = onReviewSubmitted) },
+        onSubmitClick = { viewModel.submitReview() },
         onRatingSelected = { viewModel.onRatingSelected(it) },
         onReviewTextChanged = { viewModel.onReviewTextChanged(it) },
         modifier = modifier

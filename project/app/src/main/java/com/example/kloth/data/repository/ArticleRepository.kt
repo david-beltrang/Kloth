@@ -25,11 +25,12 @@ class ArticleRepository @Inject constructor(
     private val articleDataSource: ArticleFirestoreDataSourceImpl,
     private val userRepository: UserRepository,
     private val reviewDataSource: ReviewFirestoreDataSourceImpl,
-    private val storageRepository: StorageRepository
+    private val storageRepository: StorageRepository,
+    private val reviewRepository: ReviewRepository
 ) {
     private val _articlesChanged = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
     /** Avisa cada vez que se crea un artículo, para que las pantallas vuelvan a cargar. */
-    val articlesChanged: Flow<Unit> = merge(_articlesChanged, userRepository.usersChanged)
+    val articlesChanged: Flow<Unit> = merge(_articlesChanged, userRepository.usersChanged, reviewRepository.reviewsChanged)
 
     suspend fun getFeedPosts(): Result<List<PostItem>> = try {
         val posts = coroutineScope {

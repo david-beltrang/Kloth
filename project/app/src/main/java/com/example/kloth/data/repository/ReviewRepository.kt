@@ -13,6 +13,7 @@ import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.merge
 import retrofit2.HttpException
+import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -62,7 +63,19 @@ class ReviewRepository @Inject constructor(
         Result.failure(e)
     }
 
-    suspend fun createReview(dto: CreateReviewDto): Result<Unit> = try {
+    suspend fun createReview(
+        articleId: String,
+        userId: String,
+        rating: Int,
+        text: String
+    ): Result<Unit> = try {
+        val dto = CreateReviewDto(
+            userId = userId,
+            articleId = articleId,
+            rating = rating,
+            text = text,
+            createdAt = Instant.now().toString()
+        )
         reviewDataSource.createReview(dto)
         _reviewsChanged.tryEmit(Unit)
         Result.success(Unit)
