@@ -21,6 +21,7 @@ import com.example.kloth.ui.screens.explore.ExploreScreen
 import com.example.kloth.ui.screens.explore.ExploreViewModel
 import com.example.kloth.ui.screens.feed.FeedScreen
 import com.example.kloth.ui.screens.feed.FeedViewModel
+import com.example.kloth.ui.screens.followList.FollowListScreen
 import com.example.kloth.ui.screens.forgotPassword.ForgotPasswordScreen
 import com.example.kloth.ui.screens.forgotPassword.ForgotPasswordViewModel
 import com.example.kloth.ui.screens.login.LoginScreen
@@ -132,6 +133,9 @@ fun AppNavigation(
                 feedViewModel = feedViewModel,
                 onProductClick = { productId ->
                     navController.navigate(AppRoutes.ArticleDetail.createRoute(productId))
+                },
+                onProfileClick = { userId ->
+                    if (userId.isNotBlank()) navController.navigate(AppRoutes.UserProfile.createRoute(userId))
                 }
             )
         }
@@ -182,8 +186,36 @@ fun AppNavigation(
                 onDeleteArticleClick = { productId ->
                     // Ejecuta la eliminación en el ViewModel
                     profileViewModel.deleteArticle(productId)
-                }
+                },
+                onFollowListClick = { profileId, type -> navController.navigate(AppRoutes.FollowList.createRoute(profileId, type)) }
 
+            )
+        }
+
+        composable(
+            AppRoutes.UserProfile.route,
+            arguments = listOf(navArgument(AppRoutes.UserProfile.ARG_USER_ID) { type = NavType.StringType })
+        ) { entry ->
+            val userId = entry.arguments?.getString(AppRoutes.UserProfile.ARG_USER_ID).orEmpty()
+            ProfileScreen(
+                profileUserId = userId,
+                onProductClick = { productId -> navController.navigate(AppRoutes.ArticleDetail.createRoute(productId)) },
+                onFollowListClick = { profileId, type -> navController.navigate(AppRoutes.FollowList.createRoute(profileId, type)) }
+            )
+        }
+
+        composable(
+            route = AppRoutes.FollowList.route,
+            arguments = listOf(
+                navArgument(AppRoutes.FollowList.ARG_USER_ID) { type = NavType.StringType },
+                navArgument(AppRoutes.FollowList.ARG_LIST_TYPE) { type = NavType.StringType }
+            )
+        ) { entry ->
+            FollowListScreen(
+                userId = entry.arguments?.getString(AppRoutes.FollowList.ARG_USER_ID).orEmpty(),
+                listType = entry.arguments?.getString(AppRoutes.FollowList.ARG_LIST_TYPE).orEmpty(),
+                onBackClick = { navController.popBackStack() },
+                onUserClick = { userId -> navController.navigate(AppRoutes.UserProfile.createRoute(userId)) }
             )
         }
 
@@ -201,7 +233,8 @@ fun AppNavigation(
         // --- Pantallas de Detalle y Reseñas ---
         composable(AppRoutes.Review.route) {
             ReviewScreen(
-                onBackClick = { navController.popBackStack() }
+                onBackClick = { navController.popBackStack() },
+                onUserClick = { userId -> navController.navigate(AppRoutes.UserProfile.createRoute(userId)) }
             )
         }
 
@@ -228,6 +261,9 @@ fun AppNavigation(
                 },
                 onReviewClick = { reviewId ->
                     navController.navigate(AppRoutes.Review.createRoute(reviewId))
+                },
+                onUserClick = { userId ->
+                    navController.navigate(AppRoutes.UserProfile.createRoute(userId))
                 }
             )
         }

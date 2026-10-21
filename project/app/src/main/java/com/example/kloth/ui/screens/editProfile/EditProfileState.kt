@@ -10,4 +10,5 @@ data class EditProfileState (
     val isLoading: Boolean = false,
     val isSaving: Boolean = false,
     val isSaved: Boolean = false,
+    val errorMessage: String? = null,
 )

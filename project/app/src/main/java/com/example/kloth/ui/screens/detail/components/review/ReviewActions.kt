@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.ChatBubbleOutline
 import androidx.compose.material.icons.outlined.ThumbUp
+import androidx.compose.material.icons.filled.ThumbUp
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,6 +22,7 @@ import com.example.kloth.ui.theme.KlothTheme
 @Composable
 fun ReviewActions(
     likesCount: Int,
+    isLikedByMe: Boolean = false,
     commentsText: String,
     onLikeClick: () -> Unit = {},
     onCommentClick: () -> Unit = {},
@@ -36,9 +38,9 @@ fun ReviewActions(
             modifier = Modifier.clickable { onLikeClick() }
         ) {
             Icon(
-                imageVector = Icons.Outlined.ThumbUp,
+                imageVector = if (isLikedByMe) Icons.Filled.ThumbUp else Icons.Outlined.ThumbUp,
                 contentDescription = stringResource(R.string.cd_likes),
-                tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                tint = if (isLikedByMe) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
                 modifier = Modifier.size(14.dp)
             )
             if (likesCount > 0) {

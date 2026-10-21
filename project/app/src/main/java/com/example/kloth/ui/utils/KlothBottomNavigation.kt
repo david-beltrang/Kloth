@@ -50,16 +50,18 @@ fun KlothBottomNavigation(
     ) {
         items.forEach { item ->
             val isSelected = currentRoute == item.route.route ||
-                           (item.route == AppRoutes.Profile && currentRoute == AppRoutes.EditProfile.route)
+                           (item.route == AppRoutes.Profile && currentRoute in listOf(
+                               AppRoutes.EditProfile.route,
+                               AppRoutes.UserProfile.route
+                           ))
 
             NavigationBarItem(
                 selected = isSelected,
                 onClick = {
                     if (currentRoute != item.route.route) {
                         navController.navigate(item.route.route) {
-                            popUpTo(AppRoutes.Feed.route) { saveState = true }
+                            popUpTo(AppRoutes.Feed.route) { inclusive = false }
                             launchSingleTop = true
-                            restoreState = true
                         }
                     }
                 },

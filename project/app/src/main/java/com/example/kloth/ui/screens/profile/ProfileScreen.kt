@@ -16,10 +16,17 @@ fun ProfileScreen(
     onProductClick: (String) -> Unit = {},
     onDeleteArticleClick: (PostItem) -> Unit = {},
     onEditArticleClick: (String) -> Unit = {},
+    profileUserId: String? = null,
+    onFollowListClick: (String, String) -> Unit = { _, _ -> },
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    
+
+    // Se recarga cada vez que la pantalla vuelve a entrar en composición
+    LaunchedEffect(Unit) {
+        viewModel.refreshProfile(profileUserId)
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -32,12 +39,20 @@ fun ProfileScreen(
             location = uiState.location,
             website = uiState.website,
             profileImageUrl = uiState.profileImageUrl,
+            viewingOwnProfile = uiState.viewingOwnProfile,
+            followersCount = uiState.followersCount,
+            followingCount = uiState.followingCount,
+            isFollowing = uiState.isFollowing,
+            isFollowActionInProgress = uiState.isFollowActionInProgress,
             selectedTabIndex = uiState.selectedTabIndex,
             userArticles = uiState.userArticles,
             reviewedArticles = uiState.reviewedArticles,
             onTabSelected = { viewModel.onTabSelected(it) },
             onEditProfileClick = onEditProfileClick,
+            onFollowClick = { viewModel.toggleFollow() },
             onLogoutClick = { viewModel.logOutButtonPressed() },
+            onFollowersClick = { uiState.targetUserId?.let { onFollowListClick(it, "followers") } },
+            onFollowingClick = { uiState.targetUserId?.let { onFollowListClick(it, "following") } },
             onProductClick = onProductClick,
             onDeleteArticleClick = onDeleteArticleClick,
             onEditArticleClick = onEditArticleClick,

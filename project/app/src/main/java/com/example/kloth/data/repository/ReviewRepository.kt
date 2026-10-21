@@ -3,63 +3,72 @@ package com.example.kloth.data.repository
 import android.util.Log
 import com.example.kloth.data.datasource.implementation.firestore.ReviewFirestoreDataSourceImpl
 import com.example.kloth.data.dto.CreateReviewDto
+import com.example.kloth.data.dto.CreateCommentDto
 import com.example.kloth.data.dto.UpdateReviewDto
 import com.example.kloth.data.local.ReviewData
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.merge
-import retrofit2.HttpException
+import com.example.kloth.data.local.ComentarioReviewData
+import com.example.kloth.data.local.ReviewLikeState
 import java.time.Instant
 import javax.inject.Inject
 import javax.inject.Singleton
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emitAll
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.map
 
 @Singleton
 class ReviewRepository @Inject constructor(
     private val reviewDataSource: ReviewFirestoreDataSourceImpl,
     private val userRepository: UserRepository
 ) {
-    private val _reviewsChanged = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
-    /** Avisa cada vez que se crea, edita o elimina una reseña para que las pantallas se actualicen. */
-    val reviewsChanged: Flow<Unit> = merge(_reviewsChanged, userRepository.usersChanged)
 
-    suspend fun getAllReviews(): Result<List<ReviewData>> = try {
-        val reviews = coroutineScope {
-            val reviewsDeferred = async { runCatching { reviewDataSource.getAllReviews() }.getOrDefault(emptyList()) }
-            val usersDeferred = async { runCatching { userRepository.getAllUsers() }.getOrDefault(emptyList()) }
-
-            val usersById = usersDeferred.await().associateBy { it.toUserProfileInfo().id }
-
-            reviewsDeferred.await()
-                .filter { it.eliminated != true }
-                .map { reviewDto ->
-                    reviewDto.toReviewData(usersById[reviewDto.authorKey()])
+    fun observeReviewsForArticle(articleId: String): Flow<List<ReviewData>> = flow {
+        val users = userRepository.getAllUsers()
+        val usersById = users.associateBy { it.toUserProfileInfo().id }
+        emitAll(
+            reviewDataSource.observeReviewsForArticle(articleId).map { reviews ->
+                reviews.filter { it.eliminated != true }.map { dto ->
+                    val commentsCount = reviewDataSource.getCommentsCount(dto.reviewId)
+                    dto.toReviewData(usersById[dto.authorIdKey()])
+                        .copy(commentsCountText = commentsCount.toString())
                 }
-        }
-        Result.success(reviews)
-    } catch (e: Throwable) {
-        Log.e(TAG, "Error al cargar las reseñas", e)
-        Result.failure(e as? Exception ?: Exception(e))
+            }
+        )
     }
 
-    suspend fun getReviewById(id: String): Result<ReviewData> = try {
-        val detail = coroutineScope {
-            val reviewDeferred = async { reviewDataSource.getReviewById(id) }
-            val usersDeferred = async { userRepository.getAllUsers() }
+    suspend fun getAllReviews(): Result<List<ReviewData>> = try {
+        val reviews = reviewDataSource.getAllReviews()
+        val users = userRepository.getAllUsers()
 
-            val usersById = usersDeferred.await().associateBy { it.toUserProfileInfo().id }
-            val reviewDto = reviewDeferred.await()
-            reviewDto.toReviewData(usersById[reviewDto.authorKey()])
-        }
-        Result.success(detail)
-    } catch (e: HttpException) {
-        Log.e(TAG, "Error del backend al cargar la reseña $id", e)
-        Result.failure(e)
+        val usersById = users.associateBy { it.toUserProfileInfo().id }
+
+        val reviewsWithAuthor = reviews
+            .filter { it.eliminated != true }
+            .map { reviewDto ->
+                reviewDto.toReviewData(usersById[reviewDto.authorIdKey()])
+            }
+        Result.success(reviewsWithAuthor)
     } catch (e: Exception) {
-        Log.e(TAG, "No se pudo conectar al cargar la reseña $id", e)
+        Log.e("ReviewRepository", "Error al cargar las reseñas", e)
+        Result.failure(e)
+    }
+
+    suspend fun getReviewById(id: String, currentUserId: String? = null): Result<ReviewData> = try {
+        val reviewDto = reviewDataSource.getReviewById(id)
+        val users = userRepository.getAllUsers()
+
+        val usersById = users.associateBy { it.toUserProfileInfo().id }
+        val detail = reviewDto.toReviewData(usersById[reviewDto.authorIdKey()])
+        val comments = reviewDataSource.getComments(id)
+            .map { it.toComentarioReviewData(currentUserId) }
+        val isLiked = currentUserId?.let { reviewDataSource.isReviewLikedByUser(id, it) } ?: false
+        Result.success(detail.copy(
+            comentariosList = comments,
+            isLikedByMe = isLiked,
+            commentsCountText = comments.size.toString()
+        ))
+    } catch (e: Exception) {
+        Log.e("ReviewRepository", "No se pudo cargar la reseña $id", e)
         Result.failure(e)
     }
 
@@ -77,32 +86,79 @@ class ReviewRepository @Inject constructor(
             createdAt = Instant.now().toString()
         )
         reviewDataSource.createReview(dto)
-        _reviewsChanged.tryEmit(Unit)
         Result.success(Unit)
     } catch (e: Exception) {
-        Log.e(TAG, "No se pudo crear la reseña", e)
+        Log.e("ReviewRepository", "No se pudo crear la reseña", e)
         Result.failure(e)
     }
 
     suspend fun updateReview(id: String, dto: UpdateReviewDto): Result<Unit> = try {
         reviewDataSource.updateReview(id, dto)
-        _reviewsChanged.tryEmit(Unit)
         Result.success(Unit)
     } catch (e: Exception) {
-        Log.e(TAG, "No se pudo actualizar la reseña $id", e)
+        Log.e("ReviewRepository", "No se pudo actualizar la reseña $id", e)
         Result.failure(e)
     }
 
     suspend fun deleteReview(id: String): Result<Unit> = try {
         reviewDataSource.deleteReview(id)
-        _reviewsChanged.tryEmit(Unit)
         Result.success(Unit)
     } catch (e: Exception) {
-        Log.e(TAG, "No se pudo eliminar la reseña $id", e)
+        Log.e("ReviewRepository", "No se pudo eliminar la reseña $id", e)
         Result.failure(e)
     }
 
-    private companion object {
-        const val TAG = "ReviewRepository"
+    suspend fun createComment(
+        reviewId: String,
+        userId: String,
+        username: String,
+        profileImageUrl: String?,
+        text: String
+    ): Result<ComentarioReviewData> = try {
+        val dto = CreateCommentDto(
+            userId = userId,
+            username = username,
+            profileImageUrl = profileImageUrl,
+            text = text.trim(),
+            createdAt = Instant.now().toString()
+        )
+        val commentId = reviewDataSource.createComment(reviewId, dto)
+        Result.success(
+            ComentarioReviewData(
+                id = commentId,
+                authorId = userId,
+                authorName = username,
+                timeAgo = "Ahora",
+                avatarRes = com.example.kloth.R.drawable.profile,
+                avatarUrl = profileImageUrl,
+                commentText = text.trim(),
+                isMyComment = true
+            )
+        )
+    } catch (e: Exception) {
+        Log.e("ReviewRepository", "No se pudo crear el comentario", e)
+        Result.failure(e)
+    }
+
+    suspend fun deleteComment(reviewId: String, commentId: String): Result<Unit> = try {
+        reviewDataSource.deleteComment(reviewId, commentId)
+        Result.success(Unit)
+    } catch (e: Exception) {
+        Log.e("ReviewRepository", "No se pudo eliminar el comentario $commentId", e)
+        Result.failure(e)
+    }
+
+    suspend fun toggleReviewLike(reviewId: String, userId: String): Result<ReviewLikeState> = try {
+        Result.success(reviewDataSource.toggleReviewLike(reviewId, userId))
+    } catch (e: Exception) {
+        Log.e("ReviewRepository", "No se pudo actualizar el me gusta de la reseña $reviewId", e)
+        Result.failure(e)
+    }
+
+    suspend fun isReviewLikedByUser(reviewId: String, userId: String): Result<Boolean> = try {
+        Result.success(reviewDataSource.isReviewLikedByUser(reviewId, userId))
+    } catch (e: Exception) {
+        Log.e("ReviewRepository", "No se pudo consultar el me gusta de la reseña $reviewId", e)
+        Result.failure(e)
     }
 }

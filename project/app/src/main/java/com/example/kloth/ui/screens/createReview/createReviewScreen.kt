@@ -23,7 +23,7 @@ fun CreateReviewScreen(
     LaunchedEffect(uiState.isSubmitted) {
         if (uiState.isSubmitted) {
             onReviewSubmitted()
-            viewModel.onSubmittedConsumed()
+            viewModel.onSubmittedHandled()
         }
     }
 

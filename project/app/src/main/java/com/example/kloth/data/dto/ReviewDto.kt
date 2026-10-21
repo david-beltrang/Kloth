@@ -8,8 +8,8 @@ abstract class ReviewDtoGeneric {
     abstract val eliminated: Boolean
 
     // Express usa ids Int y Firestore String: ambos se exponen como String
-    abstract fun articleKey(): String
-    abstract fun authorKey(): String
+    abstract fun articleIdKey(): String
+    abstract fun authorIdKey(): String
 
     abstract fun toReviewData(author: UserDtoGeneric?): ReviewData
 }
@@ -21,25 +21,28 @@ data class ReviewRetrofitDto(
     override val rating: Int,
     val text: String?,
     val likesCount: Int = 0,
+    val commentsCount: Int = 0,
     val createdAt: String?,
     val updatedAt: String? = null,
     override val eliminated: Boolean = false
 ) : ReviewDtoGeneric() {
 
-    override fun articleKey(): String = articleId.toString()
-    override fun authorKey(): String = userId.toString()
+    override fun articleIdKey(): String = articleId.toString()
+    override fun authorIdKey(): String = userId.toString()
 
     override fun toReviewData(author: UserDtoGeneric?): ReviewData {
         val authorProfile = author?.toUserProfileInfo()
         return ReviewData(
             id = reviewId.toString(),
+            authorId = userId.toString(),
             authorName = authorProfile?.username?.trim() ?: "Usuario eliminado",
             timeAgo = timeAgo(createdAt),
             avatarRes = R.drawable.profile,
             avatarUrl = authorProfile?.profileImageUrl,
             rating = rating.toFloat(),
             reviewText = text?.trim().orEmpty(),
-            likesCount = likesCount
+            likesCount = likesCount,
+            commentsCountText = commentsCount.toString()
         )
     }
 }
@@ -51,25 +54,28 @@ data class ReviewFirestoreDto(
     override val rating: Int = 0,
     val text: String? = null,
     val likesCount: Int = 0,
+    val commentsCount: Int = 0,
     val createdAt: String? = null,
     val updatedAt: String? = null,
     override val eliminated: Boolean = false
 ) : ReviewDtoGeneric() {
 
-    override fun articleKey(): String = articleId
-    override fun authorKey(): String = userId
+    override fun articleIdKey(): String = articleId
+    override fun authorIdKey(): String = userId
 
     override fun toReviewData(author: UserDtoGeneric?): ReviewData {
         val authorProfile = author?.toUserProfileInfo()
         return ReviewData(
             id = reviewId,
+            authorId = userId,
             authorName = authorProfile?.username?.trim() ?: "Usuario eliminado",
             timeAgo = timeAgo(createdAt),
             avatarRes = R.drawable.profile,
             avatarUrl = authorProfile?.profileImageUrl,
             rating = rating.toFloat(),
             reviewText = text?.trim().orEmpty(),
-            likesCount = likesCount
+            likesCount = likesCount,
+            commentsCountText = commentsCount.toString()
         )
     }
 }

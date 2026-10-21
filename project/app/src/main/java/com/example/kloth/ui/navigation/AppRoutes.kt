@@ -35,6 +35,15 @@ sealed class AppRoutes(val route: String) {
 
     // perfil (tab 4)
     object Profile : AppRoutes("profile")
+    object UserProfile : AppRoutes("user_profile/{userId}") {
+        const val ARG_USER_ID = "userId"
+        fun createRoute(userId: String) = "user_profile/$userId"
+    }
+    object FollowList : AppRoutes("follow_list/{userId}/{listType}") {
+        const val ARG_USER_ID = "userId"
+        const val ARG_LIST_TYPE = "listType"
+        fun createRoute(userId: String, listType: String) = "follow_list/$userId/$listType"
+    }
 
     // editar perfil
     object EditProfile : AppRoutes("edit_profile")

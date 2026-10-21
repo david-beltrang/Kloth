@@ -18,6 +18,7 @@ fun ArticleInfo.toPostItem(
     val creatorProfile = creator?.toUserProfileInfo()
     return PostItem(
         id = id,
+        creatorId = creatorId,
         creatorName = creatorProfile?.username?.trim() ?: DELETED_USER,
         timeAgo = timeAgo(createdAt),
         avatarUrl = creatorProfile?.profileImageUrl ?: "",
@@ -30,9 +31,9 @@ fun ArticleInfo.toPostItem(
 fun ArticleInfo.withReviews(reviews: List<ReviewDtoGeneric>, usersById: Map<String, UserDtoGeneric>): ArticleInfo =
     copy(
         averageRating = calculateAverageRating(reviews),
-        reviewsCountText = reviewsCountText(reviews.size),
+        reviewsCount = reviews.size,
         reviewsList = reviews.map { review ->
-            review.toReviewData(usersById[review.authorKey()])
+            review.toReviewData(usersById[review.authorIdKey()])
         }
     )
 
@@ -52,9 +53,6 @@ private fun calculateAverageRating(reviews: List<ReviewDtoGeneric>): Float {
     val average = ratings.average()
     return Math.round(average * 10) / 10f
 }
-
-private fun reviewsCountText(count: Int): String =
-    if (count == 1) "(1 reseña)" else "($count reseñas)"
 
 // "2026-09-20T00:00:00.000Z" -> "Hace 17 días"
 fun timeAgo(createdAt: String?): String {

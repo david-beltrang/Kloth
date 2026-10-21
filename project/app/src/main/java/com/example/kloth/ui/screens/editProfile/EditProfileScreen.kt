@@ -27,7 +27,7 @@ fun EditProfileScreen(
     Column(modifier = modifier.fillMaxSize()) {
         EditProfileTopBar(
             onCancelClick = onCancelClick,
-            onSaveClick = { viewModel.saveProfile() },
+            onSaveClick = viewModel::saveProfile,
         )
         EditProfileScreenContent(
             username = uiState.username,
@@ -42,6 +42,7 @@ fun EditProfileScreen(
             onWebsiteChange = { viewModel.updateWebsite(it) },
             profileImageUrl = uiState.profileImageUrl,
             isLoading = uiState.isLoading,
+            errorMessage = uiState.errorMessage,
             onImagePicked = { viewModel.onImagePicked(it) },
             onDeleteAccount = { /* Implementar delete logic */ },
             modifier = Modifier.weight(1f),

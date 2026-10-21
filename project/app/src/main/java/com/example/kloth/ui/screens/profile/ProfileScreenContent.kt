@@ -34,15 +34,23 @@ fun ProfileScreenContent(
     location: String?,
     website: String?,
     profileImageUrl: String?,
+    viewingOwnProfile: Boolean = true,
+    followersCount: Int = 0,
+    followingCount: Int = 0,
+    isFollowing: Boolean = false,
+    isFollowActionInProgress: Boolean = false,
     selectedTabIndex: Int,
     userArticles: List<PostItem>,
     reviewedArticles: List<PostItem>,
     onTabSelected: (Int) -> Unit,
     onEditProfileClick: () -> Unit,
+    onFollowClick: () -> Unit = {},
     onProductClick: (String) -> Unit,
     onDeleteArticleClick: (PostItem) -> Unit,
     onEditArticleClick: (String) -> Unit,
     onLogoutClick: () -> Unit,
+    onFollowersClick: () -> Unit = {},
+    onFollowingClick: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
 
@@ -72,12 +80,18 @@ fun ProfileScreenContent(
                     location = location,
                     website = website,
                     profileImageUrl = profileImageUrl,
+                    viewingOwnProfile = viewingOwnProfile,
                     publicationsCount = userArticles.size,
-                    followersCount = 0,
-                    followingCount = 0,
+                    followersCount = followersCount,
+                    followingCount = followingCount,
                     reviewsCount = reviewedArticles.size,
                     onEditProfileClick = onEditProfileClick,
-                    onLogoutClick = onLogoutClick
+                    isFollowing = isFollowing,
+                    isFollowActionInProgress = isFollowActionInProgress,
+                    onFollowClick = onFollowClick,
+                    onLogoutClick = onLogoutClick,
+                    onFollowersClick = onFollowersClick,
+                    onFollowingClick = onFollowingClick
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -99,11 +113,12 @@ fun ProfileScreenContent(
                         title = p.title,
                         category = p.categoryTag,
                         rating = p.averageRating.toString(),
-                        reviews = p.reviewsCountText.filter { it.isDigit() },
+                        reviews = p.reviewsCount.toString(),
                         imageModel = p.imageUrl ?: p.imageRes,
-                        onClick = { onProductClick(p.id) }
+                        onClick = { onProductClick(p.id) },
+                        showFavorite = false
                     )
-                    ArticleOptionsMenu(
+                    if (viewingOwnProfile) ArticleOptionsMenu(
                         onEditClick = { onEditArticleClick(p.id) },
                         onDeleteClick = { onDeleteArticleClick(post) },
                         modifier = Modifier.align(Alignment.TopStart)
@@ -117,9 +132,10 @@ fun ProfileScreenContent(
                     title = p.title,
                     category = p.categoryTag,
                     rating = p.averageRating.toString(),
-                    reviews = p.reviewsCountText.filter { it.isDigit() },
+                    reviews = p.reviewsCount.toString(),
                     imageModel = p.imageUrl ?: p.imageRes,
-                    onClick = { onProductClick(p.id) }
+                    onClick = { onProductClick(p.id) },
+                    showFavorite = false
                 )
             }
         }
