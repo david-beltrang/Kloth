@@ -39,6 +39,7 @@ fun ReviewScreenContent(
     onEliminarComentario: (String) -> Unit,
     onToggleOrden: () -> Unit,
     onBackClick: () -> Unit,
+    onReviewProfileImageClicked: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -55,7 +56,8 @@ fun ReviewScreenContent(
                 MainReviewItem(
                     resena = resena,
                     onLikeClick = onLikeResena,
-                    onBackClick = onBackClick
+                    onBackClick = onBackClick,
+                    onReviewProfileImageClicked = onReviewProfileImageClicked
                 )
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             }

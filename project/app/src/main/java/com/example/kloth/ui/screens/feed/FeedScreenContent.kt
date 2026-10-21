@@ -18,7 +18,8 @@ fun FeedScreenContent(
 
     // Eventos y Navegación
     onProductClick: (String) -> Unit,
-    
+    onPostProfileImageClicked: (String) -> Unit,
+
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -29,7 +30,8 @@ fun FeedScreenContent(
         items(mockPosts) { post ->
             PostCard(
                 post = post,
-                onClick = { onProductClick(post.product.id) }
+                onClick = { onProductClick(post.product.id) },
+                onPostProfileImageClicked = onPostProfileImageClicked
             )
         }
     }

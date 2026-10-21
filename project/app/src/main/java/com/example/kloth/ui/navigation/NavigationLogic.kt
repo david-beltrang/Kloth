@@ -7,7 +7,9 @@ object NavigationLogic {
         AppRoutes.Splash.route,
         AppRoutes.ForgotPassword.route,
         AppRoutes.Register.route,
-        AppRoutes.EditProfile.route
+        AppRoutes.EditProfile.route,
+        // tiene su propio boton de volver, como en la referencia del profe
+        AppRoutes.UserProfile.route
     )
 
     private val noBottomBarScreens = listOf(

@@ -10,7 +10,7 @@ import com.example.kloth.ui.theme.KlothTheme
 @Composable
 fun FeedScreenPreview() {
     KlothTheme(darkTheme = false) {
-        FeedScreenContent(mockPosts = FakeArticle.posts, onProductClick = {})
+        FeedScreenContent(mockPosts = FakeArticle.posts, onProductClick = {}, onPostProfileImageClicked = {})
     }
 }
 
@@ -18,6 +18,6 @@ fun FeedScreenPreview() {
 @Composable
 fun FeedScreenDarkPreview() {
     KlothTheme(darkTheme = true) {
-        FeedScreenContent(mockPosts = FakeArticle.posts, onProductClick = {})
+        FeedScreenContent(mockPosts = FakeArticle.posts, onProductClick = {}, onPostProfileImageClicked = {})
     }
 }

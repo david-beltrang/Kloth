@@ -36,7 +36,8 @@ fun ItemDetailScreen(
     onShareClick: () -> Unit = {},
     onAddToCartClick: () -> Unit = {},
     onWriteReviewClick: () -> Unit = {},
-    onReviewClick: (String) -> Unit = {}
+    onReviewClick: (String) -> Unit = {},
+    onReviewProfileImageClicked: (String) -> Unit = {}
 ) {
     // Escuchar el estado del ViewModel
     val state by detailViewModel.uiState.collectAsState()
@@ -102,6 +103,7 @@ fun ItemDetailScreen(
             detailViewModel.sendOrDeleteReviewLike(reviewId, state.currentUserId)
         },
         onCommentReviewClick = onReviewClick,
+        onReviewProfileImageClicked = onReviewProfileImageClicked,
         modifier = modifier
     )
 }

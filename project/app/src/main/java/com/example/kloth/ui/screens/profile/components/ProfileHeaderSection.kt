@@ -38,6 +38,8 @@ fun ProfileHeaderSection(
     followersCount: Int = 0,
     followingCount: Int = 0,
     reviewsCount: Int = 0,
+    // false cuando se ve el perfil de otro usuario: sin botones ni textos para editar
+    showEdit: Boolean = true,
     modifier: Modifier = Modifier,
     onEditProfileClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {}
@@ -83,15 +85,18 @@ fun ProfileHeaderSection(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        Text(
-            text = displayBio,
-            style = MaterialTheme.typography.bodyMedium,
-            color = if (bio.isNullOrBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(horizontal = 32.dp)
-                .clickable { onEditProfileClick() }
-        )
+        // En el perfil de otro usuario los textos "Añade..." no aplican, solo se muestra lo que tenga
+        if (showEdit || !bio.isNullOrBlank()) {
+            Text(
+                text = displayBio,
+                style = MaterialTheme.typography.bodyMedium,
+                color = if (bio.isNullOrBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                textAlign = TextAlign.Center,
+                modifier = Modifier
+                    .padding(horizontal = 32.dp)
+                    .clickable(enabled = showEdit) { onEditProfileClick() }
+            )
+        }
 
         Spacer(modifier = Modifier.height(12.dp))
 
@@ -99,39 +104,43 @@ fun ProfileHeaderSection(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.clickable { onEditProfileClick() }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.LocationOn,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(14.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = displayLocation,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = if (location.isNullOrBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                )
+            if (showEdit || !location.isNullOrBlank()) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.clickable(enabled = showEdit) { onEditProfileClick() }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.LocationOn,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(14.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = displayLocation,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = if (location.isNullOrBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.clickable { onEditProfileClick() }
-            ) {
-                Icon(
-                    imageVector = Icons.Default.Link,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant,
-                    modifier = Modifier.size(14.dp)
-                )
-                Spacer(modifier = Modifier.width(4.dp))
-                Text(
-                    text = displayWebsite,
-                    style = MaterialTheme.typography.labelSmall,
-                    color = if (website.isNullOrBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
-                )
+            if (showEdit || !website.isNullOrBlank()) {
+                Row(
+                    verticalAlignment = Alignment.CenterVertically,
+                    modifier = Modifier.clickable(enabled = showEdit) { onEditProfileClick() }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Link,
+                        contentDescription = null,
+                        tint = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.size(14.dp)
+                    )
+                    Spacer(modifier = Modifier.width(4.dp))
+                    Text(
+                        text = displayWebsite,
+                        style = MaterialTheme.typography.labelSmall,
+                        color = if (website.isNullOrBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
             }
         }
 
@@ -173,42 +182,44 @@ fun ProfileHeaderSection(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // RF-05: modificar perfil
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .clip(RoundedCornerShape(999.dp))
-                .background(MaterialTheme.colorScheme.primary)
-                .clickable { onEditProfileClick() }
-                .padding(vertical = 14.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(R.string.profile_edit),
-                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
-                color = MaterialTheme.colorScheme.onPrimary
-            )
-        }
+        if (showEdit) {
+            // RF-05: modificar perfil
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .clip(RoundedCornerShape(999.dp))
+                    .background(MaterialTheme.colorScheme.primary)
+                    .clickable { onEditProfileClick() }
+                    .padding(vertical = 14.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.profile_edit),
+                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
 
-        Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(12.dp))
 
-        // Logout Button
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .clip(RoundedCornerShape(999.dp))
-                .border(1.dp, MaterialTheme.colorScheme.error, RoundedCornerShape(999.dp))
-                .clickable { onLogoutClick() }
-                .padding(vertical = 14.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(R.string.profile_logout),
-                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
-                color = MaterialTheme.colorScheme.error
-            )
+            // Logout Button
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .clip(RoundedCornerShape(999.dp))
+                    .border(1.dp, MaterialTheme.colorScheme.error, RoundedCornerShape(999.dp))
+                    .clickable { onLogoutClick() }
+                    .padding(vertical = 14.dp),
+                contentAlignment = Alignment.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.profile_logout),
+                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
+                    color = MaterialTheme.colorScheme.error
+                )
+            }
         }
 
         Spacer(modifier = Modifier.height(8.dp))

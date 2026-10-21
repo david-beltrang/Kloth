@@ -25,6 +25,7 @@ fun RatingsAndReviewsSection(
     onWriteReviewClick: () -> Unit = {},
     onLikeReviewClick: (String) -> Unit = {},
     onCommentReviewClick: (String) -> Unit = {},
+    onReviewProfileImageClicked: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -94,7 +95,8 @@ fun RatingsAndReviewsSection(
             ReviewItem(
                 review = review,
                 onLikeClick = { onLikeReviewClick(review.id) },
-                onCommentClick = { onCommentReviewClick(review.id) }
+                onCommentClick = { onCommentReviewClick(review.id) },
+                onReviewProfileImageClicked = onReviewProfileImageClicked
             )
 
             if (index < reviewsList.size - 1) {
@@ -117,6 +119,7 @@ fun RatingsAndReviewsSectionPreview() {
             reviewsList = listOf(
                 ReviewData(
                     id = "preview",
+                    userId = "preview_user",
                     authorName = "Sofia Rossi",
                     timeAgo = "Hace 2 días",
                     avatarRes = R.drawable.user1,

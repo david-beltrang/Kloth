@@ -1,6 +1,7 @@
 package com.example.kloth.ui.screens.detail.components.review
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
@@ -27,14 +28,18 @@ fun ReviewHeader(
     @DrawableRes avatarRes: Int,
     rating: Float,
     modifier: Modifier = Modifier,
-    avatarUrl: String? = null
+    avatarUrl: String? = null,
+    onReviewProfileImageClicked: () -> Unit = {}
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.clickable { onReviewProfileImageClicked() }
+        ) {
             // Si llega la URL del backend se carga con Coil; si no, o si falla, se usa el recurso local
             AsyncImage(
                 model = avatarUrl ?: avatarRes,

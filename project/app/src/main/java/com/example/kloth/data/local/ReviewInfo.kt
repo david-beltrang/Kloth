@@ -5,6 +5,7 @@ import com.example.kloth.R
 
 data class ReviewData(
     val id: String,
+    val userId: String, // autor de la reseña, para navegar a su perfil
     val authorName: String,
     val timeAgo: String = "",
     @get:DrawableRes val avatarRes: Int,

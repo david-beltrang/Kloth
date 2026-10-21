@@ -34,6 +34,8 @@ import com.example.kloth.ui.screens.register.RegisterViewModel
 import com.example.kloth.ui.screens.review.ReviewScreen
 import com.example.kloth.ui.screens.splash.SplashScreen
 import com.example.kloth.ui.screens.splash.SplashViewModel
+import com.example.kloth.ui.screens.userProfile.UserProfileScreen
+import com.example.kloth.ui.screens.userProfile.UserProfileViewModel
 
 @Composable
 fun AppNavigation(
@@ -132,6 +134,9 @@ fun AppNavigation(
                 feedViewModel = feedViewModel,
                 onProductClick = { productId ->
                     navController.navigate(AppRoutes.ArticleDetail.createRoute(productId))
+                },
+                onPostProfileImageClicked = { userId ->
+                    navController.navigate(AppRoutes.UserProfile.createRoute(userId, showEdit = false))
                 }
             )
         }
@@ -201,7 +206,10 @@ fun AppNavigation(
         // --- Pantallas de Detalle y Reseñas ---
         composable(AppRoutes.Review.route) {
             ReviewScreen(
-                onBackClick = { navController.popBackStack() }
+                onBackClick = { navController.popBackStack() },
+                onReviewProfileImageClicked = { userId ->
+                    navController.navigate(AppRoutes.UserProfile.createRoute(userId, showEdit = false))
+                }
             )
         }
 
@@ -228,6 +236,36 @@ fun AppNavigation(
                 },
                 onReviewClick = { reviewId ->
                     navController.navigate(AppRoutes.Review.createRoute(reviewId))
+                },
+                onReviewProfileImageClicked = { userId ->
+                    navController.navigate(AppRoutes.UserProfile.createRoute(userId, showEdit = false))
+                }
+            )
+        }
+
+        composable(
+            route = AppRoutes.UserProfile.route,
+            arguments = listOf(
+                navArgument(AppRoutes.UserProfile.ARG_USER_ID) { type = NavType.StringType },
+                navArgument(AppRoutes.UserProfile.ARG_SHOW_EDIT) { type = NavType.BoolType }
+            )
+        ) { backStackEntry ->
+            // Obtener los argumentos
+            val userId = backStackEntry.arguments
+                ?.getString(AppRoutes.UserProfile.ARG_USER_ID)
+                .orEmpty()
+            val showEdit = backStackEntry.arguments
+                ?.getBoolean(AppRoutes.UserProfile.ARG_SHOW_EDIT) ?: false
+
+            val userProfileViewModel: UserProfileViewModel = hiltViewModel()
+
+            UserProfileScreen(
+                userId = userId,
+                showEdit = showEdit,
+                userProfileViewModel = userProfileViewModel,
+                onBackClick = { navController.popBackStack() },
+                onProductClick = { productId ->
+                    navController.navigate(AppRoutes.ArticleDetail.createRoute(productId))
                 }
             )
         }

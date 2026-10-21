@@ -11,7 +11,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 fun ReviewScreen(
     modifier: Modifier = Modifier,
     reviewViewModel: ReviewViewModel = hiltViewModel(),
-    onBackClick: () -> Unit = {}
+    onBackClick: () -> Unit = {},
+    onReviewProfileImageClicked: (String) -> Unit = {}
 ) {
     val state by reviewViewModel.uiState.collectAsState()
 
@@ -29,6 +30,7 @@ fun ReviewScreen(
         onLikeComentario = { reviewViewModel.onLikeComentario(it) },
         onEliminarComentario = { reviewViewModel.onEliminarComentario(it) },
         onToggleOrden = { reviewViewModel.onToggleOrden() },
-        onBackClick = onBackClick
+        onBackClick = onBackClick,
+        onReviewProfileImageClicked = onReviewProfileImageClicked
     )
 }

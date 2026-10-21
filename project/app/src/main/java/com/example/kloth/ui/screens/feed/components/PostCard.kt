@@ -36,6 +36,7 @@ import com.example.kloth.ui.theme.GoldStar
 fun PostCard(
     post: PostItem,
     onClick: () -> Unit = {},
+    onPostProfileImageClicked: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -56,6 +57,7 @@ fun PostCard(
                 name = post.creatorName,
                 time = post.timeAgo,
                 avatarUrl = post.avatarUrl,
+                onPostProfileImageClicked = { onPostProfileImageClicked(post.product.creatorId) },
                 modifier = Modifier.padding(16.dp)
             )
 
@@ -85,6 +87,7 @@ private fun PostHeader(
     name: String,
     time: String,
     avatarUrl: String,
+    onPostProfileImageClicked: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -92,7 +95,10 @@ private fun PostHeader(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.clickable { onPostProfileImageClicked() }
+        ) {
             //Se usa async para que mno se trabe la UI
             AsyncImage(
                 model = avatarUrl,

@@ -25,7 +25,8 @@ import com.example.kloth.ui.screens.feed.components.FeedTabRow
 fun FeedScreen(
     feedViewModel: FeedViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
-    onProductClick: (String) -> Unit = {}
+    onProductClick: (String) -> Unit = {},
+    onPostProfileImageClicked: (String) -> Unit = {}
 ) {
     val state by feedViewModel.uiState.collectAsState()
 
@@ -56,6 +57,7 @@ fun FeedScreen(
                 }
                 else -> FeedScreenContent(
                     mockPosts = state.posts,
+                    onPostProfileImageClicked = onPostProfileImageClicked,
                     onProductClick = onProductClick,
                     modifier = Modifier.fillMaxSize()
                 )

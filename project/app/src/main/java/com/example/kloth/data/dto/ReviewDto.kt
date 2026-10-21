@@ -33,6 +33,7 @@ data class ReviewRetrofitDto(
         val authorProfile = author?.toUserProfileInfo()
         return ReviewData(
             id = reviewId.toString(),
+            userId = authorKey(),
             authorName = authorProfile?.username?.trim() ?: "Usuario eliminado",
             timeAgo = timeAgo(createdAt),
             avatarRes = R.drawable.profile,
@@ -65,6 +66,7 @@ data class ReviewFirestoreDto(
         val authorProfile = author?.toUserProfileInfo()
         return ReviewData(
             id = reviewId,
+            userId = authorKey(),
             authorName = authorProfile?.username?.trim() ?: "Usuario eliminado",
             timeAgo = timeAgo(createdAt),
             avatarRes = R.drawable.profile,

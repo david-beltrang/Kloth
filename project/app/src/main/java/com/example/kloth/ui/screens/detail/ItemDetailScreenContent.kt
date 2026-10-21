@@ -26,7 +26,8 @@ fun ItemDetailScreenContent(
     onWriteReviewClick: () -> Unit = {},
     onLikeReviewClick: (String) -> Unit = {},
     onCommentReviewClick: (String) -> Unit = {},
-    
+    onReviewProfileImageClicked: (String) -> Unit = {},
+
     modifier: Modifier = Modifier
 ) {
     LazyColumn(
@@ -61,7 +62,8 @@ fun ItemDetailScreenContent(
                 reviewsList = product.reviewsList,
                 onWriteReviewClick = onWriteReviewClick,
                 onLikeReviewClick = onLikeReviewClick,
-                onCommentReviewClick = onCommentReviewClick
+                onCommentReviewClick = onCommentReviewClick,
+                onReviewProfileImageClicked = onReviewProfileImageClicked
             )
         }
     }

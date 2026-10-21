@@ -58,6 +58,15 @@ sealed class AppRoutes(val route: String) {
         const val ARG_PRODUCT_ID = RouteConstants.CREATE_REVIEW_ARG_PRODUCT_ID
         fun createRoute(productId: String): String = "${RouteConstants.CREATE_REVIEW_BASE_ROUTE}/$productId"
     }
+
+    // perfil de cualquier usuario; showEdit indica si se muestran los botones de edicion
+    object UserProfile : AppRoutes("${RouteConstants.USER_PROFILE_BASE_ROUTE}/{${RouteConstants.USER_PROFILE_ARG_USER_ID}}/{${RouteConstants.USER_PROFILE_ARG_SHOW_EDIT}}") {
+        const val ARG_USER_ID = RouteConstants.USER_PROFILE_ARG_USER_ID
+        const val ARG_SHOW_EDIT = RouteConstants.USER_PROFILE_ARG_SHOW_EDIT
+
+        fun createRoute(userId: String, showEdit: Boolean = false): String =
+            "${RouteConstants.USER_PROFILE_BASE_ROUTE}/$userId/$showEdit"
+    }
 }
 
 // Objeto normal para constantes de rutas
@@ -70,4 +79,8 @@ object RouteConstants {
     const val REVIEW_ARG_ID = "reviewId"
 
     const val EDIT_ARTICLE_BASE_ROUTE = "edit_article"
+
+    const val USER_PROFILE_BASE_ROUTE = "user_profile"
+    const val USER_PROFILE_ARG_USER_ID = "userId"
+    const val USER_PROFILE_ARG_SHOW_EDIT = "showEdit"
 }

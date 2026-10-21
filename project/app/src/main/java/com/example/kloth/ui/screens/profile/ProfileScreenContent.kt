@@ -44,6 +44,8 @@ fun ProfileScreenContent(
     onEditArticleClick: (String) -> Unit,
     onLogoutClick: () -> Unit,
     modifier: Modifier = Modifier,
+    // false en el perfil de otro usuario: oculta edicion, cierre de sesion y menu de articulos
+    showEdit: Boolean = true,
 ) {
 
     LazyVerticalGrid(
@@ -76,6 +78,7 @@ fun ProfileScreenContent(
                     followersCount = 0,
                     followingCount = 0,
                     reviewsCount = reviewedArticles.size,
+                    showEdit = showEdit,
                     onEditProfileClick = onEditProfileClick,
                     onLogoutClick = onLogoutClick
                 )
@@ -103,11 +106,13 @@ fun ProfileScreenContent(
                         imageModel = p.imageUrl ?: p.imageRes,
                         onClick = { onProductClick(p.id) }
                     )
-                    ArticleOptionsMenu(
-                        onEditClick = { onEditArticleClick(p.id) },
-                        onDeleteClick = { onDeleteArticleClick(post) },
-                        modifier = Modifier.align(Alignment.TopStart)
-                    )
+                    if (showEdit) {
+                        ArticleOptionsMenu(
+                            onEditClick = { onEditArticleClick(p.id) },
+                            onDeleteClick = { onDeleteArticleClick(post) },
+                            modifier = Modifier.align(Alignment.TopStart)
+                        )
+                    }
                 }
             }
         } else {

@@ -7,6 +7,7 @@ data class ReviewState(
     // Vacía mientras se carga la reseña desde Firestore
     val resena: ReviewData = ReviewData(
         id = "",
+        userId = "",
         authorName = "",
         avatarRes = R.drawable.profile,
         rating = 0f,

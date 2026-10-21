@@ -17,6 +17,7 @@ fun ReviewItem(
     review: ReviewData,
     onLikeClick: () -> Unit = {},
     onCommentClick: () -> Unit = {},
+    onReviewProfileImageClicked: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -29,7 +30,8 @@ fun ReviewItem(
             timeAgo = review.timeAgo,
             avatarRes = review.avatarRes,
             avatarUrl = review.avatarUrl,
-            rating = review.rating
+            rating = review.rating,
+            onReviewProfileImageClicked = { onReviewProfileImageClicked(review.userId) }
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -60,6 +62,7 @@ fun ReviewItemPreview() {
         ReviewItem(
             review = ReviewData(
                 id = "1",
+                userId = "preview_user",
                 authorName = "Elena V. Costanza",
                 timeAgo = "Hace 2 días",
                 avatarRes = R.drawable.abrigo_negro,

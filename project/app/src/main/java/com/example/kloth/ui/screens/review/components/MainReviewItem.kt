@@ -3,6 +3,7 @@ package com.example.kloth.ui.screens.review.components
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -41,6 +42,7 @@ fun MainReviewItem(
     resena: ReviewData,
     onLikeClick: () -> Unit,
     onBackClick: () -> Unit,
+    onReviewProfileImageClicked: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -73,9 +75,14 @@ fun MainReviewItem(
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape)
+                        .clickable { onReviewProfileImageClicked(resena.userId) }
                 )
 
-                Column(modifier = Modifier.padding(start = 8.dp)) {
+                Column(
+                    modifier = Modifier
+                        .padding(start = 8.dp)
+                        .clickable { onReviewProfileImageClicked(resena.userId) }
+                ) {
                     Text(
                         text = resena.authorName,
                         fontWeight = FontWeight.Bold,
@@ -161,6 +168,7 @@ fun MainReviewItemPreview() {
         MainReviewItem(
             resena = ReviewData(
                 id = "preview",
+                userId = "preview_user",
                 authorName = "Sofia Rossi",
                 timeAgo = "Hace 2 días",
                 avatarRes = R.drawable.user1,
@@ -168,7 +176,8 @@ fun MainReviewItemPreview() {
                 reviewText = "Muy buena calidad, la recomiendo."
             ),
             onLikeClick = {},
-            onBackClick = {}
+            onBackClick = {},
+            onReviewProfileImageClicked = {}
         )
     }
 }
