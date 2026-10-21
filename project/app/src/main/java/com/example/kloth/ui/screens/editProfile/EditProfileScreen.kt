@@ -16,10 +16,18 @@ fun EditProfileScreen(
 ) {
     val uiState by viewModel.uiState.collectAsState()
 
+    // Cuando el perfil se guarda, se vuelve a la pantalla de perfil
+    LaunchedEffect(uiState.isSaved) {
+        if (uiState.isSaved) {
+            onSaveClick()
+            viewModel.onSavedConsumed()
+        }
+    }
+
     Column(modifier = modifier.fillMaxSize()) {
         EditProfileTopBar(
             onCancelClick = onCancelClick,
-            onSaveClick = onSaveClick,
+            onSaveClick = { viewModel.saveProfile() },
         )
         EditProfileScreenContent(
             username = uiState.username,

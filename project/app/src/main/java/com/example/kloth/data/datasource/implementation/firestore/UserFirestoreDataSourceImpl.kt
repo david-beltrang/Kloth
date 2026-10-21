@@ -5,6 +5,7 @@ import com.example.kloth.data.dto.RegisterUserDto
 import com.example.kloth.data.dto.UserDtoGeneric
 import com.example.kloth.data.dto.UserFirestoreDto
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
 import com.example.kloth.data.dto.ArticleDtoGeneric
 import com.example.kloth.data.dto.ArticleFirestoreDto
 import javax.inject.Inject
@@ -52,5 +53,22 @@ class   UserFirestoreDataSourceImpl @Inject constructor(private val db: Firebase
 
     override suspend fun updateProfileImage(userId: String, imageUrl: String) {
         db.collection("users").document(userId).update("imageURL", imageUrl).await()
+    }
+
+    override suspend fun updateProfile(
+        userId: String,
+        username: String,
+        biography: String?,
+        location: String?,
+        website: String?
+    ) {
+        // Solo se tocan estos campos; merge conserva el resto del documento
+        val cambios = mapOf(
+            "username" to username,
+            "biography" to biography,
+            "location" to location,
+            "website" to website
+        )
+        db.collection("users").document(userId).set(cambios, SetOptions.merge()).await()
     }
 }

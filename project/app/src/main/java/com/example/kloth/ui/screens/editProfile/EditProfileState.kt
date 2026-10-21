@@ -8,4 +8,6 @@ data class EditProfileState (
     val website: String = "",
     val profileImageUrl: String? = null,
     val isLoading: Boolean = false,
+    val isSaving: Boolean = false,
+    val isSaved: Boolean = false,
 )

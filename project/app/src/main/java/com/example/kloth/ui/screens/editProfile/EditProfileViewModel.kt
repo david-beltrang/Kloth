@@ -29,8 +29,55 @@ class EditProfileViewModel @Inject constructor(
     init {
         // Inicializar con la URL actual del usuario
         _uiState.update { 
-            it.copy(profileImageUrl = authRepository.currentUser?.photoUrl?.toString())
+            it.copy(
+                profileImageUrl = authRepository.currentUser?.photoUrl?.toString(),
+                email = authRepository.currentUser?.email.orEmpty()
+            )
         }
+        loadProfile()
+    }
+
+    // Llena el formulario con los datos actuales de users/{uid}
+    private fun loadProfile() {
+        val userId = authRepository.currentUser?.uid ?: return
+        viewModelScope.launch {
+            userRepository.getUserById(userId).onSuccess { user ->
+                _uiState.update {
+                    it.copy(
+                        username = user.username.orEmpty(),
+                        bio = user.bio.orEmpty(),
+                        location = user.location.orEmpty(),
+                        website = user.website.orEmpty(),
+                        email = user.email.ifBlank { it.email },
+                        profileImageUrl = user.profileImageUrl?.takeIf { url -> url.isNotBlank() }
+                            ?: it.profileImageUrl
+                    )
+                }
+            }
+        }
+    }
+
+    // Guarda los cambios en Firestore. El email no se guarda: vive en Firebase Auth
+    fun saveProfile() {
+        val state = _uiState.value
+        val userId = authRepository.currentUser?.uid ?: return
+        if (state.username.isBlank() || state.isSaving) return
+
+        _uiState.update { it.copy(isSaving = true) }
+        viewModelScope.launch {
+            val result = userRepository.updateProfile(
+                userId = userId,
+                username = state.username,
+                biography = state.bio,
+                location = state.location,
+                website = state.website
+            )
+            _uiState.update { it.copy(isSaving = false, isSaved = result.isSuccess) }
+        }
+    }
+
+    fun onSavedConsumed() {
+        _uiState.update { it.copy(isSaved = false) }
     }
 
     // Funcion para subir imagen

@@ -63,6 +63,31 @@ class UserRepository @Inject constructor(
         }
     }
 
+    suspend fun updateProfile(
+        userId: String,
+        username: String,
+        biography: String,
+        location: String,
+        website: String
+    ): Result<Unit> {
+        return try {
+            // Los campos opcionales vacíos se guardan como null
+            userDataSource.updateProfile(
+                userId = userId,
+                username = username.trim(),
+                biography = biography.trim().ifBlank { null },
+                location = location.trim().ifBlank { null },
+                website = website.trim().ifBlank { null }
+            )
+            // Avisa a perfil, feed y reseñas para que se recarguen
+            _usersChanged.tryEmit(Unit)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.e("UserRepository", "No se pudo actualizar el perfil", e)
+            Result.failure(e)
+        }
+    }
+
     suspend fun updateProfileImage(userId: String, imageUrl: String): Result<Unit> {
         return try {
             userDataSource.updateProfileImage(userId, imageUrl)

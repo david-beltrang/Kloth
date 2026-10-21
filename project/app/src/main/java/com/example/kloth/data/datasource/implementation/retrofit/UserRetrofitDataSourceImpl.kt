@@ -23,4 +23,14 @@ class UserRetrofitDataSourceImpl @Inject constructor(
     override suspend fun updateProfileImage(userId: String, imageUrl: String) {
         TODO("Not yet implemented")
     }
+
+    override suspend fun updateProfile(
+        userId: String,
+        username: String,
+        biography: String?,
+        location: String?,
+        website: String?
+    ) {
+        TODO("Not yet implemented")
+    }
 }
