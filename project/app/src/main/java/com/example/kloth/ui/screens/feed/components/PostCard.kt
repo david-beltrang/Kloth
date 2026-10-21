@@ -36,6 +36,7 @@ import com.example.kloth.ui.theme.GoldStar
 fun PostCard(
     post: PostItem,
     onClick: () -> Unit = {},
+    onProfileClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -56,6 +57,7 @@ fun PostCard(
                 name = post.creatorName,
                 time = post.timeAgo,
                 avatarUrl = post.avatarUrl,
+                onClick = { onProfileClick(post.creatorId) },
                 modifier = Modifier.padding(16.dp)
             )
 
@@ -85,6 +87,7 @@ private fun PostHeader(
     name: String,
     time: String,
     avatarUrl: String,
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
@@ -100,7 +103,8 @@ private fun PostHeader(
                 modifier = Modifier
                     .size(40.dp)
                     .clip(CircleShape)
-                    .background(MaterialTheme.colorScheme.secondaryContainer),
+                    .background(MaterialTheme.colorScheme.secondaryContainer)
+                    .clickable(onClick = onClick),
                 contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.width(8.dp))

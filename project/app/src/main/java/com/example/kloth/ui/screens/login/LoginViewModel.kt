@@ -3,16 +3,20 @@ package com.example.kloth.ui.screens.login
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kloth.data.repository.AuthRepository
+import com.example.kloth.data.repository.UserRepository
+import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(LoginState())
@@ -52,6 +56,11 @@ class LoginViewModel @Inject constructor(
             viewModelScope.launch {
                 val result = authRepository.signIn(email, password)
                 if (result.isSuccess) {
+                    runCatching {
+                        val userId = authRepository.currentUser?.uid
+                        val token = FirebaseMessaging.getInstance().token.await()
+                        if (userId != null) userRepository.updateFcmToken(userId, token)
+                    }
                     _uiState.update { it.copy(navigate = true) }
                 } else {
                     _uiState.update {

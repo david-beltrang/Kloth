@@ -5,6 +5,7 @@ import com.example.kloth.R
 
 data class ReviewData(
     val id: String,
+    val authorId: String = "",
     val authorName: String,
     val timeAgo: String = "",
     @get:DrawableRes val avatarRes: Int,
@@ -15,4 +16,9 @@ data class ReviewData(
     val isLikedByMe: Boolean = false,
     val commentsCountText: String = "0",
     val comentariosList: List<ComentarioReviewData> = emptyList()
+)
+
+data class ReviewLikeState(
+    val isLikedByMe: Boolean,
+    val likesCount: Int
 )

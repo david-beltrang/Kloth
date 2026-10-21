@@ -56,12 +56,24 @@ class RegisterViewModel @Inject constructor(
                 if (result.isSuccess) {
                     //En cuanto a noSQL y firebase primero se autentica el usuario y se obtiene el ID
                     val userId = authRepository.currentUser?.uid ?: throw Exception("No se pudo obtener el usuario actual")
-                    userRepository.registerUser(
+                    val registerResult = userRepository.registerUser(
+                        email = state.email,
+                        password = state.password,
                         fullName = state.fullName,
                         userId = userId
                     )
 
-                    _uiState.update { it.copy(navigate = true) }
+                    if (registerResult.isSuccess) {
+                        _uiState.update { it.copy(navigate = true) }
+                    } else {
+                        _uiState.update {
+                            it.copy(
+                                showMessage = true,
+                                errorMessage = registerResult.exceptionOrNull()?.message
+                                    ?: "No se pudo guardar tu usuario"
+                            )
+                        }
+                    }
                 } else {
                     _uiState.update {
                         it.copy(

@@ -76,7 +76,7 @@ class CreateReviewViewModel @Inject constructor(
         }
     }
 
-    fun onSubmittedConsumed() {
+    fun onSubmittedHandled() {
         _uiState.update { it.copy(isSubmitted = false) }
     }
 }

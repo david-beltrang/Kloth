@@ -132,6 +132,9 @@ fun AppNavigation(
                 feedViewModel = feedViewModel,
                 onProductClick = { productId ->
                     navController.navigate(AppRoutes.ArticleDetail.createRoute(productId))
+                },
+                onProfileClick = { userId ->
+                    if (userId.isNotBlank()) navController.navigate(AppRoutes.UserProfile.createRoute(userId))
                 }
             )
         }
@@ -187,6 +190,16 @@ fun AppNavigation(
             )
         }
 
+        composable(
+            AppRoutes.UserProfile.route,
+            arguments = listOf(navArgument(AppRoutes.UserProfile.ARG_USER_ID) { type = NavType.StringType })
+        ) { entry ->
+            val userId = entry.arguments?.getString(AppRoutes.UserProfile.ARG_USER_ID).orEmpty()
+            ProfileScreen(profileUserId = userId, onProductClick = { productId ->
+                navController.navigate(AppRoutes.ArticleDetail.createRoute(productId))
+            })
+        }
+
         composable(AppRoutes.EditProfile.route) {
             EditProfileScreen(
                 onCancelClick = { navController.popBackStack() },
@@ -201,7 +214,8 @@ fun AppNavigation(
         // --- Pantallas de Detalle y Reseñas ---
         composable(AppRoutes.Review.route) {
             ReviewScreen(
-                onBackClick = { navController.popBackStack() }
+                onBackClick = { navController.popBackStack() },
+                onUserClick = { userId -> navController.navigate(AppRoutes.UserProfile.createRoute(userId)) }
             )
         }
 
@@ -228,6 +242,9 @@ fun AppNavigation(
                 },
                 onReviewClick = { reviewId ->
                     navController.navigate(AppRoutes.Review.createRoute(reviewId))
+                },
+                onUserClick = { userId ->
+                    navController.navigate(AppRoutes.UserProfile.createRoute(userId))
                 }
             )
         }

@@ -29,6 +29,13 @@ class AuthRemoteDataSource @Inject constructor(
         auth.signInWithEmailAndPassword(email, password).await()
     }
 
+    /** Cambia el email del usuario en Firebase Auth. Pide inicio de sesión reciente. */
+    suspend fun updateEmail(email: String) {
+        val user = currentUser ?: throw Exception("No hay usuario autenticado")
+        user.updateEmail(email).await()
+        user.reload().await()
+    }
+
     suspend fun signUp(email: String, password: String){
         auth.createUserWithEmailAndPassword(email, password).await()
     }

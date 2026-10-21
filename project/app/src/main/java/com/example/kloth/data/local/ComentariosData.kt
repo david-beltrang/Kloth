@@ -5,9 +5,11 @@ import com.example.kloth.R
 
 data class ComentarioReviewData(
     val id: String,
+    val authorId: String = "",
     val authorName: String,
     val timeAgo: String,
     @DrawableRes val avatarRes: Int,
+    val avatarUrl: String? = null,
     val commentText: String,
     val likesCount: Int = 0,
     val isLikedByMe: Boolean = false,

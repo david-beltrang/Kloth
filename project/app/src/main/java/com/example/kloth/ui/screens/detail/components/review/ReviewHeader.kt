@@ -2,6 +2,7 @@ package com.example.kloth.ui.screens.detail.components.review
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,7 +28,8 @@ fun ReviewHeader(
     @DrawableRes avatarRes: Int,
     rating: Float,
     modifier: Modifier = Modifier,
-    avatarUrl: String? = null
+    avatarUrl: String? = null,
+    onAvatarClick: () -> Unit = {}
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -44,6 +46,7 @@ fun ReviewHeader(
                 modifier = Modifier
                     .size(36.dp)
                     .clip(CircleShape)
+                    .clickable(onClick = onAvatarClick)
             )
             Spacer(modifier = Modifier.width(10.dp))
             Column {

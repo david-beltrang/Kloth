@@ -9,6 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import com.example.kloth.R
 import com.example.kloth.ui.screens.editProfile.components.*
 
@@ -26,6 +28,7 @@ fun EditProfileScreenContent(
     onWebsiteChange: (String) -> Unit,
     profileImageUrl: String?,
     isLoading: Boolean,
+    errorMessage: String? = null,
     onImagePicked: (Uri) -> Unit,
     onDeleteAccount: () -> Unit,
     modifier: Modifier = Modifier
@@ -37,6 +40,16 @@ fun EditProfileScreenContent(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(24.dp))
+
+        if (!errorMessage.isNullOrBlank()) {
+            Text(
+                text = errorMessage,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(horizontal = 20.dp)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
 
         ProfileImageEditor(
             profileImageUrl = profileImageUrl,

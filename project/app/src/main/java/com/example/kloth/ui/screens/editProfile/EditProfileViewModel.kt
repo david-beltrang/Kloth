@@ -49,30 +49,54 @@ class EditProfileViewModel @Inject constructor(
                         location = user.location.orEmpty(),
                         website = user.website.orEmpty(),
                         email = user.email.ifBlank { it.email },
-                        profileImageUrl = user.profileImageUrl?.takeIf { url -> url.isNotBlank() }
-                            ?: it.profileImageUrl
+                        profileImageUrl = user.profileImageUrl ?: it.profileImageUrl
                     )
                 }
             }
         }
     }
 
-    // Guarda los cambios en Firestore. El email no se guarda: vive en Firebase Auth
+    // Guarda los cambios en Firestore. El merge conserva los campos que no se editaron
+    // (fullName, password, imagen...). El email se actualiza en Auth y en Firestore.
     fun saveProfile() {
         val state = _uiState.value
         val userId = authRepository.currentUser?.uid ?: return
         if (state.username.isBlank() || state.isSaving) return
 
-        _uiState.update { it.copy(isSaving = true) }
+        _uiState.update { it.copy(isSaving = true, errorMessage = null) }
         viewModelScope.launch {
-            val result = userRepository.updateProfile(
-                userId = userId,
-                username = state.username,
-                biography = state.bio,
-                location = state.location,
-                website = state.website
-            )
-            _uiState.update { it.copy(isSaving = false, isSaved = result.isSuccess) }
+            val newEmail = state.email.trim()
+            val currentEmail = authRepository.currentUser?.email.orEmpty()
+            val emailChanged = newEmail.isNotEmpty() && !newEmail.equals(currentEmail, ignoreCase = true)
+
+            // 1) Si el email cambió, primero se actualiza Firebase Auth
+            val emailResult = if (emailChanged) authRepository.updateEmail(newEmail) else Result.success(Unit)
+
+            if (emailResult.isFailure) {
+                _uiState.update {
+                    it.copy(
+                        isSaving = false,
+                        errorMessage = "No se pudo cambiar el email. Vuelve a iniciar sesión e inténtalo de nuevo."
+                    )
+                }
+            } else {
+                // 2) Se guarda el resto del perfil
+                val result = userRepository.updateProfile(
+                    userId = userId,
+                    username = state.username,
+                    biography = state.bio,
+                    location = state.location,
+                    website = state.website,
+                    email = newEmail.takeIf { it.isNotEmpty() }
+                )
+                _uiState.update {
+                    it.copy(
+                        isSaving = false,
+                        isSaved = result.isSuccess,
+                        errorMessage = if (result.isSuccess) null else "No se pudo guardar el perfil"
+                    )
+                }
+            }
         }
     }
 

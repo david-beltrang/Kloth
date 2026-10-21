@@ -13,8 +13,8 @@ data class ArticleInfo(
     val description: String,
     @get:DrawableRes val imageRes: Int? = null,
     val imageUrl: String? = null,
-    val averageRating: Float = 4.9f,
-    val reviewsCountText: String = "(124 reseñas)",
+    val averageRating: Float = 0f,
+    val reviewsCount: Int = 0,
     val isFavorite: Boolean = false,
     val reviewsList: List<ReviewData> = emptyList(),
 
@@ -35,4 +35,11 @@ data class ArticleInfo(
     val startDate: String? = null,       // EVENTO
     val endDate: String? = null,         // EVENTO
     val organizer: String? = null        // EVENTO
-)
+) {
+    /**
+     * Texto con la cantidad de reseñas, p. ej. "(12 reseñas)".
+     * Se deriva de [reviewsCount] para que nunca haya un número inventado.
+     */
+    val reviewsCountText: String
+        get() = if (reviewsCount == 1) "(1 reseña)" else "($reviewsCount reseñas)"
+}

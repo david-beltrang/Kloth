@@ -19,7 +19,7 @@ class ArticleRetrofitDataSourceImpl @Inject constructor(
     override suspend fun createArticle(article: CreateArticleDto) = service.createArticle(article)
 
     override suspend fun updateArticle(id: String, article: UpdateArticleDto) {
-        throw UnsupportedOperationException("Los artículos se editan en Firestore")
+        TODO("Not yet implemented")
     }
 
     override suspend fun deleteArticle(id: String) {

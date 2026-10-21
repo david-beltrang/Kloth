@@ -38,8 +38,12 @@ fun ProfileHeaderSection(
     followersCount: Int = 0,
     followingCount: Int = 0,
     reviewsCount: Int = 0,
+    viewingOwnProfile: Boolean = true,
+    isFollowing: Boolean = false,
+    isFollowActionInProgress: Boolean = false,
     modifier: Modifier = Modifier,
     onEditProfileClick: () -> Unit = {},
+    onFollowClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {}
 ) {
     val displayName = if (!username.isNullOrBlank()) username else email.substringBefore("@").replaceFirstChar { it.uppercase() }
@@ -90,7 +94,7 @@ fun ProfileHeaderSection(
             textAlign = TextAlign.Center,
             modifier = Modifier
                 .padding(horizontal = 32.dp)
-                .clickable { onEditProfileClick() }
+                .then(if (viewingOwnProfile) Modifier.clickable { onEditProfileClick() } else Modifier)
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -101,7 +105,7 @@ fun ProfileHeaderSection(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.clickable { onEditProfileClick() }
+                modifier = if (viewingOwnProfile) Modifier.clickable { onEditProfileClick() } else Modifier
             ) {
                 Icon(
                     imageVector = Icons.Default.LocationOn,
@@ -118,7 +122,7 @@ fun ProfileHeaderSection(
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.clickable { onEditProfileClick() }
+                modifier = if (viewingOwnProfile) Modifier.clickable { onEditProfileClick() } else Modifier
             ) {
                 Icon(
                     imageVector = Icons.Default.Link,
@@ -157,7 +161,7 @@ fun ProfileHeaderSection(
                 label = stringResource(R.string.profile_followers)
             )
             ProfileStatItem(
-                value = followersCount.toString(),
+                value = followingCount.toString(),
                 label = stringResource(R.string.profile_following)
             )
             ProfileStatItem(
@@ -173,8 +177,32 @@ fun ProfileHeaderSection(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        if (!viewingOwnProfile) Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .clip(RoundedCornerShape(999.dp))
+                .background(
+                    if (isFollowing) MaterialTheme.colorScheme.surfaceContainerHighest
+                    else androidx.compose.ui.graphics.Color.Black
+                )
+                .then(
+                    if (isFollowActionInProgress) Modifier
+                    else Modifier.clickable { onFollowClick() }
+                )
+                .padding(vertical = 14.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = stringResource(if (isFollowing) R.string.profile_unfollow else R.string.profile_follow),
+                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
+                color = if (isFollowing) MaterialTheme.colorScheme.onSurfaceVariant
+                else androidx.compose.ui.graphics.Color.White
+            )
+        }
+
         // RF-05: modificar perfil
-        Box(
+        if (viewingOwnProfile) Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
@@ -194,7 +222,7 @@ fun ProfileHeaderSection(
         Spacer(modifier = Modifier.height(12.dp))
 
         // Logout Button
-        Box(
+        if (viewingOwnProfile) Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)

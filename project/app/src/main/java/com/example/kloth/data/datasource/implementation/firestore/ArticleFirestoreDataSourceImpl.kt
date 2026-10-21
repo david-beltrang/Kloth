@@ -18,9 +18,8 @@ class ArticleFirestoreDataSourceImpl @Inject constructor(
     override suspend fun getAllArticles(): List<ArticleDtoGeneric> {
         val snapshot = db.collection("articles").get().await()
 
-        return snapshot.documents.map { doc ->
-            val article = doc.toObject(ArticleFirestoreDto::class.java)
-            article?.copy(articleId = doc.id) ?: throw Exception("Article not found")
+        return snapshot.documents.mapNotNull { doc ->
+            doc.toObject(ArticleFirestoreDto::class.java)?.copy(articleId = doc.id)
         }
     }
 
@@ -50,6 +49,14 @@ class ArticleFirestoreDataSourceImpl @Inject constructor(
     }
 
     override suspend fun deleteArticle(id: String) {
+        // NoSQL no tiene ON DELETE CASCADE: se eliminan primero las reseñas asociadas
+        db.collection("reviews")
+            .whereEqualTo("articleId", id)
+            .get()
+            .await()
+            .documents
+            .forEach { review -> review.reference.delete().await() }
+
         db.collection("articles").document(id).delete().await()
     }
 

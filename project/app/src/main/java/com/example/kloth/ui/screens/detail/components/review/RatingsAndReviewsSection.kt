@@ -19,12 +19,13 @@ import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun RatingsAndReviewsSection(
-    averageRating: Float = 4.9f,
-    reviewsCountText: String = "(124 reseñas)",
+    averageRating: Float = 0f,
+    reviewsCountText: String = "(0 reseñas)",
     reviewsList: List<ReviewData> = emptyList(),
     onWriteReviewClick: () -> Unit = {},
     onLikeReviewClick: (String) -> Unit = {},
     onCommentReviewClick: (String) -> Unit = {},
+    onAuthorClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -94,7 +95,8 @@ fun RatingsAndReviewsSection(
             ReviewItem(
                 review = review,
                 onLikeClick = { onLikeReviewClick(review.id) },
-                onCommentClick = { onCommentReviewClick(review.id) }
+                onCommentClick = { onCommentReviewClick(review.id) },
+                onAuthorClick = onAuthorClick
             )
 
             if (index < reviewsList.size - 1) {

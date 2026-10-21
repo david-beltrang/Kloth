@@ -39,6 +39,7 @@ fun ProductCatalogCard(
     imageModel: Any?, // Acepta Int (Resource) o String (URL)
     onClick: () -> Unit = {},
     onFavoriteClick: () -> Unit = {},
+    showFavorite: Boolean = true,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -60,7 +61,7 @@ fun ProductCatalogCard(
                 modifier = Modifier.fillMaxSize()
             )
 
-            IconButton(
+            if (showFavorite) IconButton(
                 onClick = onFavoriteClick,
                 modifier = Modifier
                     .align(Alignment.TopEnd)

@@ -34,6 +34,8 @@ data class UserRetrofitDto(
 data class UserFirestoreDto(
     val userId: String = "",
     val email: String = "",
+    // Se guarda en texto plano por requisito. No se usa para autenticar: eso lo hace Firebase Auth.
+    val password: String = "",
     val username: String = "",
     val fullName: String = "",
     val imageURL: String? = null,
@@ -45,7 +47,9 @@ data class UserFirestoreDto(
     val eliminatedAt: String? = null,
     val userType: String = "USER",
     val createdAt: String? = null,
-    val updatedAt: String? = null
+    val updatedAt: String? = null,
+    val followersCount: Int = 0,
+    val followingCount: Int = 0
 ) : UserDtoGeneric() {
 
     override fun toUserProfileInfo(): UserProfileInfo {
@@ -56,7 +60,9 @@ data class UserFirestoreDto(
             bio = biography,
             location = location,
             website = website,
-            profileImageUrl = imageURL
+            profileImageUrl = imageURL,
+            followersCount = followersCount,
+            followingCount = followingCount
         )
     }
 }

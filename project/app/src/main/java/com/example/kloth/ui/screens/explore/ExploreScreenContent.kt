@@ -151,7 +151,7 @@ fun ExploreScreenContent(
                 title = product.title,
                 category = product.categoryTag,
                 rating = product.averageRating.toString(),
-                reviews = product.reviewsCountText.filter { it.isDigit() }, // Limpiamos "(128 reseñas)" a "128"
+                reviews = product.reviewsCount.toString(),
                 imageModel = product.imageUrl ?: product.imageRes,
                 onClick = { onProductClick(product.id) }
             )

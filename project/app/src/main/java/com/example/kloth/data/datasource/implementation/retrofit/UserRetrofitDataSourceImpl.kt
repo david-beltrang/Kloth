@@ -29,7 +29,8 @@ class UserRetrofitDataSourceImpl @Inject constructor(
         username: String,
         biography: String?,
         location: String?,
-        website: String?
+        website: String?,
+        email: String?
     ) {
         TODO("Not yet implemented")
     }

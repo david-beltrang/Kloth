@@ -52,6 +52,19 @@ class AuthRepository @Inject constructor(
         authRemoteDataSource.signOut()
     }
 
+    /**
+     * Actualiza el email en Firebase Auth. Firebase exige que el usuario se haya
+     * autenticado recientemente, por eso el error se devuelve al ViewModel.
+     */
+    suspend fun updateEmail(email: String): Result<Unit> {
+        return try {
+            authRemoteDataSource.updateEmail(email)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
 
     //suspend fun forgotPassword(email: String){
     //    authRemoteDataSource.forgotPassword(email)

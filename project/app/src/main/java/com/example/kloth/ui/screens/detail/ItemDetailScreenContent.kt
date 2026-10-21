@@ -26,6 +26,7 @@ fun ItemDetailScreenContent(
     onWriteReviewClick: () -> Unit = {},
     onLikeReviewClick: (String) -> Unit = {},
     onCommentReviewClick: (String) -> Unit = {},
+    onAuthorClick: (String) -> Unit = {},
     
     modifier: Modifier = Modifier
 ) {
@@ -61,7 +62,8 @@ fun ItemDetailScreenContent(
                 reviewsList = product.reviewsList,
                 onWriteReviewClick = onWriteReviewClick,
                 onLikeReviewClick = onLikeReviewClick,
-                onCommentReviewClick = onCommentReviewClick
+                onCommentReviewClick = onCommentReviewClick,
+                onAuthorClick = onAuthorClick
             )
         }
     }

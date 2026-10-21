@@ -15,6 +15,7 @@ interface UserRemoteDataSource {
         username: String,
         biography: String?,
         location: String?,
-        website: String?
+        website: String?,
+        email: String?
     )
 }

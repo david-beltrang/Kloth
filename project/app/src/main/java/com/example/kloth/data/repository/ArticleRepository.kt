@@ -9,14 +9,6 @@ import com.example.kloth.data.dto.toPostItem
 import com.example.kloth.data.dto.withReviews
 import com.example.kloth.data.local.ArticleInfo
 import com.example.kloth.data.local.PostItem
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.asSharedFlow
-import kotlinx.coroutines.flow.merge
-import retrofit2.HttpException
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -25,67 +17,55 @@ class ArticleRepository @Inject constructor(
     private val articleDataSource: ArticleFirestoreDataSourceImpl,
     private val userRepository: UserRepository,
     private val reviewDataSource: ReviewFirestoreDataSourceImpl,
-    private val storageRepository: StorageRepository,
-    private val reviewRepository: ReviewRepository
+    private val storageRepository: StorageRepository
 ) {
-    private val _articlesChanged = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
-    /** Avisa cada vez que se crea un artículo, para que las pantallas vuelvan a cargar. */
-    val articlesChanged: Flow<Unit> = merge(_articlesChanged, userRepository.usersChanged, reviewRepository.reviewsChanged)
 
     suspend fun getFeedPosts(): Result<List<PostItem>> = try {
-        val posts = coroutineScope {
-            val articles = async { runCatching { articleDataSource.getAllArticles() }.getOrDefault(emptyList()) }
-            val users = async { runCatching { userRepository.getAllUsers() }.getOrDefault(emptyList()) }
-            val reviews = async { runCatching { reviewDataSource.getAllReviews() }.getOrDefault(emptyList()) }
+        // Los datos se traen de forma secuencial: primero el artículo, luego su autor y sus reseñas.
+        val articles = articleDataSource.getAllArticles()
+        val users = userRepository.getAllUsers()
+        val reviews = reviewDataSource.getAllReviews()
 
-            val usersById = users.await().associateBy { it.toUserProfileInfo().id }
-            val reviewsByArticle = reviews.await()
-                .filter { it.eliminated != true }
-                .groupBy { it.articleKey() }
+        val usersById = users.associateBy { it.toUserProfileInfo().id }
+        val reviewsByArticle = reviews
+            .filter { it.eliminated != true }
+            .groupBy { it.articleIdKey() }
 
-            articles.await()
-                .map { it.toArticleInfo() }
-                .filter { !it.eliminated }
-                .sortedByDescending { it.createdAt }
-                .map { article ->
-                    article.toPostItem(
-                        creator = usersById[article.creatorId],
-                        reviews = reviewsByArticle[article.id].orEmpty(),
-                        usersById = usersById
-                    )
-                }
-        }
+        val posts = articles
+            .map { it.toArticleInfo() }
+            .filter { !it.eliminated }
+            .sortedByDescending { it.createdAt }
+            .map { article ->
+                article.toPostItem(
+                    creator = usersById[article.creatorId],
+                    reviews = reviewsByArticle[article.id].orEmpty(),
+                    usersById = usersById
+                )
+            }
         Result.success(posts)
-    } catch (e: Throwable) {
-        Log.e("TAG", "Error al cargar el feed", e)
-        Result.failure(e as? Exception ?: Exception(e))
+    } catch (e: Exception) {
+        Log.e(TAG, "Error al cargar el feed", e)
+        Result.failure(e)
     }
 
     suspend fun getArticleDetail(id: String): Result<ArticleInfo> = try {
-        val detail = coroutineScope {
-            val article = async { articleDataSource.getArticleById(id) }
-            val reviews = async { articleDataSource.getArticleReviews(id) }
-            val users = async { userRepository.getAllUsers() }
+        val article = articleDataSource.getArticleById(id)
+        val reviews = articleDataSource.getArticleReviews(id)
+        val users = userRepository.getAllUsers()
 
-            val usersById = users.await().associateBy { it.toUserProfileInfo().id  }
-            article.await().toArticleInfo().withReviews(
-                reviews = reviews.await().filter { it.eliminated != true },
-                usersById = usersById
-            )
-        }
+        val usersById = users.associateBy { it.toUserProfileInfo().id }
+        val detail = article.toArticleInfo().withReviews(
+            reviews = reviews.filter { it.eliminated != true },
+            usersById = usersById
+        )
         Result.success(detail)
-
-    } catch (e: HttpException) {
-        Log.e(TAG, "Error del backend al cargar el articulo $id", e)
-        Result.failure(e)
     } catch (e: Exception) {
-        Log.e(TAG, "No se pudo conectar al cargar el articulo $id", e)
+        Log.e(TAG, "No se pudo cargar el articulo $id", e)
         Result.failure(e)
     }
 
     suspend fun createArticle(dto: CreateArticleDto): Result<Unit> = try {
         articleDataSource.createArticle(dto)
-        _articlesChanged.tryEmit(Unit)
         Result.success(Unit)
     } catch (e: Exception) {
         Log.e(TAG, "No se pudo crear el articulo", e)
@@ -96,7 +76,6 @@ class ArticleRepository @Inject constructor(
         articleDataSource.deleteArticle(id)
         // Si la imagen no se puede borrar, el artículo igual queda eliminado
         if (!imageUrl.isNullOrBlank()) storageRepository.deleteImage(imageUrl)
-        _articlesChanged.tryEmit(Unit)
         Result.success(Unit)
     } catch (e: Exception) {
         Log.e(TAG, "No se pudo eliminar el articulo $id", e)
@@ -109,7 +88,6 @@ class ArticleRepository @Inject constructor(
         if (!oldImageUrl.isNullOrBlank() && oldImageUrl != dto.imageArticle) {
             storageRepository.deleteImage(oldImageUrl)
         }
-        _articlesChanged.tryEmit(Unit)
         Result.success(Unit)
     } catch (e: Exception) {
         Log.e(TAG, "No se pudo editar el articulo $id", e)
@@ -119,11 +97,8 @@ class ArticleRepository @Inject constructor(
     suspend fun getArticleForEdit(articleId: String): Result<ArticleInfo> = try {
         val articleInfo = articleDataSource.getArticleById(articleId).toArticleInfo()
         Result.success(articleInfo)
-    } catch (e: HttpException) {
-        Log.e(TAG, "Error del backend al cargar el articulo para editar $articleId", e)
-        Result.failure(e)
     } catch (e: Exception) {
-        Log.e(TAG, "No se pudo conectar al cargar el articulo para editar $articleId", e)
+        Log.e(TAG, "No se pudo cargar el articulo para editar $articleId", e)
         Result.failure(e)
     }
 

@@ -20,7 +20,7 @@ object FakeArticle {
         description = "Una pieza maestra de sastrería contemporánea diseñada para ofrecer máxima elegancia y confort térmico.",
         imageRes = R.drawable.abrigo_negro,
         averageRating = 4.9f,
-        reviewsCountText = "(128 reseñas)"
+        reviewsCount = 128
     )
 
     val camisetaGymshark = ArticleInfo(
@@ -34,7 +34,7 @@ object FakeArticle {
         description = "Diseño técnico de compresión ligera con tejido transpirable de secado rápido, ideal para entrenamientos de alta intensidad.",
         imageRes = R.drawable.camiseta_gymshark,
         averageRating = 4.8f,
-        reviewsCountText = "(84 reseñas)"
+        reviewsCount = 84
     )
 
     val camisetaBarcelona = ArticleInfo(
@@ -48,7 +48,7 @@ object FakeArticle {
         description = "Primera equipación oficial con tecnología de ventilación estratégica y escudo bordado. Edición de temporada.",
         imageRes = R.drawable.camiseta_barcelona,
         averageRating = 5.0f,
-        reviewsCountText = "(42 reseñas)"
+        reviewsCount = 42
     )
 
     val bolsoCuero = ArticleInfo(
@@ -62,7 +62,7 @@ object FakeArticle {
         description = "Bolso artesanal en piel plena vegetal con herrajes en latón envejecido. Envejece con carácter y resistencia excepcional.",
         imageRes = R.drawable.bolso_cuero,
         averageRating = 4.7f,
-        reviewsCountText = "(215 reseñas)"
+        reviewsCount = 215
     )
 
     // Detalles vinculados a los posts del Feed con sus URLs originales
@@ -77,7 +77,7 @@ object FakeArticle {
         description = "Este traje define la elegancia y minimalismo con sus cortes precisos. Ideal para eventos formales donde la sobriedad es la clave.",
         imageUrl = "https://i.pinimg.com/564x/0b/71/5d/0b715d6e24e6a80caf83ebaebac322ce.jpg",
         averageRating = 4.8f,
-        reviewsCountText = "(124 reseñas)"
+        reviewsCount = 124
     )
 
     val detailVestido = ArticleInfo(
@@ -91,7 +91,7 @@ object FakeArticle {
         description = "Este vestido es la muestra de que no se necesita algo extravagante para brillar. Tela ligera y fresca para el verano.",
         imageUrl = "https://m.media-amazon.com/images/I/41VWMm4OlpL.jpg",
         averageRating = 4.5f,
-        reviewsCountText = "(89 reseñas)"
+        reviewsCount = 89
     )
 
     val detailCozy = ArticleInfo(
@@ -105,7 +105,7 @@ object FakeArticle {
         description = "Una pieza única recuperada de los años 90. El desgaste natural le da un carácter que ninguna prenda nueva puede imitar.",
         imageUrl = "https://images.unsplash.com/photo-1516762689617-e1cffcef479d?q=80&w=600&auto=format&fit=crop",
         averageRating = 4.9f,
-        reviewsCountText = "(210 reseñas)"
+        reviewsCount = 210
     )
 
     val detailAccesorios = ArticleInfo(
@@ -119,7 +119,7 @@ object FakeArticle {
         description = "Complementos que elevan cualquier outfit básico. Joyería artesanal con acabados en oro de 18k.",
         imageUrl = "https://images.unsplash.com/photo-1537832816519-689ad163238b?q=80&w=600&auto=format&fit=crop",
         averageRating = 4.7f,
-        reviewsCountText = "(56 reseñas)"
+        reviewsCount = 56
     )
 
     val detailStreetwear = ArticleInfo(
@@ -133,7 +133,7 @@ object FakeArticle {
         description = "Sudadera oversize combinada con joggers técnicos. La comodidad no está reñida con el estilo en la ciudad.",
         imageUrl = "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=600&auto=format&fit=crop",
         averageRating = 4.6f,
-        reviewsCountText = "(145 reseñas)"
+        reviewsCount = 145
     )
 
     val detailPrimavera = ArticleInfo(
@@ -147,7 +147,7 @@ object FakeArticle {
         description = "Estampados florales y colores vibrantes para recibir la nueva estación. Tejidos transpirables y cortes fluidos.",
         imageUrl = "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=600&auto=format&fit=crop",
         averageRating = 4.4f,
-        reviewsCountText = "(78 reseñas)"
+        reviewsCount = 78
     )
 
     /** Catálogo completo unificado. Se utiliza para la pantalla Explore. */
