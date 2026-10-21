@@ -19,7 +19,12 @@ fun ProfileScreen(
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
-    
+
+    // Se recarga cada vez que se muestra la pantalla (ej. al volver tras seguir a alguien)
+    LaunchedEffect(Unit) {
+        viewModel.loadUserProfile()
+    }
+
     Box(
         modifier = modifier
             .fillMaxSize()
@@ -41,6 +46,8 @@ fun ProfileScreen(
             onProductClick = onProductClick,
             onDeleteArticleClick = onDeleteArticleClick,
             onEditArticleClick = onEditArticleClick,
+            followersCount = uiState.followersCount,
+            followingCount = uiState.followingCount,
             modifier = Modifier.fillMaxSize()
         )
     }

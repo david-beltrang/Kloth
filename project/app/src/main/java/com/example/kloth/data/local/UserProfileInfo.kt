@@ -8,5 +8,8 @@ data class UserProfileInfo(
     val bio: String?,
     val location: String?,
     val website: String?,
-    val profileImageUrl: String?
+    val profileImageUrl: String?,
+    val followers: Int = 0,
+    val following: Int = 0,
+    val followed: Boolean = false
 )

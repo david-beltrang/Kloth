@@ -6,7 +6,7 @@ import com.example.kloth.data.dto.UserDtoGeneric
 
 interface UserRemoteDataSource {
     suspend fun getAllUsers(): List<UserDtoGeneric>
-    suspend fun getUserById(id: String): UserDtoGeneric
+    suspend fun getUserById(id: String, currentUserId: String = ""): UserDtoGeneric
     suspend fun registerUser(registerUserDto: RegisterUserDto, userId : String): Unit
     suspend fun getUserArticles(userId: String): List<ArticleDtoGeneric>
     suspend fun updateProfileImage(userId: String, imageUrl: String)
@@ -17,4 +17,7 @@ interface UserRemoteDataSource {
         location: String?,
         website: String?
     )
+
+    //nuevos
+    suspend fun followOrUnfollow(currentUserId: String, targetUserId: String): Unit
 }

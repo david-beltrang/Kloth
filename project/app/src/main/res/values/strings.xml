@@ -61,6 +61,7 @@
     <string name="mock_profile_location">París, FR</string>
     <string name="mock_profile_website">vancouve.studio</string>
     <string name="cd_profile_photo">Foto de perfil</string>
+    <string name="cd_profile_settings">Ajustes del perfil</string>
 
     <!-- User Profile Screen -->
     <string name="user_profile_not_found_title">Usuario no encontrado</string>

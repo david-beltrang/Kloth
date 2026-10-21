@@ -86,6 +86,12 @@ fun UserProfileScreen(
                     onEditArticleClick = {},
                     onLogoutClick = {},
                     showEdit = showEdit,
+                    followersCount = user.followers,
+                    followingCount = user.following,
+                    followed = user.followed,
+                    // Uno no se puede seguir a sí mismo
+                    showFollowButton = userId != state.currentUserId,
+                    onFollowClick = { userProfileViewModel.followOrUnfollowUser(userId) },
                     modifier = Modifier.fillMaxSize()
                 )
             }

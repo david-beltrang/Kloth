@@ -45,7 +45,12 @@ data class UserFirestoreDto(
     val eliminatedAt: String? = null,
     val userType: String = "USER",
     val createdAt: String? = null,
-    val updatedAt: String? = null
+    val updatedAt: String? = null,
+    // En 0 por defecto: los usuarios creados antes del sprint 11 no tienen estos campos
+    val followersCount: Int = 0,
+    val followingCount: Int = 0,
+    //nuevo
+    var followed: Boolean = false
 ) : UserDtoGeneric() {
 
     override fun toUserProfileInfo(): UserProfileInfo {
@@ -56,7 +61,10 @@ data class UserFirestoreDto(
             bio = biography,
             location = location,
             website = website,
-            profileImageUrl = imageURL
+            profileImageUrl = imageURL,
+            followers = followersCount,
+            following = followingCount,
+            followed = followed
         )
     }
 }

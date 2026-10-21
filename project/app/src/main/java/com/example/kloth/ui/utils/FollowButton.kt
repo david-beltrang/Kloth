@@ -1,4 +1,4 @@
-package com.example.kloth.ui.screens.notification.components
+package com.example.kloth.ui.utils
 
 import android.content.res.Configuration
 import androidx.compose.foundation.BorderStroke

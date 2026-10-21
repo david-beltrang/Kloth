@@ -38,6 +38,20 @@ fun ArticleInfo.withReviews(reviews: List<ReviewDtoGeneric>, usersById: Map<Stri
 
 private const val DELETED_USER = "Usuario eliminado"
 
+// 842 -> "842", 12800 -> "12.8k", 1500000 -> "1.5m" (como en la transcripción 10 con los likes)
+fun formatCount(count: Int): String = when {
+    count >= 1_000_000 -> compactCount(count / 1_000_000.0) + "m"
+    count >= 1_000 -> compactCount(count / 1_000.0) + "k"
+    else -> count.toString()
+}
+
+// Trunca a un decimal (12.86 -> "12.8") y quita el ".0" (12.0 -> "12")
+private fun compactCount(value: Double): String {
+    val truncated = Math.floor(value * 10) / 10
+    return if (truncated % 1.0 == 0.0) truncated.toInt().toString()
+    else String.format(Locale.US, "%.1f", truncated)
+}
+
 // PRENDA -> "Prenda", igual que la etiqueta que ya mostraba la app
 fun typeLabel(typeArticle: String): String =
     typeArticle.trim().lowercase().replaceFirstChar { it.titlecase(Locale.getDefault()) }

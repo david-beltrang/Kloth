@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.sp
 import com.example.kloth.data.local.NotificacionUI
 import com.example.kloth.data.local.TipoNotificacion
 import com.example.kloth.ui.theme.KlothTheme
+import com.example.kloth.ui.utils.FollowButton
 
 /**
  * Fila individual para la lista de notificaciones.

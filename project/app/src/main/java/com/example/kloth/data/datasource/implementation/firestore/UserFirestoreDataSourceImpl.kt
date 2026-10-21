@@ -4,6 +4,7 @@ import com.example.kloth.data.datasource.services.UserRemoteDataSource
 import com.example.kloth.data.dto.RegisterUserDto
 import com.example.kloth.data.dto.UserDtoGeneric
 import com.example.kloth.data.dto.UserFirestoreDto
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.example.kloth.data.dto.ArticleDtoGeneric
@@ -22,11 +23,19 @@ class   UserFirestoreDataSourceImpl @Inject constructor(private val db: Firebase
         }
     }
 
-    override suspend fun getUserById(id: String): UserDtoGeneric {
+    override suspend fun getUserById(id: String, currentUserId: String): UserDtoGeneric {
         val docRef = db.collection("users").document(id)
         val respuesta = docRef.get().await()
-        return respuesta.toObject(UserFirestoreDto::class.java)?.copy(userId = respuesta.id)
+        val user = respuesta.toObject(UserFirestoreDto::class.java)?.copy(userId = respuesta.id)
             ?: throw Exception("No se pudo obtener el usuario")
+
+        if (currentUserId.isNotEmpty()) {
+            // Verifica si el usuario actual ya sigue a este usuario
+            val followerDoc = docRef.collection("followers").document(currentUserId).get().await()
+            val exist = followerDoc.exists()
+            user.followed = exist
+        }
+        return user
     }
 
     override suspend fun registerUser(
@@ -70,5 +79,31 @@ class   UserFirestoreDataSourceImpl @Inject constructor(private val db: Firebase
             "website" to website
         )
         db.collection("users").document(userId).set(cambios, SetOptions.merge()).await()
+    }
+
+    override suspend fun followOrUnfollow(currentUserId: String, targetUserId: String) {
+        val currentUserRef = db.collection("users").document(currentUserId)
+        val targetUserRef = db.collection("users").document(targetUserId)
+
+        val followingRef = currentUserRef.collection("following").document(targetUserId)
+        val followerRef = targetUserRef.collection("followers").document(currentUserId)
+
+        db.runTransaction { transaction ->
+            val followingDoc = transaction.get(followingRef)
+
+            if (followingDoc.exists()) {
+                // Dejar de seguir
+                transaction.delete(followingRef)
+                transaction.delete(followerRef)
+                transaction.update(currentUserRef, "followingCount", FieldValue.increment(-1))
+                transaction.update(targetUserRef, "followersCount", FieldValue.increment(-1))
+            } else {
+                // Seguir
+                transaction.set(followingRef, mapOf("timestamp" to FieldValue.serverTimestamp()))
+                transaction.set(followerRef, mapOf("timestamp" to FieldValue.serverTimestamp()))
+                transaction.update(currentUserRef, "followingCount", FieldValue.increment(1))
+                transaction.update(targetUserRef, "followersCount", FieldValue.increment(1))
+            }
+        }.await()
     }
 }

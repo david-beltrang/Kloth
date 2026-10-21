@@ -30,7 +30,7 @@ class UserProfileViewModel @Inject constructor(
         _uiState.update { it.copy(isLoading = true, userNotFound = false) }
 
         viewModelScope.launch {
-            val result = userRepository.getUserById(userId)
+            val result = userRepository.getUserById(userId, _uiState.value.currentUserId)
             if (result.isSuccess) {
                 _uiState.update {
                     it.copy(user = result.getOrNull(), isLoading = false)
@@ -39,6 +39,24 @@ class UserProfileViewModel @Inject constructor(
                 // Por ejemplo, un usuario eliminado: su documento ya no existe
                 _uiState.update {
                     it.copy(user = null, isLoading = false, userNotFound = true)
+                }
+            }
+        }
+    }
+
+    fun followOrUnfollowUser(targetUserId: String) {
+        val currentUserId = _uiState.value.currentUserId
+
+        viewModelScope.launch {
+            val result = userRepository.followOrUnfollow(currentUserId, targetUserId)
+            if (result.isSuccess) {
+                _uiState.update {
+                    it.copy(
+                        user = it.user?.copy(
+                            followers = if (it.user.followed) it.user.followers - 1 else it.user.followers + 1,
+                            followed = !it.user.followed
+                        )
+                    )
                 }
             }
         }

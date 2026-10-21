@@ -20,9 +20,9 @@ class UserRepository @Inject constructor(
     val usersChanged: SharedFlow<Unit> = _usersChanged.asSharedFlow()
     suspend fun getAllUsers(): List<UserDtoGeneric> = userDataSource.getAllUsers()
 
-    suspend fun getUserById(id: String): Result<UserProfileInfo> {
+    suspend fun getUserById(id: String, currentUserId: String = ""): Result<UserProfileInfo> {
         return try {
-            val user = userDataSource.getUserById(id)
+            val user = userDataSource.getUserById(id, currentUserId)
             val userProfileInfo = user.toUserProfileInfo()
             Result.success(userProfileInfo)
         } catch (e: Exception) {
@@ -94,6 +94,17 @@ class UserRepository @Inject constructor(
             _usersChanged.tryEmit(Unit)
             Result.success(Unit)
         } catch (e: Exception) {
+            Result.failure(e)
+        }
+    }
+
+    // No emite usersChanged: al seguir solo se actualiza el estado local de la pantalla
+    suspend fun followOrUnfollow(currentUserId: String, targetUserId: String): Result<Unit> {
+        return try {
+            userDataSource.followOrUnfollow(currentUserId, targetUserId)
+            Result.success(Unit)
+        } catch (e: Exception) {
+            Log.e("UserRepository", "No se pudo seguir o dejar de seguir a $targetUserId", e)
             Result.failure(e)
         }
     }

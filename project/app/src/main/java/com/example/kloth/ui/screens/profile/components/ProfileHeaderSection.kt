@@ -23,7 +23,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
+import com.example.kloth.data.dto.formatCount
 import com.example.kloth.ui.theme.KlothTheme
+import com.example.kloth.ui.utils.FollowButton
 import com.example.kloth.ui.utils.ProfileAsyncImage
 
 @Composable
@@ -40,12 +42,16 @@ fun ProfileHeaderSection(
     reviewsCount: Int = 0,
     // false cuando se ve el perfil de otro usuario: sin botones ni textos para editar
     showEdit: Boolean = true,
+    // Solo en el perfil de otro usuario (nunca en el propio)
+    showFollowButton: Boolean = false,
+    followed: Boolean = false,
     modifier: Modifier = Modifier,
     onEditProfileClick: () -> Unit = {},
-    onLogoutClick: () -> Unit = {}
+    onLogoutClick: () -> Unit = {},
+    onFollowClick: () -> Unit = {}
 ) {
     val displayName = if (!username.isNullOrBlank()) username else email.substringBefore("@").replaceFirstChar { it.uppercase() }
-    val displayBio = if (!bio.isNullOrBlank()) bio else "Mejora tu biografía para que otros te conozcan"
+    val displayBio = if (!bio.isNullOrBlank()) "\"$bio\"" else "Mejora tu biografía para que otros te conozcan"
     val displayLocation = if (!location.isNullOrBlank()) location else "Añade tu ubicación"
     val displayWebsite = if (!website.isNullOrBlank()) website else "Añade un sitio web"
 
@@ -55,17 +61,32 @@ fun ProfileHeaderSection(
     ) {
         Spacer(modifier = Modifier.height(8.dp))
 
-        ProfileAsyncImage(
-            profileImage = profileImageUrl ?: "",
-            size = 100,
-            modifier = Modifier
-                .border(
-                    width = 2.dp,
-                    color = MaterialTheme.colorScheme.outlineVariant,
-                    shape = CircleShape
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            ProfileAsyncImage(
+                profileImage = profileImageUrl ?: "",
+                size = 100,
+                modifier = Modifier
+                    .border(
+                        width = 2.dp,
+                        color = MaterialTheme.colorScheme.outlineVariant,
+                        shape = CircleShape
+                    )
+                    .padding(3.dp)
+            )
+
+            // El diseño no tiene botón de cerrar sesión: queda dentro del menú de ajustes
+            if (showEdit) {
+                ProfileSettingsMenu(
+                    onLogoutClick = onLogoutClick,
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                        .padding(end = 8.dp)
                 )
-                .padding(3.dp)
-        )
+            }
+        }
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -158,19 +179,19 @@ fun ProfileHeaderSection(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             ProfileStatItem(
-                value = publicationsCount.toString(),
+                value = formatCount(publicationsCount),
                 label = stringResource(R.string.profile_publications)
             )
             ProfileStatItem(
-                value = followersCount.toString(),
+                value = formatCount(followersCount),
                 label = stringResource(R.string.profile_followers)
             )
             ProfileStatItem(
-                value = followersCount.toString(),
+                value = formatCount(followingCount),
                 label = stringResource(R.string.profile_following)
             )
             ProfileStatItem(
-                value = reviewsCount.toString(),
+                value = formatCount(reviewsCount),
                 label = stringResource(R.string.profile_reviews)
             )
         }
@@ -182,13 +203,20 @@ fun ProfileHeaderSection(
 
         Spacer(modifier = Modifier.height(16.dp))
 
+        if (showFollowButton) {
+            FollowButton(
+                estaSiguiendo = followed,
+                onClick = onFollowClick
+            )
+        }
+
         if (showEdit) {
             // RF-05: modificar perfil
             Box(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp)
-                    .clip(RoundedCornerShape(999.dp))
+                    .clip(RoundedCornerShape(12.dp))
                     .background(MaterialTheme.colorScheme.primary)
                     .clickable { onEditProfileClick() }
                     .padding(vertical = 14.dp),
@@ -198,26 +226,6 @@ fun ProfileHeaderSection(
                     text = stringResource(R.string.profile_edit),
                     style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
                     color = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-            // Logout Button
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 16.dp)
-                    .clip(RoundedCornerShape(999.dp))
-                    .border(1.dp, MaterialTheme.colorScheme.error, RoundedCornerShape(999.dp))
-                    .clickable { onLogoutClick() }
-                    .padding(vertical = 14.dp),
-                contentAlignment = Alignment.Center
-            ) {
-                Text(
-                    text = stringResource(R.string.profile_logout),
-                    style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
-                    color = MaterialTheme.colorScheme.error
                 )
             }
         }
@@ -238,7 +246,7 @@ private fun ProfileStatItem(
     ) {
         Text(
             text = value,
-            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.Bold),
+            style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onSurface
         )
         Spacer(modifier = Modifier.height(2.dp))

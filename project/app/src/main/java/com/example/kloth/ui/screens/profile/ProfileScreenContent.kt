@@ -21,9 +21,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.kloth.data.local.FakeArticle
 import com.example.kloth.data.local.PostItem
-import com.example.kloth.ui.screens.detail.components.ProductCatalogCard
 import com.example.kloth.ui.screens.feed.components.ProfileTabRow
 import com.example.kloth.ui.screens.profile.components.ArticleOptionsMenu
+import com.example.kloth.ui.screens.profile.components.ProfileArticleTile
 import com.example.kloth.ui.screens.profile.components.ProfileHeaderSection
 
 @Composable
@@ -46,6 +46,11 @@ fun ProfileScreenContent(
     modifier: Modifier = Modifier,
     // false en el perfil de otro usuario: oculta edicion, cierre de sesion y menu de articulos
     showEdit: Boolean = true,
+    followersCount: Int = 0,
+    followingCount: Int = 0,
+    followed: Boolean = false,
+    showFollowButton: Boolean = false,
+    onFollowClick: () -> Unit = {},
 ) {
 
     LazyVerticalGrid(
@@ -75,12 +80,15 @@ fun ProfileScreenContent(
                     website = website,
                     profileImageUrl = profileImageUrl,
                     publicationsCount = userArticles.size,
-                    followersCount = 0,
-                    followingCount = 0,
+                    followersCount = followersCount,
+                    followingCount = followingCount,
                     reviewsCount = reviewedArticles.size,
                     showEdit = showEdit,
+                    showFollowButton = showFollowButton,
+                    followed = followed,
                     onEditProfileClick = onEditProfileClick,
-                    onLogoutClick = onLogoutClick
+                    onLogoutClick = onLogoutClick,
+                    onFollowClick = onFollowClick
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -98,11 +106,8 @@ fun ProfileScreenContent(
             items(userArticles, key = { it.id }) { post ->
                 val p = post.product
                 Box {
-                    ProductCatalogCard(
+                    ProfileArticleTile(
                         title = p.title,
-                        category = p.categoryTag,
-                        rating = p.averageRating.toString(),
-                        reviews = p.reviewsCountText.filter { it.isDigit() },
                         imageModel = p.imageUrl ?: p.imageRes,
                         onClick = { onProductClick(p.id) }
                     )
@@ -118,11 +123,8 @@ fun ProfileScreenContent(
         } else {
             items(reviewedArticles, key = { it.id }) { post ->
                 val p = post.product
-                ProductCatalogCard(
+                ProfileArticleTile(
                     title = p.title,
-                    category = p.categoryTag,
-                    rating = p.averageRating.toString(),
-                    reviews = p.reviewsCountText.filter { it.isDigit() },
                     imageModel = p.imageUrl ?: p.imageRes,
                     onClick = { onProductClick(p.id) }
                 )

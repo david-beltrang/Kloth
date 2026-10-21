@@ -11,7 +11,7 @@ class UserRetrofitDataSourceImpl @Inject constructor(
     private val service: UserRetrofitService
 ) : UserRemoteDataSource {
     override suspend fun getAllUsers(): List<UserRetrofitDto> = service.getUsers()
-    override suspend fun getUserById(id: String): UserRetrofitDto = service.getUserById("1")
+    override suspend fun getUserById(id: String, currentUserId: String): UserRetrofitDto = service.getUserById("1")
     override suspend fun registerUser(registerUserDto: RegisterUserDto, userId: String) {
         TODO("falta por implementar epara retrofit")
     }
@@ -31,6 +31,10 @@ class UserRetrofitDataSourceImpl @Inject constructor(
         location: String?,
         website: String?
     ) {
+        TODO("Not yet implemented")
+    }
+
+    override suspend fun followOrUnfollow(currentUserId: String, targetUserId: String) {
         TODO("Not yet implemented")
     }
 }

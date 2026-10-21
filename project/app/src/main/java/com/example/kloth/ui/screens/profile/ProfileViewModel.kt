@@ -34,14 +34,15 @@ class ProfileViewModel @Inject constructor(
     val uiState: StateFlow<ProfileState> = _uiState.asStateFlow()
 
     init {
-        loadUserProfile()
         loadUserArticles()
         viewModelScope.launch {
             articleRepository.articlesChanged.collect{ loadUserArticles()}
         }
     }
 
-    private fun loadUserProfile() {
+    // Se llama desde el LaunchedEffect de la pantalla y no desde init, para que los contadores
+    // de seguidores y seguidos se actualicen cada vez que se vuelve al perfil
+    fun loadUserProfile() {
         viewModelScope.launch {
             val userId = authRepository.currentUser?.uid ?: return@launch
 
@@ -54,7 +55,9 @@ class ProfileViewModel @Inject constructor(
                         website = user.website,
                         email = user.email.ifBlank { it.email },
                         profileImageUrl = user.profileImageUrl?.takeIf { url -> url.isNotBlank() }
-                            ?: it.profileImageUrl
+                            ?: it.profileImageUrl,
+                        followersCount = user.followers,
+                        followingCount = user.following
                     )
                 }
 
