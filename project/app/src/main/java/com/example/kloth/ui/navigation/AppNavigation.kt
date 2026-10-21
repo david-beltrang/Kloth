@@ -225,6 +225,9 @@ fun AppNavigation(
                 onBackClick = { navController.popBackStack() },
                 onWriteReviewClick = {
                     navController.navigate(AppRoutes.CreateReview.createRoute(productId))
+                },
+                onReviewClick = { reviewId ->
+                    navController.navigate(AppRoutes.Review.createRoute(reviewId))
                 }
             )
         }

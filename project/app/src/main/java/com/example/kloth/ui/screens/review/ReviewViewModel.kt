@@ -2,9 +2,10 @@ package com.example.kloth.ui.screens.review
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.kloth.R
 import com.example.kloth.data.local.ComentarioReviewData
-import com.example.kloth.data.local.ResenasDataLocal
+import com.example.kloth.data.repository.ReviewRepository
 import com.example.kloth.ui.navigation.AppRoutes
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -12,10 +13,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ReviewViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val reviewRepository: ReviewRepository
 ) : ViewModel() {
 
     // Recupera el ID si viene de la navegación
@@ -32,10 +35,11 @@ class ReviewViewModel @Inject constructor(
     }
 
     private fun loadReview(id: String) {
-        val resenaEncontrada = ResenasDataLocal.obtenerResenaPorId(id)
-        resenaEncontrada?.let { resena ->
-            _uiState.update { currentState ->
-                currentState.copy(resena = resena)
+        viewModelScope.launch {
+            reviewRepository.getReviewById(id).onSuccess { resena ->
+                _uiState.update { currentState ->
+                    currentState.copy(resena = resena)
+                }
             }
         }
     }

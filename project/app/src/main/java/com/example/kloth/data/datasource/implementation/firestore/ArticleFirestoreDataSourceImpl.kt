@@ -5,6 +5,7 @@ import com.example.kloth.data.dto.ArticleDtoGeneric
 import com.example.kloth.data.dto.ArticleFirestoreDto
 import com.example.kloth.data.dto.CreateArticleDto
 import com.example.kloth.data.dto.ReviewDtoGeneric
+import com.example.kloth.data.dto.ReviewFirestoreDto
 import com.example.kloth.data.dto.UpdateArticleDto
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
@@ -34,7 +35,14 @@ class ArticleFirestoreDataSourceImpl @Inject constructor(
     }
 
     override suspend fun getArticleReviews(id: String): List<ReviewDtoGeneric> {
-        return emptyList()
+        val snapshot = db.collection("reviews")
+            .whereEqualTo("articleId", id)
+            .get()
+            .await()
+
+        return snapshot.documents.mapNotNull { doc ->
+            doc.toObject(ReviewFirestoreDto::class.java)?.copy(reviewId = doc.id)
+        }
     }
 
     override suspend fun updateArticle(id: String, article: UpdateArticleDto) {

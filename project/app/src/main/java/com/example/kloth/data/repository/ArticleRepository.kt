@@ -2,7 +2,7 @@ package com.example.kloth.data.repository
 
 import android.util.Log
 import com.example.kloth.data.datasource.implementation.firestore.ArticleFirestoreDataSourceImpl
-import com.example.kloth.data.datasource.implementation.retrofit.ReviewRetrofitDataSourceImpl
+import com.example.kloth.data.datasource.implementation.firestore.ReviewFirestoreDataSourceImpl
 import com.example.kloth.data.dto.CreateArticleDto
 import com.example.kloth.data.dto.UpdateArticleDto
 import com.example.kloth.data.dto.toPostItem
@@ -24,7 +24,7 @@ import javax.inject.Singleton
 class ArticleRepository @Inject constructor(
     private val articleDataSource: ArticleFirestoreDataSourceImpl,
     private val userRepository: UserRepository,
-    private val reviewDataSource: ReviewRetrofitDataSourceImpl,
+    private val reviewDataSource: ReviewFirestoreDataSourceImpl,
     private val storageRepository: StorageRepository
 ) {
     private val _articlesChanged = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
@@ -40,7 +40,7 @@ class ArticleRepository @Inject constructor(
             val usersById = users.await().associateBy { it.toUserProfileInfo().id }
             val reviewsByArticle = reviews.await()
                 .filter { it.eliminated != true }
-                .groupBy { it.articleId.toString() }
+                .groupBy { it.articleKey() }
 
             articles.await()
                 .map { it.toArticleInfo() }

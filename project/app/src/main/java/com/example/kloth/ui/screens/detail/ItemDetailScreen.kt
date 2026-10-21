@@ -35,7 +35,8 @@ fun ItemDetailScreen(
     onBackClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onAddToCartClick: () -> Unit = {},
-    onWriteReviewClick: () -> Unit = {}
+    onWriteReviewClick: () -> Unit = {},
+    onReviewClick: (String) -> Unit = {}
 ) {
     // Escuchar el estado del ViewModel
     val state by detailViewModel.uiState.collectAsState()
@@ -98,7 +99,7 @@ fun ItemDetailScreen(
         onAddToCartClick = onAddToCartClick,
         onWriteReviewClick = onWriteReviewClick,
         onLikeReviewClick = { reviewId -> /* Accion like resena */ },
-        onCommentReviewClick = { reviewId -> /* Accion comentar resena */ },
+        onCommentReviewClick = onReviewClick,
         modifier = modifier
     )
 }

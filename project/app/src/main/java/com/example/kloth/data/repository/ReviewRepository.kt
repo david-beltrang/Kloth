@@ -1,7 +1,7 @@
 package com.example.kloth.data.repository
 
 import android.util.Log
-import com.example.kloth.data.datasource.implementation.retrofit.ReviewRetrofitDataSourceImpl
+import com.example.kloth.data.datasource.implementation.firestore.ReviewFirestoreDataSourceImpl
 import com.example.kloth.data.dto.CreateReviewDto
 import com.example.kloth.data.dto.UpdateReviewDto
 import com.example.kloth.data.local.ReviewData
@@ -18,7 +18,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ReviewRepository @Inject constructor(
-    private val reviewDataSource: ReviewRetrofitDataSourceImpl,
+    private val reviewDataSource: ReviewFirestoreDataSourceImpl,
     private val userRepository: UserRepository
 ) {
     private val _reviewsChanged = MutableSharedFlow<Unit>(extraBufferCapacity = 1)
@@ -35,7 +35,7 @@ class ReviewRepository @Inject constructor(
             reviewsDeferred.await()
                 .filter { it.eliminated != true }
                 .map { reviewDto ->
-                    reviewDto.toReviewData(usersById)
+                    reviewDto.toReviewData(usersById[reviewDto.authorKey()])
                 }
         }
         Result.success(reviews)
@@ -50,7 +50,8 @@ class ReviewRepository @Inject constructor(
             val usersDeferred = async { userRepository.getAllUsers() }
 
             val usersById = usersDeferred.await().associateBy { it.toUserProfileInfo().id }
-            reviewDeferred.await().toReviewData(usersById)
+            val reviewDto = reviewDeferred.await()
+            reviewDto.toReviewData(usersById[reviewDto.authorKey()])
         }
         Result.success(detail)
     } catch (e: HttpException) {

@@ -4,6 +4,13 @@ import com.example.kloth.R
 import com.example.kloth.data.local.ReviewData
 
 abstract class ReviewDtoGeneric {
+    abstract val rating: Int
+    abstract val eliminated: Boolean
+
+    // Express usa ids Int y Firestore String: ambos se exponen como String
+    abstract fun articleKey(): String
+    abstract fun authorKey(): String
+
     abstract fun toReviewData(author: UserDtoGeneric?): ReviewData
 }
 
@@ -11,13 +18,16 @@ data class ReviewRetrofitDto(
     val reviewId: Int,
     val userId: Int,
     val articleId: Int,
-    val rating: Int,
+    override val rating: Int,
     val text: String?,
     val likesCount: Int = 0,
     val createdAt: String?,
     val updatedAt: String? = null,
-    val eliminated: Boolean = false
+    override val eliminated: Boolean = false
 ) : ReviewDtoGeneric() {
+
+    override fun articleKey(): String = articleId.toString()
+    override fun authorKey(): String = userId.toString()
 
     override fun toReviewData(author: UserDtoGeneric?): ReviewData {
         val authorProfile = author?.toUserProfileInfo()
@@ -38,13 +48,16 @@ data class ReviewFirestoreDto(
     val reviewId: String = "",
     val userId: String = "",
     val articleId: String = "",
-    val rating: Int = 0,
+    override val rating: Int = 0,
     val text: String? = null,
     val likesCount: Int = 0,
     val createdAt: String? = null,
     val updatedAt: String? = null,
-    val eliminated: Boolean = false
+    override val eliminated: Boolean = false
 ) : ReviewDtoGeneric() {
+
+    override fun articleKey(): String = articleId
+    override fun authorKey(): String = userId
 
     override fun toReviewData(author: UserDtoGeneric?): ReviewData {
         val authorProfile = author?.toUserProfileInfo()

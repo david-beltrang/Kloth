@@ -32,12 +32,7 @@ fun ArticleInfo.withReviews(reviews: List<ReviewDtoGeneric>, usersById: Map<Stri
         averageRating = calculateAverageRating(reviews),
         reviewsCountText = reviewsCountText(reviews.size),
         reviewsList = reviews.map { review ->
-            val userIdStr = when (review) {
-                is ReviewRetrofitDto -> review.userId.toString()
-                is ReviewFirestoreDto -> review.userId
-                else -> ""
-            }
-            review.toReviewData(usersById[userIdStr])
+            review.toReviewData(usersById[review.authorKey()])
         }
     )
 
