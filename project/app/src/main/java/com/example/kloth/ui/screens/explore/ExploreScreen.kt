@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -16,6 +17,10 @@ fun ExploreScreen(
 ) {
     val state by exploreViewModel.uiState.collectAsState()
 
+    LaunchedEffect(Unit) {
+        exploreViewModel.getAllPosts()
+    }
+
     Surface(
         modifier = modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background,
@@ -24,7 +29,7 @@ fun ExploreScreen(
             modifier = Modifier.fillMaxSize(),
 
             // Variables de estado
-            products = state.products,
+            products = state.filteredPosts,
             selectedCategoryIndex = state.selectedCategoryIndex,
 
             // Métodos del ViewModel para manejar el estado
