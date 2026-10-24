@@ -6,7 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import com.example.kloth.data.local.ProductDetailData
+import com.example.kloth.data.local.ArticleInfo
 import com.example.kloth.ui.screens.detail.components.descriptionProduct.GeneralInfoSection
 import com.example.kloth.ui.screens.detail.components.image.HeroImageSection
 import com.example.kloth.ui.screens.detail.components.review.RatingsAndReviewsSection
@@ -14,7 +14,7 @@ import com.example.kloth.ui.screens.detail.components.review.RatingsAndReviewsSe
 @Composable
 fun ItemDetailScreenContent(
     // Variables de estado (Datos que vienen del ViewModel)
-    product: ProductDetailData,
+    product: ArticleInfo,
 
     // Métodos para manejar el estado (Eventos que suben al ViewModel)
     onFavoriteClick: () -> Unit = {},
@@ -26,6 +26,7 @@ fun ItemDetailScreenContent(
     onWriteReviewClick: () -> Unit = {},
     onLikeReviewClick: (String) -> Unit = {},
     onCommentReviewClick: (String) -> Unit = {},
+    onAuthorClick: (String) -> Unit = {},
     
     modifier: Modifier = Modifier
 ) {
@@ -61,7 +62,8 @@ fun ItemDetailScreenContent(
                 reviewsList = product.reviewsList,
                 onWriteReviewClick = onWriteReviewClick,
                 onLikeReviewClick = onLikeReviewClick,
-                onCommentReviewClick = onCommentReviewClick
+                onCommentReviewClick = onCommentReviewClick,
+                onAuthorClick = onAuthorClick
             )
         }
     }

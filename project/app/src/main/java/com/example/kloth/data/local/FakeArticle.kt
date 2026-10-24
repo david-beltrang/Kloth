@@ -9,7 +9,7 @@ import com.example.kloth.R
 object FakeArticle {
 
     // Artículos detallados (utilizados en Detail y Explore)
-    val abrigoNegro = ProductDetailData(
+    val abrigoNegro = ArticleInfo(
         id = "abrigo_negro",
         title = "Abrigo Lunar Negro",
         brand = "Maison de l'Éther",
@@ -20,10 +20,10 @@ object FakeArticle {
         description = "Una pieza maestra de sastrería contemporánea diseñada para ofrecer máxima elegancia y confort térmico.",
         imageRes = R.drawable.abrigo_negro,
         averageRating = 4.9f,
-        reviewsCountText = "(128 reseñas)"
+        reviewsCount = 128
     )
 
-    val camisetaGymshark = ProductDetailData(
+    val camisetaGymshark = ArticleInfo(
         id = "camiseta_gymshark",
         title = "Camiseta GymShark",
         brand = "Gymshark",
@@ -34,10 +34,10 @@ object FakeArticle {
         description = "Diseño técnico de compresión ligera con tejido transpirable de secado rápido, ideal para entrenamientos de alta intensidad.",
         imageRes = R.drawable.camiseta_gymshark,
         averageRating = 4.8f,
-        reviewsCountText = "(84 reseñas)"
+        reviewsCount = 84
     )
 
-    val camisetaBarcelona = ProductDetailData(
+    val camisetaBarcelona = ArticleInfo(
         id = "camiseta_barcelona",
         title = "Jersey Barcelona",
         brand = "FC Barcelona",
@@ -48,10 +48,10 @@ object FakeArticle {
         description = "Primera equipación oficial con tecnología de ventilación estratégica y escudo bordado. Edición de temporada.",
         imageRes = R.drawable.camiseta_barcelona,
         averageRating = 5.0f,
-        reviewsCountText = "(42 reseñas)"
+        reviewsCount = 42
     )
 
-    val bolsoCuero = ProductDetailData(
+    val bolsoCuero = ArticleInfo(
         id = "bolso_cuero",
         title = "Bolso Cuero",
         brand = "Cuero & Co.",
@@ -62,11 +62,11 @@ object FakeArticle {
         description = "Bolso artesanal en piel plena vegetal con herrajes en latón envejecido. Envejece con carácter y resistencia excepcional.",
         imageRes = R.drawable.bolso_cuero,
         averageRating = 4.7f,
-        reviewsCountText = "(215 reseñas)"
+        reviewsCount = 215
     )
 
     // Detalles vinculados a los posts del Feed con sus URLs originales
-    val detailSuit = ProductDetailData(
+    val detailSuit = ArticleInfo(
         id = "post_suit_1",
         title = "Suit elegante negro",
         brand = "Atelier Noir",
@@ -77,10 +77,10 @@ object FakeArticle {
         description = "Este traje define la elegancia y minimalismo con sus cortes precisos. Ideal para eventos formales donde la sobriedad es la clave.",
         imageUrl = "https://i.pinimg.com/564x/0b/71/5d/0b715d6e24e6a80caf83ebaebac322ce.jpg",
         averageRating = 4.8f,
-        reviewsCountText = "(124 reseñas)"
+        reviewsCount = 124
     )
 
-    val detailVestido = ProductDetailData(
+    val detailVestido = ArticleInfo(
         id = "post_vestido_2",
         title = "Vestido blanco largo",
         brand = "Casa Lumière",
@@ -91,10 +91,10 @@ object FakeArticle {
         description = "Este vestido es la muestra de que no se necesita algo extravagante para brillar. Tela ligera y fresca para el verano.",
         imageUrl = "https://m.media-amazon.com/images/I/41VWMm4OlpL.jpg",
         averageRating = 4.5f,
-        reviewsCountText = "(89 reseñas)"
+        reviewsCount = 89
     )
 
-    val detailCozy = ProductDetailData(
+    val detailCozy = ArticleInfo(
         id = "post_cozy_3",
         title = "Outfit cotidiano cozy",
         brand = "Retro Denim Co.",
@@ -105,10 +105,10 @@ object FakeArticle {
         description = "Una pieza única recuperada de los años 90. El desgaste natural le da un carácter que ninguna prenda nueva puede imitar.",
         imageUrl = "https://images.unsplash.com/photo-1516762689617-e1cffcef479d?q=80&w=600&auto=format&fit=crop",
         averageRating = 4.9f,
-        reviewsCountText = "(210 reseñas)"
+        reviewsCount = 210
     )
 
-    val detailAccesorios = ProductDetailData(
+    val detailAccesorios = ArticleInfo(
         id = "post_acc_4",
         title = "Accesorios dorados",
         brand = "Aurum Atelier",
@@ -119,10 +119,10 @@ object FakeArticle {
         description = "Complementos que elevan cualquier outfit básico. Joyería artesanal con acabados en oro de 18k.",
         imageUrl = "https://images.unsplash.com/photo-1537832816519-689ad163238b?q=80&w=600&auto=format&fit=crop",
         averageRating = 4.7f,
-        reviewsCountText = "(56 reseñas)"
+        reviewsCount = 56
     )
 
-    val detailStreetwear = ProductDetailData(
+    val detailStreetwear = ArticleInfo(
         id = "post_street_5",
         title = "Streetwear urbano",
         brand = "Urban Threads",
@@ -133,10 +133,10 @@ object FakeArticle {
         description = "Sudadera oversize combinada con joggers técnicos. La comodidad no está reñida con el estilo en la ciudad.",
         imageUrl = "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=600&auto=format&fit=crop",
         averageRating = 4.6f,
-        reviewsCountText = "(145 reseñas)"
+        reviewsCount = 145
     )
 
-    val detailPrimavera = ProductDetailData(
+    val detailPrimavera = ArticleInfo(
         id = "post_primavera_6",
         title = "Colección Primavera",
         brand = "Fleur & Co.",
@@ -147,7 +147,7 @@ object FakeArticle {
         description = "Estampados florales y colores vibrantes para recibir la nueva estación. Tejidos transpirables y cortes fluidos.",
         imageUrl = "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=600&auto=format&fit=crop",
         averageRating = 4.4f,
-        reviewsCountText = "(78 reseñas)"
+        reviewsCount = 78
     )
 
     /** Catálogo completo unificado. Se utiliza para la pantalla Explore. */
@@ -226,6 +226,6 @@ object FakeArticle {
      * Resuelve el artículo correspondiente a un identificador.
      * Devuelve null si el id no existe o no es válido.
      */
-    fun obtenerProductoPorId(productId: String): ProductDetailData? =
+    fun obtenerProductoPorId(productId: String): ArticleInfo? =
         allProducts.firstOrNull { it.id == productId }
 }

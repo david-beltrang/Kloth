@@ -1,9 +1,9 @@
 package com.example.kloth.ui.screens.detail
 
-import com.example.kloth.data.local.ProductDetailData
+import com.example.kloth.data.local.ArticleInfo
 
 data class DetailState(
-    val product: ProductDetailData? = null,
+    val product: ArticleInfo? = null,
     val isLoading: Boolean = false,
-    val error: String? = null
+    val errorMessage: String? = null
 )

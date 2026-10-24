@@ -1,5 +1,6 @@
 package com.example.kloth.ui.screens.editProfile
 
+import android.net.Uri
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -8,6 +9,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import com.example.kloth.R
 import com.example.kloth.ui.screens.editProfile.components.*
 
@@ -23,7 +26,10 @@ fun EditProfileScreenContent(
     onLocationChange: (String) -> Unit,
     website: String,
     onWebsiteChange: (String) -> Unit,
-    onSaveClick: () -> Unit,
+    profileImageUrl: String?,
+    isLoading: Boolean,
+    errorMessage: String? = null,
+    onImagePicked: (Uri) -> Unit,
     onDeleteAccount: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -35,8 +41,20 @@ fun EditProfileScreenContent(
     ) {
         Spacer(modifier = Modifier.height(24.dp))
 
+        if (!errorMessage.isNullOrBlank()) {
+            Text(
+                text = errorMessage,
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall,
+                modifier = Modifier.padding(horizontal = 20.dp)
+            )
+            Spacer(modifier = Modifier.height(16.dp))
+        }
+
         ProfileImageEditor(
-            onImageChange = { /* TODO */ }
+            profileImageUrl = profileImageUrl,
+            isLoading = isLoading,
+            onImageChange = onImagePicked
         )
 
         Spacer(modifier = Modifier.height(32.dp))
@@ -51,8 +69,7 @@ fun EditProfileScreenContent(
             location = location,
             onLocationChange = onLocationChange,
             website = website,
-            onWebsiteChange = onWebsiteChange,
-            onSaveClick = onSaveClick
+            onWebsiteChange = onWebsiteChange
         )
 
         Spacer(modifier = Modifier.height(32.dp))

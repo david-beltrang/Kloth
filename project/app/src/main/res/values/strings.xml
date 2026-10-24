@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">KLOTHz</string>
+    <string name="app_name">KLOTH</string>
 
     <!-- Navigation -->
     <string name="nav_home">Home</string>
@@ -52,6 +52,8 @@
     <string name="profile_edit">Editar perfil</string>
     <string name="profile_followers">Seguidores</string>
     <string name="profile_following">Seguidos</string>
+    <string name="profile_follow">Seguir</string>
+    <string name="profile_unfollow">Dejar de Seguir</string>
     <string name="profile_reviews">Reseñas</string>
     <string name="profile_publications">Publicaciones</string>
     <string name="profile_logout">Cerrar sesión</string>
@@ -103,6 +105,13 @@
     <string name="forgot_password_back_login">Volver al inicio de sesión</string>
 
     <!-- Create Article Screen -->
+    <string name="type_marca">Marca</string>
+    <string name="label_sitio_web">Sitio web</string>
+    <string name="placeholder_sitio_web">https://www.ejemplo.com</string>
+    <string name="label_pais_origen">País de origen</string>
+    <string name="placeholder_pais_origen">Ej. Italia</string>
+    <string name="label_anio_fundacion">Año de fundación</string>
+    <string name="placeholder_anio_fundacion">Ej. 1913</string>
     <string name="create_article_title">Crear publicación</string>
     <string name="type_prenda">Prenda</string>
     <string name="type_outfit">Outfit</string>
@@ -135,6 +144,14 @@
     <string name="placeholder_organizador">Nombre del organizador</string>
     <string name="btn_publicar">Publicar</string>
     <string name="cd_delete_photo">Eliminar imagen</string>
+    <string name="article_options">Opciones del artículo</string>
+    <string name="article_menu_edit">Editar artículo</string>
+    <string name="article_menu_delete">Eliminar artículo</string>
+    <string name="article_delete_title">¿Eliminar artículo?</string>
+    <string name="article_delete_message">Se eliminará el artículo y su imagen. Esta acción no se puede deshacer.</string>
+    <string name="article_delete_confirm">Eliminar</string>
+    <string name="article_delete_cancel">Cancelar</string>
+    <string name="btn_guardar_cambios">Guardar cambios</string>
 
     <!-- Review Screen -->
     <string name="cd_like">Me gusta</string>
@@ -190,6 +207,11 @@
     <string name="cd_add_favorite">Añadir a favoritos</string>
     <string name="cd_likes">Likes</string>
     <string name="cd_comments">Comentarios</string>
+    <string name="push_channel_name">Notificaciones de Kloth</string>
+    <string name="cd_delete_review">Eliminar reseña</string>
+    <string name="review_delete_title">Eliminar reseña</string>
+    <string name="review_delete_confirmation">Se eliminarán también todos los comentarios de esta reseña. Esta acción no se puede deshacer.</string>
+    <string name="review_delete_confirm">Eliminar</string>
 
     <!-- Create Review -->
     <string name="create_review_loading">Publicando...</string>
@@ -198,10 +220,27 @@
     <string name="create_review_placeholder">Escribe tu reseña aquí (requerido)…</string>
     <string name="create_review_required">Campo obligatorio</string>
 
+    <!-- Edit Article -->
+    <string name="edit_article_error">No se pudo cargar el artículo: %1$s</string>
+    <string name="edit_article_retry">Reintentar</string>
+
     <!-- Auth Errors -->
     <string name="login_error_empty_fields">Por favor, completa todos los campos</string>
     <string name="register_error_empty_fields">Todos los campos son obligatorios</string>
     <string name="register_error_generic">Ocurrió un error al crear tu cuenta. Inténtalo de nuevo</string>
     <string name="login_error_generic">Credenciales incorrectas o error de conexión</string>
     <string name="auth_error_password_short">La contraseña debe tener al menos 6 caracteres</string>
+    <string name="auth_error_invalid_credentials">Credenciales inválidas</string>
+    <string name="auth_error_user_not_found">Usuario no encontrado</string>
+    <string name="auth_error_email_already_registered">El correo ya está registrado</string>
+    <string name="auth_error_weak_password">La contraseña es muy débil</string>
+    <string name="auth_error_invalid_email">Correo electrónico inválido</string>
+
+    <!-- Network & Storage Errors -->
+    <string name="network_error_server">Error del servidor (%1$d)</string>
+    <string name="network_error_connection">No se pudo conectar al servidor</string>
+    <string name="network_error_not_found">No se encontró el recurso</string>
+    <string name="storage_error_user_not_logged_in">Usuario no autenticado</string>
+    <string name="feed_retry">Reintentar</string>
+    <string name="close">Cerrar\n</string>
 </resources>

@@ -3,6 +3,7 @@ package com.example.kloth.ui.screens.review.components
 import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,9 +16,11 @@ import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.material.icons.outlined.ModeComment
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -26,13 +29,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import coil.compose.AsyncImage
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kloth.R
-import com.example.kloth.data.local.ResenasDataLocal
 import com.example.kloth.data.local.ReviewData
 import com.example.kloth.ui.theme.GoldStar
 import com.example.kloth.ui.theme.KlothTheme
@@ -42,6 +45,10 @@ fun MainReviewItem(
     resena: ReviewData,
     onLikeClick: () -> Unit,
     onBackClick: () -> Unit,
+    onAuthorClick: (String) -> Unit = {},
+    canDelete: Boolean = false,
+    isDeleting: Boolean = false,
+    onDeleteClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -67,13 +74,14 @@ fun MainReviewItem(
                     )
                 }
 
-                Image(
-                    painter = painterResource(id = resena.avatarRes),
+                AsyncImage(
+                    model = resena.avatarUrl ?: resena.avatarRes,
                     contentDescription = resena.authorName,
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .size(40.dp)
                         .clip(CircleShape)
+                        .clickable { if (resena.authorId.isNotBlank()) onAuthorClick(resena.authorId) }
                 )
 
                 Column(modifier = Modifier.padding(start = 8.dp)) {
@@ -92,6 +100,19 @@ fun MainReviewItem(
             }
 
             Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
+                if (canDelete) {
+                    if (isDeleting) {
+                        CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+                    } else {
+                        IconButton(onClick = onDeleteClick) {
+                            Icon(
+                                imageVector = Icons.Outlined.Delete,
+                                contentDescription = stringResource(R.string.cd_delete_review),
+                                tint = MaterialTheme.colorScheme.error
+                            )
+                        }
+                    }
+                }
                 repeat(5) { index ->
                     Icon(
                         imageVector = Icons.Default.Star,
@@ -160,7 +181,14 @@ fun MainReviewItem(
 fun MainReviewItemPreview() {
     KlothTheme {
         MainReviewItem(
-            resena = ResenasDataLocal.resenaDetalleSeleccionada,
+            resena = ReviewData(
+                id = "preview",
+                authorName = "Sofia Rossi",
+                timeAgo = "Hace 2 días",
+                avatarRes = R.drawable.user1,
+                rating = 4f,
+                reviewText = "Muy buena calidad, la recomiendo."
+            ),
             onLikeClick = {},
             onBackClick = {}
         )

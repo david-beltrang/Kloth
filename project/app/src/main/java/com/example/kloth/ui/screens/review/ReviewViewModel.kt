@@ -2,20 +2,25 @@ package com.example.kloth.ui.screens.review
 
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
-import com.example.kloth.R
-import com.example.kloth.data.local.ComentarioReviewData
-import com.example.kloth.data.local.ResenasDataLocal
+import androidx.lifecycle.viewModelScope
+import com.example.kloth.data.repository.ReviewRepository
+import com.example.kloth.data.repository.AuthRepository
+import com.example.kloth.data.repository.UserRepository
 import com.example.kloth.ui.navigation.AppRoutes
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ReviewViewModel @Inject constructor(
-    savedStateHandle: SavedStateHandle
+    savedStateHandle: SavedStateHandle,
+    private val reviewRepository: ReviewRepository,
+    private val authRepository: AuthRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
     // Recupera el ID si viene de la navegación
@@ -25,6 +30,31 @@ class ReviewViewModel @Inject constructor(
     val uiState: StateFlow<ReviewState> = _uiState.asStateFlow()
 
     init {
+        val currentUser = authRepository.currentUser
+        _uiState.update {
+            it.copy(
+                currentUserId = currentUser?.uid,
+                currentUserImageUrl = currentUser?.photoUrl?.toString(),
+                currentUserName = currentUser?.displayName
+                    ?: currentUser?.email?.substringBefore("@")
+                    ?: "Usuario"
+            )
+        }
+        currentUser?.uid?.let { userId ->
+            viewModelScope.launch {
+                userRepository.getUserById(userId).onSuccess { user ->
+                    _uiState.update {
+                        it.copy(
+                            currentUserImageUrl = user.profileImageUrl ?: it.currentUserImageUrl,
+                            currentUserName = user.username?.takeIf(String::isNotBlank) ?: it.currentUserName
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    init {
         // Carga la reseña si el ID existe en la navegación
         reviewId?.let { id ->
             loadReview(id)
@@ -32,10 +62,11 @@ class ReviewViewModel @Inject constructor(
     }
 
     private fun loadReview(id: String) {
-        val resenaEncontrada = ResenasDataLocal.obtenerResenaPorId(id)
-        resenaEncontrada?.let { resena ->
-            _uiState.update { currentState ->
-                currentState.copy(resena = resena)
+        viewModelScope.launch {
+            reviewRepository.getReviewById(id, authRepository.currentUser?.uid).onSuccess { resena ->
+                _uiState.update { currentState ->
+                    currentState.copy(resena = resena)
+                }
             }
         }
     }
@@ -46,42 +77,66 @@ class ReviewViewModel @Inject constructor(
 
     fun onEnviarComentario() {
         val currentState = _uiState.value
-        if (currentState.nuevoComentarioTexto.isNotBlank() && !currentState.yaComento) {
-            val nuevoComentario = ComentarioReviewData(
-                id = "my_c_${System.currentTimeMillis()}",
-                authorName = "Tú",
-                timeAgo = "Ahora",
-                avatarRes = R.drawable.abrigo_negro,
-                commentText = currentState.nuevoComentarioTexto,
-                likesCount = 0,
-                isMyComment = true
-            )
-
-            val listaActualizada = if (currentState.ordenMasRecientes) {
-                listOf(nuevoComentario) + currentState.resena.comentariosList
-            } else {
-                currentState.resena.comentariosList + nuevoComentario
-            }
-
-            _uiState.update {
-                it.copy(
-                    resena = it.resena.copy(comentariosList = listaActualizada),
-                    nuevoComentarioTexto = ""
-                )
+        val reviewId = reviewId?.takeIf { it.isNotBlank() } ?: return
+        val userId = authRepository.currentUser?.uid ?: return
+        val text = currentState.nuevoComentarioTexto.trim()
+        if (text.isNotBlank() && !currentState.yaComento) {
+            viewModelScope.launch {
+                reviewRepository.createComment(
+                    reviewId = reviewId,
+                    userId = userId,
+                    username = currentState.currentUserName,
+                    profileImageUrl = currentState.currentUserImageUrl,
+                    text = text
+                ).onSuccess { nuevoComentario ->
+                    _uiState.update { latestState ->
+                        val comments = if (latestState.ordenMasRecientes) {
+                            listOf(nuevoComentario) + latestState.resena.comentariosList
+                        } else latestState.resena.comentariosList + nuevoComentario
+                        latestState.copy(
+                            resena = latestState.resena.copy(comentariosList = comments),
+                            nuevoComentarioTexto = ""
+                        )
+                    }
+                }
             }
         }
     }
 
     fun onLikeResena() {
-        _uiState.update { currentState ->
-            val resenaActual = currentState.resena
-            val nuevoLiked = !resenaActual.isLikedByMe
-            val nuevoCount = if (nuevoLiked) resenaActual.likesCount + 1 else resenaActual.likesCount - 1
-            currentState.copy(
-                resena = resenaActual.copy(
-                    isLikedByMe = nuevoLiked,
-                    likesCount = nuevoCount
-                )
+        val reviewId = reviewId?.takeIf { it.isNotBlank() } ?: return
+        val userId = authRepository.currentUser?.uid ?: return
+        viewModelScope.launch {
+            reviewRepository.toggleReviewLike(reviewId, userId).onSuccess { likeState ->
+                _uiState.update { currentState ->
+                    val review = currentState.resena
+                    currentState.copy(
+                        resena = review.copy(
+                            isLikedByMe = likeState.isLikedByMe,
+                            likesCount = likeState.likesCount
+                        )
+                    )
+                }
+            }
+        }
+    }
+
+    fun onDeleteReview() {
+        val reviewId = reviewId?.takeIf { it.isNotBlank() } ?: return
+        val userId = authRepository.currentUser?.uid ?: return
+        if (_uiState.value.resena.authorId != userId || _uiState.value.isDeletingReview) return
+
+        viewModelScope.launch {
+            _uiState.update { it.copy(isDeletingReview = true, deleteReviewError = null) }
+            reviewRepository.deleteReview(reviewId).fold(
+                onSuccess = {
+                    _uiState.update { it.copy(isDeletingReview = false, reviewDeleted = true) }
+                },
+                onFailure = { error ->
+                    _uiState.update {
+                        it.copy(isDeletingReview = false, deleteReviewError = error.message)
+                    }
+                }
             )
         }
     }
@@ -104,11 +159,14 @@ class ReviewViewModel @Inject constructor(
     }
 
     fun onEliminarComentario(id: String) {
-        _uiState.update { currentState ->
-            val comentariosActualizados = currentState.resena.comentariosList.filterNot { it.id == id }
-            currentState.copy(
-                resena = currentState.resena.copy(comentariosList = comentariosActualizados)
-            )
+        val reviewId = reviewId?.takeIf { it.isNotBlank() } ?: return
+        viewModelScope.launch {
+            reviewRepository.deleteComment(reviewId, id).onSuccess {
+                _uiState.update { currentState ->
+                    val comments = currentState.resena.comentariosList.filterNot { it.id == id }
+                    currentState.copy(resena = currentState.resena.copy(comentariosList = comments))
+                }
+            }
         }
     }
 

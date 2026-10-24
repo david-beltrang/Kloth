@@ -2,37 +2,45 @@ package com.example.kloth.ui.screens.createReview
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.example.kloth.data.local.FakeArticle
+import androidx.lifecycle.viewModelScope
+import com.example.kloth.data.repository.ArticleRepository
+import com.example.kloth.data.repository.AuthRepository
+import com.example.kloth.data.repository.ReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+
 @HiltViewModel
-class CreateReviewViewModel @Inject constructor() : ViewModel() {
+class CreateReviewViewModel @Inject constructor(
+    private val articleRepository: ArticleRepository,
+    private val reviewRepository: ReviewRepository,
+    private val authRepository: AuthRepository
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CreateReviewState())
     val uiState: StateFlow<CreateReviewState> = _uiState.asStateFlow()
 
     fun loadProductData(id: String) {
-        val product = FakeArticle.obtenerProductoPorId(id)
-
-        if (product != null) {
-            _uiState.update { currentState ->
-                currentState.copy(
-                    productId = id,
-                    productTitle = product.title,
-                    productBrand = product.brand,
-                    productVariant = product.colorName,
-                    productPrice = product.price,
-                    productImageRes = product.imageRes,
-                    productImageUrl = product.imageUrl
-                )
-            }
-            Log.d("CreateReviewVM", "Producto cargado exitosamente: ${product.title}")
-        } else {
-            Log.e("CreateReviewVM", "No se encontró ningún producto en FakeArticle con el ID: '$id'")
+        _uiState.update { it.copy(productId = id) }
+        viewModelScope.launch {
+            articleRepository.getArticleForEdit(id)
+                .onSuccess { product ->
+                    _uiState.update { currentState ->
+                        currentState.copy(
+                            productTitle = product.title,
+                            productBrand = product.brand,
+                            productVariant = product.colorName,
+                            productPrice = product.price,
+                            productImageRes = product.imageRes,
+                            productImageUrl = product.imageUrl
+                        )
+                    }
+                }
+                .onFailure { Log.e("CreateReviewVM", "No se pudo cargar el artículo '$id'", it) }
         }
     }
 
@@ -46,10 +54,29 @@ class CreateReviewViewModel @Inject constructor() : ViewModel() {
         }
     }
 
-    fun submitReview(onSuccess: () -> Unit) {
+    fun submitReview() {
+        val state = _uiState.value
+        val userId = authRepository.currentUser?.uid ?: return
+        if (!state.isFormValid) return
+
         _uiState.update { it.copy(isLoading = true) }
-        // Aquí iría la lógica de persistencia
-        _uiState.update { it.copy(isLoading = false) }
-        onSuccess()
+        viewModelScope.launch {
+            val result = reviewRepository.createReview(
+                articleId = state.productId,
+                userId = userId,
+                rating = state.rating,
+                text = state.reviewText.trim()
+            )
+            if (result.isSuccess) {
+                _uiState.update { it.copy(isLoading = false, isSubmitted = true) }
+            } else {
+                Log.e("CreateReviewVM", "No se pudo guardar la reseña", result.exceptionOrNull())
+                _uiState.update { it.copy(isLoading = false) }
+            }
+        }
+    }
+
+    fun onSubmittedHandled() {
+        _uiState.update { it.copy(isSubmitted = false) }
     }
 }

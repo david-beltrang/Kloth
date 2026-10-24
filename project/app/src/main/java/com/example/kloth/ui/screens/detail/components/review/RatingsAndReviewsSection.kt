@@ -14,18 +14,18 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.res.stringResource
 import com.example.kloth.R
 import com.example.kloth.data.local.ReviewData
-import com.example.kloth.data.local.ResenasDataLocal.defaultReviewsList
 import com.example.kloth.ui.screens.detail.components.RatingStars
 import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun RatingsAndReviewsSection(
-    averageRating: Float = 4.9f,
-    reviewsCountText: String = "(124 reseñas)",
-    reviewsList: List<ReviewData> = defaultReviewsList,
+    averageRating: Float = 0f,
+    reviewsCountText: String = "(0 reseñas)",
+    reviewsList: List<ReviewData> = emptyList(),
     onWriteReviewClick: () -> Unit = {},
     onLikeReviewClick: (String) -> Unit = {},
     onCommentReviewClick: (String) -> Unit = {},
+    onAuthorClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -95,7 +95,8 @@ fun RatingsAndReviewsSection(
             ReviewItem(
                 review = review,
                 onLikeClick = { onLikeReviewClick(review.id) },
-                onCommentClick = { onCommentReviewClick(review.id) }
+                onCommentClick = { onCommentReviewClick(review.id) },
+                onAuthorClick = onAuthorClick
             )
 
             if (index < reviewsList.size - 1) {
@@ -114,6 +115,17 @@ fun RatingsAndReviewsSection(
 @Composable
 fun RatingsAndReviewsSectionPreview() {
     KlothTheme {
-        RatingsAndReviewsSection()
+        RatingsAndReviewsSection(
+            reviewsList = listOf(
+                ReviewData(
+                    id = "preview",
+                    authorName = "Sofia Rossi",
+                    timeAgo = "Hace 2 días",
+                    avatarRes = R.drawable.user1,
+                    rating = 4f,
+                    reviewText = "Muy buena calidad, la recomiendo."
+                )
+            )
+        )
     }
 }

@@ -5,5 +5,10 @@ data class EditProfileState (
     val bio: String = "",
     val email: String = "",
     val location: String = "",
-    val website: String = ""
+    val website: String = "",
+    val profileImageUrl: String? = null,
+    val isLoading: Boolean = false,
+    val isSaving: Boolean = false,
+    val isSaved: Boolean = false,
+    val errorMessage: String? = null,
 )

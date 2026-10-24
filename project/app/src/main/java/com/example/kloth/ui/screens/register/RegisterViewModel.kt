@@ -2,10 +2,10 @@ package com.example.kloth.ui.screens.register
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.kloth.R
 import com.example.kloth.data.repository.AuthRepository
+import com.example.kloth.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
@@ -13,54 +13,72 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val userRepository: UserRepository
 ) : ViewModel() {
 
-    //Declarar variable privada para el estado y no repetir mutableStateFlow
     private val _uiState = MutableStateFlow(RegisterState())
     val uiState: StateFlow<RegisterState> = _uiState
 
-    //Logica de negocio de los campos y reaccionar a eventoss
     fun onFullNameChange(input: String) {
-        _uiState.update {it.copy(fullName = input, mostrarMensaje = false)}
+        _uiState.update { it.copy(fullName = input, showMessage = false, errorMessage = "") }
     }
     fun onEmailChange(input: String) {
-        _uiState.update {it.copy(email = input, mostrarMensaje = false)}
+        _uiState.update { it.copy(email = input, showMessage = false, errorMessage = "") }
     }
     fun onPasswordChange(input: String) {
-        _uiState.update {it.copy(password = input, mostrarMensaje = false)}
+        _uiState.update { it.copy(password = input, showMessage = false, errorMessage = "") }
     }
     fun onConfirmPasswordChange(input: String) {
-        _uiState.update {it.copy(confirmPassword = input, mostrarMensaje = false)}
+        _uiState.update { it.copy(confirmPassword = input, showMessage = false, errorMessage = "") }
     }
 
-    //Evitar navegacion
     fun registerButtonPressed(){
         val state = _uiState.value
-        if(
+        if (
             state.fullName.isEmpty() ||
             state.email.isEmpty() ||
             state.password.isEmpty() ||
             state.confirmPassword.isEmpty()
-        ){
-            _uiState.update { it.copy(mostrarMensaje = true, errorMessageRes = R.string.register_error_empty_fields) }
+        ) {
+            _uiState.update { it.copy(showMessage = true, errorMessage = "Todos los campos son obligatorios") }
         } else if (state.password.length < 6) {
             _uiState.update {
                 it.copy(
-                    mostrarMensaje = true,
-                    errorMessageRes = R.string.auth_error_password_short
+                    showMessage = true,
+                    errorMessage = "La contraseña debe tener al menos 6 caracteres"
                 )
             }
         } else {
+            // Registro en Firebase
             viewModelScope.launch {
-                try{
-                    authRepository.signUp(state.email, state.password)
-                    _uiState.update { it.copy(navigate = true) }
-                }catch (e: Exception){
+                val result = authRepository.signUp(state.email, state.password)
+                if (result.isSuccess) {
+                    //En cuanto a noSQL y firebase primero se autentica el usuario y se obtiene el ID
+                    val userId = authRepository.currentUser?.uid ?: throw Exception("No se pudo obtener el usuario actual")
+                    val registerResult = userRepository.registerUser(
+                        email = state.email,
+                        password = state.password,
+                        fullName = state.fullName,
+                        userId = userId
+                    )
+
+                    if (registerResult.isSuccess) {
+                        _uiState.update { it.copy(navigate = true) }
+                    } else {
+                        _uiState.update {
+                            it.copy(
+                                showMessage = true,
+                                errorMessage = registerResult.exceptionOrNull()?.message
+                                    ?: "No se pudo guardar tu usuario"
+                            )
+                        }
+                    }
+                } else {
                     _uiState.update {
                         it.copy(
-                            mostrarMensaje = true,
-                            errorMessageRes = R.string.register_error_generic
+                            showMessage = true,
+                            errorMessage = result.exceptionOrNull()?.message ?: "Ocurrió un error al crear tu cuenta"
                         )
                     }
                 }
@@ -69,7 +87,7 @@ class RegisterViewModel @Inject constructor(
     }
 
     fun onMessageShown() {
-        _uiState.update { it.copy(mostrarMensaje = false) }
+        _uiState.update { it.copy(showMessage = false) }
     }
 
     fun onNavigationConsumed() {

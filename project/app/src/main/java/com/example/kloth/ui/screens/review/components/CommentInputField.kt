@@ -1,7 +1,6 @@
 package com.example.kloth.ui.screens.review.components
 
 import android.content.res.Configuration
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
+import coil.compose.AsyncImage
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -40,6 +39,7 @@ fun CommentInputField(
     onTextoChange: (String) -> Unit,
     onSendClick: () -> Unit,
     deshabilitado: Boolean,
+    profileImageUrl: String?,
     modifier: Modifier = Modifier
 ) {
     Surface(
@@ -54,8 +54,8 @@ fun CommentInputField(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.abrigo_negro),
+            AsyncImage(
+                model = profileImageUrl,
                 contentDescription = stringResource(R.string.cd_user_avatar),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -135,7 +135,8 @@ fun CommentInputFieldPreview() {
             texto = "",
             onTextoChange = {},
             onSendClick = {},
-            deshabilitado = false
+            deshabilitado = false,
+            profileImageUrl = null
         )
     }
 }

@@ -35,7 +35,9 @@ fun ItemDetailScreen(
     onBackClick: () -> Unit = {},
     onShareClick: () -> Unit = {},
     onAddToCartClick: () -> Unit = {},
-    onWriteReviewClick: () -> Unit = {}
+    onWriteReviewClick: () -> Unit = {},
+    onReviewClick: (String) -> Unit = {},
+    onUserClick: (String) -> Unit = {}
 ) {
     // Escuchar el estado del ViewModel
     val state by detailViewModel.uiState.collectAsState()
@@ -48,6 +50,30 @@ fun ItemDetailScreen(
     if (state.isLoading) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
+        }
+        return
+    }
+
+    // El backend respondio con error o no hay conexion
+    if (state.errorMessage != null) {
+        Box(modifier = modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier.padding(32.dp)
+            ) {
+                Text(
+                    text = state.errorMessage ?: "",
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                TextButton(onClick = { detailViewModel.loadProduct(productId) }) {
+                    Text(text = stringResource(R.string.feed_retry))
+                }
+                TextButton(onClick = onBackClick) {
+                    Text(text = stringResource(R.string.detail_not_found_back))
+                }
+            }
         }
         return
     }
@@ -73,8 +99,9 @@ fun ItemDetailScreen(
         onShareClick = onShareClick,
         onAddToCartClick = onAddToCartClick,
         onWriteReviewClick = onWriteReviewClick,
-        onLikeReviewClick = { reviewId -> /* Accion like resena */ },
-        onCommentReviewClick = { reviewId -> /* Accion comentar resena */ },
+        onLikeReviewClick = { reviewId -> detailViewModel.toggleReviewLike(reviewId) },
+        onCommentReviewClick = onReviewClick,
+        onAuthorClick = onUserClick,
         modifier = modifier
     )
 }

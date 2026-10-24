@@ -6,10 +6,11 @@ package com.example.kloth.data.local
  */
 data class PostItem(
     val id: String,
+    val creatorId: String = "",
     val creatorName: String,
     val timeAgo: String,
     val avatarUrl: String,
     val commentsCount: String,
     val tags: List<String>,
-    val product: ProductDetailData
+    val product: ArticleInfo
 )

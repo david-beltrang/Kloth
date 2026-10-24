@@ -17,50 +17,64 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
+import com.example.kloth.ui.utils.ProfileAsyncImage
 
 @Composable
 fun ProfileHeaderSection(
     email: String,
+    username: String?,
+    bio: String?,
+    location: String?,
+    website: String?,
+    profileImageUrl: String?,
+    publicationsCount: Int = 0,
+    followersCount: Int = 0,
+    followingCount: Int = 0,
+    reviewsCount: Int = 0,
+    viewingOwnProfile: Boolean = true,
+    isFollowing: Boolean = false,
+    isFollowActionInProgress: Boolean = false,
     modifier: Modifier = Modifier,
     onEditProfileClick: () -> Unit = {},
-    onLogoutClick: () -> Unit = {}
+    onFollowClick: () -> Unit = {},
+    onLogoutClick: () -> Unit = {},
+    onFollowersClick: () -> Unit = {},
+    onFollowingClick: () -> Unit = {}
 ) {
+    val displayName = if (!username.isNullOrBlank()) username else email.substringBefore("@").replaceFirstChar { it.uppercase() }
+    val displayBio = if (!bio.isNullOrBlank()) bio else "Mejora tu biografía para que otros te conozcan"
+    val displayLocation = if (!location.isNullOrBlank()) location else "Añade tu ubicación"
+    val displayWebsite = if (!website.isNullOrBlank()) website else "Añade un sitio web"
+
     Column(
         modifier = modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(8.dp))
 
-        //Se usa async para que mno se trabe la UI, carga asíncrona
-        AsyncImage(
-            model = "https://lh3.googleusercontent.com/aida-public/AB6AXuDBMyCAVr9pWrd_sDsyfrx2v7B_wwZXc4En_Hj06fTPAnAoiyn85C9FsH8p6U6PiT3-zoF2ygVqjkcaxTd2qvb0dJco59T-gId4rhTYZRrypPBw7D21cyI8jziwbOHXhi6RvASwrKdMXNtFM4PZ4vmw0j-UQYyz-l9jQO_PKjkApgQurneLQYUD05xXGaJiFbJ7J7lnhsLCcMpV1reEReT6SL0W_OBqa0a_7S4P7IwHGSYytO0DdrGagg",
-            contentDescription = stringResource(R.string.cd_profile_photo),
-            contentScale = ContentScale.Crop,
+        ProfileAsyncImage(
+            profileImage = profileImageUrl ?: "",
+            size = 100,
             modifier = Modifier
-                .size(100.dp)
                 .border(
                     width = 2.dp,
                     color = MaterialTheme.colorScheme.outlineVariant,
                     shape = CircleShape
                 )
                 .padding(3.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.secondaryContainer)
         )
 
         Spacer(modifier = Modifier.height(16.dp))
 
         Text(
-            text = stringResource(R.string.mock_profile_name),
+            text = displayName,
             style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
             color = MaterialTheme.colorScheme.onSurface
         )
@@ -76,11 +90,13 @@ fun ProfileHeaderSection(
         Spacer(modifier = Modifier.height(12.dp))
 
         Text(
-            text = stringResource(R.string.mock_profile_bio),
+            text = displayBio,
             style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            color = if (bio.isNullOrBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
             textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = 32.dp)
+            modifier = Modifier
+                .padding(horizontal = 32.dp)
+                .then(if (viewingOwnProfile) Modifier.clickable { onEditProfileClick() } else Modifier)
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -89,7 +105,10 @@ fun ProfileHeaderSection(
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = if (viewingOwnProfile) Modifier.clickable { onEditProfileClick() } else Modifier
+            ) {
                 Icon(
                     imageVector = Icons.Default.LocationOn,
                     contentDescription = null,
@@ -98,12 +117,15 @@ fun ProfileHeaderSection(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = stringResource(R.string.mock_profile_location),
+                    text = displayLocation,
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = if (location.isNullOrBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
-            Row(verticalAlignment = Alignment.CenterVertically) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = if (viewingOwnProfile) Modifier.clickable { onEditProfileClick() } else Modifier
+            ) {
                 Icon(
                     imageVector = Icons.Default.Link,
                     contentDescription = null,
@@ -112,9 +134,9 @@ fun ProfileHeaderSection(
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
-                    text = stringResource(R.string.mock_profile_website),
+                    text = displayWebsite,
                     style = MaterialTheme.typography.labelSmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                    color = if (website.isNullOrBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
         }
@@ -133,19 +155,23 @@ fun ProfileHeaderSection(
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             ProfileStatItem(
-                value = "124",
+                value = publicationsCount.toString(),
                 label = stringResource(R.string.profile_publications)
             )
             ProfileStatItem(
-                value = "12.8k",
-                label = stringResource(R.string.profile_followers)
+                value = followersCount.toString(),
+                label = stringResource(R.string.profile_followers),
+                enabled = true,
+                onClick = onFollowersClick
             )
             ProfileStatItem(
-                value = "842",
-                label = stringResource(R.string.profile_following)
+                value = followingCount.toString(),
+                label = stringResource(R.string.profile_following),
+                enabled = true,
+                onClick = onFollowingClick
             )
             ProfileStatItem(
-                value = "48",
+                value = reviewsCount.toString(),
                 label = stringResource(R.string.profile_reviews)
             )
         }
@@ -157,8 +183,32 @@ fun ProfileHeaderSection(
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        // RF-05: modificar perfil (acción pendiente)
-        Box(
+        if (!viewingOwnProfile) Box(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp)
+                .clip(RoundedCornerShape(999.dp))
+                .background(
+                    if (isFollowing) MaterialTheme.colorScheme.surfaceContainerHighest
+                    else androidx.compose.ui.graphics.Color.Black
+                )
+                .then(
+                    if (isFollowActionInProgress) Modifier
+                    else Modifier.clickable { onFollowClick() }
+                )
+                .padding(vertical = 14.dp),
+            contentAlignment = Alignment.Center
+        ) {
+            Text(
+                text = stringResource(if (isFollowing) R.string.profile_unfollow else R.string.profile_follow),
+                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
+                color = if (isFollowing) MaterialTheme.colorScheme.onSurfaceVariant
+                else androidx.compose.ui.graphics.Color.White
+            )
+        }
+
+        // RF-05: modificar perfil
+        if (viewingOwnProfile) Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
@@ -178,7 +228,7 @@ fun ProfileHeaderSection(
         Spacer(modifier = Modifier.height(12.dp))
 
         // Logout Button
-        Box(
+        if (viewingOwnProfile) Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
@@ -203,10 +253,12 @@ fun ProfileHeaderSection(
 private fun ProfileStatItem(
     value: String,
     label: String,
+    enabled: Boolean = false,
+    onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier.clickable(enabled = enabled, onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -227,7 +279,18 @@ private fun ProfileStatItem(
 @Composable
 fun ProfileHeaderSectionPreview() {
     KlothTheme(darkTheme = false) {
-        ProfileHeaderSection(email = "test@example.com")
+        ProfileHeaderSection(
+            email = "test@example.com",
+            username = null,
+            bio = null,
+            location = null,
+            website = null,
+            profileImageUrl = null,
+            publicationsCount = 5,
+            followersCount = 120,
+            followingCount = 80,
+            reviewsCount = 3
+        )
     }
 }
 
@@ -235,6 +298,17 @@ fun ProfileHeaderSectionPreview() {
 @Composable
 fun ProfileHeaderSectionDarkPreview() {
     KlothTheme(darkTheme = true) {
-        ProfileHeaderSection(email = "test@example.com")
+        ProfileHeaderSection(
+            email = "test@example.com",
+            username = null,
+            bio = null,
+            location = null,
+            website = null,
+            profileImageUrl = null,
+            publicationsCount = 5,
+            followersCount = 120,
+            followingCount = 80,
+            reviewsCount = 3
+        )
     }
 }

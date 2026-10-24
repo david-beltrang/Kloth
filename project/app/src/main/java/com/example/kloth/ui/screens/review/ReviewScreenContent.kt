@@ -13,7 +13,14 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.TextButton
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -29,18 +36,48 @@ import com.example.kloth.ui.screens.review.components.MainReviewItem
 @Composable
 fun ReviewScreenContent(
     resena: ReviewData,
+    isOwnReview: Boolean = false,
+    isDeletingReview: Boolean = false,
+    deleteReviewError: String? = null,
+    currentUserImageUrl: String?,
     nuevoComentarioTexto: String,
     ordenMasRecientes: Boolean,
     yaComento: Boolean,
     onTextoComentarioChange: (String) -> Unit,
     onEnviarComentario: () -> Unit,
     onLikeResena: () -> Unit,
+    onDeleteReview: () -> Unit = {},
     onLikeComentario: (String) -> Unit,
     onEliminarComentario: (String) -> Unit,
     onToggleOrden: () -> Unit,
     onBackClick: () -> Unit,
+    onUserClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
+    var showDeleteConfirmation by remember { mutableStateOf(false) }
+
+    if (showDeleteConfirmation) {
+        AlertDialog(
+            onDismissRequest = { if (!isDeletingReview) showDeleteConfirmation = false },
+            title = { Text(stringResource(R.string.review_delete_title)) },
+            text = {
+                Text(deleteReviewError ?: stringResource(R.string.review_delete_confirmation))
+            },
+            confirmButton = {
+                TextButton(onClick = onDeleteReview, enabled = !isDeletingReview) {
+                    if (isDeletingReview) CircularProgressIndicator()
+                    else Text(stringResource(R.string.review_delete_confirm))
+                }
+            },
+            dismissButton = {
+                TextButton(
+                    onClick = { showDeleteConfirmation = false },
+                    enabled = !isDeletingReview
+                ) { Text(stringResource(R.string.close)) }
+            }
+        )
+    }
+
     Column(
         modifier = modifier
             .fillMaxSize()
@@ -55,7 +92,11 @@ fun ReviewScreenContent(
                 MainReviewItem(
                     resena = resena,
                     onLikeClick = onLikeResena,
-                    onBackClick = onBackClick
+                    onBackClick = onBackClick,
+                    onAuthorClick = onUserClick,
+                    canDelete = isOwnReview,
+                    isDeleting = isDeletingReview,
+                    onDeleteClick = { showDeleteConfirmation = true }
                 )
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             }
@@ -98,7 +139,8 @@ fun ReviewScreenContent(
                 CommentItem(
                     comentario = comentario,
                     onLikeClick = { onLikeComentario(comentario.id) },
-                    onDeleteClick = { onEliminarComentario(comentario.id) }
+                    onDeleteClick = { onEliminarComentario(comentario.id) },
+                    onAuthorClick = onUserClick
                 )
                 HorizontalDivider(
                     color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f),
@@ -107,7 +149,16 @@ fun ReviewScreenContent(
             }
         }
 
+        deleteReviewError?.let { error ->
+            Text(
+                text = error,
+                color = MaterialTheme.colorScheme.error,
+                modifier = Modifier.padding(horizontal = 16.dp, vertical = 8.dp)
+            )
+        }
+
         CommentInputField(
+            profileImageUrl = currentUserImageUrl,
             texto = nuevoComentarioTexto,
             onTextoChange = onTextoComentarioChange,
             onSendClick = onEnviarComentario,

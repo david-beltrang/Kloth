@@ -28,7 +28,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
-import com.example.kloth.data.local.ProductDetailData
+import com.example.kloth.data.local.PostItem
 import com.example.kloth.ui.screens.detail.components.ProductCatalogCard
 import com.example.kloth.ui.screens.explore.components.CategoryChip
 import com.example.kloth.ui.screens.explore.components.FilterChip
@@ -37,7 +37,7 @@ import com.example.kloth.ui.screens.explore.components.SearchBar
 @Composable
 fun ExploreScreenContent(
     // Variables de estado (Datos que vienen del ViewModel)
-    products: List<ProductDetailData>,
+    products: List<PostItem>,
     selectedCategoryIndex: Int,
 
     // Métodos para manejar el estado (Eventos)
@@ -146,14 +146,15 @@ fun ExploreScreenContent(
             }
         }
 
-        items(products) { product ->
+        items(products) { post ->
+            val p = post.product
             ProductCatalogCard(
-                title = product.title,
-                category = product.categoryTag,
-                rating = product.averageRating.toString(),
-                reviews = product.reviewsCountText.filter { it.isDigit() }, // Limpiamos "(128 reseñas)" a "128"
-                imageModel = product.imageUrl ?: product.imageRes,
-                onClick = { onProductClick(product.id) }
+                title = p.title,
+                category = p.categoryTag,
+                rating = p.averageRating.toString(),
+                reviews = p.reviewsCount.toString(),
+                imageModel = p.imageUrl ?: p.imageRes,
+                onClick = { onProductClick(p.id) }
             )
         }
     }

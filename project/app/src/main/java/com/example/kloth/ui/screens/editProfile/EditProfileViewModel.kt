@@ -1,18 +1,127 @@
 package com.example.kloth.ui.screens.editProfile
 
+import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.kloth.data.repository.AuthRepository
+import com.example.kloth.data.repository.StorageRepository
+import com.example.kloth.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import jakarta.inject.Inject
+import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+
 @HiltViewModel
 // ViewModel para gestionar el estado de la edición de perfil.
-class EditProfileViewModel @Inject constructor() : ViewModel() {
+class EditProfileViewModel @Inject constructor(
+    private val authRepository: AuthRepository,
+    private val storageRepository: StorageRepository,
+    private val userRepository: UserRepository
+) : ViewModel() {
     private val _uiState = MutableStateFlow(EditProfileState())
     val uiState: StateFlow<EditProfileState> = _uiState.asStateFlow()
+
+    init {
+        // Inicializar con la URL actual del usuario
+        _uiState.update { 
+            it.copy(
+                profileImageUrl = authRepository.currentUser?.photoUrl?.toString(),
+                email = authRepository.currentUser?.email.orEmpty()
+            )
+        }
+        loadProfile()
+    }
+
+    // Llena el formulario con los datos actuales de users/{uid}
+    private fun loadProfile() {
+        val userId = authRepository.currentUser?.uid ?: return
+        viewModelScope.launch {
+            userRepository.getUserById(userId).onSuccess { user ->
+                _uiState.update {
+                    it.copy(
+                        username = user.username.orEmpty(),
+                        bio = user.bio.orEmpty(),
+                        location = user.location.orEmpty(),
+                        website = user.website.orEmpty(),
+                        email = user.email.ifBlank { it.email },
+                        profileImageUrl = user.profileImageUrl ?: it.profileImageUrl
+                    )
+                }
+            }
+        }
+    }
+
+    // Guarda los cambios en Firestore. El merge conserva los campos que no se editaron
+    // (fullName, password, imagen...). El email se actualiza en Auth y en Firestore.
+    fun saveProfile() {
+        val state = _uiState.value
+        val userId = authRepository.currentUser?.uid ?: return
+        if (state.username.isBlank() || state.isSaving) return
+
+        _uiState.update { it.copy(isSaving = true, errorMessage = null) }
+        viewModelScope.launch {
+            val newEmail = state.email.trim()
+            val currentEmail = authRepository.currentUser?.email.orEmpty()
+            val emailChanged = newEmail.isNotEmpty() && !newEmail.equals(currentEmail, ignoreCase = true)
+
+            // 1) Si el email cambió, primero se actualiza Firebase Auth
+            val emailResult = if (emailChanged) authRepository.updateEmail(newEmail) else Result.success(Unit)
+
+            if (emailResult.isFailure) {
+                _uiState.update {
+                    it.copy(
+                        isSaving = false,
+                        errorMessage = "No se pudo cambiar el email. Vuelve a iniciar sesión e inténtalo de nuevo."
+                    )
+                }
+            } else {
+                // 2) Se guarda el resto del perfil
+                val result = userRepository.updateProfile(
+                    userId = userId,
+                    username = state.username,
+                    biography = state.bio,
+                    location = state.location,
+                    website = state.website,
+                    email = newEmail.takeIf { it.isNotEmpty() }
+                )
+                _uiState.update {
+                    it.copy(
+                        isSaving = false,
+                        isSaved = result.isSuccess,
+                        errorMessage = if (result.isSuccess) null else "No se pudo guardar el perfil"
+                    )
+                }
+            }
+        }
+    }
+
+    fun onSavedConsumed() {
+        _uiState.update { it.copy(isSaved = false) }
+    }
+
+    // Funcion para subir imagen
+    fun onImagePicked(uri: Uri) {
+        viewModelScope.launch {
+            _uiState.update { it.copy(profileImageUrl = uri.toString(), isLoading = true) }
+
+            val userId = authRepository.currentUser?.uid.toString()
+            val result = storageRepository.uploadProfileImage(uri)
+
+            if (result.isSuccess) {
+                val url = result.getOrThrow()
+                userRepository.updateProfileImage(userId,url)
+                    .onFailure { Log.e("EditProfileViewModel", "Error al actualizar la imagen de perfil") }
+                _uiState.update { it.copy(profileImageUrl = url, isLoading = false) }
+            } else {
+                _uiState.update { it.copy(isLoading = false) }
+            }
+        }
+    }
 
     // Funcion para actualizar el Username
     fun updateUsername(input: String) {

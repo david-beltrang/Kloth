@@ -4,6 +4,8 @@ import com.example.kloth.data.local.PostItem
 
 data class FeedState(
     val posts: List<PostItem> = emptyList(),
+    val allPosts: List<PostItem> = emptyList(),
     val selectedTabIndex: Int = 0,
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null
 )

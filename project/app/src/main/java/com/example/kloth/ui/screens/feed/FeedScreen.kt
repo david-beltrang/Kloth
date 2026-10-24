@@ -1,22 +1,41 @@
 package com.example.kloth.ui.screens.feed
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.runtime.*
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.hilt.navigation.compose.hiltViewModel
+import com.example.kloth.R
 import com.example.kloth.ui.screens.feed.components.FeedTabRow
 
 @Composable
 fun FeedScreen(
-    feedViewModel: FeedViewModel,
+    feedViewModel: FeedViewModel = hiltViewModel(),
     modifier: Modifier = Modifier,
-    onProductClick: (String) -> Unit = {}
+    onProductClick: (String) -> Unit = {},
+    onProfileClick: (String) -> Unit = {}
 ) {
-    // Escuchar el estado del ViewModel
     val state by feedViewModel.uiState.collectAsState()
-    
+
+    // Se recarga cada vez que la pantalla vuelve a entrar en composición
+    LaunchedEffect(Unit) {
+        feedViewModel.getAllPosts()
+    }
+
     Surface(
         modifier = modifier.fillMaxSize(),
         color = MaterialTheme.colorScheme.background
@@ -26,13 +45,29 @@ fun FeedScreen(
                 selectedTabIndex = state.selectedTabIndex,
                 onTabSelected = { feedViewModel.onTabSelected(it) }
             )
-            FeedScreenContent(
-                // Variables de estado (Datos)
-                mockPosts = state.posts,
-
-                // Navegación y Eventos
-                onProductClick = onProductClick
-            )
+            when {
+                state.isLoading -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+                state.errorMessage != null -> Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Text(
+                            text = state.errorMessage ?: "",
+                            textAlign = TextAlign.Center,
+                            modifier = Modifier.padding(horizontal = 32.dp)
+                        )
+                        TextButton(onClick = { feedViewModel.getAllPosts() }) {
+                            Text(text = stringResource(R.string.feed_retry))
+                        }
+                    }
+                }
+                else -> FeedScreenContent(
+                    mockPosts = state.posts,
+                    onProductClick = onProductClick,
+                    onProfileClick = onProfileClick,
+                    modifier = Modifier.fillMaxSize()
+                )
+            }
         }
     }
 }

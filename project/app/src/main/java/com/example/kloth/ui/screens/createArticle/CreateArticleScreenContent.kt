@@ -39,7 +39,12 @@ fun CreateArticleScreenContent(
     onEstiloChange: (String) -> Unit,
     onCiudadChange: (String) -> Unit,
     onPaisChange: (String) -> Unit,
+    onFechaInicioChange: (String) -> Unit,
+    onFechaFinChange: (String) -> Unit,
     onOrganizadorChange: (String) -> Unit,
+    onSitioWebChange: (String) -> Unit,
+    onPaisOrigenChange: (String) -> Unit,
+    onAnioFundacionChange: (String) -> Unit,
     onPublicarClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -60,6 +65,7 @@ fun CreateArticleScreenContent(
                     ArticleType.PRENDA -> stringResource(R.string.type_prenda)
                     ArticleType.OUTFIT -> stringResource(R.string.type_outfit)
                     ArticleType.EVENTO -> stringResource(R.string.type_evento)
+                    ArticleType.MARCA -> stringResource(R.string.type_marca)
                 }
                 CategoryChip(
                     text = typeName,
@@ -101,8 +107,18 @@ fun CreateArticleScreenContent(
             onCiudadChange = onCiudadChange,
             pais = uiState.pais,
             onPaisChange = onPaisChange,
+            fechaInicio = uiState.fechaInicio,
+            onFechaInicioChange = onFechaInicioChange,
+            fechaFin = uiState.fechaFin,
+            onFechaFinChange = onFechaFinChange,
             organizador = uiState.organizador,
             onOrganizadorChange = onOrganizadorChange,
+            sitioWeb = uiState.sitioWeb,
+            onSitioWebChange = onSitioWebChange,
+            paisOrigen = uiState.paisOrigen,
+            onPaisOrigenChange = onPaisOrigenChange,
+            anioFundacion = uiState.anioFundacion,
+            onAnioFundacionChange = onAnioFundacionChange,
             onPublicarClick = onPublicarClick
         )
     }

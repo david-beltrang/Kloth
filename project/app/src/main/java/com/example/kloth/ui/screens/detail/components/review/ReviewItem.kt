@@ -17,6 +17,7 @@ fun ReviewItem(
     review: ReviewData,
     onLikeClick: () -> Unit = {},
     onCommentClick: () -> Unit = {},
+    onAuthorClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -28,7 +29,9 @@ fun ReviewItem(
             authorName = review.authorName,
             timeAgo = review.timeAgo,
             avatarRes = review.avatarRes,
-            rating = review.rating
+            avatarUrl = review.avatarUrl,
+            rating = review.rating,
+            onAvatarClick = { if (review.authorId.isNotBlank()) onAuthorClick(review.authorId) }
         )
 
         Spacer(modifier = Modifier.height(8.dp))
@@ -44,6 +47,7 @@ fun ReviewItem(
 
         ReviewActions(
             likesCount = review.likesCount,
+            isLikedByMe = review.isLikedByMe,
             commentsText = review.commentsCountText,
             onLikeClick = onLikeClick,
             onCommentClick = onCommentClick

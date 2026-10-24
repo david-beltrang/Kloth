@@ -1,6 +1,6 @@
 package com.example.kloth.ui.screens.createArticle.components
 
-import androidx.compose.foundation.Image
+import android.net.Uri
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -24,16 +24,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import coil.compose.AsyncImage
 import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun PhotoCarrusel(
-    photos: List<Int>,
+    photos: List<Uri>,
     onDeletePhoto: (Int) -> Unit,
     modifier: Modifier = Modifier
 ) {
@@ -42,9 +42,9 @@ fun PhotoCarrusel(
         contentPadding = PaddingValues(horizontal = 16.dp, vertical = 8.dp),
         horizontalArrangement = Arrangement.spacedBy(10.dp)
     ) {
-        itemsIndexed(photos) { index, photoResId ->
+        itemsIndexed(photos) { index, photoUri ->
             PhotoItem(
-                photoResId = photoResId,
+                photoUri = photoUri,
                 onDelete = { onDeletePhoto(index) }
             )
         }
@@ -53,15 +53,15 @@ fun PhotoCarrusel(
 
 @Composable
 fun PhotoItem(
-    photoResId: Int,
+    photoUri: Uri,
     onDelete: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Box(
         modifier = modifier.size(100.dp)
     ) {
-        Image(
-            painter = painterResource(id = photoResId),
+        AsyncImage(
+            model = photoUri,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = Modifier
@@ -94,11 +94,7 @@ fun PhotoItem(
 @Preview(showBackground = true)
 @Composable
 fun PhotoCarruselPreview() {
-    val mockPhotos = listOf(
-        R.drawable.abrigo_negro,
-        R.drawable.bolso_cuero,
-        R.drawable.camiseta_gymshark
-    )
+    val mockPhotos = listOf(Uri.EMPTY, Uri.EMPTY, Uri.EMPTY)
     KlothTheme {
         PhotoCarrusel(
             photos = mockPhotos,
