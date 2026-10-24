@@ -44,7 +44,9 @@ fun ProfileHeaderSection(
     modifier: Modifier = Modifier,
     onEditProfileClick: () -> Unit = {},
     onFollowClick: () -> Unit = {},
-    onLogoutClick: () -> Unit = {}
+    onLogoutClick: () -> Unit = {},
+    onFollowersClick: () -> Unit = {},
+    onFollowingClick: () -> Unit = {}
 ) {
     val displayName = if (!username.isNullOrBlank()) username else email.substringBefore("@").replaceFirstChar { it.uppercase() }
     val displayBio = if (!bio.isNullOrBlank()) bio else "Mejora tu biografía para que otros te conozcan"
@@ -158,11 +160,15 @@ fun ProfileHeaderSection(
             )
             ProfileStatItem(
                 value = followersCount.toString(),
-                label = stringResource(R.string.profile_followers)
+                label = stringResource(R.string.profile_followers),
+                enabled = true,
+                onClick = onFollowersClick
             )
             ProfileStatItem(
                 value = followingCount.toString(),
-                label = stringResource(R.string.profile_following)
+                label = stringResource(R.string.profile_following),
+                enabled = true,
+                onClick = onFollowingClick
             )
             ProfileStatItem(
                 value = reviewsCount.toString(),
@@ -247,10 +253,12 @@ fun ProfileHeaderSection(
 private fun ProfileStatItem(
     value: String,
     label: String,
+    enabled: Boolean = false,
+    onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier,
+        modifier = modifier.clickable(enabled = enabled, onClick = onClick),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(

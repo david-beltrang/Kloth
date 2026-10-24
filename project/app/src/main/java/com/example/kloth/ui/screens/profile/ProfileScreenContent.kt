@@ -49,6 +49,8 @@ fun ProfileScreenContent(
     onDeleteArticleClick: (PostItem) -> Unit,
     onEditArticleClick: (String) -> Unit,
     onLogoutClick: () -> Unit,
+    onFollowersClick: () -> Unit = {},
+    onFollowingClick: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
 
@@ -87,7 +89,9 @@ fun ProfileScreenContent(
                     isFollowing = isFollowing,
                     isFollowActionInProgress = isFollowActionInProgress,
                     onFollowClick = onFollowClick,
-                    onLogoutClick = onLogoutClick
+                    onLogoutClick = onLogoutClick,
+                    onFollowersClick = onFollowersClick,
+                    onFollowingClick = onFollowingClick
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))

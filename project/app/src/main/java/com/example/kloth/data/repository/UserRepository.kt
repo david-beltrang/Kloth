@@ -26,6 +26,13 @@ class UserRepository @Inject constructor(
         Result.failure(e)
     }
 
+    suspend fun getFollowedUsers(userId: String, listType: String): Result<List<UserProfileInfo>> = try {
+        Result.success(userDataSource.getFollowedUsers(userId, listType).map { it.toUserProfileInfo() })
+    } catch (e: Exception) {
+        Log.e("UserRepository", "No se pudo cargar la lista de seguimiento", e)
+        Result.failure(e)
+    }
+
     suspend fun isFollowing(currentUserId: String, targetUserId: String): Result<Boolean> = try {
         Result.success(userDataSource.isFollowing(currentUserId, targetUserId))
     } catch (e: Exception) {

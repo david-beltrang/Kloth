@@ -7,14 +7,15 @@ object NavigationLogic {
         AppRoutes.Splash.route,
         AppRoutes.ForgotPassword.route,
         AppRoutes.Register.route,
-        AppRoutes.EditProfile.route
+        AppRoutes.EditProfile.route,
+        AppRoutes.FollowList.route
     )
 
     private val noBottomBarScreens = listOf(
         AppRoutes.Splash.route,
         AppRoutes.Login.route,
         AppRoutes.Register.route,
-        AppRoutes.ForgotPassword.route
+        AppRoutes.ForgotPassword.route,
 
     )
 

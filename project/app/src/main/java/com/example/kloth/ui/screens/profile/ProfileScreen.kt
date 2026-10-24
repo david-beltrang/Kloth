@@ -17,6 +17,7 @@ fun ProfileScreen(
     onDeleteArticleClick: (PostItem) -> Unit = {},
     onEditArticleClick: (String) -> Unit = {},
     profileUserId: String? = null,
+    onFollowListClick: (String, String) -> Unit = { _, _ -> },
     modifier: Modifier = Modifier
 ) {
     val uiState by viewModel.uiState.collectAsState()
@@ -50,6 +51,8 @@ fun ProfileScreen(
             onEditProfileClick = onEditProfileClick,
             onFollowClick = { viewModel.toggleFollow() },
             onLogoutClick = { viewModel.logOutButtonPressed() },
+            onFollowersClick = { uiState.targetUserId?.let { onFollowListClick(it, "followers") } },
+            onFollowingClick = { uiState.targetUserId?.let { onFollowListClick(it, "following") } },
             onProductClick = onProductClick,
             onDeleteArticleClick = onDeleteArticleClick,
             onEditArticleClick = onEditArticleClick,

@@ -93,6 +93,8 @@ data class CreateArticleDto(
     val style: String? = null,
     val city: String? = null,
     val country: String? = null,
+    val startDate: String? = null,
+    val endDate: String? = null,
     val organizer: String? = null,
     val website: String? = null,
     val originCountry: String? = null,

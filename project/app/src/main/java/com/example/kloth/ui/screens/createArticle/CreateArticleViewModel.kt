@@ -65,6 +65,14 @@ class CreateArticleViewModel @Inject constructor(
         _uiState.update { it.copy(pais = pais) }
     }
 
+    fun onFechaInicioChanged(fecha: String) {
+        _uiState.update { it.copy(fechaInicio = fecha) }
+    }
+
+    fun onFechaFinChanged(fecha: String) {
+        _uiState.update { it.copy(fechaFin = fecha) }
+    }
+
     fun onOrganizadorChanged(organizador: String) {
         _uiState.update { it.copy(organizador = organizador) }
     }
@@ -136,6 +144,8 @@ class CreateArticleViewModel @Inject constructor(
                 style = state.estilo.takeIf { isOutfit && it.isNotBlank() },
                 city = state.ciudad.takeIf { isEvento && it.isNotBlank() },
                 country = state.pais.takeIf { isEvento && it.isNotBlank() },
+                startDate = state.fechaInicio.takeIf { isEvento && it.isNotBlank() },
+                endDate = state.fechaFin.takeIf { isEvento && it.isNotBlank() },
                 organizer = state.organizador.takeIf { isEvento && it.isNotBlank() },
                 website = state.sitioWeb.trim().takeIf { isMarca && it.isNotBlank() },
                 originCountry = state.paisOrigen.trim().takeIf { isMarca && it.isNotBlank() },

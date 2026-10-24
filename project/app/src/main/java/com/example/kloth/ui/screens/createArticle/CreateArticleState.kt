@@ -14,6 +14,8 @@ data class CreateArticleState(
     val estilo: String = "",
     val ciudad: String = "",
     val pais: String = "",
+    val fechaInicio: String = "",
+    val fechaFin: String = "",
     val organizador: String = "",
     val isPublishing: Boolean = false,
     val sitioWeb: String = "",
