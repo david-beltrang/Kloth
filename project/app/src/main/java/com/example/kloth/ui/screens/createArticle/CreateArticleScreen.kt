@@ -48,6 +48,8 @@ fun CreateArticleScreen(
             onEstiloChange = { viewModel.onEstiloChanged(it) },
             onCiudadChange = { viewModel.onCiudadChanged(it) },
             onPaisChange = { viewModel.onPaisChanged(it) },
+            onFechaInicioChange = { viewModel.onFechaInicioChanged(it) },
+            onFechaFinChange = { viewModel.onFechaFinChanged(it) },
             onOrganizadorChange = { viewModel.onOrganizadorChanged(it) },
             onSitioWebChange = { viewModel.onSitioWebChanged(it) },
             onPaisOrigenChange = { viewModel.onPaisOrigenChanged(it) },
