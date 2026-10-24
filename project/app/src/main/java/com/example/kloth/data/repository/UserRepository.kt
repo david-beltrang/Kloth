@@ -86,7 +86,7 @@ class UserRepository @Inject constructor(
     }
 
     /**
-     * Genera el username a partir del nombre completo: "Ana María Pérez" -> "ana_maría_pérez".
+     * Genera el username a partir del nombre completo: "Ana María Pérez"  "ana_maría_pérez".
      * Si el nombre no deja nada utilizable, se usa un alias con el id del usuario.
      */
     private fun buildUsername(fullName: String, userId: String): String =
