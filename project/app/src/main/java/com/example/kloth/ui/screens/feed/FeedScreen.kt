@@ -61,6 +61,17 @@ fun FeedScreen(
                         }
                     }
                 }
+                state.selectedTabIndex == 0 && !state.hasFollowing -> Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = stringResource(R.string.feed_follow_prompt),
+                        color = MaterialTheme.colorScheme.onBackground,
+                        textAlign = TextAlign.Center,
+                        modifier = Modifier.padding(horizontal = 32.dp)
+                    )
+                }
                 else -> FeedScreenContent(
                     mockPosts = state.posts,
                     onProductClick = onProductClick,
