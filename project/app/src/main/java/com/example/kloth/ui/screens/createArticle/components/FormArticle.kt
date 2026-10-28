@@ -285,7 +285,7 @@ fun FormInput(
             singleLine = singleLine,
             minLines = minLines,
             maxLines = maxLines,
-            prefix = prefix?.let { { Text(text = "$it ") } },
+            prefix = prefix?.let { { Text(text = stringResource(R.string.text_prefix_space, it)) } },
             trailingIcon = if (isSelector) {
                 {
                     if (onSelectorClick == null) {
