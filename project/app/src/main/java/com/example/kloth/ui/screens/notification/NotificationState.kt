@@ -4,5 +4,6 @@ import com.example.kloth.data.local.NotificacionUI
 
 data class NotificationState(
     val notificaciones: List<NotificacionUI> = emptyList(),
-    val isLoading: Boolean = false
+    val isLoading: Boolean = false,
+    val errorMessage: String? = null
 )

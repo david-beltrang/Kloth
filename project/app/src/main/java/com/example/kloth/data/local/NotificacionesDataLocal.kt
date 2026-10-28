@@ -1,19 +1,23 @@
 package com.example.kloth.data.local
 
+// Tipos serializados por nombre en Firestore y usados para elegir el texto de la fila.
 enum class TipoNotificacion {
     NUEVO_SEGUIDOR,
+    NUEVA_RESENA,
     COMENTARIO,
-    LIKE,
-    MENCION,
-    GUARDADO
+    LIKE
 }
 
+// Datos ya preparados por el repositorio para pintar una notificacion en Compose.
 data class NotificacionUI(
     val id: String,
+    val actorId: String = "",
     val nombreUsuario: String,
     val descripcion: String,
     val tiempo: String,
     val tipo: TipoNotificacion,
+    val avatarUrl: String? = null,
+    val thumbnailUrl: String? = null,
     val tieneMiniatura: Boolean = false,
     val noLeida: Boolean = false,
     val estaSiguiendo: Boolean = false
@@ -54,22 +58,6 @@ object NotificacionesDataLocal {
             tiempo = "Hace 3h",
             tipo = TipoNotificacion.NUEVO_SEGUIDOR,
             estaSiguiendo = true
-        ),
-        NotificacionUI(
-            id = "5",
-            nombreUsuario = "Marcus Lew",
-            descripcion = "mencionó tu perfil en un comentario",
-            tiempo = "Hace 5h",
-            tipo = TipoNotificacion.MENCION,
-            tieneMiniatura = true
-        ),
-        NotificacionUI(
-            id = "6",
-            nombreUsuario = "Elias Thorne",
-            descripcion = "guardó tu publicación",
-            tiempo = "Ayer",
-            tipo = TipoNotificacion.GUARDADO,
-            tieneMiniatura = true
         )
     )
 }

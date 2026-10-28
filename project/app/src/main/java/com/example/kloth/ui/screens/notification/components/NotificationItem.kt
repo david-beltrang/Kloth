@@ -20,6 +20,7 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -27,16 +28,21 @@ import com.example.kloth.data.local.NotificacionUI
 import com.example.kloth.data.local.TipoNotificacion
 import com.example.kloth.ui.theme.KlothTheme
 
-/**
- * Fila individual para la lista de notificaciones.
- * Muestra el autor, la acción realizada, el tiempo transcurrido y una acción (Seguir) o miniatura.
- */
+// Fila individual que muestra el autor, la accion, el tiempo y el boton Seguir o la miniatura.
 @Composable
 fun NotificationItem(
     notificacion: NotificacionUI,
     onToggleSeguir: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
+    val description = stringResource(
+        when (notificacion.tipo) {
+            TipoNotificacion.NUEVO_SEGUIDOR -> com.example.kloth.R.string.notification_followed_you
+            TipoNotificacion.NUEVA_RESENA -> com.example.kloth.R.string.notification_new_review
+            TipoNotificacion.COMENTARIO -> com.example.kloth.R.string.notification_commented_review
+            TipoNotificacion.LIKE -> com.example.kloth.R.string.notification_liked_review
+        }
+    )
     Row(
         modifier = modifier
             .fillMaxWidth()
@@ -46,7 +52,8 @@ fun NotificationItem(
     ) {
         NotificationAvatar(
             inicial = notificacion.nombreUsuario.take(1),
-            mostrarPuntoNoLeido = notificacion.noLeida
+            mostrarPuntoNoLeido = notificacion.noLeida,
+            imageUrl = notificacion.avatarUrl
         )
 
         Column(modifier = Modifier.weight(1f)) {
@@ -57,7 +64,7 @@ fun NotificationItem(
                     }
                     append(" ")
                     withStyle(SpanStyle(color = MaterialTheme.colorScheme.onBackground)) {
-                        append(notificacion.descripcion)
+                        append(description)
                     }
                 },
                 fontSize = 14.sp,
@@ -81,13 +88,24 @@ fun NotificationItem(
             }
             else -> {
                 if (notificacion.tieneMiniatura) {
-                    Box(
-                        modifier = Modifier
-                            .padding(top = 2.dp)
-                            .size(40.dp)
-                            .clip(RoundedCornerShape(8.dp))
-                            .background(MaterialTheme.colorScheme.surfaceContainerLow)
-                    )
+                    if (notificacion.thumbnailUrl.isNullOrBlank()) {
+                        Box(
+                            modifier = Modifier
+                                .padding(top = 2.dp)
+                                .size(40.dp)
+                                .clip(RoundedCornerShape(8.dp))
+                                .background(MaterialTheme.colorScheme.surfaceContainerLow)
+                        )
+                    } else {
+                        coil.compose.AsyncImage(
+                            model = notificacion.thumbnailUrl,
+                            contentDescription = null,
+                            modifier = Modifier
+                                .padding(top = 2.dp)
+                                .size(40.dp)
+                                .clip(RoundedCornerShape(8.dp))
+                        )
+                    }
                 }
             }
         }
