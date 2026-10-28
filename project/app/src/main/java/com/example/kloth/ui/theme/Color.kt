@@ -31,3 +31,17 @@ val TransparentBlack30 = Color(0x4D000000)
 val GoldStar = Color(0xFFFFB800)
 val StarYellow = Color(0xFFFFB800)
 val Sunset = Color(0xFFFF5C00)
+
+// Category chip colors
+val OutfitCategory = Color(0xFF6E7C89)
+val MarcaCategory = Color(0xFF4E0000)
+val EventoCategory = Color(0xFF142161)
+val PrendaCategory = Color(0xFF8B8B8B)
+
+fun articleCategoryColor(category: String): Color? = when (category.trim().lowercase()) {
+    "outfit" -> OutfitCategory
+    "marca" -> MarcaCategory
+    "evento" -> EventoCategory
+    "prenda" -> PrendaCategory
+    else -> null
+}

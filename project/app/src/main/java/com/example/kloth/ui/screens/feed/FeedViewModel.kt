@@ -46,6 +46,7 @@ class FeedViewModel @Inject constructor(
                     it.copy(
                         allPosts = result.getOrNull().orEmpty(),
                         posts = filterPosts(result.getOrNull().orEmpty(), it.selectedTabIndex),
+                        hasFollowing = followingIds.isNotEmpty(),
                         isLoading = false,
                         errorMessage = null
                     )
@@ -69,7 +70,11 @@ class FeedViewModel @Inject constructor(
                     followingIds = userRepository.getFollowingIds(userId).getOrDefault(emptySet())
                 }
                 _uiState.update { state ->
-                    state.copy(selectedTabIndex = index, posts = filterPosts(state.allPosts, index))
+                    state.copy(
+                        selectedTabIndex = index,
+                        posts = filterPosts(state.allPosts, index),
+                        hasFollowing = followingIds.isNotEmpty()
+                    )
                 }
             }
             return

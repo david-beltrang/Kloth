@@ -17,7 +17,9 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.kloth.R
 import com.example.kloth.data.local.UserProfileInfo
 import com.example.kloth.ui.screens.followList.components.FollowUserRow
 
@@ -40,17 +42,17 @@ fun FollowListScreenContent(
             verticalAlignment = Alignment.CenterVertically
         ) {
             IconButton(onClick = onBackClick) {
-                Icon(Icons.Default.ArrowBack, contentDescription = "Volver")
+                Icon(Icons.Default.ArrowBack, contentDescription = stringResource(R.string.follow_list_back))
             }
             Text(
-                text = if (listType == "followers") "Seguidores" else "Seguidos",
+                text = stringResource(if (listType == "followers") R.string.follow_list_followers_title else R.string.follow_list_following_title),
                 style = MaterialTheme.typography.titleLarge
             )
         }
         when {
             isLoading -> CircularProgressIndicator(Modifier.align(Alignment.CenterHorizontally).padding(24.dp))
             users.isEmpty() -> Text(
-                text = if (listType == "followers") "Aún no tiene seguidores" else "Aún no sigue a usuarios",
+                text = stringResource(if (listType == "followers") R.string.follow_list_empty_followers else R.string.follow_list_empty_following),
                 modifier = Modifier.align(Alignment.CenterHorizontally).padding(24.dp),
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
