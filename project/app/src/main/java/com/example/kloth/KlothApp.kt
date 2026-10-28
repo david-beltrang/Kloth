@@ -20,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.BlendMode.Companion.Screen
 import androidx.compose.ui.platform.LocalContext
@@ -30,8 +31,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.kloth.ui.navigation.AppNavigation
 import com.example.kloth.ui.navigation.AppRoutes
 import com.example.kloth.ui.navigation.NavigationLogic
+import com.example.kloth.ui.screens.notification.NotificationBadgeViewModel
 import com.example.kloth.ui.utils.KlothBottomNavigation
 import com.example.kloth.ui.utils.KlothTopAppBar
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 import java.util.jar.Manifest.*
@@ -56,6 +59,8 @@ fun KlothApp() {
     val currentRoute = backStackEntry?.destination?.route
 
     val currentUser = FirebaseAuth.getInstance().currentUser
+    val notificationBadgeViewModel: NotificationBadgeViewModel = hiltViewModel()
+    val notificationCount by notificationBadgeViewModel.unreadCount.collectAsState()
     val photoUrl: String = currentUser?.photoUrl.toString() ?: ""
     val context = LocalContext.current
     val notificationPermissionLauncher = rememberLauncherForActivityResult(
@@ -79,19 +84,36 @@ fun KlothApp() {
         }
     }
 
+    LaunchedEffect(currentUser?.uid) {
+        notificationBadgeViewModel.observeUserNotifications(currentUser?.uid)
+    }
+
     Scaffold(
         topBar = {
-            // La barra superior se oculta en pantallas de autenticación o edición
-            if (NavigationLogic.shouldShowTopBar(currentRoute)
+            // El Header cambia su contenido según la pantalla principal.
+            if (NavigationLogic.shouldShowTopBar(currentRoute) &&
+                currentRoute in setOf(
+                    AppRoutes.Feed.route,
+                    AppRoutes.CreateArticle.route,
+                    AppRoutes.Notifications.route
+                )
             ) {
-                KlothTopAppBar()
+                val headerTitleRes = when (currentRoute) {
+                    AppRoutes.CreateArticle.route -> R.string.header_create
+                    AppRoutes.Notifications.route -> R.string.header_notifications
+                    else -> null
+                }
+                KlothTopAppBar(titleRes = headerTitleRes)
             }
         },
         bottomBar = {
             // La navegación inferior solo se muestra en el flujo principal de la app
             if (NavigationLogic.shouldShowBottomBar(currentRoute)
             ) {
-                KlothBottomNavigation(navController = navController)
+                KlothBottomNavigation(
+                    navController = navController,
+                    notificationCount = notificationCount
+                )
             }
         }
     ) { innerPadding ->
