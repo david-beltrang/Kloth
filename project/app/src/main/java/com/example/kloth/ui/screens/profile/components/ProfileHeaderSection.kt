@@ -49,9 +49,9 @@ fun ProfileHeaderSection(
     onFollowingClick: () -> Unit = {}
 ) {
     val displayName = if (!username.isNullOrBlank()) username else email.substringBefore("@").replaceFirstChar { it.uppercase() }
-    val displayBio = if (!bio.isNullOrBlank()) bio else "Mejora tu biografía para que otros te conozcan"
-    val displayLocation = if (!location.isNullOrBlank()) location else "Añade tu ubicación"
-    val displayWebsite = if (!website.isNullOrBlank()) website else "Añade un sitio web"
+    val displayBio = if (!bio.isNullOrBlank()) bio else stringResource(R.string.profile_bio_empty)
+    val displayLocation = if (!location.isNullOrBlank()) location else stringResource(R.string.profile_location_empty)
+    val displayWebsite = if (!website.isNullOrBlank()) website else stringResource(R.string.profile_website_empty)
 
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -190,7 +190,7 @@ fun ProfileHeaderSection(
                 .clip(RoundedCornerShape(999.dp))
                 .background(
                     if (isFollowing) MaterialTheme.colorScheme.surfaceContainerHighest
-                    else androidx.compose.ui.graphics.Color.Black
+                    else MaterialTheme.colorScheme.primary
                 )
                 .then(
                     if (isFollowActionInProgress) Modifier
@@ -203,7 +203,7 @@ fun ProfileHeaderSection(
                 text = stringResource(if (isFollowing) R.string.profile_unfollow else R.string.profile_follow),
                 style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
                 color = if (isFollowing) MaterialTheme.colorScheme.onSurfaceVariant
-                else androidx.compose.ui.graphics.Color.White
+                else MaterialTheme.colorScheme.onPrimary
             )
         }
 

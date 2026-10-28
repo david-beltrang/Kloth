@@ -1,5 +1,6 @@
 package com.example.kloth.ui.screens.editProfile
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.lifecycle.ViewModel
@@ -7,7 +8,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.kloth.data.repository.AuthRepository
 import com.example.kloth.data.repository.StorageRepository
 import com.example.kloth.data.repository.UserRepository
+import com.example.kloth.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -19,6 +22,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 // ViewModel para gestionar el estado de la edición de perfil.
 class EditProfileViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val authRepository: AuthRepository,
     private val storageRepository: StorageRepository,
     private val userRepository: UserRepository
@@ -76,7 +80,7 @@ class EditProfileViewModel @Inject constructor(
                 _uiState.update {
                     it.copy(
                         isSaving = false,
-                        errorMessage = "No se pudo cambiar el email. Vuelve a iniciar sesión e inténtalo de nuevo."
+                        errorMessage = context.getString(R.string.edit_profile_error_email)
                     )
                 }
             } else {
@@ -93,7 +97,7 @@ class EditProfileViewModel @Inject constructor(
                     it.copy(
                         isSaving = false,
                         isSaved = result.isSuccess,
-                        errorMessage = if (result.isSuccess) null else "No se pudo guardar el perfil"
+                        errorMessage = if (result.isSuccess) null else context.getString(R.string.edit_profile_error_save)
                     )
                 }
             }

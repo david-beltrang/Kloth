@@ -29,6 +29,7 @@ import com.example.kloth.ui.theme.KlothTheme
 @Composable
 fun KlothBottomNavigation(
     navController: NavHostController,
+    notificationCount: Int = 0,
     modifier: Modifier = Modifier
 ) {
     val backStackEntry by navController.currentBackStackEntryAsState()
@@ -68,7 +69,7 @@ fun KlothBottomNavigation(
                 icon = {
                     if (item.route == AppRoutes.Notifications) {
                         NotificationCount(
-                            count = 5,
+                            count = notificationCount,
                             icon = if (isSelected) item.selectedIcon else item.unselectedIcon
                         )
                     } else {

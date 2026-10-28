@@ -9,6 +9,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -20,7 +21,7 @@ fun ProfileAsyncImage(
     modifier: Modifier = Modifier
 ) {
     AsyncImage(
-        contentDescription = "User Image",
+        contentDescription = stringResource(R.string.cd_user_image),
         model = ImageRequest.Builder(LocalContext.current)
             .data(profileImage)
             .crossfade(true)
