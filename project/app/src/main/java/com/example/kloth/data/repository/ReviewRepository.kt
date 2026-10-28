@@ -59,8 +59,12 @@ class ReviewRepository @Inject constructor(
 
         val usersById = users.associateBy { it.toUserProfileInfo().id }
         val detail = reviewDto.toReviewData(usersById[reviewDto.authorIdKey()])
-        val comments = reviewDataSource.getComments(id)
-            .map { it.toComentarioReviewData(currentUserId) }
+        val comments = reviewDataSource.getComments(id).map { comment ->
+            val isLikedByMe = currentUserId?.let { userId ->
+                reviewDataSource.isCommentLikedByUser(id, comment.commentId, userId)
+            } ?: false
+            comment.toComentarioReviewData(currentUserId, isLikedByMe)
+        }
         val isLiked = currentUserId?.let { reviewDataSource.isReviewLikedByUser(id, it) } ?: false
         Result.success(detail.copy(
             comentariosList = comments,
@@ -152,6 +156,17 @@ class ReviewRepository @Inject constructor(
         Result.success(reviewDataSource.toggleReviewLike(reviewId, userId))
     } catch (e: Exception) {
         Log.e("ReviewRepository", "No se pudo actualizar el me gusta de la reseña $reviewId", e)
+        Result.failure(e)
+    }
+
+    suspend fun toggleCommentLike(
+        reviewId: String,
+        commentId: String,
+        userId: String
+    ): Result<ReviewLikeState> = try {
+        Result.success(reviewDataSource.toggleCommentLike(reviewId, commentId, userId))
+    } catch (e: Exception) {
+        Log.e("ReviewRepository", "No se pudo actualizar el me gusta del comentario $commentId", e)
         Result.failure(e)
     }
 

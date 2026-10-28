@@ -142,19 +142,24 @@ class ReviewViewModel @Inject constructor(
     }
 
     fun onLikeComentario(id: String) {
-        _uiState.update { currentState ->
-            val comentariosActualizados = currentState.resena.comentariosList.map { c ->
-                if (c.id == id) {
-                    val nuevoLiked = !c.isLikedByMe
-                    c.copy(
-                        isLikedByMe = nuevoLiked,
-                        likesCount = if (nuevoLiked) c.likesCount + 1 else c.likesCount - 1
+        val reviewId = reviewId?.takeIf { it.isNotBlank() } ?: return
+        val userId = authRepository.currentUser?.uid ?: return
+        viewModelScope.launch {
+            reviewRepository.toggleCommentLike(reviewId, id, userId).onSuccess { likeState ->
+                _uiState.update { currentState ->
+                    val comentariosActualizados = currentState.resena.comentariosList.map { comment ->
+                        if (comment.id == id) {
+                            comment.copy(
+                                isLikedByMe = likeState.isLikedByMe,
+                                likesCount = likeState.likesCount
+                            )
+                        } else comment
+                    }
+                    currentState.copy(
+                        resena = currentState.resena.copy(comentariosList = comentariosActualizados)
                     )
-                } else c
+                }
             }
-            currentState.copy(
-                resena = currentState.resena.copy(comentariosList = comentariosActualizados)
-            )
         }
     }
 

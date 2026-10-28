@@ -47,6 +47,14 @@ class UserRepository @Inject constructor(
         Result.failure(e)
     }
 
+    suspend fun removeFollower(ownerUserId: String, followerUserId: String): Result<Unit> = try {
+        userDataSource.removeFollower(ownerUserId, followerUserId)
+        Result.success(Unit)
+    } catch (e: Exception) {
+        Log.e("UserRepository", "No se pudo eliminar al seguidor $followerUserId", e)
+        Result.failure(e)
+    }
+
     suspend fun getUserById(id: String): Result<UserProfileInfo> {
         return try {
             val user = userDataSource.getUserById(id)
