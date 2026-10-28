@@ -44,6 +44,19 @@ android {
         compose = true
         buildConfig = true
     }
+    // En unit tests (JVM) Android Log/APIs no existen; evita crash al llamar Log.e en el repo.
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
+}
+
+// MockK/Byte Buddy no soporta bien JDK 25 del JBR de Android Studio; las unitarias corren en 21.
+tasks.withType<Test>().configureEach {
+    javaLauncher.set(
+        javaToolchains.launcherFor {
+            languageVersion.set(JavaLanguageVersion.of(21))
+        }
+    )
 }
 
 fun kaptAndroidTest(string: String) {}
@@ -97,7 +110,7 @@ dependencies {
     implementation("com.google.firebase:firebase-messaging")
 
     //Adicionales
-    testImplementation("io.mockk:mockk:1.13.11")
+    testImplementation("io.mockk:mockk:1.13.14")
 
     //Courutines test
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")

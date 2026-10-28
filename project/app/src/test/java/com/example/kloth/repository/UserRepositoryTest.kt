@@ -11,6 +11,7 @@ import kotlinx.coroutines.test.runTest
 import org.junit.Test
 
 // Pruebas unitarias del repositorio (carpeta test): usan MockK, sin emulador.
+// Log.e del catch funciona en JVM gracias a unitTests.isReturnDefaultValues = true
 class UserRepositoryTest {
 
     private val mockDataSource = mockk<UserFirestoreDataSourceImpl>()
