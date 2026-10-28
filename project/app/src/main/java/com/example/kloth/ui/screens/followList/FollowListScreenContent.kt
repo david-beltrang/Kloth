@@ -28,9 +28,12 @@ fun FollowListScreenContent(
     users: List<UserProfileInfo>,
     isLoading: Boolean,
     listType: String,
+    listOwnerId: String = "",
+    currentUserId: String? = null,
+    followingUserIds: Set<String> = emptySet(),
     onBackClick: () -> Unit,
     onUserClick: (String) -> Unit,
-    onUnfollowClick: (String) -> Unit,
+    onUserAction: (String) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier.fillMaxSize()) {
@@ -55,11 +58,18 @@ fun FollowListScreenContent(
             )
             else -> LazyColumn {
                 items(users, key = { it.id }) { user ->
+                    val isOwnList = currentUserId != null && currentUserId == listOwnerId
+                    val actionLabel = when {
+                        currentUserId == null || currentUserId == user.id -> null
+                        isOwnList && listType == "followers" -> "Eliminar"
+                        user.id in followingUserIds -> "Dejar de seguir"
+                        else -> "Seguir"
+                    }
                     FollowUserRow(
                         user = user,
-                        showUnfollowButton = listType == "following",
+                        actionLabel = actionLabel,
                         onClick = { onUserClick(user.id) },
-                        onUnfollowClick = { onUnfollowClick(user.id) }
+                        onActionClick = { onUserAction(user.id) }
                     )
                 }
             }

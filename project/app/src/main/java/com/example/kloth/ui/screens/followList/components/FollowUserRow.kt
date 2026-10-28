@@ -22,7 +22,7 @@ import com.example.kloth.ui.utils.ProfileAsyncImage
 @Composable
 fun FollowUserRow(
     user: UserProfileInfo,
-    showUnfollowButton: Boolean,
+    actionLabel: String?,
     onClick: () -> Unit,
     onUnfollowClick: () -> Unit
 ) {
