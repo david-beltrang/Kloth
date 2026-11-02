@@ -23,6 +23,10 @@ data class ArticleInfo(
     val creatorId: String = "",
     val eliminated: Boolean = false,
 
+    // IA Summary Cache
+    val aiSummary: String? = null,
+    val summaryReviewCount: Int = 0,
+
     // Nuevos: datos propios de cada tipo. Solo se llenan los del tipo del artículo
     val size: String? = null,            // PRENDA
     val material: String? = null,        // PRENDA
@@ -36,4 +40,10 @@ data class ArticleInfo(
     val endDate: String? = null,         // EVENTO
     val organizer: String? = null        // EVENTO
 ) {
+    /**
+     * Texto con la cantidad de reseñas, p. ej. "(12 reseñas)".
+     * Se deriva de [reviewsCount] para que nunca haya un número inventado.
+     */
+    val reviewsCountText: String
+        get() = if (reviewsCount == 1) "(1 reseña)" else "($reviewsCount reseñas)"
 }

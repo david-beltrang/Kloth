@@ -164,3 +164,60 @@ exports.saveNewFollowerNotification = onDocumentCreated(
     });
   }
 );
+
+// Genera automáticamente un resumen de IA usando OpenRouter cuando se crea una nueva reseña
+exports.generateArticleAiSummary = onDocumentCreated(
+  "reviews/{reviewId}",
+  async (event) => {
+    const review = event.data.data();
+    const articleId = review.articleId;
+    if (!articleId) return;
+
+    try {
+      const reviewsSnapshot = await db.collection("reviews")
+        .where("articleId", "==", articleId)
+        .get();
+
+      const reviews = reviewsSnapshot.docs
+        .map((doc) => doc.data())
+        .filter((r) => !r.eliminated);
+
+      if (reviews.length === 0) return;
+
+      const reviewsText = reviews.map((r) => `- ${r.text || ""}`).join("\n");
+      const apiKey = process.env.OPENROUTER_API_KEY || "sk-or-v1-TU_API_KEY_AQUI";
+      const prompt = `Actúa como un experto en análisis de calidad de ropa en un e-commerce. Lee las siguientes opiniones de usuarios sobre un producto y genera un resumen conciso, amigable y directo en español (máximo 3 oraciones) destacando los pros, contras y la opinión general:\n${reviewsText}`;
+
+      const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          model: "nvidia/nemotron-3-ultra-550b-a55b:free",
+          messages: [{ role: "user", content: prompt }],
+        }),
+      });
+
+      if (!response.ok) {
+        logger.error("Error en OpenRouter API", { status: response.status });
+        return;
+      }
+
+      const data = await response.json();
+      const summary = data.choices?.[0]?.message?.content?.trim();
+
+      if (!summary) return;
+
+      await db.collection("articles").doc(articleId).set({
+        aiSummary: summary,
+        summaryReviewCount: reviews.length,
+      }, { merge: true });
+
+      logger.info("Resumen de IA generado exitosamente para el artículo", { articleId, reviewsCount: reviews.length });
+    } catch (error) {
+      logger.error("Error generando resumen de IA para artículo", { articleId, error });
+    }
+  }
+);

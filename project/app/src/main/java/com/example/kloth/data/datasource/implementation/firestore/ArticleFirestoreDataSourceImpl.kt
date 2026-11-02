@@ -48,6 +48,14 @@ class ArticleFirestoreDataSourceImpl @Inject constructor(
         db.collection("articles").document(id).set(article, SetOptions.merge()).await()
     }
 
+    override suspend fun updateArticleAiSummary(id: String, summary: String, reviewCount: Int) {
+        val map = mapOf(
+            "aiSummary" to summary,
+            "summaryReviewCount" to reviewCount
+        )
+        db.collection("articles").document(id).set(map, SetOptions.merge()).await()
+    }
+
     override suspend fun deleteArticle(id: String) {
         // NoSQL no tiene ON DELETE CASCADE: se eliminan primero las reseñas asociadas
         db.collection("reviews")

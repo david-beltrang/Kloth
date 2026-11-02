@@ -49,13 +49,16 @@ class ArticleRepository @Inject constructor(
     }
 
     suspend fun getArticleDetail(id: String): Result<ArticleInfo> = try {
-        val article = articleDataSource.getArticleById(id)
+        val articleDto = articleDataSource.getArticleById(id)
         val reviews = articleDataSource.getArticleReviews(id)
         val users = userRepository.getAllUsers()
 
+        val validReviews = reviews.filter { it.eliminated != true }
+        val articleInfo = articleDto.toArticleInfo()
+
         val usersById = users.associateBy { it.toUserProfileInfo().id }
-        val detail = article.toArticleInfo().withReviews(
-            reviews = reviews.filter { it.eliminated != true },
+        val detail = articleInfo.withReviews(
+            reviews = validReviews,
             usersById = usersById
         )
         Result.success(detail)

@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.pluralStringResource
 import com.example.kloth.R
 import com.example.kloth.data.local.ArticleInfo
+import com.example.kloth.ui.screens.detail.components.AiSummaryCard
 import com.example.kloth.ui.screens.detail.components.descriptionProduct.GeneralInfoSection
 import com.example.kloth.ui.screens.detail.components.image.HeroImageSection
 import com.example.kloth.ui.screens.detail.components.review.RatingsAndReviewsSection
@@ -56,6 +57,9 @@ fun ItemDetailScreenContent(
                 categoryName = product.categoryName,
                 description = product.description,
             )
+        }
+        item {
+            AiSummaryCard(summary = product.aiSummary)
         }
         item {
             RatingsAndReviewsSection(

@@ -22,6 +22,10 @@ class ArticleRetrofitDataSourceImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override suspend fun updateArticleAiSummary(id: String, summary: String, reviewCount: Int) {
+        // Opcional o no usado en Retrofit
+    }
+
     override suspend fun deleteArticle(id: String) {
         TODO("Not yet implemented")
     }
