@@ -60,8 +60,7 @@ class MappersTest {
     }
 
     @Test
-    fun formatPrice_formatsWithCurrencySymbol() {
-        // En Kloth el formateo de presentación es el precio (en el video era 14.614.124 -> 14k)
+    fun formatPrice_formatsWithCurrencySymbol()
         val formatted = formatPrice(129.9)
 
         Truth.assertThat(formatted).startsWith("$")
@@ -77,4 +76,4 @@ class MappersTest {
         Truth.assertThat(label).isEqualTo("Hace 5 min")
     }
 }
-
+

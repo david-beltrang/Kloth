@@ -39,3 +39,8 @@ google-services.json
 
 # Codex
 AGENTS.md
+
+# Node / seed (faker): no subir dependencias instaladas
+node_modules/
+project/seed_data/node_modules/
+**/serviceAccountKey.json

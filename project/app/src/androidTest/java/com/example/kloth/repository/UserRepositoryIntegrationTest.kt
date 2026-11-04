@@ -19,7 +19,7 @@ class UserRepositoryIntegrationTest {
     private val db = Firebase.firestore
     private lateinit var userRepository: UserRepository
 
-    // Genera usuarios de prueba (equivalente al generateUser del video)
+    // Genera usuarios de prueba
     private fun generateUser(i: Int): UserFirestoreDto = UserFirestoreDto(
         userId = "user_$i",
         username = "Name $i",
@@ -40,7 +40,7 @@ class UserRepositoryIntegrationTest {
         } catch (e: Exception) {
         }
 
-        // Inyeccion manual (sin Hilt), igual que en clase
+        // Inyeccion manual (sin Hilt)
         userRepository = UserRepository(UserFirestoreDataSourceImpl(db))
 
         limpiarDatos()
@@ -148,4 +148,4 @@ class UserRepositoryIntegrationTest {
         Truth.assertThat(isFollowingResult.getOrNull()).isTrue()
     }
 }
-
+

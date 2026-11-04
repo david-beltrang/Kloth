@@ -24,6 +24,9 @@ android {
 
     buildTypes {
         release {
+            // Firma con keystore debug solo para poder instalar release en local / AVD.
+            // BuildConfig.DEBUG sigue en false -> Firebase Cloud (sin emulador).
+            signingConfig = signingConfigs.getByName("debug")
             optimization {
                 enable = false
             }

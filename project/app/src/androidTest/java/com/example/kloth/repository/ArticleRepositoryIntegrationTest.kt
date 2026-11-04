@@ -37,7 +37,7 @@ class ArticleRepositoryIntegrationTest {
         } catch (e: Exception) {
         }
 
-        // Inyeccion manual (sin Hilt / sin MockK), como en clase
+        // Inyeccion manual (sin Hilt / sin MockK)
         userRepository = UserRepository(UserFirestoreDataSourceImpl(db))
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         val storageRepository = StorageRepository(
@@ -174,4 +174,4 @@ class ArticleRepositoryIntegrationTest {
         Truth.assertThat(result.getOrNull()?.creatorId).isEqualTo(userId)
     }
 }
-
+

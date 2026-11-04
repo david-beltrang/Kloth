@@ -14,3 +14,7 @@
 .cxx
 local.properties
 google-services.json
+
+# Seed Node deps
+seed_data/node_modules/
+**/serviceAccountKey.json
