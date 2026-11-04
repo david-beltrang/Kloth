@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.mikepenz.markdown.m3.Markdown
 
 @Composable
 fun AiSummaryCard(
@@ -56,11 +57,7 @@ fun AiSummaryCard(
                     color = MaterialTheme.colorScheme.primary
                 )
             }
-            Text(
-                text = summary,
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+            Markdown(content = summary)
         }
     }
 }

@@ -104,6 +104,9 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.retrofit.converter.scalars)
 
+    // Markdown Compose
+    implementation("com.mikepenz:multiplatform-markdown-renderer-m3:0.39.2")
+
     //
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-messaging")

@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
+import android.util.Log
 import androidx.compose.ui.semantics.SemanticsProperties
 import androidx.compose.ui.semantics.getOrNull
 import androidx.compose.ui.test.assertIsDisplayed
@@ -29,12 +30,18 @@ import com.google.firebase.firestore.firestore
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import java.time.Instant
+import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withTimeoutOrNull
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.ExternalResource
+
+private const val ETIQUETA_LOG = "SeguirUsuarioE2E"
+private const val TIEMPO_LIMPIEZA_OPERACION_MS = 3_000L
+private const val TIEMPO_LIMPIEZA_TOTAL_MS = 20_000L
 
 private data class UsuarioDePrueba(
     val correo: String,
@@ -248,42 +255,66 @@ class SeguirUsuarioE2E {
         override fun after() {
             runBlocking {
                 val db = Firebase.firestore
-
                 Firebase.auth.signOut()
 
-                // Borra solo los documentos y cuentas creados para este caso de prueba.
-                runCatching {
-                    db.collection("articles").document(publicacionDePrueba.id).delete().await()
-                }
-
-                if (idUsuarioQueIniciaSesion.isNotBlank() && idUsuarioSeguido.isNotBlank()) {
-                    // Solo se borra la relación creada por esta prueba.
-                    runCatching {
-                        db.collection("users").document(idUsuarioQueIniciaSesion)
-                            .collection("following").document(idUsuarioSeguido).delete().await()
+                val limpiezaCompleta = withTimeoutOrNull(TIEMPO_LIMPIEZA_TOTAL_MS) {
+                    // Borra solo los documentos y cuentas creados para este caso de prueba.
+                    ejecutarLimpieza("publicación") {
+                        db.collection("articles").document(publicacionDePrueba.id).delete().await()
                     }
-                    runCatching {
-                        db.collection("users").document(idUsuarioSeguido)
-                            .collection("followers").document(idUsuarioQueIniciaSesion).delete().await()
-                    }
-                }
 
-                if (idUsuarioQueIniciaSesion.isNotBlank()) {
-                    runCatching {
-                        db.collection("users").document(idUsuarioQueIniciaSesion).delete().await()
+                    if (idUsuarioQueIniciaSesion.isNotBlank() && idUsuarioSeguido.isNotBlank()) {
+                        ejecutarLimpieza("relación de seguidos") {
+                            db.collection("users").document(idUsuarioQueIniciaSesion)
+                                .collection("following").document(idUsuarioSeguido).delete().await()
+                        }
+                        ejecutarLimpieza("relación de seguidores") {
+                            db.collection("users").document(idUsuarioSeguido)
+                                .collection("followers").document(idUsuarioQueIniciaSesion).delete().await()
+                        }
                     }
-                }
-                if (idUsuarioSeguido.isNotBlank()) {
-                    runCatching {
-                        db.collection("users").document(idUsuarioSeguido).delete().await()
+
+                    if (idUsuarioQueIniciaSesion.isNotBlank()) {
+                        ejecutarLimpieza("documento de quien inicia sesión") {
+                            db.collection("users").document(idUsuarioQueIniciaSesion).delete().await()
+                        }
                     }
+                    if (idUsuarioSeguido.isNotBlank()) {
+                        ejecutarLimpieza("documento de la persona seguida") {
+                            db.collection("users").document(idUsuarioSeguido).delete().await()
+                        }
+                    }
+
+                    borrarCuenta(usuarioQueIniciaSesion)
+                    borrarCuenta(usuarioSeguido)
+                    Firebase.auth.signOut()
+                    true
+                } ?: false
+
+                if (!limpiezaCompleta) {
+                    Log.w(ETIQUETA_LOG, "Se agotó el tiempo total de limpieza; termina la prueba de todos modos")
                 }
-
-                borrarCuenta(usuarioQueIniciaSesion)
-                borrarCuenta(usuarioSeguido)
-
-                Firebase.auth.signOut()
             }
+        }
+    }
+
+    // Una operación de limpieza lenta no debe dejar el test esperando indefinidamente.
+    private suspend fun ejecutarLimpieza(nombre: String, accion: suspend () -> Unit) {
+        try {
+            val terminada = withTimeoutOrNull(TIEMPO_LIMPIEZA_OPERACION_MS) {
+                accion()
+                true
+            } ?: false
+
+            if (terminada) {
+                Log.d(ETIQUETA_LOG, "Limpieza completada: $nombre")
+            } else {
+                Log.w(ETIQUETA_LOG, "Se agotó el tiempo al limpiar: $nombre")
+            }
+        } catch (cancelacion: CancellationException) {
+            throw cancelacion
+        } catch (error: Exception) {
+            Log.w(ETIQUETA_LOG, "No se pudo limpiar: $nombre", error)
         }
     }
 
@@ -354,11 +385,14 @@ class SeguirUsuarioE2E {
     }
 
     private suspend fun borrarCuenta(usuario: UsuarioDePrueba) {
-        runCatching {
-            Firebase.auth.signInWithEmailAndPassword(usuario.correo, usuario.contrasena).await()
-            Firebase.auth.currentUser?.delete()?.await()
+        ejecutarLimpieza("cuenta ${usuario.correo}") {
+            try {
+                Firebase.auth.signInWithEmailAndPassword(usuario.correo, usuario.contrasena).await()
+                Firebase.auth.currentUser?.delete()?.await()
+            } finally {
+                Firebase.auth.signOut()
+            }
         }
-        Firebase.auth.signOut()
     }
 
     private fun darPermisos() {
