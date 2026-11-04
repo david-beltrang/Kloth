@@ -43,7 +43,7 @@ private const val ETIQUETA_LOG = "SeguirUsuarioE2E"
 private const val TIEMPO_LIMPIEZA_OPERACION_MS = 3_000L
 private const val TIEMPO_LIMPIEZA_TOTAL_MS = 20_000L
 
-private data class UsuarioDePrueba(
+private data class UsuarioPrueba(
     val correo: String,
     val contrasena: String,
     val nombreUsuario: String,
@@ -53,13 +53,13 @@ private data class UsuarioDePrueba(
     val sitioWeb: String = ""
 )
 
-private data class PublicacionDePrueba(
+private data class PublicacionPrueba(
     val id: String,
     val titulo: String,
     val descripcion: String
 )
 
-private val usuarioQueIniciaSesion = UsuarioDePrueba(
+private val usuarioActual = UsuarioPrueba(
     correo = "ana.e2e@kloth.test",
     contrasena = "kloth123456",
     nombreUsuario = "ana_kloth",
@@ -67,7 +67,7 @@ private val usuarioQueIniciaSesion = UsuarioDePrueba(
     biografia = "Cuenta de prueba para seguir usuarios"
 )
 
-private val usuarioSeguido = UsuarioDePrueba(
+private val usuarioSeguido = UsuarioPrueba(
     correo = "carlos.e2e@kloth.test",
     contrasena = "kloth123456",
     nombreUsuario = "carlos_kloth",
@@ -77,7 +77,7 @@ private val usuarioSeguido = UsuarioDePrueba(
     sitioWeb = "https://carloskloth.com"
 )
 
-private val publicacionDePrueba = PublicacionDePrueba(
+private val publicacion = PublicacionPrueba(
     id = "e2e_follow_article",
     titulo = "Chaqueta azul de prueba",
     descripcion = "Publicacion de Carlos para la prueba E2E."
@@ -88,7 +88,7 @@ class SeguirUsuarioE2E {
 
     // Este rule corre antes que Compose: deja listos permisos, emuladores y datos.
     @get:Rule(order = 0)
-    val preparacion = PreparacionDeLaPrueba()
+    val preparacion = PreparacionPrueba()
 
     @get:Rule(order = 1)
     val hiltRule = HiltAndroidRule(this)
@@ -96,7 +96,7 @@ class SeguirUsuarioE2E {
     @get:Rule(order = 2)
     val composeRule = createAndroidComposeRule<MainActivity>()
 
-    private var idUsuarioQueIniciaSesion = ""
+    private var idUsuarioActual = ""
     private var idUsuarioSeguido = ""
 
     @Before
@@ -113,8 +113,8 @@ class SeguirUsuarioE2E {
         composeRule.onNodeWithTag("loginScreen").assertIsDisplayed()
 
         // Login con la cuenta creada antes de abrir la app.
-        composeRule.onNodeWithTag("loginEmailField").performTextInput(usuarioQueIniciaSesion.correo)
-        composeRule.onNodeWithTag("loginPasswordField").performTextInput(usuarioQueIniciaSesion.contrasena)
+        composeRule.onNodeWithTag("loginEmailField").performTextInput(usuarioActual.correo)
+        composeRule.onNodeWithTag("loginPasswordField").performTextInput(usuarioActual.contrasena)
         composeRule.onNodeWithTag("btnLogin").performClick()
 
         // La autenticación consulta Firebase y después navega; home no aparece al instante.
@@ -125,13 +125,13 @@ class SeguirUsuarioE2E {
 
         // El feed hace otra consulta a Firestore después de abrirse.
         composeRule.waitUntil(timeoutMillis = 5000) {
-            composeRule.onAllNodesWithTag("post_${publicacionDePrueba.id}")
+            composeRule.onAllNodesWithTag("post_${publicacion.id}")
                 .fetchSemanticsNodes().isNotEmpty()
         }
-        composeRule.onNodeWithTag("post_${publicacionDePrueba.id}").assertIsDisplayed()
+        composeRule.onNodeWithTag("post_${publicacion.id}").assertIsDisplayed()
 
         // El avatar navega usando el id del autor asociado a esta publicación.
-        composeRule.onNodeWithTag("postAvatar_${publicacionDePrueba.id}").performClick()
+        composeRule.onNodeWithTag("postAvatar_${publicacion.id}").performClick()
 
         // Primero esperamos la pantalla de perfil; sus datos se cargan en una petición aparte.
         composeRule.waitUntil(timeoutMillis = 5000) {
@@ -209,16 +209,16 @@ class SeguirUsuarioE2E {
 
         // Al seleccionar la pestaña, el ViewModel consulta los ids seguidos y filtra las publicaciones.
         composeRule.waitUntil(timeoutMillis = 5000) {
-            composeRule.onAllNodesWithTag("post_${publicacionDePrueba.id}")
+            composeRule.onAllNodesWithTag("post_${publicacion.id}")
                 .fetchSemanticsNodes().isNotEmpty()
         }
-        composeRule.onNodeWithTag("post_${publicacionDePrueba.id}").assertIsDisplayed()
+        composeRule.onNodeWithTag("post_${publicacion.id}").assertIsDisplayed()
         // El nombre del autor también prueba que es la publicación correcta.
-        composeRule.onNodeWithTag("post_${publicacionDePrueba.id}")
+        composeRule.onNodeWithTag("post_${publicacion.id}")
             .assertTextContains(usuarioSeguido.nombreUsuario)
     }
 
-    inner class PreparacionDeLaPrueba : ExternalResource() {
+    inner class PreparacionPrueba : ExternalResource() {
 
         override fun before() {
             darPermisos()
@@ -234,7 +234,7 @@ class SeguirUsuarioE2E {
 
                 Firebase.auth.signOut()
 
-                idUsuarioQueIniciaSesion = crearOIniciarCuenta(usuarioQueIniciaSesion)
+                idUsuarioActual = crearOIniciarCuenta(usuarioActual)
                 Firebase.auth.signOut()
 
                 idUsuarioSeguido = crearOIniciarCuenta(usuarioSeguido)
@@ -243,7 +243,7 @@ class SeguirUsuarioE2E {
                 // Elimina solo el vínculo entre estas cuentas, por si una corrida anterior se interrumpió.
                 limpiarRelacionAnterior()
                 // Se guardan los contadores en cero y una publicación conocida para hacer las comprobaciones.
-                poblarUsuarioQueIniciaSesion()
+                poblarUsuarioActual()
                 poblarUsuarioSeguido()
                 poblarPublicacion()
 
@@ -256,27 +256,31 @@ class SeguirUsuarioE2E {
             runBlocking {
                 val db = Firebase.firestore
                 Firebase.auth.signOut()
-
+                /*
+                   Se tuvo que colocar un timeout porque el gradle build y otras funciones asincronas
+                   no devolvían algun resultado, lo cual hacía que el test nunca terminara, ahora con ese timeout
+                   el test termina e incluso se ejecutan cin exito los @before y @after
+                */
                 val limpiezaCompleta = withTimeoutOrNull(TIEMPO_LIMPIEZA_TOTAL_MS) {
                     // Borra solo los documentos y cuentas creados para este caso de prueba.
                     ejecutarLimpieza("publicación") {
-                        db.collection("articles").document(publicacionDePrueba.id).delete().await()
+                        db.collection("articles").document(publicacion.id).delete().await()
                     }
 
-                    if (idUsuarioQueIniciaSesion.isNotBlank() && idUsuarioSeguido.isNotBlank()) {
+                    if (idUsuarioActual.isNotBlank() && idUsuarioSeguido.isNotBlank()) {
                         ejecutarLimpieza("relación de seguidos") {
-                            db.collection("users").document(idUsuarioQueIniciaSesion)
+                            db.collection("users").document(idUsuarioActual)
                                 .collection("following").document(idUsuarioSeguido).delete().await()
                         }
                         ejecutarLimpieza("relación de seguidores") {
                             db.collection("users").document(idUsuarioSeguido)
-                                .collection("followers").document(idUsuarioQueIniciaSesion).delete().await()
+                                .collection("followers").document(idUsuarioActual).delete().await()
                         }
                     }
 
-                    if (idUsuarioQueIniciaSesion.isNotBlank()) {
+                    if (idUsuarioActual.isNotBlank()) {
                         ejecutarLimpieza("documento de quien inicia sesión") {
-                            db.collection("users").document(idUsuarioQueIniciaSesion).delete().await()
+                            db.collection("users").document(idUsuarioActual).delete().await()
                         }
                     }
                     if (idUsuarioSeguido.isNotBlank()) {
@@ -285,7 +289,7 @@ class SeguirUsuarioE2E {
                         }
                     }
 
-                    borrarCuenta(usuarioQueIniciaSesion)
+                    borrarCuenta(usuarioActual)
                     borrarCuenta(usuarioSeguido)
                     Firebase.auth.signOut()
                     true
@@ -322,21 +326,21 @@ class SeguirUsuarioE2E {
     private suspend fun limpiarRelacionAnterior() {
         val db = Firebase.firestore
         // Firestore guarda el vínculo en ambos sentidos: quién sigue y quién tiene seguidores.
-        db.collection("users").document(idUsuarioQueIniciaSesion)
+        db.collection("users").document(idUsuarioActual)
             .collection("following").document(idUsuarioSeguido).delete().await()
         db.collection("users").document(idUsuarioSeguido)
-            .collection("followers").document(idUsuarioQueIniciaSesion).delete().await()
+            .collection("followers").document(idUsuarioActual).delete().await()
     }
 
-    private suspend fun poblarUsuarioQueIniciaSesion() {
-        guardarUsuario(idUsuarioQueIniciaSesion, usuarioQueIniciaSesion)
+    private suspend fun poblarUsuarioActual() {
+        guardarUsuario(idUsuarioActual, usuarioActual)
     }
 
     private suspend fun poblarUsuarioSeguido() {
         guardarUsuario(idUsuarioSeguido, usuarioSeguido)
     }
 
-    private suspend fun guardarUsuario(id: String, usuario: UsuarioDePrueba) {
+    private suspend fun guardarUsuario(id: String, usuario: UsuarioPrueba) {
         val ahora = Instant.now().toString()
         Firebase.firestore.collection("users").document(id).set(
             UserFirestoreDto(
@@ -358,12 +362,12 @@ class SeguirUsuarioE2E {
     }
 
     private suspend fun poblarPublicacion() {
-        Firebase.firestore.collection("articles").document(publicacionDePrueba.id).set(
+        Firebase.firestore.collection("articles").document(publicacion.id).set(
             ArticleFirestoreDto(
-                articleId = publicacionDePrueba.id,
+                articleId = publicacion.id,
                 typeArticle = "PRENDA",
-                title = publicacionDePrueba.titulo,
-                description = publicacionDePrueba.descripcion,
+                title = publicacion.titulo,
+                description = publicacion.descripcion,
                 createdAt = Instant.now().toString(),
                 idUser = idUsuarioSeguido,
                 eliminated = false,
@@ -374,7 +378,7 @@ class SeguirUsuarioE2E {
     }
 
     // Crea la cuenta en Auth o la reutiliza si ya existía de una corrida anterior.
-    private suspend fun crearOIniciarCuenta(usuario: UsuarioDePrueba): String {
+    private suspend fun crearOIniciarCuenta(usuario: UsuarioPrueba): String {
         return try {
             Firebase.auth.createUserWithEmailAndPassword(usuario.correo, usuario.contrasena).await()
             Firebase.auth.currentUser?.uid ?: error("No se obtuvo el uid de ${usuario.correo}")
@@ -384,7 +388,7 @@ class SeguirUsuarioE2E {
         }
     }
 
-    private suspend fun borrarCuenta(usuario: UsuarioDePrueba) {
+    private suspend fun borrarCuenta(usuario: UsuarioPrueba) {
         ejecutarLimpieza("cuenta ${usuario.correo}") {
             try {
                 Firebase.auth.signInWithEmailAndPassword(usuario.correo, usuario.contrasena).await()

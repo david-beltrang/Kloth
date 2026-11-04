@@ -148,7 +148,8 @@ fun LoginScreenContent(
                 AuthRedirectPrompt(
                     text = stringResource(R.string.login_no_account),
                     linkText = stringResource(R.string.login_create_account),
-                    onLinkClick = onRegisterClick
+                    onLinkClick = onRegisterClick,
+                    linkTestTag = "btnGoRegister"
                 )
             }
     }

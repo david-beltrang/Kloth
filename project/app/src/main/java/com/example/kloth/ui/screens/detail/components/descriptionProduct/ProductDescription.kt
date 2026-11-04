@@ -8,6 +8,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -33,7 +34,8 @@ fun ProductDescription(
             text = descriptionText,
             fontSize = 13.sp,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            lineHeight = 19.sp
+            lineHeight = 19.sp,
+            modifier = Modifier.testTag("detailDescription")
         )
     }
 }

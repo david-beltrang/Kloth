@@ -50,7 +50,8 @@ fun ReviewItem(
             isLikedByMe = review.isLikedByMe,
             commentsText = review.commentsCountText,
             onLikeClick = onLikeClick,
-            onCommentClick = onCommentClick
+            onCommentClick = onCommentClick,
+            commentsTestTag = "reviewCommentsButton_${review.id}"
         )
     }
 }

@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
 import com.example.kloth.R
 import com.example.kloth.data.local.ArticleInfo
@@ -37,6 +38,7 @@ fun ItemDetailScreenContent(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
+            .testTag("detailScreen")
     ) {
         item {
             HeroImageSection(

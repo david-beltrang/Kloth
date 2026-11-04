@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -68,6 +69,7 @@ fun RegisterScreenContent(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .imePadding()
+            .testTag("registerScreen")
     ) {
             Column(
                 modifier = Modifier
@@ -99,7 +101,8 @@ fun RegisterScreenContent(
                         capitalization = KeyboardCapitalization.Words,
                         keyboardType = KeyboardType.Text,
                         imeAction = ImeAction.Next
-                    )
+                    ),
+                    testTag = "registerNameField"
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -112,7 +115,8 @@ fun RegisterScreenContent(
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Next
-                    )
+                    ),
+                    testTag = "registerEmailField"
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -131,7 +135,8 @@ fun RegisterScreenContent(
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Password,
                         imeAction = ImeAction.Next
-                    )
+                    ),
+                    testTag = "registerPasswordField"
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -156,7 +161,8 @@ fun RegisterScreenContent(
                             focusManager.clearFocus()
                             onRegisterClick()
                         }
-                    )
+                    ),
+                    testTag = "registerConfirmPasswordField"
                 )
 
                 if (errorMessage.isNotEmpty()) {
@@ -166,7 +172,9 @@ fun RegisterScreenContent(
                         color = MaterialTheme.colorScheme.error,
                         style = MaterialTheme.typography.bodySmall,
                         textAlign = TextAlign.Center,
-                        modifier = Modifier.fillMaxWidth()
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .testTag("registerErrorMessage")
                     )
                 }
 
@@ -174,7 +182,8 @@ fun RegisterScreenContent(
 
                 KlothPrimaryButton(
                     text = stringResource(R.string.register_button),
-                    onClick = onRegisterClick
+                    onClick = onRegisterClick,
+                    modifier = Modifier.testTag("btnRegister")
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))
