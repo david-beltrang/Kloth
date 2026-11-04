@@ -19,7 +19,7 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.example.kloth.HiltTestRunner"
     }
 
     buildTypes {
@@ -59,8 +59,6 @@ tasks.withType<Test>().configureEach {
         }
     )
 }
-
-fun kaptAndroidTest(string: String) {}
 
 dependencies {
     implementation(platform(libs.androidx.compose.bom))
@@ -120,8 +118,8 @@ dependencies {
     testImplementation("com.google.truth:truth:1.4.2")
     androidTestImplementation("com.google.truth:truth:1.1.5")
     
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.52")
-    kaptAndroidTest("com.google.dagger:hilt-compiler:2.52")
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.60.1")
+    kspAndroidTest(libs.dagger.kapt)
     
     androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
     testImplementation(kotlin("test"))
@@ -132,9 +130,6 @@ dependencies {
     androidTestImplementation(libs.androidx.espresso.core)
     
     // ActivityScenario
-    androidTestImplementation ("androidx.test:core:1.5.0")
+    androidTestImplementation ("androidx.test:core:1.7.0")
     
-    // Para UI / instrumented tests (androidTest/)
-        androidTestImplementation("io.mockk:mockk-android:1.13.14")
-        
 }

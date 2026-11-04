@@ -185,7 +185,7 @@ exports.generateArticleAiSummary = onDocumentCreated(
       if (reviews.length === 0) return;
 
       const reviewsText = reviews.map((r) => `- ${r.text || ""}`).join("\n");
-      const apiKey = process.env.OPENROUTER_API_KEY || "sk-or-v1-TU_API_KEY_AQUI";
+      const apiKey = process.env.OPENROUTER_API_KEY || "sk-or-v1-API_KEY";
       const prompt = `Actúa como un experto en análisis de calidad de ropa en un e-commerce. Lee las siguientes opiniones de usuarios sobre un producto y genera un resumen conciso, amigable y directo en español (máximo 3 oraciones) destacando los pros, contras y la opinión general:\n${reviewsText}`;
 
       const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {

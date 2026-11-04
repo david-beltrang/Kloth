@@ -22,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -60,6 +61,7 @@ fun LoginScreenContent(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .imePadding()
+            .testTag("loginScreen")
     ) {
             Column(
                 modifier = Modifier
@@ -84,7 +86,8 @@ fun LoginScreenContent(
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Email,
                         imeAction = ImeAction.Next
-                    )
+                    ),
+                    testTag = "loginEmailField"
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
@@ -109,7 +112,8 @@ fun LoginScreenContent(
                             focusManager.clearFocus()
                             onLoginClick()
                         }
-                    )
+                    ),
+                    testTag = "loginPasswordField"
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -131,7 +135,8 @@ fun LoginScreenContent(
 
                 KlothPrimaryButton(
                     text = stringResource(R.string.login_button),
-                    onClick = onLoginClick
+                    onClick = onLoginClick,
+                    modifier = Modifier.testTag("btnLogin")
                 )
 
                 Spacer(modifier = Modifier.height(24.dp))

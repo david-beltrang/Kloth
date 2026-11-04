@@ -26,6 +26,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
@@ -57,7 +58,10 @@ fun KlothTextField(
 
     // Configuración de Teclado y Acciones
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
-    keyboardActions: KeyboardActions = KeyboardActions.Default
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+
+    // Identificador para las pruebas E2E (se aplica al TextField, no al contenedor)
+    testTag: String? = null
 ) {
     val visualTransformation = if (isPassword && !isPasswordVisible) {
         PasswordVisualTransformation()
@@ -80,7 +84,8 @@ fun KlothTextField(
             onValueChange = onValueChange,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(52.dp),
+                .height(52.dp)
+                .then(if (testTag != null) Modifier.testTag(testTag) else Modifier),
             placeholder = {
                 Text(
                     text = placeholder,

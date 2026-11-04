@@ -19,6 +19,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -45,6 +46,7 @@ fun PostCard(
     Card(
         modifier = modifier
             .padding(10.dp)
+            .testTag("post_${post.id}")
             .clickable { onClick() },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
@@ -57,6 +59,7 @@ fun PostCard(
     ) {
         Column {
             PostHeader(
+                postId = post.id,
                 name = post.creatorName,
                 time = post.timeAgo,
                 avatarUrl = post.avatarUrl,
@@ -87,6 +90,7 @@ fun PostCard(
 
 @Composable
 private fun PostHeader(
+    postId: String,
     name: String,
     time: String,
     avatarUrl: String,
@@ -107,6 +111,7 @@ private fun PostHeader(
                     .size(40.dp)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.secondaryContainer)
+                    .testTag("postAvatar_$postId")
                     .clickable(onClick = onClick),
                 contentScale = ContentScale.Crop
             )
