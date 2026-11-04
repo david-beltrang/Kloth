@@ -1,5 +1,6 @@
 package com.example.kloth.data.injection
 
+import android.os.Build
 import com.example.kloth.data.datasource.services.ArticleRetrofitService
 import com.example.kloth.data.datasource.services.ReviewRetrofitService
 import com.example.kloth.data.datasource.services.UserRetrofitService
@@ -17,10 +18,15 @@ import retrofit2.converter.scalars.ScalarsConverterFactory
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
+    // Si pruebas en un celular físico por Wi-Fi, puedes cambiar "127.0.0.1" por la IP local de tu PC (ej: "192.168.1.15").
+    // Si usas cable USB con 'adb reverse tcp:3000 tcp:3000', "127.0.0.1" funcionará directamente.
+    private val BASE_HOST: String
+        get() = if (isEmulator()) "10.0.2.2" else "127.0.0.1"
+
     @Singleton
     @Provides
     fun provideRetrofit(): Retrofit = Retrofit.Builder()
-        .baseUrl("http://10.0.2.2:3000/") // backend local visto desde el emulador; http sin S y slash final
+        .baseUrl("http://$BASE_HOST:3000/")
         .addConverterFactory(GsonConverterFactory.create()) // lee JSON
         .addConverterFactory(ScalarsConverterFactory.create()) // lee texto plano
         .build()
@@ -40,4 +46,15 @@ object AppModule {
     @Provides
     fun provideReviewService(retrofit: Retrofit): ReviewRetrofitService =
         retrofit.create(ReviewRetrofitService::class.java)
+
+    private fun isEmulator(): Boolean {
+        return (Build.FINGERPRINT.startsWith("generic")
+                || Build.FINGERPRINT.startsWith("unknown")
+                || Build.MODEL.contains("google_sdk")
+                || Build.MODEL.contains("Emulator")
+                || Build.MODEL.contains("Android SDK built for x86")
+                || Build.MANUFACTURER.contains("Genymotion")
+                || (Build.BRAND.startsWith("generic") && Build.DEVICE.startsWith("generic"))
+                || "google_sdk" == Build.PRODUCT)
+    }
 }
