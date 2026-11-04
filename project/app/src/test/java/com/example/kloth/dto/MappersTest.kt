@@ -4,6 +4,7 @@ import com.example.kloth.data.dto.UserFirestoreDto
 import com.example.kloth.data.dto.formatPrice
 import com.example.kloth.data.dto.timeAgo
 import com.google.common.truth.Truth
+import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -77,4 +78,4 @@ class MappersTest {
         Truth.assertThat(label).isEqualTo("Hace 5 min")
     }
 }
-
+
