@@ -13,4 +13,5 @@ interface ArticleRemoteDataSource {
     suspend fun createArticle(article: CreateArticleDto)
     suspend fun updateArticle(id: String, article: UpdateArticleDto)
     suspend fun deleteArticle(id: String)
+    suspend fun updateArticleAiSummary(id: String, summary: String, reviewCount: Int)
 }

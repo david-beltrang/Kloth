@@ -11,9 +11,18 @@
     <!-- Feed Screen -->
     <string name="tab_following">Following</string>
     <string name="tab_for_you">For You</string>
+    <string name="feed_follow_prompt">Follow people and find your style</string>
+    <string name="header_create">Create</string>
+    <string name="header_notifications">Notifications</string>
     <string name="badge_couture">COUTURE</string>
     <string name="badge_essentials">ESSENTIALS</string>
     <string name="label_reviews">(%1$d reviews)</string>
+    <plurals name="reviews_count">
+        <item quantity="one">(%1$d reseña)</item>
+        <item quantity="other">(%1$d reseñas)</item>
+    </plurals>
+    <string name="label_count_parentheses">(%1$s)</string>
+    <string name="text_prefix_space">%1$s </string>
 
     <!-- Accessibility / Content Descriptions -->
     <string name="content_desc_back">Back</string>
@@ -26,9 +35,11 @@
     <string name="content_desc_comment">Comment</string>
     <string name="cd_share">Compartir</string>
     <string name="cd_product_image">Imagen del producto</string>
+    <string name="cd_user_image">Imagen del usuario</string>
 
     <!-- Explore Screen -->
     <string name="title_explore">Explorar</string>
+    <string name="category_all">Todo</string>
     <string name="search_placeholder">Buscar artículos...</string>
     <string name="category_prendas">Prendas</string>
     <string name="category_outfits">Outfits</string>
@@ -57,6 +68,9 @@
     <string name="profile_reviews">Reseñas</string>
     <string name="profile_publications">Publicaciones</string>
     <string name="profile_logout">Cerrar sesión</string>
+    <string name="profile_bio_empty">Mejora tu biografía para que otros te conozcan</string>
+    <string name="profile_location_empty">Añade tu ubicación</string>
+    <string name="profile_website_empty">Añade un sitio web</string>
     <string name="mock_profile_name">Elena Vancouvé</string>
     <string name="mock_profile_username">\@elenav_styling</string>
     <string name="mock_profile_bio">Arquitecta de siluetas. Minimalista por naturaleza, moda por elección.</string>
@@ -171,6 +185,19 @@
     <!-- Notifications -->
     <string name="label_follow">Seguir</string>
     <string name="label_following">Siguiendo</string>
+    <string name="notification_followed_you">comenzó a seguirte</string>
+    <string name="notification_new_review">publicó una reseña en tu artículo</string>
+    <string name="notification_commented_review">comentó tu reseña</string>
+    <string name="notification_liked_review">le gustó tu reseña</string>
+    <string name="notifications_empty">Aún no tienes notificaciones recientes.</string>
+    <string name="notifications_load_error">No se pudieron cargar las notificaciones.</string>
+    <string name="follow_list_followers_title">Seguidores</string>
+    <string name="follow_list_following_title">Seguidos</string>
+    <string name="follow_list_empty_followers">Aún no tiene seguidores</string>
+    <string name="follow_list_empty_following">Aún no sigue a usuarios</string>
+    <string name="follow_list_unfollow">Dejar de seguir</string>
+    <string name="follow_list_remove">Eliminar</string>
+    <string name="follow_list_back">Volver</string>
 
     <!-- Mock Data -->
     <string name="mock_description">Una pieza maestra de sastrería contemporánea. Este abrigo ha sido confeccionado con 100% cachemira italiana de origen sostenible, ofreciendo una caída impecable y una suavidad inigualable.</string>
@@ -235,6 +262,12 @@
     <string name="auth_error_email_already_registered">El correo ya está registrado</string>
     <string name="auth_error_weak_password">La contraseña es muy débil</string>
     <string name="auth_error_invalid_email">Correo electrónico inválido</string>
+    <string name="forgot_password_error_empty_email">Por favor, ingresa tu correo electrónico</string>
+    <string name="register_error_user_id">No se pudo obtener el usuario actual</string>
+    <string name="register_error_save_user">No se pudo guardar tu usuario</string>
+    <string name="edit_profile_error_email">No se pudo cambiar el email. Vuelve a iniciar sesión e inténtalo de nuevo.</string>
+    <string name="edit_profile_error_save">No se pudo guardar el perfil</string>
+    <string name="review_default_username">Usuario</string>
 
     <!-- Network & Storage Errors -->
     <string name="network_error_server">Error del servidor (%1$d)</string>

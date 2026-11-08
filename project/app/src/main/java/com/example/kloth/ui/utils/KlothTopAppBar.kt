@@ -18,6 +18,10 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.TextStyle
 import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
 import com.example.kloth.ui.theme.RedInferno
@@ -31,7 +35,8 @@ link de referencia: https://kotlinlang.org/api/compose-multiplatform/material3/a
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun KlothTopAppBar(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    titleRes: Int? = null
 ) {
     val logoResource = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) {
         R.drawable.logo_blanco
@@ -42,11 +47,25 @@ fun KlothTopAppBar(
     CenterAlignedTopAppBar(
         modifier = modifier.height(100.dp),
         title = {
-            Image(
-                painter = painterResource(id = logoResource),
-                contentDescription = stringResource(id = R.string.app_name),
-                modifier = Modifier.size(130.dp)
-            )
+            if (titleRes == null) {
+                Image(
+                    painter = painterResource(id = logoResource),
+                    contentDescription = stringResource(id = R.string.app_name),
+                    modifier = Modifier.size(130.dp)
+                )
+            } else {
+                Text(
+                    text = stringResource(id = titleRes),
+                    style = TextStyle(
+                        fontFamily = FontFamily(
+                            Font(R.font.montserrat_variable)
+                        ),
+                        fontWeight = FontWeight.Bold,
+                        fontSize = 24.sp
+                    ),
+                    color = MaterialTheme.colorScheme.onSurface
+                )
+            }
         },
         colors = TopAppBarDefaults.topAppBarColors(
             containerColor = MaterialTheme.colorScheme.surface

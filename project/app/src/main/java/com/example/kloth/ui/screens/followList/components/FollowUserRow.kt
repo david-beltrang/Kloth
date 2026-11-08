@@ -12,17 +12,19 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kloth.data.local.UserProfileInfo
+import com.example.kloth.R
 import com.example.kloth.ui.utils.ProfileAsyncImage
 
 @Composable
 fun FollowUserRow(
     user: UserProfileInfo,
-    showUnfollowButton: Boolean,
+    actionLabel: String?,
     onClick: () -> Unit,
-    onUnfollowClick: () -> Unit
+    onActionClick: () -> Unit
 ) {
     Row(
         modifier = Modifier.fillMaxWidth().clickable(onClick = onClick).padding(horizontal = 16.dp, vertical = 10.dp),
@@ -36,10 +38,8 @@ fun FollowUserRow(
                 Text(user.email, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
             }
         }
-        if (showUnfollowButton) {
-            TextButton(onClick = onUnfollowClick) { Text("Dejar de seguir") }
-        } else {
-            TextButton(onClick = {}) { Text("Eliminar") }
+        if (actionLabel != null) {
+            TextButton(onClick = onActionClick) { Text(actionLabel) }
         }
     }
 }

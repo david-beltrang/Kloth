@@ -3,6 +3,7 @@ package com.example.kloth.ui.screens.feed.components
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.kloth.R
@@ -36,6 +37,7 @@ fun FeedTabRow(
         Tab(
             selected = selectedTabIndex == 0,
             onClick = { onTabSelected(0) },
+            modifier = Modifier.testTag("tabFollowing"),
             text = {
                 Text(
                     text = stringResource(R.string.tab_following),
@@ -46,6 +48,7 @@ fun FeedTabRow(
         Tab(
             selected = selectedTabIndex == 1,
             onClick = { onTabSelected(1) },
+            modifier = Modifier.testTag("tabForYou"),
             text = {
                 Text(
                     text = stringResource(R.string.tab_for_you),

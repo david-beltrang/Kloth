@@ -17,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -49,9 +50,9 @@ fun ProfileHeaderSection(
     onFollowingClick: () -> Unit = {}
 ) {
     val displayName = if (!username.isNullOrBlank()) username else email.substringBefore("@").replaceFirstChar { it.uppercase() }
-    val displayBio = if (!bio.isNullOrBlank()) bio else "Mejora tu biografía para que otros te conozcan"
-    val displayLocation = if (!location.isNullOrBlank()) location else "Añade tu ubicación"
-    val displayWebsite = if (!website.isNullOrBlank()) website else "Añade un sitio web"
+    val displayBio = if (!bio.isNullOrBlank()) bio else stringResource(R.string.profile_bio_empty)
+    val displayLocation = if (!location.isNullOrBlank()) location else stringResource(R.string.profile_location_empty)
+    val displayWebsite = if (!website.isNullOrBlank()) website else stringResource(R.string.profile_website_empty)
 
     Column(
         modifier = modifier.fillMaxWidth(),
@@ -76,7 +77,8 @@ fun ProfileHeaderSection(
         Text(
             text = displayName,
             style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.Bold),
-            color = MaterialTheme.colorScheme.onSurface
+            color = MaterialTheme.colorScheme.onSurface,
+            modifier = Modifier.testTag("profileUsername")
         )
 
         Spacer(modifier = Modifier.height(4.dp))
@@ -84,7 +86,8 @@ fun ProfileHeaderSection(
         Text(
             text = email,
             style = MaterialTheme.typography.bodySmall,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
+            color = MaterialTheme.colorScheme.onSurfaceVariant,
+            modifier = Modifier.testTag("profileEmail")
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -97,6 +100,7 @@ fun ProfileHeaderSection(
             modifier = Modifier
                 .padding(horizontal = 32.dp)
                 .then(if (viewingOwnProfile) Modifier.clickable { onEditProfileClick() } else Modifier)
+                .testTag("profileBio")
         )
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -119,7 +123,8 @@ fun ProfileHeaderSection(
                 Text(
                     text = displayLocation,
                     style = MaterialTheme.typography.labelSmall,
-                    color = if (location.isNullOrBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                    color = if (location.isNullOrBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.testTag("profileLocation")
                 )
             }
             Row(
@@ -136,7 +141,8 @@ fun ProfileHeaderSection(
                 Text(
                     text = displayWebsite,
                     style = MaterialTheme.typography.labelSmall,
-                    color = if (website.isNullOrBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant
+                    color = if (website.isNullOrBlank()) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.testTag("profileWebsite")
                 )
             }
         }
@@ -156,23 +162,27 @@ fun ProfileHeaderSection(
         ) {
             ProfileStatItem(
                 value = publicationsCount.toString(),
-                label = stringResource(R.string.profile_publications)
+                label = stringResource(R.string.profile_publications),
+                testTag = "profilePublicationsCount"
             )
             ProfileStatItem(
                 value = followersCount.toString(),
                 label = stringResource(R.string.profile_followers),
+                testTag = "profileFollowersCount",
                 enabled = true,
                 onClick = onFollowersClick
             )
             ProfileStatItem(
                 value = followingCount.toString(),
                 label = stringResource(R.string.profile_following),
+                testTag = "profileFollowingCount",
                 enabled = true,
                 onClick = onFollowingClick
             )
             ProfileStatItem(
                 value = reviewsCount.toString(),
-                label = stringResource(R.string.profile_reviews)
+                label = stringResource(R.string.profile_reviews),
+                testTag = "profileReviewsCount"
             )
         }
 
@@ -190,12 +200,13 @@ fun ProfileHeaderSection(
                 .clip(RoundedCornerShape(999.dp))
                 .background(
                     if (isFollowing) MaterialTheme.colorScheme.surfaceContainerHighest
-                    else androidx.compose.ui.graphics.Color.Black
+                    else MaterialTheme.colorScheme.primary
                 )
                 .then(
                     if (isFollowActionInProgress) Modifier
                     else Modifier.clickable { onFollowClick() }
                 )
+                .testTag("followButton")
                 .padding(vertical = 14.dp),
             contentAlignment = Alignment.Center
         ) {
@@ -203,7 +214,7 @@ fun ProfileHeaderSection(
                 text = stringResource(if (isFollowing) R.string.profile_unfollow else R.string.profile_follow),
                 style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
                 color = if (isFollowing) MaterialTheme.colorScheme.onSurfaceVariant
-                else androidx.compose.ui.graphics.Color.White
+                else MaterialTheme.colorScheme.onPrimary
             )
         }
 
@@ -253,12 +264,15 @@ fun ProfileHeaderSection(
 private fun ProfileStatItem(
     value: String,
     label: String,
+    testTag: String? = null,
     enabled: Boolean = false,
     onClick: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = modifier.clickable(enabled = enabled, onClick = onClick),
+        modifier = modifier
+            .clickable(enabled = enabled, onClick = onClick)
+            .then(if (testTag != null) Modifier.testTag(testTag) else Modifier),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(

@@ -16,6 +16,7 @@ import kotlinx.coroutines.flow.emitAll
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 
+// Centraliza las operaciones de reseñas y comentarios antes de llegar a Firestore.
 @Singleton
 class ReviewRepository @Inject constructor(
     private val reviewDataSource: ReviewFirestoreDataSourceImpl,
@@ -23,11 +24,13 @@ class ReviewRepository @Inject constructor(
 ) {
 
     fun observeReviewsForArticle(articleId: String): Flow<List<ReviewData>> = flow {
+        // Carga los perfiles una vez y los reutiliza al transformar cada emision de reseñas.
         val users = userRepository.getAllUsers()
         val usersById = users.associateBy { it.toUserProfileInfo().id }
         emitAll(
             reviewDataSource.observeReviewsForArticle(articleId).map { reviews ->
                 reviews.filter { it.eliminated != true }.map { dto ->
+                    // El conteo viene de la subcoleccion de comentarios de cada reseña.
                     val commentsCount = reviewDataSource.getCommentsCount(dto.reviewId)
                     dto.toReviewData(usersById[dto.authorIdKey()])
                         .copy(commentsCountText = commentsCount.toString())
@@ -58,9 +61,14 @@ class ReviewRepository @Inject constructor(
         val users = userRepository.getAllUsers()
 
         val usersById = users.associateBy { it.toUserProfileInfo().id }
+        // Combina reseña, autor, comentarios y estado del like para la pantalla de detalle.
         val detail = reviewDto.toReviewData(usersById[reviewDto.authorIdKey()])
-        val comments = reviewDataSource.getComments(id)
-            .map { it.toComentarioReviewData(currentUserId) }
+        val comments = reviewDataSource.getComments(id).map { comment ->
+            val isLikedByMe = currentUserId?.let { userId ->
+                reviewDataSource.isCommentLikedByUser(id, comment.commentId, userId)
+            } ?: false
+            comment.toComentarioReviewData(currentUserId, isLikedByMe)
+        }
         val isLiked = currentUserId?.let { reviewDataSource.isReviewLikedByUser(id, it) } ?: false
         Result.success(detail.copy(
             comentariosList = comments,
@@ -85,6 +93,7 @@ class ReviewRepository @Inject constructor(
             text = text,
             createdAt = Instant.now().toString()
         )
+        // La Cloud Function de reseñas guarda la notificacion para quien publico el articulo.
         reviewDataSource.createReview(dto)
         Result.success(Unit)
     } catch (e: Exception) {
@@ -122,6 +131,7 @@ class ReviewRepository @Inject constructor(
             text = text.trim(),
             createdAt = Instant.now().toString()
         )
+        // La Cloud Function del comentario registra la notificacion para el autor de la reseña.
         val commentId = reviewDataSource.createComment(reviewId, dto)
         Result.success(
             ComentarioReviewData(
@@ -149,9 +159,22 @@ class ReviewRepository @Inject constructor(
     }
 
     suspend fun toggleReviewLike(reviewId: String, userId: String): Result<ReviewLikeState> = try {
-        Result.success(reviewDataSource.toggleReviewLike(reviewId, userId))
+        // Crear el documento like activa la Cloud Function que persiste la notificacion y envia el push.
+        val likeState = reviewDataSource.toggleReviewLike(reviewId, userId)
+        Result.success(likeState)
     } catch (e: Exception) {
         Log.e("ReviewRepository", "No se pudo actualizar el me gusta de la reseña $reviewId", e)
+        Result.failure(e)
+    }
+
+    suspend fun toggleCommentLike(
+        reviewId: String,
+        commentId: String,
+        userId: String
+    ): Result<ReviewLikeState> = try {
+        Result.success(reviewDataSource.toggleCommentLike(reviewId, commentId, userId))
+    } catch (e: Exception) {
+        Log.e("ReviewRepository", "No se pudo actualizar el me gusta del comentario $commentId", e)
         Result.failure(e)
     }
 

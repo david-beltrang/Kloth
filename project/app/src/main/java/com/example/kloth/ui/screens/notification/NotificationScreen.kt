@@ -18,9 +18,12 @@ fun NotificationScreen(
     NotificationScreenContent(
         // Variables de estado
         notificaciones = state.notificaciones,
+        isLoading = state.isLoading,
+        errorMessage = state.errorMessage,
 
         // Métodos del ViewModel para manejar el estado
         onToggleSeguir = { notificationViewModel.onToggleSeguir(it) },
+        onRetry = { notificationViewModel.loadNotifications() },
 
         contentPadding = contentPadding,
         modifier = modifier

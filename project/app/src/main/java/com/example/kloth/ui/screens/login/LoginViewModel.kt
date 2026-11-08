@@ -1,11 +1,14 @@
 package com.example.kloth.ui.screens.login
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kloth.R
 import com.example.kloth.data.repository.AuthRepository
 import com.example.kloth.data.repository.UserRepository
 import com.google.firebase.messaging.FirebaseMessaging
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -15,6 +18,7 @@ import kotlinx.coroutines.tasks.await
 
 @HiltViewModel
 class LoginViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository
 ) : ViewModel() {
@@ -42,30 +46,32 @@ class LoginViewModel @Inject constructor(
             _uiState.update { 
                 it.copy(
                     showMessage = true, 
-                    errorMessage = "Por favor, completa todos los campos"
+                    errorMessage = context.getString(R.string.login_error_empty_fields)
                 ) 
             }
         } else if (password.length < 6) {
             _uiState.update {
                 it.copy(
                     showMessage = true,
-                    errorMessage = "La contraseña debe tener al menos 6 caracteres"
+                    errorMessage = context.getString(R.string.auth_error_password_short)
                 )
             }
         } else {
             viewModelScope.launch {
                 val result = authRepository.signIn(email, password)
                 if (result.isSuccess) {
+                    // navigate primero: FCM en emulador puede colgarse y bloquearía la UI/tests
+                    _uiState.update { it.copy(navigate = true) }
                     runCatching {
                         val userId = authRepository.currentUser?.uid
                         val token = FirebaseMessaging.getInstance().token.await()
                         if (userId != null) userRepository.updateFcmToken(userId, token)
                     }
-                    _uiState.update { it.copy(navigate = true) }
                 } else {
                     _uiState.update {
                         it.copy(
-                            errorMessage = result.exceptionOrNull()?.message ?: "Credenciales incorrectas o error de conexión",
+                            errorMessage = result.exceptionOrNull()?.message
+                                ?: context.getString(R.string.login_error_generic),
                             showMessage = true
                         )
                     }

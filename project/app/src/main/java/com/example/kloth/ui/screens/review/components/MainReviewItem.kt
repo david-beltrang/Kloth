@@ -28,6 +28,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImage
 import androidx.compose.ui.res.stringResource
@@ -129,7 +130,9 @@ fun MainReviewItem(
             fontSize = 14.sp,
             lineHeight = 20.sp,
             color = MaterialTheme.colorScheme.onBackground,
-            modifier = Modifier.padding(start = 12.dp, top = 8.dp, end = 12.dp, bottom = 8.dp)
+            modifier = Modifier
+                .padding(start = 12.dp, top = 8.dp, end = 12.dp, bottom = 8.dp)
+                .testTag("reviewText_${resena.id}")
         )
 
         Row(

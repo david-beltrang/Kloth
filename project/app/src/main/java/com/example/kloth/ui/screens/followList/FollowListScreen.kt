@@ -27,9 +27,12 @@ fun FollowListScreen(
             users = state.users,
             isLoading = state.isLoading,
             listType = listType,
+            listOwnerId = userId,
+            currentUserId = state.currentUserId,
+            followingUserIds = state.followingUserIds,
             onBackClick = onBackClick,
             onUserClick = onUserClick,
-            onUnfollowClick = viewModel::unfollow,
+            onUserAction = viewModel::onUserAction,
             modifier = Modifier.fillMaxSize()
         )
     }

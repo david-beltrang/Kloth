@@ -59,11 +59,12 @@ class ExploreViewModel @Inject constructor(
 
     private fun filterPosts(posts: List<PostItem>, index: Int): List<PostItem> {
         return when (index) {
-            0 -> posts.filter { it.product.categoryName.contains("Prenda", ignoreCase = true) || it.product.categoryTag.contains("Prenda", ignoreCase = true) }
-            1 -> posts.filter { it.product.categoryName.contains("Outfit", ignoreCase = true) || it.product.categoryTag.contains("Outfit", ignoreCase = true) }
-            2 -> posts.filter { it.product.categoryName.contains("Marca", ignoreCase = true) || it.product.categoryTag.contains("Marca", ignoreCase = true) }
-            3 -> posts.filter { it.product.categoryName.contains("Evento", ignoreCase = true) || it.product.categoryTag.contains("Evento", ignoreCase = true) }
-            else -> posts
+            0 -> posts
+            1 -> posts.filter { it.product.categoryName.contains("Prenda", ignoreCase = true) || it.product.categoryTag.contains("Prenda", ignoreCase = true) }
+            2 -> posts.filter { it.product.categoryName.contains("Outfit", ignoreCase = true) || it.product.categoryTag.contains("Outfit", ignoreCase = true) }
+            3 -> posts.filter { it.product.categoryName.contains("Marca", ignoreCase = true) || it.product.categoryTag.contains("Marca", ignoreCase = true) }
+            4 -> posts.filter { it.product.categoryName.contains("Evento", ignoreCase = true) || it.product.categoryTag.contains("Evento", ignoreCase = true) }
+            else -> emptyList()
         }
     }
 }

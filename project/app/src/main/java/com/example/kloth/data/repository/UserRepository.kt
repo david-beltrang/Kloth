@@ -41,9 +41,18 @@ class UserRepository @Inject constructor(
     }
 
     suspend fun followOrUnfollowUser(currentUserId: String, targetUserId: String): Result<UserFollowState> = try {
-        Result.success(userDataSource.followOrUnfollowUser(currentUserId, targetUserId))
+        val followState = userDataSource.followOrUnfollowUser(currentUserId, targetUserId)
+        Result.success(followState)
     } catch (e: Exception) {
         Log.e("UserRepository", "No se pudo actualizar el seguimiento", e)
+        Result.failure(e)
+    }
+
+    suspend fun removeFollower(ownerUserId: String, followerUserId: String): Result<Unit> = try {
+        userDataSource.removeFollower(ownerUserId, followerUserId)
+        Result.success(Unit)
+    } catch (e: Exception) {
+        Log.e("UserRepository", "No se pudo eliminar al seguidor $followerUserId", e)
         Result.failure(e)
     }
 

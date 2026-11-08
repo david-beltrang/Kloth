@@ -48,6 +48,7 @@ fun ExploreScreenContent(
     modifier: Modifier = Modifier,
 ) {
     val categoryResIds = listOf(
+        R.string.category_all,
         R.string.category_prendas,
         R.string.category_outfits,
         R.string.category_marcas,
@@ -154,7 +155,8 @@ fun ExploreScreenContent(
                 rating = p.averageRating.toString(),
                 reviews = p.reviewsCount.toString(),
                 imageModel = p.imageUrl ?: p.imageRes,
-                onClick = { onProductClick(p.id) }
+                onClick = { onProductClick(p.id) },
+                showFavorite = false
             )
         }
     }

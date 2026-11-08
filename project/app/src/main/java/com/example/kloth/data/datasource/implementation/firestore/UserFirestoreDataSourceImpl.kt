@@ -87,6 +87,36 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
             .collection("following").document(targetUserId).get().await().exists()
     }
 
+    suspend fun removeFollower(ownerUserId: String, followerUserId: String) {
+        if (ownerUserId == followerUserId) return
+
+        val ownerRef = db.collection("users").document(ownerUserId)
+        val followerRef = db.collection("users").document(followerUserId)
+        val ownerFollowersRef = ownerRef.collection("followers").document(followerUserId)
+        val followerFollowingRef = followerRef.collection("following").document(ownerUserId)
+
+        db.runTransaction { transaction ->
+            val ownerSnapshot = transaction.get(ownerRef)
+            val followerSnapshot = transaction.get(followerRef)
+            val ownerLink = transaction.get(ownerFollowersRef)
+            val followerLink = transaction.get(followerFollowingRef)
+
+            if (ownerLink.exists() || followerLink.exists()) {
+                transaction.delete(ownerFollowersRef)
+                transaction.delete(followerFollowingRef)
+
+                if (ownerSnapshot.exists()) {
+                    val count = ownerSnapshot.getLong("followersCount")?.toInt() ?: 0
+                    transaction.update(ownerRef, "followersCount", (count - 1).coerceAtLeast(0))
+                }
+                if (followerSnapshot.exists()) {
+                    val count = followerSnapshot.getLong("followingCount")?.toInt() ?: 0
+                    transaction.update(followerRef, "followingCount", (count - 1).coerceAtLeast(0))
+                }
+            }
+        }.await()
+    }
+
     suspend fun getFollowingIds(userId: String): Set<String> {
         return db.collection("users").document(userId).collection("following")
             .get().await().documents.map { it.id }.toSet()

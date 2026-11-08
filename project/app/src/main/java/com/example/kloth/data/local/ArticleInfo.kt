@@ -23,6 +23,10 @@ data class ArticleInfo(
     val creatorId: String = "",
     val eliminated: Boolean = false,
 
+    // IA Summary Cache
+    val aiSummary: String? = null,
+    val summaryReviewCount: Int = 0,
+
     // Nuevos: datos propios de cada tipo. Solo se llenan los del tipo del artículo
     val size: String? = null,            // PRENDA
     val material: String? = null,        // PRENDA

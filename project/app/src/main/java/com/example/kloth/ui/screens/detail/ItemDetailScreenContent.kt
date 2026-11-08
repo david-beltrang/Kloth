@@ -6,7 +6,11 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.pluralStringResource
+import com.example.kloth.R
 import com.example.kloth.data.local.ArticleInfo
+import com.example.kloth.ui.screens.detail.components.AiSummaryCard
 import com.example.kloth.ui.screens.detail.components.descriptionProduct.GeneralInfoSection
 import com.example.kloth.ui.screens.detail.components.image.HeroImageSection
 import com.example.kloth.ui.screens.detail.components.review.RatingsAndReviewsSection
@@ -34,6 +38,7 @@ fun ItemDetailScreenContent(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
+            .testTag("detailScreen")
     ) {
         item {
             HeroImageSection(
@@ -56,9 +61,12 @@ fun ItemDetailScreenContent(
             )
         }
         item {
+            AiSummaryCard(summary = product.aiSummary)
+        }
+        item {
             RatingsAndReviewsSection(
                 averageRating = product.averageRating,
-                reviewsCountText = product.reviewsCountText,
+                reviewsCountText = pluralStringResource(R.plurals.reviews_count, product.reviewsCount, product.reviewsCount),
                 reviewsList = product.reviewsList,
                 onWriteReviewClick = onWriteReviewClick,
                 onLikeReviewClick = onLikeReviewClick,

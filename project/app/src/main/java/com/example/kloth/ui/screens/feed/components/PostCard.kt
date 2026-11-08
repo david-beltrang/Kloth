@@ -17,8 +17,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -31,6 +34,7 @@ import com.example.kloth.data.local.PostItem
 import com.example.kloth.ui.theme.KlothTheme
 import com.example.kloth.ui.theme.RedInferno
 import com.example.kloth.ui.theme.GoldStar
+import com.example.kloth.ui.theme.articleCategoryColor
 
 @Composable
 fun PostCard(
@@ -42,6 +46,7 @@ fun PostCard(
     Card(
         modifier = modifier
             .padding(10.dp)
+            .testTag("post_${post.id}")
             .clickable { onClick() },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
@@ -54,6 +59,7 @@ fun PostCard(
     ) {
         Column {
             PostHeader(
+                postId = post.id,
                 name = post.creatorName,
                 time = post.timeAgo,
                 avatarUrl = post.avatarUrl,
@@ -72,7 +78,7 @@ fun PostCard(
             PostFooter(
                 title = post.product.title,
                 rating = post.product.averageRating,
-                reviewCount = post.product.reviewsCountText,
+                reviewCount = pluralStringResource(R.plurals.reviews_count, post.product.reviewsCount, post.product.reviewsCount),
                 comments = post.commentsCount,
                 description = post.product.description,
                 tags = post.tags,
@@ -84,6 +90,7 @@ fun PostCard(
 
 @Composable
 private fun PostHeader(
+    postId: String,
     name: String,
     time: String,
     avatarUrl: String,
@@ -104,6 +111,7 @@ private fun PostHeader(
                     .size(40.dp)
                     .clip(CircleShape)
                     .background(MaterialTheme.colorScheme.secondaryContainer)
+                    .testTag("postAvatar_$postId")
                     .clickable(onClick = onClick),
                 contentScale = ContentScale.Crop
             )
@@ -131,6 +139,7 @@ private fun PostContent(
     category: String,
     modifier: Modifier = Modifier
 ) {
+    val categoryColor = articleCategoryColor(category) ?: RedInferno
     Box(modifier = modifier) {
         //Se usa async para que mno se trabe la UI, carga asíncrona
         AsyncImage(
@@ -142,7 +151,8 @@ private fun PostContent(
         
         KlothBadge(
             text = category,
-            containerColor = RedInferno,
+            containerColor = categoryColor,
+            contentColor = Color.White,
             modifier = Modifier
                 .align(Alignment.TopEnd)
                 .padding(16.dp)

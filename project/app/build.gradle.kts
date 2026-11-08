@@ -19,23 +19,45 @@ android {
         versionCode = 1
         versionName = "1.0"
 
-        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner = "com.example.kloth.HiltTestRunner"
     }
 
     buildTypes {
         release {
+            signingConfig = signingConfigs.getByName("debug")
             optimization {
                 enable = false
             }
+        }
+        debug {
+            isDebuggable = true
         }
     }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
     }
+    packaging{
+        excludes += "META-INF/LICENSE.md"
+        excludes += "META-INF/LICENSE-notice.md"
+    }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
+    // En unit tests (JVM) Android Log/APIs no existen; evita crash al llamar Log.e en el repo.
+    testOptions {
+        unitTests.isReturnDefaultValues = true
+    }
+}
+
+// MockK/Byte Buddy no soporta bien JDK 25 del JBR de Android Studio; las unitarias corren en 21.
+tasks.withType<Test>().configureEach {
+    javaLauncher.set(
+        javaToolchains.launcherFor {
+            languageVersion.set(JavaLanguageVersion.of(21))
+        }
+    )
 }
 
 dependencies {
@@ -82,8 +104,35 @@ dependencies {
     implementation(libs.retrofit.converter.gson)
     implementation(libs.retrofit.converter.scalars)
 
+    // Markdown Compose
+    implementation("com.mikepenz:multiplatform-markdown-renderer-m3:0.39.2")
+
     //
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-messaging")
 
+    //Adicionales
+    testImplementation("io.mockk:mockk:1.13.14")
+
+    //Courutines test
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.10.2")
+
+    //Alternativa a los asserts tradicionales
+    testImplementation("com.google.truth:truth:1.4.2")
+    androidTestImplementation("com.google.truth:truth:1.1.5")
+    
+    androidTestImplementation("com.google.dagger:hilt-android-testing:2.60.1")
+    kspAndroidTest(libs.dagger.kapt)
+    
+    androidTestImplementation("androidx.test.uiautomator:uiautomator:2.3.0")
+    testImplementation(kotlin("test"))
+    
+    //e2e
+    // AndroidX Test - Instrumented
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    
+    // ActivityScenario
+    androidTestImplementation ("androidx.test:core:1.7.0")
+    
 }

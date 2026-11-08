@@ -73,6 +73,39 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
             }
     }
 
+    suspend fun isCommentLikedByUser(reviewId: String, commentId: String, userId: String): Boolean {
+        return db.collection("reviews").document(reviewId)
+            .collection("comments").document(commentId)
+            .collection("likes").document(userId).get().await().exists()
+    }
+
+    suspend fun toggleCommentLike(
+        reviewId: String,
+        commentId: String,
+        userId: String
+    ): ReviewLikeState {
+        val commentRef = db.collection("reviews").document(reviewId)
+            .collection("comments").document(commentId)
+        val likeRef = commentRef.collection("likes").document(userId)
+
+        return db.runTransaction { transaction ->
+            val likeSnapshot = transaction.get(likeRef)
+            val commentSnapshot = transaction.get(commentRef)
+            check(commentSnapshot.exists()) { "El comentario ya no existe" }
+
+            val currentLikes = commentSnapshot.getLong("likesCount")?.toInt() ?: 0
+            if (likeSnapshot.exists()) {
+                transaction.delete(likeRef)
+                transaction.update(commentRef, "likesCount", FieldValue.increment(-1))
+                ReviewLikeState(isLikedByMe = false, likesCount = (currentLikes - 1).coerceAtLeast(0))
+            } else {
+                transaction.set(likeRef, mapOf("timestamp" to FieldValue.serverTimestamp()))
+                transaction.update(commentRef, "likesCount", FieldValue.increment(1))
+                ReviewLikeState(isLikedByMe = true, likesCount = currentLikes + 1)
+            }
+        }.await()
+    }
+
     suspend fun createComment(reviewId: String, dto: CreateCommentDto): String {
         val reviewRef = db.collection("reviews").document(reviewId)
         val commentRef = reviewRef.collection("comments").document()

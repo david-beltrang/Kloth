@@ -25,6 +25,7 @@ import coil.compose.AsyncImage
 import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
 import com.example.kloth.ui.theme.TransparentBlack30
+import com.example.kloth.ui.theme.articleCategoryColor
 
 /**
  * Tarjeta descriptiva para mostrar productos en cuadrículas o listados.
@@ -42,6 +43,7 @@ fun ProductCatalogCard(
     showFavorite: Boolean = true,
     modifier: Modifier = Modifier
 ) {
+    val categoryChipColor = articleCategoryColor(category)
     Column(
         modifier = modifier
             .clip(RoundedCornerShape(16.dp))
@@ -84,12 +86,12 @@ fun ProductCatalogCard(
         Box(
             modifier = Modifier
                 .clip(RoundedCornerShape(999.dp))
-                .background(MaterialTheme.colorScheme.secondaryContainer)
+                .background(categoryChipColor ?: MaterialTheme.colorScheme.secondaryContainer)
                 .padding(horizontal = 8.dp, vertical = 2.dp)
         ) {
             Text(
                 text = category.uppercase(),
-                color = MaterialTheme.colorScheme.onSecondaryContainer,
+                color = if (categoryChipColor != null) Color.White else MaterialTheme.colorScheme.onSecondaryContainer,
                 style = MaterialTheme.typography.labelSmall.copy(
                     fontWeight = FontWeight.Bold,
                     letterSpacing = 1.sp
@@ -123,7 +125,7 @@ fun ProductCatalogCard(
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = "($reviews)",
+                text = stringResource(R.string.label_count_parentheses, reviews),
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )

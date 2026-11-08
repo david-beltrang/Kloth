@@ -18,9 +18,12 @@ fun FollowListScreenPreview() {
             users = previewUsers,
             isLoading = false,
             listType = "following",
+            listOwnerId = "me",
+            currentUserId = "me",
+            followingUserIds = previewUsers.map { it.id }.toSet(),
             onBackClick = {},
             onUserClick = {},
-            onUnfollowClick = {}
+            onUserAction = {}
         )
     }
 }
@@ -33,9 +36,11 @@ fun FollowListScreenDarkPreview() {
             users = previewUsers,
             isLoading = false,
             listType = "followers",
+            listOwnerId = "me",
+            currentUserId = "me",
             onBackClick = {},
             onUserClick = {},
-            onUnfollowClick = {}
+            onUserAction = {}
         )
     }
 }

@@ -26,6 +26,7 @@ import com.example.kloth.ui.theme.KlothTheme
 fun NotificationAvatar(
     inicial: String,
     mostrarPuntoNoLeido: Boolean,
+    imageUrl: String? = null,
     modifier: Modifier = Modifier
 ) {
     Box(modifier = modifier.size(48.dp)) {
@@ -36,12 +37,20 @@ fun NotificationAvatar(
                 .background(MaterialTheme.colorScheme.surfaceContainerLow),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = inicial.uppercase(),
-                color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
-            )
+            if (imageUrl.isNullOrBlank()) {
+                Text(
+                    text = inicial.uppercase(),
+                    color = MaterialTheme.colorScheme.onSurface,
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 18.sp
+                )
+            } else {
+                coil.compose.AsyncImage(
+                    model = imageUrl,
+                    contentDescription = null,
+                    modifier = Modifier.size(48.dp).clip(CircleShape)
+                )
+            }
         }
         if (mostrarPuntoNoLeido) {
             Box(

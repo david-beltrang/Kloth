@@ -1,10 +1,13 @@
 package com.example.kloth.ui.screens.register
 
+import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.kloth.R
 import com.example.kloth.data.repository.AuthRepository
 import com.example.kloth.data.repository.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -13,6 +16,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class RegisterViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val authRepository: AuthRepository,
     private val userRepository: UserRepository
 ) : ViewModel() {
@@ -41,12 +45,12 @@ class RegisterViewModel @Inject constructor(
             state.password.isEmpty() ||
             state.confirmPassword.isEmpty()
         ) {
-            _uiState.update { it.copy(showMessage = true, errorMessage = "Todos los campos son obligatorios") }
+            _uiState.update { it.copy(showMessage = true, errorMessage = context.getString(R.string.register_error_empty_fields)) }
         } else if (state.password.length < 6) {
             _uiState.update {
                 it.copy(
                     showMessage = true,
-                    errorMessage = "La contraseña debe tener al menos 6 caracteres"
+                    errorMessage = context.getString(R.string.auth_error_password_short)
                 )
             }
         } else {
@@ -55,7 +59,8 @@ class RegisterViewModel @Inject constructor(
                 val result = authRepository.signUp(state.email, state.password)
                 if (result.isSuccess) {
                     //En cuanto a noSQL y firebase primero se autentica el usuario y se obtiene el ID
-                    val userId = authRepository.currentUser?.uid ?: throw Exception("No se pudo obtener el usuario actual")
+                    val userId = authRepository.currentUser?.uid
+                        ?: throw Exception(context.getString(R.string.register_error_user_id))
                     val registerResult = userRepository.registerUser(
                         email = state.email,
                         password = state.password,
@@ -70,7 +75,7 @@ class RegisterViewModel @Inject constructor(
                             it.copy(
                                 showMessage = true,
                                 errorMessage = registerResult.exceptionOrNull()?.message
-                                    ?: "No se pudo guardar tu usuario"
+                                    ?: context.getString(R.string.register_error_save_user)
                             )
                         }
                     }
@@ -78,7 +83,8 @@ class RegisterViewModel @Inject constructor(
                     _uiState.update {
                         it.copy(
                             showMessage = true,
-                            errorMessage = result.exceptionOrNull()?.message ?: "Ocurrió un error al crear tu cuenta"
+                            errorMessage = result.exceptionOrNull()?.message
+                                ?: context.getString(R.string.register_error_generic)
                         )
                     }
                 }

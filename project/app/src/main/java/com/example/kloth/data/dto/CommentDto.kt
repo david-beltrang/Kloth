@@ -21,7 +21,10 @@ data class CommentFirestoreDto(
     val createdAt: String = "",
     val likesCount: Int = 0
 ) {
-    fun toComentarioReviewData(currentUserId: String?): ComentarioReviewData = ComentarioReviewData(
+    fun toComentarioReviewData(
+        currentUserId: String?,
+        isLikedByMe: Boolean = false
+    ): ComentarioReviewData = ComentarioReviewData(
         id = commentId,
         authorId = userId,
         authorName = username,
@@ -30,6 +33,7 @@ data class CommentFirestoreDto(
         avatarUrl = profileImageUrl,
         commentText = text,
         likesCount = likesCount,
+        isLikedByMe = isLikedByMe,
         isMyComment = userId == currentUserId
     )
 }

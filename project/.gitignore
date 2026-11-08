@@ -14,3 +14,17 @@
 .cxx
 local.properties
 google-services.json
+node_modules/
+seed_data/node_modules/
+
+# Datos locales de Firebase Emulator
+/.firebase/
+/emulator_data/
+/firebase-export/
+
+# Variables y credenciales locales
+/.env
+/.env.*
+!/.env.example
+serviceAccountKey.json
+service-account*.json

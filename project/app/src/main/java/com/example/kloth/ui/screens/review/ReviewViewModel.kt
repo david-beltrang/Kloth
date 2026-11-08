@@ -1,5 +1,6 @@
 package com.example.kloth.ui.screens.review
 
+import android.content.Context
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,7 +8,9 @@ import com.example.kloth.data.repository.ReviewRepository
 import com.example.kloth.data.repository.AuthRepository
 import com.example.kloth.data.repository.UserRepository
 import com.example.kloth.ui.navigation.AppRoutes
+import com.example.kloth.R
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,6 +20,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class ReviewViewModel @Inject constructor(
+    @ApplicationContext private val context: Context,
     savedStateHandle: SavedStateHandle,
     private val reviewRepository: ReviewRepository,
     private val authRepository: AuthRepository,
@@ -37,7 +41,7 @@ class ReviewViewModel @Inject constructor(
                 currentUserImageUrl = currentUser?.photoUrl?.toString(),
                 currentUserName = currentUser?.displayName
                     ?: currentUser?.email?.substringBefore("@")
-                    ?: "Usuario"
+                    ?: context.getString(R.string.review_default_username)
             )
         }
         currentUser?.uid?.let { userId ->
@@ -142,19 +146,24 @@ class ReviewViewModel @Inject constructor(
     }
 
     fun onLikeComentario(id: String) {
-        _uiState.update { currentState ->
-            val comentariosActualizados = currentState.resena.comentariosList.map { c ->
-                if (c.id == id) {
-                    val nuevoLiked = !c.isLikedByMe
-                    c.copy(
-                        isLikedByMe = nuevoLiked,
-                        likesCount = if (nuevoLiked) c.likesCount + 1 else c.likesCount - 1
+        val reviewId = reviewId?.takeIf { it.isNotBlank() } ?: return
+        val userId = authRepository.currentUser?.uid ?: return
+        viewModelScope.launch {
+            reviewRepository.toggleCommentLike(reviewId, id, userId).onSuccess { likeState ->
+                _uiState.update { currentState ->
+                    val comentariosActualizados = currentState.resena.comentariosList.map { comment ->
+                        if (comment.id == id) {
+                            comment.copy(
+                                isLikedByMe = likeState.isLikedByMe,
+                                likesCount = likeState.likesCount
+                            )
+                        } else comment
+                    }
+                    currentState.copy(
+                        resena = currentState.resena.copy(comentariosList = comentariosActualizados)
                     )
-                } else c
+                }
             }
-            currentState.copy(
-                resena = currentState.resena.copy(comentariosList = comentariosActualizados)
-            )
         }
     }
 

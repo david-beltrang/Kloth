@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -44,7 +45,8 @@ fun CommentItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
+            .padding(horizontal = 16.dp, vertical = 12.dp)
+            .testTag("comment_${comentario.id}"),
         horizontalArrangement = Arrangement.spacedBy(12.dp),
         verticalAlignment = Alignment.Top
     ) {
@@ -81,7 +83,9 @@ fun CommentItem(
                 fontSize = 13.sp,
                 lineHeight = 18.sp,
                 color = MaterialTheme.colorScheme.onBackground,
-                modifier = Modifier.padding(top = 4.dp, bottom = 6.dp)
+                modifier = Modifier
+                    .padding(top = 4.dp, bottom = 6.dp)
+                    .testTag("commentText_${comentario.id}")
             )
 
             Row(
@@ -92,7 +96,12 @@ fun CommentItem(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
-                    IconButton(onClick = onLikeClick, modifier = Modifier.size(20.dp)) {
+                    IconButton(
+                        onClick = onLikeClick,
+                        modifier = Modifier
+                            .size(20.dp)
+                            .testTag("commentLikeButton_${comentario.id}")
+                    ) {
                         Icon(
                             imageVector = if (comentario.isLikedByMe) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
                             contentDescription = stringResource(R.string.cd_like),
@@ -103,7 +112,8 @@ fun CommentItem(
                     Text(
                         text = "${comentario.likesCount}",
                         fontSize = 12.sp,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.testTag("commentLikeCount_${comentario.id}")
                     )
                 }
 

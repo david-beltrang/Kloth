@@ -121,7 +121,7 @@ fun CatalogCard(
             )
             Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = "($reviews)",
+                text = stringResource(R.string.label_count_parentheses, reviews),
                 style = MaterialTheme.typography.bodySmall,
                 color = AstronomicGrey
             )

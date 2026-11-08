@@ -112,6 +112,8 @@ data class ArticleFirestoreDto(
     val imageArticle: String = "",
     val updatedAt: String? = null,
     val tags: List<String> = emptyList(),
+    val aiSummary: String? = null,
+    val summaryReviewCount: Int = 0,
     // PRENDA
     val size: String? = null,
     val color: String? = null,
@@ -148,6 +150,8 @@ data class ArticleFirestoreDto(
             createdAt = createdAt,
             creatorId = idUser,
             eliminated = eliminated,
+            aiSummary = aiSummary,
+            summaryReviewCount = summaryReviewCount,
             size = size,
             material = material,
             style = style,
