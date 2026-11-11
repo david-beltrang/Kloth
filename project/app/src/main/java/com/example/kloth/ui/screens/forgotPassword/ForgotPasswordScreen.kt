@@ -12,18 +12,20 @@ fun ForgotPasswordScreen(
     onBackClick: () -> Unit = {}
 ) {
     val state by forgotPasswordViewModel.uiState.collectAsState()
-
     ForgotPasswordScreenContent(
-        modifier = modifier,
-
-        // Variables de estado
-        email = state.email,
-
-        // Métodos del ViewModel para manejar el estado
-        onEmailChange = { forgotPasswordViewModel.onEmailChange(it) },
-        onSendClick = { forgotPasswordViewModel.onSendClick() },
-
-        // Navegación
-        onBackClick = onBackClick
+        state = state,
+        onEmailChange = forgotPasswordViewModel::onEmailChange,
+        onCodeChange = forgotPasswordViewModel::onCodeChange,
+        onNewPasswordChange = forgotPasswordViewModel::onNewPasswordChange,
+        onConfirmPasswordChange = forgotPasswordViewModel::onConfirmPasswordChange,
+        onNewPasswordToggle = forgotPasswordViewModel::toggleNewPasswordVisibility,
+        onConfirmPasswordToggle = forgotPasswordViewModel::toggleConfirmPasswordVisibility,
+        onPrimaryClick = {
+            if (state.step == ForgotPasswordStep.Email) forgotPasswordViewModel.onSendClick()
+            else forgotPasswordViewModel.onResetClick()
+        },
+        onResendClick = forgotPasswordViewModel::onResendClick,
+        onBackClick = onBackClick,
+        modifier = modifier
     )
 }

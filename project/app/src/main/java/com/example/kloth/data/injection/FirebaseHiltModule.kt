@@ -5,6 +5,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
+import com.google.firebase.functions.FirebaseFunctions
+import com.google.firebase.functions.functions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
 
@@ -28,5 +30,9 @@ class FirebaseHiltModule {
     @Singleton
     @Provides
     fun firebaseStorage(): FirebaseStorage = Firebase.storage
+
+    @Singleton
+    @Provides
+    fun firebaseFunctions(): FirebaseFunctions = Firebase.functions
 }
 

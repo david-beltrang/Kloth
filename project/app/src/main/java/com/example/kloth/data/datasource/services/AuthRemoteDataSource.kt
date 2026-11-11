@@ -4,11 +4,13 @@ import androidx.core.net.toUri
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.UserProfileChangeRequest
+import com.google.firebase.functions.FirebaseFunctions
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
 class AuthRemoteDataSource @Inject constructor(
-    private val auth: FirebaseAuth
+    private val auth: FirebaseAuth,
+    private val functions: FirebaseFunctions
 ){
 
     val currentUser: FirebaseUser?
@@ -38,6 +40,18 @@ class AuthRemoteDataSource @Inject constructor(
 
     suspend fun signUp(email: String, password: String){
         auth.createUserWithEmailAndPassword(email, password).await()
+    }
+
+    suspend fun requestPasswordResetCode(email: String) {
+        functions.getHttpsCallable("requestPasswordResetCode")
+            .call(mapOf("email" to email))
+            .await()
+    }
+
+    suspend fun resetPasswordWithCode(email: String, code: String, newPassword: String) {
+        functions.getHttpsCallable("resetPasswordWithCode")
+            .call(mapOf("email" to email, "code" to code, "newPassword" to newPassword))
+            .await()
     }
 
     fun signOut(){

@@ -117,6 +117,19 @@
     <string name="forgot_password_instruction">Ingresa tu correo electrónico para enviarte las instrucciones de recuperación.</string>
     <string name="forgot_password_button">Enviar correo</string>
     <string name="forgot_password_back_login">Volver al inicio de sesión</string>
+    <string name="forgot_password_code_instruction">Si el correo está registrado, te enviamos un código de 6 dígitos.</string>
+    <string name="forgot_password_code_title">Restablece tu contraseña</string>
+    <string name="forgot_password_code_placeholder">Código de 6 dígitos</string>
+    <string name="forgot_password_new_password_placeholder">Nueva contraseña</string>
+    <string name="forgot_password_confirm_password_placeholder">Confirmar nueva contraseña</string>
+    <string name="forgot_password_reset_button">Cambiar contraseña</string>
+    <string name="forgot_password_resend">Reenviar código</string>
+    <string name="forgot_password_resend_countdown">Reenviar código en %1$d s</string>
+    <string name="forgot_password_error_invalid_email">Ingresa un correo electrónico válido</string>
+    <string name="forgot_password_error_invalid_code">El código debe tener 6 dígitos</string>
+    <string name="forgot_password_error_password_mismatch">Las contraseñas no coinciden</string>
+    <string name="forgot_password_request_success">Si el correo está registrado, te enviamos un código</string>
+    <string name="forgot_password_reset_success">¡Contraseña restablecida con éxito!</string>
 
     <!-- Create Article Screen -->
     <string name="type_marca">Marca</string>
@@ -263,6 +276,10 @@
     <string name="auth_error_weak_password">La contraseña es muy débil</string>
     <string name="auth_error_invalid_email">Correo electrónico inválido</string>
     <string name="forgot_password_error_empty_email">Por favor, ingresa tu correo electrónico</string>
+    <string name="auth_error_invalid_reset_code">El código no es válido o venció. Solicita uno nuevo.</string>
+    <string name="auth_error_reset_wait">Espera 60 segundos antes de solicitar otro código.</string>
+    <string name="auth_error_connection">No se pudo conectar. Revisa tu conexión e inténtalo de nuevo.</string>
+    <string name="auth_error_generic">No se pudo completar la solicitud. Inténtalo de nuevo.</string>
     <string name="register_error_user_id">No se pudo obtener el usuario actual</string>
     <string name="register_error_save_user">No se pudo guardar tu usuario</string>
     <string name="edit_profile_error_email">No se pudo cambiar el email. Vuelve a iniciar sesión e inténtalo de nuevo.</string>

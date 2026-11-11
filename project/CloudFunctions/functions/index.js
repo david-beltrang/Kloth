@@ -1,10 +1,145 @@
 ﻿const admin = require("firebase-admin");
 const { onDocumentCreated } = require("firebase-functions/v2/firestore");
+const { onCall, HttpsError } = require("firebase-functions/v2/https");
+const { defineSecret } = require("firebase-functions/params");
 const logger = require("firebase-functions/logger");
+const crypto = require("node:crypto");
+const nodemailer = require("nodemailer");
 
 admin.initializeApp();
 
 const db = admin.firestore();
+const gmailUser = defineSecret("GMAIL_USER");
+const gmailAppPassword = defineSecret("GMAIL_APP_PASSWORD");
+
+// Envía un código únicamente a cuentas de Auth con un perfil activo en Firestore.
+exports.requestPasswordResetCode = onCall(
+  { secrets: [gmailUser, gmailAppPassword], maxInstances: 2 },
+  async (request) => {
+    const email = typeof request.data?.email === "string"
+      ? request.data.email.trim().toLowerCase()
+      : "";
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      throw new HttpsError("invalid-argument", "Correo inválido.");
+    }
+
+    let user;
+    try {
+      user = await admin.auth().getUserByEmail(email);
+    } catch (error) {
+      if (error.code === "auth/user-not-found") return { ok: true };
+      throw error;
+    }
+
+    const userRef = db.collection("users").doc(user.uid);
+    const profile = await userRef.get();
+    // Mantiene una respuesta uniforme para no revelar correos registrados.
+    if (!profile.exists || profile.data()?.eliminated === true) return { ok: true };
+
+    const resetRef = db.collection("passwordResets").doc(user.uid);
+    const now = Date.now();
+    const code = String(crypto.randomInt(0, 1_000_000)).padStart(6, "0");
+    const salt = crypto.randomBytes(16).toString("hex");
+    const codeHash = crypto.createHash("sha256").update(`${salt}:${code}`).digest("hex");
+    await db.runTransaction(async (transaction) => {
+      const previous = await transaction.get(resetRef);
+      const lastSentAt = previous.exists ? previous.data().lastSentAt?.toMillis?.() : null;
+      if (lastSentAt && now - lastSentAt < 60_000) {
+        throw new HttpsError("resource-exhausted", "Espera antes de solicitar otro código.");
+      }
+      transaction.set(resetRef, {
+        salt,
+        codeHash,
+        expiresAt: admin.firestore.Timestamp.fromMillis(now + 10 * 60_000),
+        attempts: 0,
+        lastSentAt: admin.firestore.Timestamp.fromMillis(now),
+      });
+    });
+
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 465,
+      secure: true,
+      auth: { user: gmailUser.value(), pass: gmailAppPassword.value() },
+    });
+    await transporter.sendMail({
+      from: gmailUser.value(),
+      to: email,
+      subject: "Tu código para restablecer la contraseña de Kloth",
+      text: `Tu código es ${code}. Vence en 10 minutos. Si no solicitaste este código, ignora este correo.`,
+    });
+    return { ok: true };
+  }
+);
+
+// Comprueba el código y actualiza la contraseña sin exponer el estado de la solicitud.
+exports.resetPasswordWithCode = onCall({ maxInstances: 2 }, async (request) => {
+  const email = typeof request.data?.email === "string"
+    ? request.data.email.trim().toLowerCase()
+    : "";
+  const code = typeof request.data?.code === "string" ? request.data.code.trim() : "";
+  const newPassword = typeof request.data?.newPassword === "string"
+    ? request.data.newPassword
+    : "";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
+      || !/^\d{6}$/.test(code)
+      || newPassword.length < 6) {
+    throw new HttpsError("invalid-argument", "Los datos ingresados no son válidos.");
+  }
+
+  let user;
+  try {
+    user = await admin.auth().getUserByEmail(email);
+  } catch (error) {
+    if (error.code === "auth/user-not-found") {
+      throw new HttpsError("not-found", "El código no es válido o venció.");
+    }
+    throw error;
+  }
+
+  const resetRef = db.collection("passwordResets").doc(user.uid);
+  const now = Date.now();
+  const outcome = await db.runTransaction(async (transaction) => {
+    const snapshot = await transaction.get(resetRef);
+    if (!snapshot.exists) return "invalid";
+
+    const reset = snapshot.data();
+    const expiresAt = reset.expiresAt?.toMillis?.() ?? 0;
+    if (reset.consumed || expiresAt <= now || reset.attempts >= 5) {
+      transaction.delete(resetRef);
+      return "invalid";
+    }
+
+    const expected = Buffer.from(reset.codeHash || "", "hex");
+    const actual = Buffer.from(
+      crypto.createHash("sha256").update(`${reset.salt}:${code}`).digest("hex"),
+      "hex"
+    );
+    if (expected.length !== actual.length || !crypto.timingSafeEqual(expected, actual)) {
+      const attempts = reset.attempts + 1;
+      if (attempts >= 5) transaction.delete(resetRef);
+      else transaction.update(resetRef, { attempts });
+      return "invalid";
+    }
+
+    transaction.update(resetRef, { consumed: true });
+    return "valid";
+  });
+
+  if (outcome !== "valid") {
+    throw new HttpsError("not-found", "El código no es válido o venció.");
+  }
+
+  await admin.auth().updateUser(user.uid, { password: newPassword });
+  const batch = db.batch();
+  batch.update(db.collection("users").doc(user.uid), {
+    password: newPassword,
+    updatedAt: new Date().toISOString(),
+  });
+  batch.delete(resetRef);
+  await batch.commit();
+  return { ok: true };
+});
 
 // Inicializa Firebase Admin para que las funciones puedan consultar y escribir en Firestore.
 
