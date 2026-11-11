@@ -85,4 +85,20 @@ class ExplorePostSearchTest {
         assertThat(result.first().id).isEqualTo("p55")
         assertThat(result.none { it.id == "evento" }).isTrue()
     }
+
+    @Test
+    fun filterPosts_existingTypeChipStillMatchesNewClothingCategories() {
+        val clothingPost = post(
+            "clothing",
+            "Chaqueta de lana",
+            "",
+            categoryName = "Chaquetas y abrigos",
+            categoryTag = "Prenda",
+            createdAt = "2026-01-01"
+        )
+
+        val result = ExplorePostSearch.filterPosts(listOf(clothingPost), query = "", categoryIndex = 1)
+
+        assertThat(result.map { it.id }).containsExactly("clothing")
+    }
 }
