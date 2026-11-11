@@ -44,6 +44,7 @@ fun CreateArticleScreen(
             onDescripcionChange = { viewModel.onDescripcionChanged(it) },
             onMarcaChange = { viewModel.onMarcaChanged(it) },
             onColorChange = { viewModel.onColorChanged(it) },
+            onCategoriaChange = { viewModel.onCategoriaChanged(it) },
             onPrecioChange = { viewModel.onPrecioChanged(it) },
             onEstiloChange = { viewModel.onEstiloChanged(it) },
             onCiudadChange = { viewModel.onCiudadChanged(it) },

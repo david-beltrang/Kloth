@@ -6,18 +6,21 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import com.example.kloth.R
 import com.example.kloth.ui.screens.createArticle.components.ArticleType
 import com.example.kloth.ui.screens.createArticle.components.CardCreateArticle
 import com.example.kloth.ui.screens.createArticle.components.FormArticle
 import com.example.kloth.ui.screens.createArticle.components.PhotoCarrusel
 import com.example.kloth.ui.screens.explore.components.CategoryChip
+import com.example.kloth.ui.theme.KlothTheme
 
 /**
  * Contenido sin estado de la pantalla. Dibuja a partir del objeto UiState recibido.
@@ -36,6 +39,7 @@ fun CreateArticleScreenContent(
     onMarcaChange: (String) -> Unit,
     onColorChange: (String) -> Unit,
     onPrecioChange: (String) -> Unit,
+    onCategoriaChange: (String) -> Unit,
     onEstiloChange: (String) -> Unit,
     onCiudadChange: (String) -> Unit,
     onPaisChange: (String) -> Unit,
@@ -57,7 +61,9 @@ fun CreateArticleScreenContent(
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(horizontal = 16.dp)
+                .horizontalScroll(rememberScrollState())
+                .padding(vertical = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             ArticleType.entries.forEach { type ->
@@ -70,7 +76,8 @@ fun CreateArticleScreenContent(
                 CategoryChip(
                     text = typeName,
                     isSelected = uiState.selectedType == type,
-                    onClick = { onTypeChange(type) }
+                    onClick = { onTypeChange(type) },
+                    horizontalPadding = 8.dp
                 )
             }
         }
@@ -99,6 +106,8 @@ fun CreateArticleScreenContent(
             onMarcaChange = onMarcaChange,
             color = uiState.color,
             onColorChange = onColorChange,
+            categoria = uiState.categoria,
+            onCategoriaChange = onCategoriaChange,
             precio = uiState.precio,
             onPrecioChange = onPrecioChange,
             estilo = uiState.estilo,
@@ -119,7 +128,30 @@ fun CreateArticleScreenContent(
             onPaisOrigenChange = onPaisOrigenChange,
             anioFundacion = uiState.anioFundacion,
             onAnioFundacionChange = onAnioFundacionChange,
-            onPublicarClick = onPublicarClick
+            onPublicarClick = onPublicarClick,
+            buttonEnabled = !uiState.isPublishing &&
+                (uiState.selectedType != ArticleType.PRENDA || uiState.categoria.isNotBlank())
         )
+    }
+}
+
+@Preview(name = "Tipos en pantalla angosta", showBackground = true, widthDp = 320)
+@Composable
+private fun ArticleTypeRowNarrowPreview() {
+    KlothTheme {
+        Row(
+            modifier = Modifier.fillMaxWidth().horizontalScroll(rememberScrollState()).padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(10.dp)
+        ) {
+            ArticleType.entries.forEach { type ->
+                val name = when (type) {
+                    ArticleType.PRENDA -> stringResource(R.string.type_prenda)
+                    ArticleType.OUTFIT -> stringResource(R.string.type_outfit)
+                    ArticleType.EVENTO -> stringResource(R.string.type_evento)
+                    ArticleType.MARCA -> stringResource(R.string.type_marca)
+                }
+                CategoryChip(name, isSelected = type == ArticleType.MARCA, onClick = {}, horizontalPadding = 8.dp)
+            }
+        }
     }
 }
