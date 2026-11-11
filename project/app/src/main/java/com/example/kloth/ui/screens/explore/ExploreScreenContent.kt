@@ -22,6 +22,7 @@ import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,9 +40,12 @@ fun ExploreScreenContent(
     // Variables de estado (Datos que vienen del ViewModel)
     products: List<PostItem>,
     selectedCategoryIndex: Int,
+    query: String,
 
     // Métodos para manejar el estado (Eventos)
     onCategorySelected: (Int) -> Unit,
+    onQueryChange: (String) -> Unit,
+    onClearQuery: () -> Unit,
 
     // Navegación
     onProductClick: (String) -> Unit = {},
@@ -74,7 +78,11 @@ fun ExploreScreenContent(
                     .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f))
                     .padding(top = 16.dp, bottom = 8.dp)
             ) {
-                SearchBar()
+                SearchBar(
+                    query = query,
+                    onQueryChange = onQueryChange,
+                    onClear = onClearQuery
+                )
                 Spacer(modifier = Modifier.height(16.dp))
 
                 LazyRow(
@@ -147,7 +155,16 @@ fun ExploreScreenContent(
             }
         }
 
-        items(products) { post ->
+        if (products.isEmpty()) {
+            item(span = { GridItemSpan(2) }) {
+                Box(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(stringResource(R.string.explore_empty_results))
+                }
+            }
+        } else items(products) { post ->
             val p = post.product
             ProductCatalogCard(
                 title = p.title,

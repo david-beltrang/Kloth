@@ -31,9 +31,12 @@ fun ExploreScreen(
             // Variables de estado
             products = state.filteredPosts,
             selectedCategoryIndex = state.selectedCategoryIndex,
+            query = state.query,
 
             // Métodos del ViewModel para manejar el estado
             onCategorySelected = { exploreViewModel.onCategorySelected(it) },
+            onQueryChange = exploreViewModel::onQueryChange,
+            onClearQuery = exploreViewModel::onClearQuery,
 
             // Navegación
             onProductClick = onProductClick,

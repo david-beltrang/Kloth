@@ -41,6 +41,8 @@
     <string name="title_explore">Explorar</string>
     <string name="category_all">Todo</string>
     <string name="search_placeholder">Buscar artículos...</string>
+    <string name="search_clear">Borrar búsqueda</string>
+    <string name="explore_empty_results">No encontramos resultados</string>
     <string name="category_prendas">Prendas</string>
     <string name="category_outfits">Outfits</string>
     <string name="category_marcas">Marcas</string>
