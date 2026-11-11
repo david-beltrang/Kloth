@@ -77,4 +77,4 @@ class MappersTest {
         Truth.assertThat(label).isEqualTo("Hace 5 min")
     }
 }
-
+

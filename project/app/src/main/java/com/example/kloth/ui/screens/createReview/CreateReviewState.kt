@@ -12,10 +12,7 @@ data class CreateReviewState(
     val reviewText: String = "",
     val maxTextLength: Int = 500,
     val isLoading: Boolean = false,
-    val isSubmitted: Boolean = false,
-    // La ubicación es parte del flujo de reviews para que puedan aparecer en el mapa
-    val includeLocation: Boolean = false,
-    val locationPermissionDenied: Boolean = false
+    val isSubmitted: Boolean = false
 ) {
     val isFormValid: Boolean
         get() = rating > 0 && reviewText.isNotBlank() && !isLoading

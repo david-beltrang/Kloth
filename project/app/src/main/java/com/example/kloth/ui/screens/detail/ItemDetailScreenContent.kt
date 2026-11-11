@@ -83,9 +83,6 @@ fun ItemDetailScreenContent(
             AiSummaryCard(summary = product.aiSummary)
         }
         item {
-            AiSummaryCard(summary = product.aiSummary)
-        }
-        item {
             RatingsAndReviewsSection(
                 averageRating = product.averageRating,
                 reviewsCountText = pluralStringResource(R.plurals.reviews_count, product.reviewsCount, product.reviewsCount),

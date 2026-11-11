@@ -112,11 +112,6 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-messaging")
 
-    // MapLibre
-    implementation(libs.maplibre.android)
-    // Google Location
-    implementation(libs.play.services.location)
-
     //Adicionales
     testImplementation("io.mockk:mockk:1.13.14")
 

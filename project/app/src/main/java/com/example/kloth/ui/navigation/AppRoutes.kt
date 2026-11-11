@@ -21,9 +21,6 @@ sealed class AppRoutes(val route: String) {
     // explorar (tab 1)
     object Explore : AppRoutes("explore")
 
-    // mapa de reviews de las ultimas 24 h
-    object ReviewsMap : AppRoutes("reviews_map")
-
     // crear publicacion (tab 2)
     object CreateArticle : AppRoutes("create_article")
     // En AppRoutes.kt

@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -20,16 +19,12 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.Map
 import androidx.compose.material.icons.outlined.Tune
-import androidx.compose.material3.FilledTonalIconButton
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
@@ -50,7 +45,6 @@ fun ExploreScreenContent(
 
     // Navegación
     onProductClick: (String) -> Unit = {},
-    onMapClick: () -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val categoryResIds = listOf(
@@ -80,29 +74,7 @@ fun ExploreScreenContent(
                     .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f))
                     .padding(top = 16.dp, bottom = 8.dp)
             ) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(8.dp),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    SearchBar(modifier = Modifier.weight(1f))
-
-                    FilledTonalIconButton(
-                        onClick = onMapClick,
-                        colors = IconButtonDefaults.filledTonalIconButtonColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceContainer,
-                            contentColor = MaterialTheme.colorScheme.onSurfaceVariant
-                        ),
-                        modifier = Modifier
-                            .size(48.dp)
-                            .testTag("exploreMapButton")
-                    ) {
-                        Icon(
-                            imageVector = Icons.Outlined.Map,
-                            contentDescription = stringResource(R.string.cd_map)
-                        )
-                    }
-                }
+                SearchBar()
                 Spacer(modifier = Modifier.height(16.dp))
 
                 LazyRow(

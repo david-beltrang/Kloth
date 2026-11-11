@@ -74,4 +74,4 @@ class UserRepositoryTest {
         Truth.assertThat(result.getOrNull()?.followersCount).isEqualTo(1)
     }
 }
-
+

@@ -30,8 +30,4 @@ class ReviewRetrofitDataSourceImpl @Inject constructor(
     override suspend fun deleteReview(id: String) {
         TODO("Not yet implemented")
     }
-
-    // Simetría con el DataSource de Firestore
-    override suspend fun getReviewsCreatedSince(sinceIso: String): List<ReviewDtoGeneric> =
-        service.getReviewsSince(sinceIso)
 }

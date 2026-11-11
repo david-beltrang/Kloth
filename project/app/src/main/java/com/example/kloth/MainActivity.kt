@@ -14,13 +14,6 @@ import dagger.hilt.android.AndroidEntryPoint
 /** Punto de entrada principal de la aplicación**/
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val locationPermissionLauncher = registerForActivityResult(
-        ActivityResultContracts.RequestMultiplePermissions()
-    ) {
-        // La ubicacion se solicita al iniciar la app; el mapa la usa cuando se abre
-        requestLocalNetworkPermissionIfNeeded()
-    }
-
     private val localNetworkPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted ->
@@ -41,28 +34,6 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        requestLocationPermissionIfNeeded()
-    }
-
-    private fun requestLocationPermissionIfNeeded() {
-        val fineGranted = checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED
-        val coarseGranted = checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) ==
-                PackageManager.PERMISSION_GRANTED
-
-        if (fineGranted || coarseGranted) {
-            requestLocalNetworkPermissionIfNeeded()
-        } else {
-            locationPermissionLauncher.launch(
-                arrayOf(
-                    Manifest.permission.ACCESS_FINE_LOCATION,
-                    Manifest.permission.ACCESS_COARSE_LOCATION
-                )
-            )
-        }
-    }
-
-    private fun requestLocalNetworkPermissionIfNeeded() {
         // Android 17 (API 37) requires a runtime grant for local emulator traffic.
         if (BuildConfig.DEBUG && Build.VERSION.SDK_INT >= 37 &&
             checkSelfPermission(Manifest.permission.ACCESS_LOCAL_NETWORK) != PackageManager.PERMISSION_GRANTED

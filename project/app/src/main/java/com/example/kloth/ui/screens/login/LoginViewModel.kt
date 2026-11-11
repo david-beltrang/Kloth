@@ -61,13 +61,12 @@ class LoginViewModel @Inject constructor(
             viewModelScope.launch {
                 val result = authRepository.signIn(email, password)
                 if (result.isSuccess) {
-                    // navigate primero: FCM en emulador puede colgarse y bloquearía la UI/tests
-                    _uiState.update { it.copy(navigate = true) }
                     runCatching {
                         val userId = authRepository.currentUser?.uid
                         val token = FirebaseMessaging.getInstance().token.await()
                         if (userId != null) userRepository.updateFcmToken(userId, token)
                     }
+                    _uiState.update { it.copy(navigate = true) }
                 } else {
                     _uiState.update {
                         it.copy(

@@ -33,7 +33,6 @@ import com.example.kloth.ui.screens.profile.ProfileViewModel
 import com.example.kloth.ui.screens.register.RegisterScreen
 import com.example.kloth.ui.screens.register.RegisterViewModel
 import com.example.kloth.ui.screens.review.ReviewScreen
-import com.example.kloth.ui.screens.reviewsMap.ReviewsMapScreen
 import com.example.kloth.ui.screens.splash.SplashScreen
 import com.example.kloth.ui.screens.splash.SplashViewModel
 import com.example.kloth.data.local.ModelPicType
@@ -153,19 +152,6 @@ fun AppNavigation(
                 exploreViewModel = exploreViewModel,
                 onProductClick = { productId ->
                     navController.navigate(AppRoutes.ArticleDetail.createRoute(productId))
-                },
-                onMapClick = {
-                    navController.navigate(AppRoutes.ReviewsMap.route)
-                }
-            )
-        }
-
-        // Mapa de reviews
-        composable(AppRoutes.ReviewsMap.route) {
-            ReviewsMapScreen(
-                onBackClick = { navController.popBackStack() },
-                onReviewClick = { reviewId ->
-                    navController.navigate(AppRoutes.Review.createRoute(reviewId))
                 }
             )
         }

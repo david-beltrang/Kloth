@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Permite tráfico HTTP no seguro (sin SSL) en redes locales para desarrollo y pruebas -->
+<!-- Permite trafico HTTP (sin S) hacia el backend local que corre en el PC (10.0.2.2 desde el emulador) -->
 <network-security-config>
-    <base-config cleartextTrafficPermitted="true" />
+    <domain-config cleartextTrafficPermitted="true">
+        <domain includeSubdomains="true">10.0.2.2</domain>
+    </domain-config>
 </network-security-config>

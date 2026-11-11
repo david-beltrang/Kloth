@@ -5,13 +5,10 @@ import com.example.kloth.data.datasource.implementation.firestore.ReviewFirestor
 import com.example.kloth.data.dto.CreateReviewDto
 import com.example.kloth.data.dto.CreateCommentDto
 import com.example.kloth.data.dto.UpdateReviewDto
-import com.example.kloth.data.local.Coordinates
-import com.example.kloth.data.local.ComentarioReviewData
 import com.example.kloth.data.local.ReviewData
+import com.example.kloth.data.local.ComentarioReviewData
 import com.example.kloth.data.local.ReviewLikeState
-import com.example.kloth.data.local.ReviewMapPin
 import java.time.Instant
-import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 import kotlinx.coroutines.flow.Flow
@@ -87,36 +84,20 @@ class ReviewRepository @Inject constructor(
         articleId: String,
         userId: String,
         rating: Int,
-        text: String,
-        coordinates: Coordinates? = null
+        text: String
     ): Result<Unit> = try {
         val dto = CreateReviewDto(
             userId = userId,
             articleId = articleId,
             rating = rating,
             text = text,
-            createdAt = Instant.now().toString(),
-            latitude = coordinates?.latitude,
-            longitude = coordinates?.longitude
+            createdAt = Instant.now().toString()
         )
         // La Cloud Function de reseñas guarda la notificacion para quien publico el articulo.
         reviewDataSource.createReview(dto)
         Result.success(Unit)
     } catch (e: Exception) {
         Log.e("ReviewRepository", "No se pudo crear la reseña", e)
-        Result.failure(e)
-    }
-
-    suspend fun getRecentReviewPins(now: Instant = Instant.now()): Result<List<ReviewMapPin>> = try {
-        val since = now.minus(24, ChronoUnit.HOURS)
-        val reviews = reviewDataSource.getReviewsCreatedSince(since.toString())
-        val usersById = userRepository.getAllUsers().associateBy { it.toUserProfileInfo().id }
-        val pins = reviews
-            .filter { it.eliminated != true && it.isCreatedAtOrAfter(since) }
-            .mapNotNull { it.toReviewMapPin(usersById[it.authorIdKey()]) }
-        Result.success(pins)
-    } catch (e: Exception) {
-        Log.e("ReviewRepository", "Error al cargar los reviews del mapa", e)
         Result.failure(e)
     }
 
