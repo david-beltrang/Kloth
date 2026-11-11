@@ -8,7 +8,8 @@ object NavigationLogic {
         AppRoutes.ForgotPassword.route,
         AppRoutes.Register.route,
         AppRoutes.EditProfile.route,
-        AppRoutes.FollowList.route
+        AppRoutes.FollowList.route,
+        AppRoutes.ReviewsMap.route
     )
 
     private val noBottomBarScreens = listOf(
@@ -16,7 +17,7 @@ object NavigationLogic {
         AppRoutes.Login.route,
         AppRoutes.Register.route,
         AppRoutes.ForgotPassword.route,
-
+        AppRoutes.ReviewsMap.route
     )
 
     fun shouldShowTopBar(route: String?) =!noTopBarScreens.contains(route)
