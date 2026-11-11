@@ -155,6 +155,27 @@
     <string name="placeholder_marca">Marca o diseñador</string>
     <string name="label_categoria">Categoría</string>
     <string name="placeholder_categoria">Seleccionar categoría</string>
+    <string-array name="article_categories">
+        <item>Camisetas</item>
+        <item>Camisas y blusas</item>
+        <item>Tops y bodys</item>
+        <item>Sudaderas y hoodies</item>
+        <item>Suéteres y cardigans</item>
+        <item>Chaquetas y abrigos</item>
+        <item>Pantalones</item>
+        <item>Jeans</item>
+        <item>Shorts y bermudas</item>
+        <item>Faldas</item>
+        <item>Vestidos</item>
+        <item>Enterizos y overoles</item>
+        <item>Ropa deportiva</item>
+        <item>Ropa interior y pijamas</item>
+        <item>Trajes de baño</item>
+        <item>Calzado</item>
+        <item>Bolsos y mochilas</item>
+        <item>Accesorios</item>
+        <item>Otros</item>
+    </string-array>
     <string name="label_color_field">Color</string>
     <string name="placeholder_color">Color principal</string>
     <string name="label_precio">Precio</string>
@@ -162,6 +183,26 @@
     <string name="currency_symbol">€</string>
     <string name="label_estilo">Estilo</string>
     <string name="placeholder_estilo">Seleccionar estilo</string>
+    <string-array name="outfit_styles">
+        <item>Casual</item>
+        <item>Smart casual</item>
+        <item>Formal</item>
+        <item>Elegante</item>
+        <item>Oficina</item>
+        <item>Deportivo</item>
+        <item>Streetwear</item>
+        <item>Urbano</item>
+        <item>Vintage</item>
+        <item>Retro</item>
+        <item>Bohemio</item>
+        <item>Minimalista</item>
+        <item>Clásico</item>
+        <item>Romántico</item>
+        <item>Rockero</item>
+        <item>De fiesta</item>
+        <item>Playero</item>
+        <item>Otro</item>
+    </string-array>
     <string name="label_ciudad">Ciudad</string>
     <string name="placeholder_ciudad">Ciudad del evento</string>
     <string name="label_pais">País</string>

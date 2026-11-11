@@ -10,6 +10,7 @@ data class CreateArticleState(
     val descripcion: String = "",
     val marca: String = "",
     val color: String = "",
+    val categoria: String = "",
     val precio: String = "",
     val estilo: String = "",
     val ciudad: String = "",
