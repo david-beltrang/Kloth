@@ -1,12 +1,9 @@
 package com.example.kloth
 
 import android.app.Application
-import android.os.Build
-import com.google.firebase.Firebase
 import com.google.firebase.FirebaseApp
-import com.google.firebase.auth.auth
-import com.google.firebase.firestore.firestore
 import dagger.hilt.android.HiltAndroidApp
+import org.maplibre.android.MapLibre
 
 @HiltAndroidApp
 class BaseApplication: Application() {
@@ -15,6 +12,7 @@ class BaseApplication: Application() {
         super.onCreate()
 
         FirebaseApp.initializeApp(this)
+        MapLibre.getInstance(this)
 
         // Solo usar el emulador de Firebase si se ejecuta dentro del emulador de Android
         if (BuildConfig.DEBUG && isEmulator()) {
