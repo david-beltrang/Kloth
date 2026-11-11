@@ -10,12 +10,15 @@ import com.example.kloth.data.dto.UpdateReviewDto
 import com.example.kloth.data.local.ReviewLikeState
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FieldValue
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.SetOptions
 import javax.inject.Inject
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
+
+private const val MAP_REVIEWS_LIMIT = 200L
 
 class ReviewFirestoreDataSourceImpl @Inject constructor(
     private val db: FirebaseFirestore
@@ -159,5 +162,16 @@ class ReviewFirestoreDataSourceImpl @Inject constructor(
                 ReviewLikeState(isLikedByMe = true, likesCount = currentLikes + 1)
             }
         }.await()
+    }
+
+    override suspend fun getReviewsCreatedSince(sinceIso: String): List<ReviewDtoGeneric> {
+        val snapshot = db.collection("reviews")
+            .whereGreaterThanOrEqualTo("createdAt", sinceIso)
+            .orderBy("createdAt", Query.Direction.DESCENDING)
+            .limit(MAP_REVIEWS_LIMIT)
+            .get().await()
+        return snapshot.documents.mapNotNull { doc ->
+            doc.toObject(ReviewFirestoreDto::class.java)?.copy(reviewId = doc.id)
+        }
     }
 }
