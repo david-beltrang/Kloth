@@ -22,10 +22,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.blur
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
+import com.example.kloth.data.local.ModelPicType
+import com.example.kloth.ui.screens.tryOn.TryOnViewModel
+import com.example.kloth.ui.screens.tryOn.components.TryOnDialog
+import androidx.hilt.navigation.compose.hiltViewModel
 
 @Composable
 fun ItemDetailScreen(
@@ -37,10 +42,13 @@ fun ItemDetailScreen(
     onAddToCartClick: () -> Unit = {},
     onWriteReviewClick: () -> Unit = {},
     onReviewClick: (String) -> Unit = {},
-    onUserClick: (String) -> Unit = {}
+    onUserClick: (String) -> Unit = {},
+    onNavigateToModelPics: (ModelPicType, String?) -> Unit = { _, _ -> }
 ) {
     // Escuchar el estado del ViewModel
     val state by detailViewModel.uiState.collectAsState()
+    val tryOnViewModel: TryOnViewModel = hiltViewModel()
+    val tryOnState by tryOnViewModel.uiState.collectAsState()
 
     // Por ahra usamos el LaunchedEffect porque la vista depende de un ID
     LaunchedEffect(productId) {
@@ -86,10 +94,12 @@ fun ItemDetailScreen(
         return
     }
 
-    ItemDetailScreenContent(
+    val product = state.product!!
+    Box(modifier = modifier.fillMaxSize()) {
+        ItemDetailScreenContent(
         // Variables de estado (Datos)
         //Aqui se maneja el null assertion
-        product = state.product!!,
+        product = product,
 
         // Métodos para manejar el estado (Eventos)
         onFavoriteClick = { detailViewModel.toggleFavorite() },
@@ -102,8 +112,30 @@ fun ItemDetailScreen(
         onLikeReviewClick = { reviewId -> detailViewModel.toggleReviewLike(reviewId) },
         onCommentReviewClick = onReviewClick,
         onAuthorClick = onUserClick,
-        modifier = modifier
-    )
+        onTryOnClick = {
+            tryOnViewModel.openDialog(product.id, product.imageUrl)
+        },
+        modifier = Modifier
+            .fillMaxSize()
+            .then(if (tryOnState.isDialogVisible) Modifier.blur(10.dp) else Modifier)
+        )
+
+        TryOnDialog(
+            state = tryOnState,
+            onDismiss = tryOnViewModel::dismissDialog,
+            onSelectBaseModelPic = tryOnViewModel::selectBaseModelPic,
+            onRetryClick = tryOnViewModel::retryLoadModelPics,
+            onGenerateClick = tryOnViewModel::requestGeneration,
+            onUploadBasePicClick = {
+                tryOnViewModel.dismissDialog()
+                onNavigateToModelPics(ModelPicType.BASE, null)
+            },
+            onContinueClick = { modelPicId ->
+                tryOnViewModel.onContinueConsumed()
+                onNavigateToModelPics(ModelPicType.GENERATED, modelPicId)
+            }
+        )
+    }
 }
 
 // estado de error cuando el id no corresponde a ningun articulo

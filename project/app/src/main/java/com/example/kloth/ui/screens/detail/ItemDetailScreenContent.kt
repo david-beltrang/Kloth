@@ -1,19 +1,25 @@
 package com.example.kloth.ui.screens.detail
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.unit.dp
 import com.example.kloth.R
 import com.example.kloth.data.local.ArticleInfo
 import com.example.kloth.ui.screens.detail.components.AiSummaryCard
 import com.example.kloth.ui.screens.detail.components.descriptionProduct.GeneralInfoSection
 import com.example.kloth.ui.screens.detail.components.image.HeroImageSection
 import com.example.kloth.ui.screens.detail.components.review.RatingsAndReviewsSection
+import com.example.kloth.ui.screens.tryOn.components.TryOnButton
 
 @Composable
 fun ItemDetailScreenContent(
@@ -31,6 +37,7 @@ fun ItemDetailScreenContent(
     onLikeReviewClick: (String) -> Unit = {},
     onCommentReviewClick: (String) -> Unit = {},
     onAuthorClick: (String) -> Unit = {},
+    onTryOnClick: () -> Unit = {},
     
     modifier: Modifier = Modifier
 ) {
@@ -59,6 +66,18 @@ fun ItemDetailScreenContent(
                 categoryName = product.categoryName,
                 description = product.description,
             )
+        }
+        if (product.supportsVirtualTryOn) {
+            item {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 20.dp, vertical = 8.dp),
+                    horizontalArrangement = Arrangement.End
+                ) {
+                    TryOnButton(onClick = onTryOnClick)
+                }
+            }
         }
         item {
             AiSummaryCard(summary = product.aiSummary)

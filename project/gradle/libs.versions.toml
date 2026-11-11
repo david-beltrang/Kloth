@@ -44,6 +44,7 @@ hilt-compose-navigation = { module = "androidx.hilt:hilt-navigation-compose", ve
 firebase-analytics = { module = "com.google.firebase:firebase-analytics"}
 firebase-bom = { module = "com.google.firebase:firebase-bom", version.ref = "firebaseBom"}
 firebase-auth = { module = "com.google.firebase:firebase-auth"}
+firebase-functions = { module = "com.google.firebase:firebase-functions"}
 firebase-crashlytics = { module = "com.google.firebase:firebase-crashlytics"}
 firebase-firestore = { module = "com.google.firebase:firebase-firestore"}
 firebase-storage = { module = "com.google.firebase:firebase-storage" }

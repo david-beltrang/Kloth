@@ -35,6 +35,13 @@ sealed class AppRoutes(val route: String) {
 
     // perfil (tab 4)
     object Profile : AppRoutes("profile")
+    object ModelPicsProfile : AppRoutes("profile_model_pics/{filter}/{modelPicId}") {
+        const val ARG_FILTER = "filter"
+        const val ARG_MODEL_PIC_ID = "modelPicId"
+
+        fun createRoute(filter: String, modelPicId: String? = null) =
+            "profile_model_pics/$filter/${modelPicId ?: "none"}"
+    }
     object UserProfile : AppRoutes("user_profile/{userId}") {
         const val ARG_USER_ID = "userId"
         fun createRoute(userId: String) = "user_profile/$userId"
