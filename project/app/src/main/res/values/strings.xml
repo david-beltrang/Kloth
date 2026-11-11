@@ -257,6 +257,7 @@
     <string name="map_retry">Reintentar</string>
     <string name="map_refresh">Actualizar</string>
     <string name="cd_map">Abrir mapa de reviews</string>
+    <string name="cd_my_location">Ir a mi ubicación</string>
     <string name="review_pin_open">Ver reseña</string>
 
     <!-- Edit Article -->
