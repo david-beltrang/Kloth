@@ -40,6 +40,11 @@ data class ArticleInfo(
     val endDate: String? = null,         // EVENTO
     val organizer: String? = null        // EVENTO
 ) {
+    /** Try-on only applies to wearable product categories. */
+    val supportsVirtualTryOn: Boolean
+        get() = categoryTag.trim().equals("prenda", ignoreCase = true) ||
+            categoryTag.trim().equals("outfit", ignoreCase = true)
+
     /**
      * Texto con la cantidad de reseñas, p. ej. "(12 reseñas)".
      * Se deriva de [reviewsCount] para que nunca haya un número inventado.

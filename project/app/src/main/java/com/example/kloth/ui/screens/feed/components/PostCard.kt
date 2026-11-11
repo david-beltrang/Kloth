@@ -31,6 +31,7 @@ import coil.compose.AsyncImage
 import com.example.kloth.R
 import com.example.kloth.data.local.FakeArticle
 import com.example.kloth.data.local.PostItem
+import com.example.kloth.ui.screens.tryOn.components.TryOnButton
 import com.example.kloth.ui.theme.KlothTheme
 import com.example.kloth.ui.theme.RedInferno
 import com.example.kloth.ui.theme.GoldStar
@@ -41,6 +42,7 @@ fun PostCard(
     post: PostItem,
     onClick: () -> Unit = {},
     onProfileClick: (String) -> Unit = {},
+    onTryOnClick: (PostItem) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Card(
@@ -82,6 +84,8 @@ fun PostCard(
                 comments = post.commentsCount,
                 description = post.product.description,
                 tags = post.tags,
+                showTryOn = post.product.supportsVirtualTryOn,
+                onTryOnClick = { onTryOnClick(post) },
                 modifier = Modifier.padding(16.dp)
             )
         }
@@ -169,6 +173,8 @@ private fun PostFooter(
     comments: String,
     description: String,
     tags: List<String>,
+    showTryOn: Boolean,
+    onTryOnClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier) {
@@ -235,6 +241,16 @@ private fun PostFooter(
                     containerColor = MaterialTheme.colorScheme.secondaryContainer,
                     contentColor = MaterialTheme.colorScheme.onSecondaryContainer
                 )
+            }
+        }
+
+        if (showTryOn) {
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                TryOnButton(onClick = onTryOnClick)
             }
         }
     }

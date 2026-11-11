@@ -7,6 +7,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.firestore
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.storage
+import com.google.firebase.functions.FirebaseFunctions
 
 import dagger.Module
 import dagger.Provides
@@ -28,5 +29,9 @@ class FirebaseHiltModule {
     @Singleton
     @Provides
     fun firebaseStorage(): FirebaseStorage = Firebase.storage
+
+    @Singleton
+    @Provides
+    fun firebaseFunctions(): FirebaseFunctions = FirebaseFunctions.getInstance()
 }
 

@@ -1,6 +1,7 @@
 package com.example.kloth.data.dto
 
 import com.example.kloth.data.local.UserProfileInfo
+import com.google.firebase.firestore.IgnoreExtraProperties
 
 abstract class UserDtoGeneric {
     abstract fun toUserProfileInfo(): UserProfileInfo
@@ -31,6 +32,7 @@ data class UserRetrofitDto(
         )
     }
 }
+@IgnoreExtraProperties
 data class UserFirestoreDto(
     val userId: String = "",
     val email: String = "",
@@ -42,12 +44,14 @@ data class UserFirestoreDto(
     val biography: String? = null,
     val location: String? = null,
     val website: String? = null,
-    val registeredAt: String? = null,
+    // Algunos documentos históricos guardan estas fechas como String y otros como Timestamp.
+    // La UI no las consume; conservar el valor sin forzar un único formato evita fallar al leerlos.
+    val registeredAt: Any? = null,
     val eliminated: Boolean = false,
-    val eliminatedAt: String? = null,
+    val eliminatedAt: Any? = null,
     val userType: String = "USER",
-    val createdAt: String? = null,
-    val updatedAt: String? = null,
+    val createdAt: Any? = null,
+    val updatedAt: Any? = null,
     val followersCount: Int = 0,
     val followingCount: Int = 0
 ) : UserDtoGeneric() {

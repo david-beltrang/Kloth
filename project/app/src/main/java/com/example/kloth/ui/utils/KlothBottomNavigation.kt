@@ -52,8 +52,9 @@ fun KlothBottomNavigation(
         items.forEach { item ->
             val isSelected = currentRoute == item.route.route ||
                            (item.route == AppRoutes.Profile && currentRoute in listOf(
-                               AppRoutes.EditProfile.route,
-                               AppRoutes.UserProfile.route
+                                AppRoutes.EditProfile.route,
+                                AppRoutes.UserProfile.route,
+                                AppRoutes.ModelPicsProfile.route
                            ))
 
             NavigationBarItem(

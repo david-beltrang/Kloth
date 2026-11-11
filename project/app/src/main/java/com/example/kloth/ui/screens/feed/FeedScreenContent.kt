@@ -19,6 +19,7 @@ fun FeedScreenContent(
     // Eventos y Navegación
     onProductClick: (String) -> Unit,
     onProfileClick: (String) -> Unit = {},
+    onTryOnClick: (PostItem) -> Unit = {},
     
     modifier: Modifier = Modifier
 ) {
@@ -31,7 +32,8 @@ fun FeedScreenContent(
             PostCard(
                 post = post,
                 onClick = { onProductClick(post.product.id) },
-                onProfileClick = onProfileClick
+                onProfileClick = onProfileClick,
+                onTryOnClick = onTryOnClick
             )
         }
     }

@@ -48,7 +48,7 @@ fun KlothApp() {
 
     FirebaseMessaging.getInstance().token.addOnCompleteListener{ task->
         if(task.isSuccessful){
-            Log.d("Token", task.result)
+            Log.d("Token", "FCM token retrieved")
         } else {
             Log.d("Token", "Error getting token")
         }
