@@ -2,14 +2,20 @@ package com.example.kloth.ui.screens.forgotPassword
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.kloth.ui.screens.forgotPassword.ForgotPasswordStep
+import com.example.kloth.ui.screens.forgotPassword.ForgotPasswordScreenContent
+import com.example.kloth.ui.screens.forgotPassword.ForgotPasswordState
 import com.example.kloth.ui.theme.KlothTheme
 
 @Preview(showBackground = true, name = "ForgotPassword - Light Mode")
 @Composable
 fun ForgotPasswordScreenPreview() {
     KlothTheme(darkTheme = false) {
-        ForgotPasswordScreen(forgotPasswordViewModel = viewModel())
+        ForgotPasswordScreenContent(
+            state = ForgotPasswordState(), onEmailChange = {}, onCodeChange = {},
+            onNewPasswordChange = {}, onConfirmPasswordChange = {}, onNewPasswordToggle = {},
+            onConfirmPasswordToggle = {}, onPrimaryClick = {}, onResendClick = {}, onBackClick = {}
+        )
     }
 }
 
@@ -17,6 +23,11 @@ fun ForgotPasswordScreenPreview() {
 @Composable
 fun ForgotPasswordScreenPreviewDark() {
     KlothTheme(darkTheme = true) {
-        ForgotPasswordScreen(forgotPasswordViewModel = viewModel())
+        ForgotPasswordScreenContent(
+            state = ForgotPasswordState(step = ForgotPasswordStep.CodeAndPassword),
+            onEmailChange = {}, onCodeChange = {}, onNewPasswordChange = {},
+            onConfirmPasswordChange = {}, onNewPasswordToggle = {}, onConfirmPasswordToggle = {},
+            onPrimaryClick = {}, onResendClick = {}, onBackClick = {}
+        )
     }
 }

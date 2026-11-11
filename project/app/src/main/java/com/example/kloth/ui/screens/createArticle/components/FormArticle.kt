@@ -31,6 +31,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
@@ -56,6 +57,8 @@ fun FormArticle(
     onMarcaChange: (String) -> Unit,
     color: String,
     onColorChange: (String) -> Unit,
+    categoria: String,
+    onCategoriaChange: (String) -> Unit,
     precio: String,
     onPrecioChange: (String) -> Unit,
     estilo: String,
@@ -81,6 +84,8 @@ fun FormArticle(
     @StringRes buttonTextRes: Int = R.string.btn_publicar,
     buttonEnabled: Boolean = true,
 ) {
+    val categoryOptions = stringArrayResource(R.array.article_categories).toList()
+    val styleOptions = stringArrayResource(R.array.outfit_styles).toList()
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -116,13 +121,13 @@ fun FormArticle(
                             onValueChange = onMarcaChange,
                             placeholder = stringResource(R.string.placeholder_marca)
                         )
-                        FormInput(
+                        FormSelector(
                             label = stringResource(R.string.label_categoria),
-                            value = "",
-                            onValueChange = {},
+                            selected = categoria,
+                            onSelected = onCategoriaChange,
+                            options = categoryOptions,
                             placeholder = stringResource(R.string.placeholder_categoria),
-                            required = true,
-                            isSelector = true
+                            required = true
                         )
                         FormInput(
                             label = stringResource(R.string.label_color_field),
@@ -140,12 +145,12 @@ fun FormArticle(
                         )
                     }
                     ArticleType.OUTFIT -> {
-                        FormInput(
+                        FormSelector(
                             label = stringResource(R.string.label_estilo),
-                            value = estilo,
-                            onValueChange = onEstiloChange,
+                            selected = estilo,
+                            onSelected = onEstiloChange,
+                            options = styleOptions,
                             placeholder = stringResource(R.string.placeholder_estilo),
-                            isSelector = true
                         )
                     }
                     ArticleType.EVENTO -> {
@@ -369,6 +374,7 @@ fun FormArticlePrendaPreview() {
             descripcion = "", onDescripcionChange = {},
             marca = "", onMarcaChange = {},
             color = "", onColorChange = {},
+            categoria = stringArrayResource(R.array.article_categories).first(), onCategoriaChange = {},
             precio = "", onPrecioChange = {},
             estilo = "", onEstiloChange = {},
             ciudad = "", onCiudadChange = {},
@@ -393,6 +399,7 @@ fun FormArticleOutfitPreview() {
             descripcion = "", onDescripcionChange = {},
             marca = "", onMarcaChange = {},
             color = "", onColorChange = {},
+            categoria = "", onCategoriaChange = {},
             precio = "", onPrecioChange = {},
             estilo = "", onEstiloChange = {},
             ciudad = "", onCiudadChange = {},
@@ -417,6 +424,7 @@ fun FormArticleEventoPreview() {
             descripcion = "", onDescripcionChange = {},
             marca = "", onMarcaChange = {},
             color = "", onColorChange = {},
+            categoria = "", onCategoriaChange = {},
             precio = "", onPrecioChange = {},
             estilo = "", onEstiloChange = {},
             ciudad = "", onCiudadChange = {},
@@ -441,6 +449,7 @@ fun FormArticleMarcaPreview() {
             descripcion = "", onDescripcionChange = {},
             marca = "", onMarcaChange = {},
             color = "", onColorChange = {},
+            categoria = "", onCategoriaChange = {},
             precio = "", onPrecioChange = {},
             estilo = "", onEstiloChange = {},
             ciudad = "", onCiudadChange = {},

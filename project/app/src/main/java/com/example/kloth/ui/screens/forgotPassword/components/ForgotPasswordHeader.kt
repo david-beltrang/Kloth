@@ -15,10 +15,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kloth.R
+import com.example.kloth.ui.screens.forgotPassword.ForgotPasswordStep
 import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun ForgotPasswordHeader(
+    step: ForgotPasswordStep = ForgotPasswordStep.Email,
     modifier: Modifier = Modifier
 ) {
     val logoResource = if (MaterialTheme.colorScheme.background.luminance() < 0.5f) {
@@ -40,22 +42,13 @@ fun ForgotPasswordHeader(
         Spacer(modifier = Modifier.height(32.dp))
 
         Text(
-            text = stringResource(R.string.forgot_password_title),
+            text = stringResource(if (step == ForgotPasswordStep.Email) R.string.forgot_password_title else R.string.forgot_password_code_title),
             style = MaterialTheme.typography.headlineSmall,
             fontWeight = FontWeight.Bold,
             color = MaterialTheme.colorScheme.onSurface,
             textAlign = TextAlign.Center
         )
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-        Text(
-            text = stringResource(R.string.forgot_password_instruction),
-            style = MaterialTheme.typography.bodyMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant,
-            textAlign = TextAlign.Center,
-            modifier = Modifier.padding(horizontal = 16.dp)
-        )
     }
 }
 

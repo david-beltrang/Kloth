@@ -98,7 +98,8 @@ data class CreateArticleDto(
     val organizer: String? = null,
     val website: String? = null,
     val originCountry: String? = null,
-    val foundedAt: Int? = null
+    val foundedAt: Int? = null,
+    val category: String? = null
 )
 
 data class ArticleFirestoreDto(
@@ -182,5 +183,6 @@ data class UpdateArticleDto(
     val organizer: String? = null,
     val website: String? = null,
     val originCountry: String? = null,
-    val foundedAt: Int? = null
+    val foundedAt: Int? = null,
+    val category: String? = null
 )

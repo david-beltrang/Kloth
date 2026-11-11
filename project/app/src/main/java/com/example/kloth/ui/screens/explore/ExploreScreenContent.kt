@@ -26,6 +26,7 @@ import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -44,9 +45,13 @@ fun ExploreScreenContent(
     // Variables de estado (Datos que vienen del ViewModel)
     products: List<PostItem>,
     selectedCategoryIndex: Int,
+    query: String,
+    isLoading: Boolean,
 
     // Métodos para manejar el estado (Eventos)
     onCategorySelected: (Int) -> Unit,
+    onQueryChange: (String) -> Unit,
+    onClearQuery: () -> Unit,
 
     // Navegación
     onProductClick: (String) -> Unit = {},
@@ -85,7 +90,12 @@ fun ExploreScreenContent(
                     horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    SearchBar(modifier = Modifier.weight(1f))
+                    SearchBar(
+                        query = query,
+                        onQueryChange = onQueryChange,
+                        onClear = onClearQuery,
+                        modifier = Modifier.weight(1f)
+                    )
 
                     FilledTonalIconButton(
                         onClick = onMapClick,
@@ -175,7 +185,16 @@ fun ExploreScreenContent(
             }
         }
 
-        items(products) { post ->
+        if (products.isEmpty() && !isLoading) {
+            item(span = { GridItemSpan(2) }) {
+                Box(
+                    modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(stringResource(R.string.explore_empty_results))
+                }
+            }
+        } else items(products) { post ->
             val p = post.product
             ProductCatalogCard(
                 title = p.title,

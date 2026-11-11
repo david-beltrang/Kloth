@@ -41,6 +41,8 @@
     <string name="title_explore">Explorar</string>
     <string name="category_all">Todo</string>
     <string name="search_placeholder">Buscar artículos...</string>
+    <string name="search_clear">Borrar búsqueda</string>
+    <string name="explore_empty_results">No encontramos resultados</string>
     <string name="category_prendas">Prendas</string>
     <string name="category_outfits">Outfits</string>
     <string name="category_marcas">Marcas</string>
@@ -60,21 +62,6 @@
     <string name="title_profile">Perfil</string>
     <string name="profile_tab_posts">Publicaciones</string>
     <string name="profile_tab_rated">Artículos calificados</string>
-    <string name="profile_tab_model_pics">Model Pics</string>
-    <string name="model_pics_filter_uploaded">Subidas por mí</string>
-    <string name="model_pics_filter_generated">Generadas por IA</string>
-    <string name="model_pics_upload">Subir foto</string>
-    <string name="model_pics_uploading">Subiendo foto…</string>
-    <string name="model_pics_empty_base">Aún no has subido fotos. Elige una de tu galería para comenzar.</string>
-    <string name="model_pics_empty_generated">Todavía no tienes imágenes generadas por IA.</string>
-    <string name="model_pics_load_error">No se pudieron cargar tus Model Pics.</string>
-    <string name="try_on_button">✨ Try On</string>
-    <string name="try_on_title">Prueba virtual</string>
-    <string name="try_on_select_model_pic">Selecciona la foto que quieres usar</string>
-    <string name="try_on_no_model_pics">Aún no tienes fotos base. Sube una foto para comenzar.</string>
-    <string name="try_on_generating">Generando imagen…</string>
-    <string name="try_on_continue">Continuar</string>
-    <string name="try_on_result_content_description">Resultado generado del probador virtual</string>
     <string name="profile_edit">Editar perfil</string>
     <string name="profile_followers">Seguidores</string>
     <string name="profile_following">Seguidos</string>
@@ -132,6 +119,19 @@
     <string name="forgot_password_instruction">Ingresa tu correo electrónico para enviarte las instrucciones de recuperación.</string>
     <string name="forgot_password_button">Enviar correo</string>
     <string name="forgot_password_back_login">Volver al inicio de sesión</string>
+    <string name="forgot_password_code_instruction">Si el correo está registrado, te enviamos un código de 6 dígitos.</string>
+    <string name="forgot_password_code_title">Restablece tu contraseña</string>
+    <string name="forgot_password_code_placeholder">Código de 6 dígitos</string>
+    <string name="forgot_password_new_password_placeholder">Nueva contraseña</string>
+    <string name="forgot_password_confirm_password_placeholder">Confirmar nueva contraseña</string>
+    <string name="forgot_password_reset_button">Cambiar contraseña</string>
+    <string name="forgot_password_resend">Reenviar código</string>
+    <string name="forgot_password_resend_countdown">Reenviar código en %1$d s</string>
+    <string name="forgot_password_error_invalid_email">Ingresa un correo electrónico válido</string>
+    <string name="forgot_password_error_invalid_code">El código debe tener 6 dígitos</string>
+    <string name="forgot_password_error_password_mismatch">Las contraseñas no coinciden</string>
+    <string name="forgot_password_request_success">Si el correo está registrado, te enviamos un código</string>
+    <string name="forgot_password_reset_success">¡Contraseña restablecida con éxito!</string>
 
     <!-- Create Article Screen -->
     <string name="type_marca">Marca</string>
@@ -155,6 +155,27 @@
     <string name="placeholder_marca">Marca o diseñador</string>
     <string name="label_categoria">Categoría</string>
     <string name="placeholder_categoria">Seleccionar categoría</string>
+    <string-array name="article_categories">
+        <item>Camisetas</item>
+        <item>Camisas y blusas</item>
+        <item>Tops y bodys</item>
+        <item>Sudaderas y hoodies</item>
+        <item>Suéteres y cardigans</item>
+        <item>Chaquetas y abrigos</item>
+        <item>Pantalones</item>
+        <item>Jeans</item>
+        <item>Shorts y bermudas</item>
+        <item>Faldas</item>
+        <item>Vestidos</item>
+        <item>Enterizos y overoles</item>
+        <item>Ropa deportiva</item>
+        <item>Ropa interior y pijamas</item>
+        <item>Trajes de baño</item>
+        <item>Calzado</item>
+        <item>Bolsos y mochilas</item>
+        <item>Accesorios</item>
+        <item>Otros</item>
+    </string-array>
     <string name="label_color_field">Color</string>
     <string name="placeholder_color">Color principal</string>
     <string name="label_precio">Precio</string>
@@ -162,6 +183,26 @@
     <string name="currency_symbol">€</string>
     <string name="label_estilo">Estilo</string>
     <string name="placeholder_estilo">Seleccionar estilo</string>
+    <string-array name="outfit_styles">
+        <item>Casual</item>
+        <item>Smart casual</item>
+        <item>Formal</item>
+        <item>Elegante</item>
+        <item>Oficina</item>
+        <item>Deportivo</item>
+        <item>Streetwear</item>
+        <item>Urbano</item>
+        <item>Vintage</item>
+        <item>Retro</item>
+        <item>Bohemio</item>
+        <item>Minimalista</item>
+        <item>Clásico</item>
+        <item>Romántico</item>
+        <item>Rockero</item>
+        <item>De fiesta</item>
+        <item>Playero</item>
+        <item>Otro</item>
+    </string-array>
     <string name="label_ciudad">Ciudad</string>
     <string name="placeholder_ciudad">Ciudad del evento</string>
     <string name="label_pais">País</string>
@@ -215,7 +256,7 @@
     <string name="follow_list_back">Volver</string>
 
     <!-- Mock Data -->
-    <string name="mock_description" formatted="false">Una pieza maestra de sastrería contemporánea. Este abrigo ha sido confeccionado con 100% cachemira italiana de origen sostenible, ofreciendo una caída impecable y una suavidad inigualable.</string>
+    <string name="mock_description">Una pieza maestra de sastrería contemporánea. Este abrigo ha sido confeccionado con 100% cachemira italiana de origen sostenible, ofreciendo una caída impecable y una suavidad inigualable.</string>
     <string name="mock_price">$280.000 COP</string>
 
     <!-- Edit Profile Screen -->
@@ -257,23 +298,10 @@
 
     <!-- Create Review -->
     <string name="create_review_loading">Publicando...</string>
-    <string name="create_review_location_required_error">No se pudo obtener la ubicacion. Activa el permiso y el GPS para publicar la resena.</string>
     <string name="create_review_rating_label">Tu calificación</string>
     <string name="create_review_opinion_label">Tu opinión / análisis</string>
     <string name="create_review_placeholder">Escribe tu reseña aquí (requerido)…</string>
     <string name="create_review_required">Campo obligatorio</string>
-    <string name="create_review_location_label">Incluir mi ubicación</string>
-    <string name="create_review_location_hint">Se guarda una ubicación aproximada (~110 m). Opcional.</string>
-    <string name="create_review_location_denied">Permiso de ubicación denegado. La reseña se publicará sin ubicación.</string>
-
-    <!-- Reviews Map -->
-    <string name="map_title">Reviews recientes</string>
-    <string name="map_empty">Sin reviews en las últimas 24 h</string>
-    <string name="map_retry">Reintentar</string>
-    <string name="map_refresh">Actualizar</string>
-    <string name="cd_map">Abrir mapa de reviews</string>
-    <string name="cd_my_location">Ir a mi ubicación</string>
-    <string name="review_pin_open">Ver reseña</string>
 
     <!-- Edit Article -->
     <string name="edit_article_error">No se pudo cargar el artículo: %1$s</string>
@@ -291,6 +319,10 @@
     <string name="auth_error_weak_password">La contraseña es muy débil</string>
     <string name="auth_error_invalid_email">Correo electrónico inválido</string>
     <string name="forgot_password_error_empty_email">Por favor, ingresa tu correo electrónico</string>
+    <string name="auth_error_invalid_reset_code">El código no es válido o venció. Solicita uno nuevo.</string>
+    <string name="auth_error_reset_wait">Espera 60 segundos antes de solicitar otro código.</string>
+    <string name="auth_error_connection">No se pudo conectar. Revisa tu conexión e inténtalo de nuevo.</string>
+    <string name="auth_error_generic">No se pudo completar la solicitud. Inténtalo de nuevo.</string>
     <string name="register_error_user_id">No se pudo obtener el usuario actual</string>
     <string name="register_error_save_user">No se pudo guardar tu usuario</string>
     <string name="edit_profile_error_email">No se pudo cambiar el email. Vuelve a iniciar sesión e inténtalo de nuevo.</string>
@@ -304,4 +336,30 @@
     <string name="storage_error_user_not_logged_in">Usuario no autenticado</string>
     <string name="feed_retry">Reintentar</string>
     <string name="close">Cerrar\n</string>
+    <string name="profile_tab_model_pics">Model Pics</string>
+    <string name="model_pics_filter_uploaded">Subidas por mí</string>
+    <string name="model_pics_filter_generated">Generadas por IA</string>
+    <string name="model_pics_upload">Subir foto</string>
+    <string name="model_pics_uploading">Subiendo foto…</string>
+    <string name="model_pics_empty_base">Aún no has subido fotos. Elige una de tu galería para comenzar.</string>
+    <string name="model_pics_empty_generated">Todavía no tienes imágenes generadas por IA.</string>
+    <string name="model_pics_load_error">No se pudieron cargar tus Model Pics.</string>
+    <string name="try_on_button">✨ Try On</string>
+    <string name="try_on_title">Prueba virtual</string>
+    <string name="try_on_select_model_pic">Selecciona la foto que quieres usar</string>
+    <string name="try_on_no_model_pics">Aún no tienes fotos base. Sube una foto para comenzar.</string>
+    <string name="try_on_generating">Generando imagen…</string>
+    <string name="try_on_continue">Continuar</string>
+    <string name="try_on_result_content_description">Resultado generado del probador virtual</string>
+    <string name="create_review_location_required_error">No se pudo obtener la ubicacion. Activa el permiso y el GPS para publicar la resena.</string>
+    <string name="create_review_location_label">Incluir mi ubicación</string>
+    <string name="create_review_location_hint">Se guarda una ubicación aproximada (~110 m). Opcional.</string>
+    <string name="create_review_location_denied">Permiso de ubicación denegado. La reseña se publicará sin ubicación.</string>
+    <string name="map_title">Reviews recientes</string>
+    <string name="map_empty">Sin reviews en las últimas 24 h</string>
+    <string name="map_retry">Reintentar</string>
+    <string name="map_refresh">Actualizar</string>
+    <string name="cd_map">Abrir mapa de reviews</string>
+    <string name="cd_my_location">Ir a mi ubicación</string>
+    <string name="review_pin_open">Ver reseña</string>
 </resources>

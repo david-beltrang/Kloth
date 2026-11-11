@@ -53,6 +53,7 @@ class EditArticleViewModel @Inject constructor(
                             descripcion = a.description,
                             marca = a.brand,
                             color = a.colorName,
+                            categoria = a.categoryName,
                             precio = a.price.toDoubleOrNull()
                                 ?.let { p -> if (p % 1.0 == 0.0) p.toLong().toString() else p.toString() }
                                 .orEmpty(),
@@ -76,6 +77,7 @@ class EditArticleViewModel @Inject constructor(
     fun onDescripcionChanged(v: String) = _uiState.update { it.copy(descripcion = v) }
     fun onMarcaChanged(v: String) = _uiState.update { it.copy(marca = v) }
     fun onColorChanged(v: String) = _uiState.update { it.copy(color = v) }
+    fun onCategoriaChanged(v: String) = _uiState.update { it.copy(categoria = v) }
     fun onPrecioChanged(v: String) = _uiState.update { it.copy(precio = v) }
     fun onEstiloChanged(v: String) = _uiState.update { it.copy(estilo = v) }
     fun onCiudadChanged(v: String) = _uiState.update { it.copy(ciudad = v) }
@@ -97,7 +99,9 @@ class EditArticleViewModel @Inject constructor(
 
     fun saveChanges(onSuccess: () -> Unit) {
         val s = _uiState.value
-        if (s.nombre.isBlank() || s.isSaving) return
+        if (s.nombre.isBlank() || s.isSaving ||
+            (s.type == ArticleType.PRENDA && s.categoria.isBlank())
+        ) return
 
 
         val isPrenda = s.type == ArticleType.PRENDA
@@ -134,7 +138,8 @@ class EditArticleViewModel @Inject constructor(
                 organizer = s.organizador.takeIf { isEvento && it.isNotBlank() },
                 website = s.sitioWeb.trim().takeIf { isMarca && it.isNotBlank() },
                 originCountry = s.paisOrigen.trim().takeIf { isMarca && it.isNotBlank() },
-                foundedAt = if (isMarca) s.anioFundacion.toIntOrNull() else null
+                foundedAt = if (isMarca) s.anioFundacion.toIntOrNull() else null,
+                category = s.categoria.takeIf { isPrenda && it.isNotBlank() }
             )
 
             val result = articleRepository.updateArticle(articleId, dto, s.originalPhotoUrl)
