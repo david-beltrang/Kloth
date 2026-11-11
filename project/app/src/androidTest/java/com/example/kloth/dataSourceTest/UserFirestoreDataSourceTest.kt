@@ -5,6 +5,7 @@ import com.example.kloth.data.dto.RegisterUserDto
 import com.example.kloth.data.dto.UserFirestoreDto
 import com.google.common.truth.Truth
 import com.google.firebase.Firebase
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.firestore
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.test.runTest
@@ -17,6 +18,7 @@ class UserFirestoreDataSourceTest {
     private val testUserIds = listOf(
         "user_register_test",
         "user_profile_test",
+        "user_timestamp_profile_test",
         "user_follow_current",
         "user_follow_target"
     )
@@ -110,6 +112,27 @@ class UserFirestoreDataSourceTest {
         Truth.assertThat(result.getString("website")).isNull()
         Truth.assertThat(result.getString("fullName")).isEqualTo("Nombre conservado")
         Truth.assertThat(result.getString("email")).isEqualTo("original@example.com")
+    }
+
+    @Test
+    fun testGetUserWithTimestampDatesAndExtraFcmToken() = runTest {
+        val userId = "user_timestamp_profile_test"
+        db.collection("users").document(userId).set(
+            mapOf(
+                "username" to "timestamp_user",
+                "fullName" to "Timestamp User",
+                "email" to "timestamp@example.com",
+                "registeredAt" to Timestamp.now(),
+                "createdAt" to Timestamp.now(),
+                "updatedAt" to Timestamp.now(),
+                "fcmToken" to "test-token"
+            )
+        ).await()
+
+        val profile = datasource.getUserById(userId).toUserProfileInfo()
+
+        Truth.assertThat(profile.id).isEqualTo(userId)
+        Truth.assertThat(profile.username).isEqualTo("timestamp_user")
     }
 
     @Test

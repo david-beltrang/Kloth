@@ -7,7 +7,13 @@ import com.example.kloth.data.datasource.services.AuthRemoteDataSource
 import com.example.kloth.data.datasource.services.StorageRemoteDataSource
 import dagger.hilt.android.qualifiers.ApplicationContext
 import java.util.UUID
+import kotlinx.coroutines.CancellationException
 import javax.inject.Inject
+
+data class UploadedStorageImage(
+    val imageUrl: String,
+    val storagePath: String
+)
 
 class StorageRepository @Inject constructor(
     private val storage: StorageRemoteDataSource,
@@ -40,6 +46,28 @@ class StorageRepository @Inject constructor(
             Result.success(url)
         } catch (e: Exception) {
             Result.failure(e)
+        }
+    }
+
+    suspend fun uploadModelPicImage(
+        userId: String,
+        uri: Uri,
+        contentType: String?
+    ): Result<UploadedStorageImage> {
+        return try {
+            val authenticatedUserId = auth.currentUser?.uid
+                ?: return Result.failure(Exception(context.getString(R.string.storage_error_user_not_logged_in)))
+            if (authenticatedUserId != userId) {
+                return Result.failure(SecurityException("El usuario autenticado no coincide con el propietario"))
+            }
+
+            val path = "modelPics/$userId/${UUID.randomUUID()}"
+            val url = storage.uploadImage(path, uri, contentType)
+            Result.success(UploadedStorageImage(imageUrl = url, storagePath = path))
+        } catch (error: CancellationException) {
+            throw error
+        } catch (error: Exception) {
+            Result.failure(error)
         }
     }
 

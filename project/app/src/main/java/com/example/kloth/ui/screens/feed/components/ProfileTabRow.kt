@@ -22,6 +22,7 @@ link de referencia: https://www.jetpackcompose.pro/tabs/tabrow/
 fun ProfileTabRow(
     modifier: Modifier = Modifier,
     selectedTabIndex: Int = 0,
+    showModelPics: Boolean = true,
     onTabSelected: (Int) -> Unit = {}
 ) {
     TabRow(
@@ -53,6 +54,18 @@ fun ProfileTabRow(
                 )
             }
         )
+        if (showModelPics) {
+            Tab(
+                selected = selectedTabIndex == 2,
+                onClick = { onTabSelected(2) },
+                text = {
+                    Text(
+                        text = stringResource(R.string.profile_tab_model_pics),
+                        style = MaterialTheme.typography.labelLarge
+                    )
+                }
+            )
+        }
     }
 }
 

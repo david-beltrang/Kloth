@@ -33,8 +33,10 @@ import com.example.kloth.ui.screens.profile.ProfileViewModel
 import com.example.kloth.ui.screens.register.RegisterScreen
 import com.example.kloth.ui.screens.register.RegisterViewModel
 import com.example.kloth.ui.screens.review.ReviewScreen
+import com.example.kloth.ui.screens.reviewsMap.ReviewsMapScreen
 import com.example.kloth.ui.screens.splash.SplashScreen
 import com.example.kloth.ui.screens.splash.SplashViewModel
+import com.example.kloth.data.local.ModelPicType
 
 @Composable
 fun AppNavigation(
@@ -136,6 +138,11 @@ fun AppNavigation(
                 },
                 onProfileClick = { userId ->
                     if (userId.isNotBlank()) navController.navigate(AppRoutes.UserProfile.createRoute(userId))
+                },
+                onNavigateToModelPics = { filter, modelPicId ->
+                    navController.navigate(
+                        AppRoutes.ModelPicsProfile.createRoute(filter.firestoreValue, modelPicId)
+                    )
                 }
             )
         }
@@ -146,6 +153,19 @@ fun AppNavigation(
                 exploreViewModel = exploreViewModel,
                 onProductClick = { productId ->
                     navController.navigate(AppRoutes.ArticleDetail.createRoute(productId))
+                },
+                onMapClick = {
+                    navController.navigate(AppRoutes.ReviewsMap.route)
+                }
+            )
+        }
+
+        // Mapa de reviews
+        composable(AppRoutes.ReviewsMap.route) {
+            ReviewsMapScreen(
+                onBackClick = { navController.popBackStack() },
+                onReviewClick = { reviewId ->
+                    navController.navigate(AppRoutes.Review.createRoute(reviewId))
                 }
             )
         }
@@ -189,6 +209,26 @@ fun AppNavigation(
                 },
                 onFollowListClick = { profileId, type -> navController.navigate(AppRoutes.FollowList.createRoute(profileId, type)) }
 
+            )
+        }
+
+        composable(
+            route = AppRoutes.ModelPicsProfile.route,
+            arguments = listOf(
+                navArgument(AppRoutes.ModelPicsProfile.ARG_FILTER) { type = NavType.StringType },
+                navArgument(AppRoutes.ModelPicsProfile.ARG_MODEL_PIC_ID) { type = NavType.StringType }
+            )
+        ) { entry ->
+            val filter = ModelPicType.fromFirestore(
+                entry.arguments?.getString(AppRoutes.ModelPicsProfile.ARG_FILTER).orEmpty()
+            ) ?: ModelPicType.GENERATED
+            val highlightedModelPicId = entry.arguments
+                ?.getString(AppRoutes.ModelPicsProfile.ARG_MODEL_PIC_ID)
+                ?.takeUnless { it == "none" }
+            ProfileScreen(
+                initialTabIndex = 2,
+                initialModelPicType = filter,
+                highlightedModelPicId = highlightedModelPicId
             )
         }
 
@@ -264,6 +304,11 @@ fun AppNavigation(
                 },
                 onUserClick = { userId ->
                     navController.navigate(AppRoutes.UserProfile.createRoute(userId))
+                },
+                onNavigateToModelPics = { filter, modelPicId ->
+                    navController.navigate(
+                        AppRoutes.ModelPicsProfile.createRoute(filter.firestoreValue, modelPicId)
+                    )
                 }
             )
         }

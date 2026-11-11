@@ -1,4 +1,4 @@
-﻿const admin = require("firebase-admin");
+const admin = require("firebase-admin");
 const { onDocumentCreated } = require("firebase-functions/v2/firestore");
 const { onCall, HttpsError } = require("firebase-functions/v2/https");
 const { defineSecret } = require("firebase-functions/params");
@@ -11,6 +11,11 @@ admin.initializeApp();
 const db = admin.firestore();
 const gmailUser = defineSecret("GMAIL_USER");
 const gmailAppPassword = defineSecret("GMAIL_APP_PASSWORD");
+const { randomUUID } = require("node:crypto");
+const FASHN_API_BASE_URL = "https://api.fashn.ai/v1";
+const TRY_ON_POLL_INTERVAL_MS = 3000;
+const TRY_ON_MAX_WAIT_MS = 180000;
+const MAX_TRY_ON_OUTPUT_BYTES = 30 * 1024 * 1024;
 
 // Envía un código únicamente a cuentas de Auth con un perfil activo en Firestore.
 exports.requestPasswordResetCode = onCall(
@@ -356,3 +361,323 @@ exports.generateArticleAiSummary = onDocumentCreated(
     }
   }
 );
+// Try On se inicia directamente desde la app. La función espera la predicción de FASHN,
+// persiste la imagen generada y devuelve el resultado en una sola respuesta callable.
+exports.generateTryOn = onCall(
+  {
+    timeoutSeconds: 300,
+    memory: "1GiB",
+    // Cloud Run debe aceptar la llamada HTTP; Firebase Auth se valida en el cuerpo callable.
+    invoker: "public",
+  },
+  async (request) => {
+    logger.info("generateTryOn recibió una llamada", {
+      hasAuthContext: Boolean(request.auth?.uid),
+      hasAppCheckContext: Boolean(request.app),
+    });
+    const userId = request.auth?.uid;
+    if (!userId) {
+      logger.warn("generateTryOn recibió una llamada sin contexto de Firebase Auth", {
+        hasAppCheckContext: Boolean(request.app),
+      });
+      throw new HttpsError("unauthenticated", "Debes iniciar sesión para usar Try On.");
+    }
+
+    const { publicationId, baseModelPicId } = request.data || {};
+    if (typeof publicationId !== "string" || !publicationId.trim() ||
+        typeof baseModelPicId !== "string" || !baseModelPicId.trim()) {
+      throw new HttpsError("invalid-argument", "Falta la publicación o la foto base.");
+    }
+
+    const baseModelPicRef = db.collection("users").doc(userId)
+      .collection("modelPics").doc(baseModelPicId);
+    const publicationRef = db.collection("articles").doc(publicationId);
+
+    const [baseModelPicSnapshot, publicationSnapshot] = await Promise.all([
+      baseModelPicRef.get(),
+      publicationRef.get(),
+    ]);
+
+    if (!baseModelPicSnapshot.exists) {
+      throw new HttpsError("not-found", "No se encontró la foto base seleccionada.");
+    }
+    if (!publicationSnapshot.exists) {
+      throw new HttpsError("not-found", "No se encontró la publicación.");
+    }    const baseModelPic = baseModelPicSnapshot.data();
+    const publication = publicationSnapshot.data();
+    const articleType = String(publication.typeArticle || "").trim().toLowerCase();
+    const expectedBasePathPrefix = `modelPics/${userId}/`;
+    const baseStoragePath = baseModelPic.storagePath;
+    const baseImageFileName = typeof baseStoragePath === "string"
+      ? baseStoragePath.slice(expectedBasePathPrefix.length)
+      : "";
+
+    if (baseModelPic.type !== "base" ||
+        typeof baseStoragePath !== "string" ||
+        !baseStoragePath.startsWith(expectedBasePathPrefix) ||
+        !baseImageFileName || baseImageFileName.includes("/")) {
+      throw new HttpsError("permission-denied", "La foto seleccionada no es una foto base tuya.");
+    }
+    if (!new Set(["prenda", "outfit"]).has(articleType) || publication.eliminated === true) {
+      throw new HttpsError("failed-precondition", "Try On solo está disponible para prendas y outfits activos.");
+    }
+
+    const modelImageUrl = await createFirebaseDownloadUrl(baseStoragePath);
+    const productImageUrl = requireHttpsImageUrl(publication.imageArticle, "imagen de la publicación");
+    const apiKey = process.env.FASHN_API_KEY;
+    if (!apiKey) {
+      logger.error("FASHN_API_KEY no está configurada en el entorno de Cloud Functions.");
+      throw new HttpsError("internal", "El servicio Try On no está configurado.");
+    }
+
+    let predictionId;
+    try {
+      const prompt = articleType === "outfit"
+        ? "Wear the complete outfit and all visible accessories shown in the product image, including any clothing, headwear, bags, and footwear."
+        : "Wear only the single fashion item or accessory shown in the product image, replacing only the corresponding item on the model.";
+
+      // Una sola predicción Try-On Max: fast + 1k + una salida = 1 crédito.
+      const fashnRequest = {
+        model_name: "tryon-max",
+        inputs: {
+          model_image: modelImageUrl,
+          product_image: productImageUrl,
+          prompt,
+          generation_mode: "fast",
+          resolution: "1k",
+          num_images: 1,
+          output_format: "jpeg",
+          return_base64: false,
+        },
+      };
+
+      const prediction = await fetchFashnJson(`${FASHN_API_BASE_URL}/run`, {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${apiKey}`,
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(fashnRequest),
+      }, "iniciar la predicción");
+
+      predictionId = prediction.id;
+      if (typeof predictionId !== "string" || !predictionId) {
+        logger.error("FASHN no devolvió un ID de predicción.");
+        throw new HttpsError("unavailable", "FASHN no pudo iniciar la generación.");
+      }
+
+      const outputUrl = await waitForFashnOutput(predictionId, apiKey);
+      const output = await downloadFashnOutput(outputUrl);
+      return await persistTryOnResult({
+        userId,
+        publicationId,
+        baseModelPicId,
+        publicationTitle: publication.title,
+        output,
+      });
+    } catch (error) {
+      if (error instanceof HttpsError) throw error;
+      logger.error("Error generando Try On", {
+        userId,
+        publicationId,
+        predictionId: predictionId || null,
+        error: error.message,
+      });
+      throw new HttpsError("internal", "No se pudo generar la imagen. Inténtalo de nuevo.");
+    }
+  }
+);
+
+function requireHttpsImageUrl(value, description) {
+  if (typeof value !== "string" || !value.trim()) {
+    throw new HttpsError("failed-precondition", `La ${description} no tiene una URL.`);
+  }
+
+  try {
+    const url = new URL(value);
+    if (url.protocol !== "https:") throw new Error("URL scheme must be HTTPS");
+    return url.toString();
+  } catch (_error) {
+    throw new HttpsError("failed-precondition", `La URL de la ${description} no es válida.`);
+  }
+}
+
+async function createFirebaseDownloadUrl(storagePath) {
+  const bucket = admin.storage().bucket();
+  const imageFile = bucket.file(storagePath);
+  let metadata;
+  try {
+    [metadata] = await imageFile.getMetadata();
+  } catch (error) {
+    if (error.code === 404) {
+      throw new HttpsError("not-found", "No se encontró el archivo de la foto base en Storage.");
+    }
+    throw error;
+  }
+
+  const token = metadata.metadata?.firebaseStorageDownloadTokens?.split(",")[0];
+  if (!token) {
+    throw new HttpsError("not-found", "No se encontró el archivo de la foto base en Storage.");
+  }
+
+  return `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${
+    encodeURIComponent(storagePath)
+  }?alt=media&token=${token}`;
+}
+
+async function fetchFashnJson(url, options, action) {
+  let response;
+  try {
+    response = await fetch(url, {
+      ...options,
+      signal: AbortSignal.timeout(30000),
+    });
+  } catch (error) {
+    logger.error(`No se pudo ${action} en FASHN`, { error: error.message });
+    throw new HttpsError("unavailable", `No se pudo ${action} en FASHN.`);
+  }
+
+  let payload;
+  try {
+    payload = await response.json();
+  } catch (_error) {
+    logger.error(`FASHN devolvió una respuesta no JSON al ${action}`, { status: response.status });
+    throw new HttpsError("unavailable", "FASHN devolvió una respuesta inválida.");
+  }
+
+  if (!response.ok) {
+    logger.error(`FASHN rechazó la solicitud al ${action}`, { status: response.status });
+    throw new HttpsError("unavailable", "FASHN no pudo procesar la solicitud.");
+  }
+
+  return payload;
+}
+
+async function waitForFashnOutput(predictionId, apiKey) {
+  const deadline = Date.now() + TRY_ON_MAX_WAIT_MS;
+  const statusUrl = `${FASHN_API_BASE_URL}/status/${encodeURIComponent(predictionId)}`;
+
+  while (Date.now() < deadline) {
+    await new Promise((resolve) => setTimeout(resolve, TRY_ON_POLL_INTERVAL_MS));
+    const prediction = await fetchFashnJson(statusUrl, {
+      method: "GET",
+      headers: { "Authorization": `Bearer ${apiKey}` },
+    }, "consultar el estado");
+
+    if (prediction.status === "completed") {
+      const outputUrl = Array.isArray(prediction.output) ? prediction.output[0] : null;
+      if (typeof outputUrl !== "string" || !outputUrl) {
+        logger.error("FASHN completó Try On sin devolver imagen.", { predictionId });
+        throw new HttpsError("internal", "FASHN no devolvió una imagen de resultado.");
+      }
+      return outputUrl;
+    }
+
+    if (prediction.status === "failed") {
+      logger.warn("FASHN marcó la predicción como fallida", {
+        predictionId,
+        errorName: prediction.error?.name || null,
+      });
+      throw new HttpsError("failed-precondition", "FASHN no pudo generar la imagen con estas fotos.");
+    }
+
+    if (!["starting", "in_queue", "processing"].includes(prediction.status)) {
+      logger.error("FASHN devolvió un estado desconocido", {
+        predictionId,
+        status: prediction.status || null,
+      });
+      throw new HttpsError("unavailable", "FASHN devolvió un estado de generación desconocido.");
+    }
+  }
+
+  logger.error("Timeout esperando la predicción FASHN", { predictionId });
+  throw new HttpsError("deadline-exceeded", "La generación tardó demasiado. Inténtalo de nuevo.");
+}
+
+async function downloadFashnOutput(outputUrl) {
+  let url;
+  try {
+    url = new URL(outputUrl);
+  } catch (_error) {
+    throw new HttpsError("internal", "FASHN devolvió una URL de resultado inválida.");
+  }
+
+  if (url.protocol !== "https:" || !["cdn.fashn.ai", "media.fashn.ai"].includes(url.hostname)) {
+    throw new HttpsError("internal", "FASHN devolvió un dominio de resultado no permitido.");
+  }
+
+  let response;
+  try {
+    response = await fetch(url, { signal: AbortSignal.timeout(30000) });
+  } catch (error) {
+    logger.error("No se pudo descargar la imagen de FASHN", { error: error.message });
+    throw new HttpsError("unavailable", "No se pudo descargar la imagen generada.");
+  }
+
+  if (!response.ok) {
+    logger.error("Fallo al descargar el resultado de FASHN", { status: response.status });
+    throw new HttpsError("unavailable", "No se pudo descargar la imagen generada.");
+  }
+
+  const contentType = (response.headers.get("content-type") || "image/jpeg").split(";")[0];
+  if (!contentType.startsWith("image/")) {
+    throw new HttpsError("internal", "FASHN devolvió un archivo que no es una imagen.");
+  }
+
+  const buffer = Buffer.from(await response.arrayBuffer());
+  if (!buffer.length || buffer.length > MAX_TRY_ON_OUTPUT_BYTES) {
+    throw new HttpsError("resource-exhausted", "La imagen generada tiene un tamaño no permitido.");
+  }
+
+  return { buffer, contentType };
+}
+
+async function persistTryOnResult({
+  userId,
+  publicationId,
+  baseModelPicId,
+  publicationTitle,
+  output,
+}) {
+  const extension = output.contentType === "image/png" ? "png" : "jpg";
+  const storagePath = `modelPics/${userId}/${randomUUID()}.${extension}`;
+  const bucket = admin.storage().bucket();
+  const imageFile = bucket.file(storagePath);
+  const downloadToken = randomUUID();
+  const modelPicRef = db.collection("users").doc(userId).collection("modelPics").doc();
+
+  try {
+    await imageFile.save(output.buffer, {
+      resumable: false,
+      metadata: {
+        contentType: output.contentType,
+        metadata: { firebaseStorageDownloadTokens: downloadToken },
+      },
+    });
+
+    const imageUrl = `https://firebasestorage.googleapis.com/v0/b/${bucket.name}/o/${
+      encodeURIComponent(storagePath)
+    }?alt=media&token=${downloadToken}`;
+
+    await modelPicRef.create({
+      name: `Try On - ${String(publicationTitle || "Resultado").trim().slice(0, 80)}`,
+      imageUrl,
+      storagePath,
+      type: "generated",
+      sourcePublicationId: publicationId,
+      baseModelPicId,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    });
+
+    logger.info("Try On generado y guardado", {
+      userId,
+      publicationId,
+      modelPicId: modelPicRef.id,
+    });
+
+    return { modelPicId: modelPicRef.id, imageUrl };
+  } catch (error) {
+    await imageFile.delete({ ignoreNotFound: true }).catch(() => {});
+    throw error;
+  }
+}

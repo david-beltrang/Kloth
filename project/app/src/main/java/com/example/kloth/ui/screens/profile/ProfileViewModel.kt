@@ -37,6 +37,7 @@ class ProfileViewModel @Inject constructor(
         val isOwnProfile = userId == authRepository.currentUser?.uid
         _uiState.update {
             it.copy(
+                selectedTabIndex = if (isOwnProfile) it.selectedTabIndex else 0,
                 viewingOwnProfile = isOwnProfile,
                 targetUserId = userId,
                 isFollowing = false,
