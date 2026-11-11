@@ -16,6 +16,8 @@ firebaseCrashlytics = "3.0.2"
 firebaseBom = "33.7.0"
 dagger = "2.60.1"
 retrofit = "2.11.0"
+maplibre = "11.8.3"
+playServicesLocation = "21.3.0"
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
@@ -51,6 +53,8 @@ firebase-storage = { module = "com.google.firebase:firebase-storage" }
 retrofit = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
 retrofit-converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
 retrofit-converter-scalars = { module = "com.squareup.retrofit2:converter-scalars", version.ref = "retrofit" }
+maplibre-android = { module = "org.maplibre.gl:android-sdk", version.ref = "maplibre" }
+play-services-location = { module = "com.google.android.gms:play-services-location", version.ref = "playServicesLocation" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
