@@ -10,6 +10,8 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 
+import retrofit2.http.Query
+
 // Mismas rutas que review.routes.js del backend
 interface ReviewRetrofitService {
     @GET("/reviews")
@@ -26,4 +28,7 @@ interface ReviewRetrofitService {
 
     @DELETE("/reviews/{id}")
     suspend fun deleteReview(@Path("id") id: String)
+
+    @GET("/reviews")
+    suspend fun getReviewsSince(@Query("since") since: String): List<ReviewRetrofitDto>
 }

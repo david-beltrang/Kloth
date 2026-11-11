@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kloth.data.repository.ArticleRepository
 import com.example.kloth.data.repository.AuthRepository
+import com.example.kloth.data.repository.LocationRepository
 import com.example.kloth.data.repository.ReviewRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
@@ -18,7 +19,8 @@ import kotlinx.coroutines.launch
 class CreateReviewViewModel @Inject constructor(
     private val articleRepository: ArticleRepository,
     private val reviewRepository: ReviewRepository,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val locationRepository: LocationRepository
 ) : ViewModel() {
 
     private val _uiState = MutableStateFlow(CreateReviewState())
@@ -54,6 +56,21 @@ class CreateReviewViewModel @Inject constructor(
         }
     }
 
+    // Cuando el usuario activa el switch SIN tener permiso aún, la pantalla lanza el launcher de permiso
+    // Este método solo se llama si el permiso ya fue concedido
+    fun onIncludeLocationChanged(enabled: Boolean) {
+        _uiState.update { it.copy(includeLocation = enabled, locationPermissionDenied = false) }
+    }
+
+    // Resultado del launcher de permisos de ubicación
+    fun onLocationPermissionResult(granted: Boolean) {
+        if (granted) {
+            _uiState.update { it.copy(includeLocation = true, locationPermissionDenied = false) }
+        } else {
+            _uiState.update { it.copy(includeLocation = false, locationPermissionDenied = true) }
+        }
+    }
+
     fun submitReview() {
         val state = _uiState.value
         val userId = authRepository.currentUser?.uid ?: return
@@ -61,11 +78,26 @@ class CreateReviewViewModel @Inject constructor(
 
         _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
+            // Captura de ubicación: Si falla o está desactivada, se publica sin coordenadas
+            val coordinates = if (state.includeLocation) {
+                locationRepository.getCurrentCoordinates().getOrNull()
+            } else {
+                null
+            }
+            // Solo se captura la ubicación si el usuario activó el switch
+            if (state.includeLocation && coordinates == null) {
+                _uiState.update {
+                    it.copy(isLoading = false, locationPermissionDenied = true)
+                }
+                return@launch
+            }
+
             val result = reviewRepository.createReview(
                 articleId = state.productId,
                 userId = userId,
                 rating = state.rating,
-                text = state.reviewText.trim()
+                text = state.reviewText.trim(),
+                coordinates = coordinates
             )
             if (result.isSuccess) {
                 _uiState.update { it.copy(isLoading = false, isSubmitted = true) }

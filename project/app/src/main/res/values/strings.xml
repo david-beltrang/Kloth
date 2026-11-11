@@ -215,7 +215,7 @@
     <string name="follow_list_back">Volver</string>
 
     <!-- Mock Data -->
-    <string name="mock_description">Una pieza maestra de sastrería contemporánea. Este abrigo ha sido confeccionado con 100% cachemira italiana de origen sostenible, ofreciendo una caída impecable y una suavidad inigualable.</string>
+    <string name="mock_description" formatted="false">Una pieza maestra de sastrería contemporánea. Este abrigo ha sido confeccionado con 100% cachemira italiana de origen sostenible, ofreciendo una caída impecable y una suavidad inigualable.</string>
     <string name="mock_price">$280.000 COP</string>
 
     <!-- Edit Profile Screen -->
@@ -257,10 +257,23 @@
 
     <!-- Create Review -->
     <string name="create_review_loading">Publicando...</string>
+    <string name="create_review_location_required_error">No se pudo obtener la ubicacion. Activa el permiso y el GPS para publicar la resena.</string>
     <string name="create_review_rating_label">Tu calificación</string>
     <string name="create_review_opinion_label">Tu opinión / análisis</string>
     <string name="create_review_placeholder">Escribe tu reseña aquí (requerido)…</string>
     <string name="create_review_required">Campo obligatorio</string>
+    <string name="create_review_location_label">Incluir mi ubicación</string>
+    <string name="create_review_location_hint">Se guarda una ubicación aproximada (~110 m). Opcional.</string>
+    <string name="create_review_location_denied">Permiso de ubicación denegado. La reseña se publicará sin ubicación.</string>
+
+    <!-- Reviews Map -->
+    <string name="map_title">Reviews recientes</string>
+    <string name="map_empty">Sin reviews en las últimas 24 h</string>
+    <string name="map_retry">Reintentar</string>
+    <string name="map_refresh">Actualizar</string>
+    <string name="cd_map">Abrir mapa de reviews</string>
+    <string name="cd_my_location">Ir a mi ubicación</string>
+    <string name="review_pin_open">Ver reseña</string>
 
     <!-- Edit Article -->
     <string name="edit_article_error">No se pudo cargar el artículo: %1$s</string>

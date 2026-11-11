@@ -7,6 +7,7 @@ import com.google.firebase.auth.auth
 import com.google.firebase.firestore.firestore
 import com.google.firebase.functions.FirebaseFunctions
 import dagger.hilt.android.HiltAndroidApp
+import org.maplibre.android.MapLibre
 
 @HiltAndroidApp
 class BaseApplication: Application() {
@@ -15,7 +16,7 @@ class BaseApplication: Application() {
         super.onCreate()
 
         FirebaseApp.initializeApp(this)
-
+        MapLibre.getInstance(this)
         if (BuildConfig.DEBUG) {
             Firebase.firestore.useEmulator("10.0.2.2", 8080)
             Firebase.auth.useEmulator("10.0.2.2", 9099)

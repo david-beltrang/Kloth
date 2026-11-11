@@ -14,6 +14,7 @@ fun ExploreScreen(
     exploreViewModel: ExploreViewModel,
     modifier: Modifier = Modifier,
     onProductClick: (String) -> Unit = {},
+    onMapClick: () -> Unit = {},
 ) {
     val state by exploreViewModel.uiState.collectAsState()
 
@@ -37,6 +38,7 @@ fun ExploreScreen(
 
             // Navegación
             onProductClick = onProductClick,
+            onMapClick = onMapClick,
         )
     }
 }
