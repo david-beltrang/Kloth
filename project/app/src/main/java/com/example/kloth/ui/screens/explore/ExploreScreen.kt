@@ -32,6 +32,7 @@ fun ExploreScreen(
             products = state.filteredPosts,
             selectedCategoryIndex = state.selectedCategoryIndex,
             query = state.query,
+            isLoading = state.isLoading,
 
             // Métodos del ViewModel para manejar el estado
             onCategorySelected = { exploreViewModel.onCategorySelected(it) },

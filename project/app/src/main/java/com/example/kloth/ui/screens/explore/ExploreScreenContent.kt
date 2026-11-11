@@ -41,6 +41,7 @@ fun ExploreScreenContent(
     products: List<PostItem>,
     selectedCategoryIndex: Int,
     query: String,
+    isLoading: Boolean,
 
     // Métodos para manejar el estado (Eventos)
     onCategorySelected: (Int) -> Unit,
@@ -155,7 +156,7 @@ fun ExploreScreenContent(
             }
         }
 
-        if (products.isEmpty()) {
+        if (products.isEmpty() && !isLoading) {
             item(span = { GridItemSpan(2) }) {
                 Box(
                     modifier = Modifier.fillMaxWidth().padding(vertical = 32.dp),
