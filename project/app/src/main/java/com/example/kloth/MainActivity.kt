@@ -4,11 +4,12 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
+import com.example.kloth.data.repository.AppLocaleRepository
 import com.example.kloth.data.repository.AuthRepository
 import com.example.kloth.data.repository.UserRepository
 import javax.inject.Inject
@@ -18,7 +19,8 @@ import dagger.hilt.android.AndroidEntryPoint
 
 /** Punto de entrada principal de la aplicación**/
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+    @Inject lateinit var appLocaleRepository: AppLocaleRepository
     @Inject lateinit var authRepository: AuthRepository
     @Inject lateinit var userRepository: UserRepository
     private var lastLanguageTagUpdate: Pair<String, String>? = null
@@ -56,7 +58,7 @@ class MainActivity : ComponentActivity() {
     override fun onResume() {
         super.onResume()
         val userId = authRepository.currentUser?.uid ?: return
-        val languageTag = resources.configuration.locales[0].toLanguageTag()
+        val languageTag = appLocaleRepository.currentLanguageTag()
         val updateKey = userId to languageTag
         if (updateKey == lastLanguageTagUpdate || updateKey == pendingLanguageTagUpdate) return
 

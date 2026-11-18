@@ -3,16 +3,20 @@ package com.example.kloth.ui.utils
 import android.content.Context
 import android.content.res.Configuration
 import androidx.annotation.ArrayRes
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import com.example.kloth.R
+import com.example.kloth.data.repository.resolveApplicationLanguage
 import java.util.Locale
 
-/** La app admite solo español e inglés; cualquier otro idioma usa español. */
+/** La app admite español, inglés, portugués, francés, alemán, italiano, ruso y árabe. */
 fun appTranslationLanguage(context: Context): String {
-    val language = context.resources.configuration.locales[0]?.language
-    return if (language == "en") "en" else "es"
+    val selectedLanguage = AppCompatDelegate.getApplicationLocales().get(0)?.toLanguageTag()
+    val configuration = context.resources.configuration
+    val systemLanguage = (configuration.locales?.get(0) ?: configuration.locale)?.toLanguageTag()
+    return resolveApplicationLanguage(selectedLanguage, systemLanguage)
 }
 
 /** Obtiene las opciones canónicas en español, independientemente del idioma visible. */

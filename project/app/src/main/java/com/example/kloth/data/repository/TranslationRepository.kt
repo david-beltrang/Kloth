@@ -54,6 +54,6 @@ class TranslationRepository @Inject constructor(
 
     private companion object {
         const val UNDETERMINED = "und"
-        val SUPPORTED_LANGUAGES = setOf("es", "en")
+        val SUPPORTED_LANGUAGES = setOf("es", "en", "pt", "fr", "de", "it", "ru", "ar")
     }
 }
