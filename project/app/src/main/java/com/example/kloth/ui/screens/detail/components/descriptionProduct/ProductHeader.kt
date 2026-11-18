@@ -15,6 +15,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kloth.ui.theme.KlothTheme
+import com.example.kloth.ui.utils.localizedArticleType
 
 @Composable
 fun ProductHeader(
@@ -37,7 +38,7 @@ fun ProductHeader(
                     .padding(horizontal = 12.dp, vertical = 4.dp)
             ) {
                 Text(
-                    text = categoryTag,
+                    text = localizedArticleType(categoryTag),
                     fontSize = 11.sp,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontWeight = FontWeight.Medium,

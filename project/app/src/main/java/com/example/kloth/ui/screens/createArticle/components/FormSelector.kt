@@ -40,6 +40,7 @@ fun FormSelector(
     options: List<String>,
     selected: String,
     onSelected: (String) -> Unit,
+    canonicalOptions: List<String>? = null,
     required: Boolean = false,
     modifier: Modifier = Modifier
 ) {
@@ -49,7 +50,11 @@ fun FormSelector(
         placeholder = placeholder,
         options = options,
         selected = selected,
-        onSelected = onSelected,
+        canonicalOptions = canonicalOptions,
+        onSelected = { selectedOption ->
+            val localizedIndex = options.indexOf(selectedOption)
+            onSelected(canonicalOptions?.getOrNull(localizedIndex) ?: selectedOption)
+        },
         required = required,
         expanded = expanded,
         onExpandedChange = { expanded = it },
@@ -64,14 +69,17 @@ private fun FormSelectorField(
     placeholder: String,
     options: List<String>,
     selected: String,
+    canonicalOptions: List<String>? = null,
     onSelected: (String) -> Unit,
     required: Boolean,
     expanded: Boolean,
     onExpandedChange: (Boolean) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    val displayedOptions = remember(options, selected) {
-        if (selected.isNotBlank() && selected !in options) listOf(selected) + options else options
+    val canonicalIndex = canonicalOptions?.indexOf(selected) ?: options.indexOf(selected)
+    val displaySelected = options.getOrNull(canonicalIndex) ?: selected
+    val displayedOptions = remember(options, displaySelected) {
+        if (displaySelected.isNotBlank() && displaySelected !in options) listOf(displaySelected) + options else options
     }
 
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -90,7 +98,7 @@ private fun FormSelectorField(
             onExpandedChange = onExpandedChange
         ) {
             TextField(
-                value = selected,
+                value = displaySelected,
                 onValueChange = {},
                 readOnly = true,
                 singleLine = true,
@@ -129,6 +137,9 @@ private fun FormSelectorField(
         }
     }
 }
+
+private fun canonicalOptionsIndex(value: String, options: List<String>): Int =
+    if (value in options) options.indexOf(value) else -1
 
 @Preview(showBackground = true, name = "Selector cerrado")
 @Composable

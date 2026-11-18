@@ -2,9 +2,10 @@ package com.example.kloth.data.dto
 
 import com.example.kloth.data.local.ArticleInfo
 import com.example.kloth.data.local.PostItem
-import java.time.Duration
 import java.time.Instant
+import java.text.NumberFormat
 import java.util.Locale
+import android.text.format.DateUtils
 
 // Funciones de mapeo: traducen lo que llega del backend (DTO) a los modelos que ya usa la UI.
 // Si el backend cambia un nombre de columna, solo se toca el DTO y este archivo.
@@ -44,8 +45,9 @@ fun typeLabel(typeArticle: String): String =
     typeArticle.trim().lowercase().replaceFirstChar { it.titlecase(Locale.getDefault()) }
 
 // 129.9 -> "$129,90"
-fun formatPrice(price: Double): String =
-    "$" + String.format(Locale.getDefault(), "%,.2f", price)
+fun formatPrice(price: Double): String = NumberFormat
+    .getCurrencyInstance(Locale.getDefault())
+    .format(price)
 
 private fun calculateAverageRating(reviews: List<ReviewDtoGeneric>): Float {
     if (reviews.isEmpty()) return 0f
@@ -58,17 +60,12 @@ private fun calculateAverageRating(reviews: List<ReviewDtoGeneric>): Float {
 fun timeAgo(createdAt: String?): String {
     if (createdAt.isNullOrBlank()) return ""
     return try {
-        val minutes = Duration.between(Instant.parse(createdAt), Instant.now()).toMinutes()
-        when {
-            minutes < 1 -> "Hace un momento"
-            minutes < 60 -> "Hace $minutes min"
-            minutes < 24 * 60 -> "Hace ${minutes / 60} h"
-            minutes < 48 * 60 -> "Hace 1 día"
-            minutes < 30 * 24 * 60 -> "Hace ${minutes / (24 * 60)} días"
-            minutes < 60 * 24 * 30 -> "Hace 1 mes"
-            else -> "Hace ${minutes / (24 * 60 * 30)} meses"
-        }
-    } catch (e: Exception) {
+        DateUtils.getRelativeTimeSpanString(
+            Instant.parse(createdAt).toEpochMilli(),
+            System.currentTimeMillis(),
+            DateUtils.MINUTE_IN_MILLIS
+        ).toString()
+    } catch (_: Exception) {
         ""
     }
 }

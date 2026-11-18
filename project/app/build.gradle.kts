@@ -50,6 +50,9 @@ android {
         compose = true
         buildConfig = true
     }
+    lint {
+        error += "MissingTranslation"
+    }
     // En unit tests (JVM) Android Log/APIs no existen; evita crash al llamar Log.e en el repo.
     testOptions {
         unitTests.isReturnDefaultValues = true

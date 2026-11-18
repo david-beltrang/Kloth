@@ -27,6 +27,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -41,6 +42,7 @@ import androidx.compose.ui.unit.sp
 import java.util.Calendar
 import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
+import com.example.kloth.ui.utils.spanishStringArray
 
 enum class ArticleType {
     PRENDA, OUTFIT, EVENTO, MARCA
@@ -84,8 +86,11 @@ fun FormArticle(
     @StringRes buttonTextRes: Int = R.string.btn_publicar,
     buttonEnabled: Boolean = true,
 ) {
+    val context = LocalContext.current
     val categoryOptions = stringArrayResource(R.array.article_categories).toList()
     val styleOptions = stringArrayResource(R.array.outfit_styles).toList()
+    val canonicalCategoryOptions = remember(context) { spanishStringArray(context, R.array.article_categories) }
+    val canonicalStyleOptions = remember(context) { spanishStringArray(context, R.array.outfit_styles) }
     Column(
         modifier = modifier
             .fillMaxWidth()
@@ -126,6 +131,7 @@ fun FormArticle(
                             selected = categoria,
                             onSelected = onCategoriaChange,
                             options = categoryOptions,
+                            canonicalOptions = canonicalCategoryOptions,
                             placeholder = stringResource(R.string.placeholder_categoria),
                             required = true
                         )
@@ -150,6 +156,7 @@ fun FormArticle(
                             selected = estilo,
                             onSelected = onEstiloChange,
                             options = styleOptions,
+                            canonicalOptions = canonicalStyleOptions,
                             placeholder = stringResource(R.string.placeholder_estilo),
                         )
                     }

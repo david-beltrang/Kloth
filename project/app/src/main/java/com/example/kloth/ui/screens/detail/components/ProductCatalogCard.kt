@@ -26,6 +26,7 @@ import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
 import com.example.kloth.ui.theme.TransparentBlack30
 import com.example.kloth.ui.theme.articleCategoryColor
+import com.example.kloth.ui.utils.localizedArticleType
 
 /**
  * Tarjeta descriptiva para mostrar productos en cuadrículas o listados.
@@ -90,7 +91,7 @@ fun ProductCatalogCard(
                 .padding(horizontal = 8.dp, vertical = 2.dp)
         ) {
             Text(
-                text = category.uppercase(),
+                text = localizedArticleType(category).uppercase(),
                 color = if (categoryChipColor != null) Color.White else MaterialTheme.colorScheme.onSecondaryContainer,
                 style = MaterialTheme.typography.labelSmall.copy(
                     fontWeight = FontWeight.Bold,

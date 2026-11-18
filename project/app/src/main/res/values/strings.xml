@@ -2,18 +2,18 @@
     <string name="app_name">KLOTH</string>
 
     <!-- Navigation -->
-    <string name="nav_home">Home</string>
-    <string name="nav_explore">Explore</string>
-    <string name="nav_create">Create</string>
-    <string name="nav_alerts">Alerts</string>
-    <string name="nav_profile">Profile</string>
+    <string name="nav_home">Inicio</string>
+    <string name="nav_explore">Explorar</string>
+    <string name="nav_create">Crear</string>
+    <string name="nav_alerts">Alertas</string>
+    <string name="nav_profile">Perfil</string>
 
     <!-- Feed Screen -->
-    <string name="tab_following">Following</string>
-    <string name="tab_for_you">For You</string>
-    <string name="feed_follow_prompt">Follow people and find your style</string>
-    <string name="header_create">Create</string>
-    <string name="header_notifications">Notifications</string>
+    <string name="tab_following">Siguiendo</string>
+    <string name="tab_for_you">Para ti</string>
+    <string name="feed_follow_prompt">Sigue a otras personas y encuentra tu estilo</string>
+    <string name="header_create">Crear</string>
+    <string name="header_notifications">Notificaciones</string>
     <string name="badge_couture">COUTURE</string>
     <string name="badge_essentials">ESSENTIALS</string>
     <string name="label_reviews">(%1$d reviews)</string>
@@ -25,14 +25,14 @@
     <string name="text_prefix_space">%1$s </string>
 
     <!-- Accessibility / Content Descriptions -->
-    <string name="content_desc_back">Back</string>
-    <string name="cd_back">Back</string>
-    <string name="content_desc_search">Search</string>
-    <string name="content_desc_notifications">Notifications</string>
-    <string name="content_desc_more">More options</string>
-    <string name="content_desc_favorite">Favorite</string>
-    <string name="cd_favorite">Favorite</string>
-    <string name="content_desc_comment">Comment</string>
+    <string name="content_desc_back">Volver</string>
+    <string name="cd_back">Volver</string>
+    <string name="content_desc_search">Buscar</string>
+    <string name="content_desc_notifications">Notificaciones</string>
+    <string name="content_desc_more">Más opciones</string>
+    <string name="content_desc_favorite">Favorito</string>
+    <string name="cd_favorite">Favorito</string>
+    <string name="content_desc_comment">Comentar</string>
     <string name="cd_share">Compartir</string>
     <string name="cd_product_image">Imagen del producto</string>
     <string name="cd_user_image">Imagen del usuario</string>
@@ -362,4 +362,9 @@
     <string name="cd_map">Abrir mapa de reviews</string>
     <string name="cd_my_location">Ir a mi ubicación</string>
     <string name="review_pin_open">Ver reseña</string>
+    <string name="ai_summary_title">Resumen Inteligente (IA)</string>
+    <string name="translate_button">Traducir</string>
+    <string name="view_original_button">Ver original</string>
+    <string name="translation_loading">Traduciendo…</string>
+    <string name="translation_error">No se pudo traducir este texto. Inténtalo de nuevo.</string>
 </resources>
