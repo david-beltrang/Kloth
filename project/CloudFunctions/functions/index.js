@@ -149,15 +149,8 @@ exports.resetPasswordWithCode = onCall({ maxInstances: 2 }, async (request) => {
 // Inicializa Firebase Admin para que las funciones puedan consultar y escribir en Firestore.
 
 // Centraliza la persistencia de los eventos que aparecen en la pantalla de notificaciones.
-//
-// ID del documento:
-//   - Acciones repetibles (LIKE, NUEVO_SEGUIDOR): ID determinístico "{actorId}_{type}_{target}"
-//     para que quitar y volver a dar like sobreescriba el mismo documento en lugar de crear uno nuevo.
-//   - Acciones únicas (COMENTARIO, NUEVA_RESENA): event.id del trigger, que ya es único por definición.
-//
-// En el caso LIKE/SEGUIDOR se usa set() en lugar de create() para actualizar createdAt e isRead
-// si el usuario repite la acción. En los demás casos se mantiene create() para idempotencia ante
-// reintentos de Firebase.
+// El ID del documento es el del evento: los reintentos de Firebase no duplican el registro,
+// pero cada acción nueva (por ejemplo volver a dar like) genera su propia notificación.
 async function saveUserNotification({ event, recipientId, actorId, type, reviewId = null, thumbnailUrl = null, actorName = null, actorImageUrl = null }) {
   // Ignora eventos incompletos y acciones propias para no notificar al mismo usuario.
   if (!recipientId || !actorId || recipientId === actorId) return null;
@@ -170,43 +163,89 @@ async function saveUserNotification({ event, recipientId, actorId, type, reviewI
   const resolvedActorImageUrl = actorImageUrl || actor.imageURL || null;
 
   // Todas las notificaciones se guardan bajo el perfil de su destinatario.
-  const notificationsCol = db.collection("users").doc(recipientId).collection("notifications");
+  const notificationRef = db.collection("users").doc(recipientId)
+    .collection("notifications").doc(event.id);
 
-  // Acciones repetibles usan un ID fijo para que la segunda acción sobreescriba la primera
-  // en lugar de acumular documentos idénticos.
-  const isRepeatable = type === "LIKE" || type === "NUEVO_SEGUIDOR";
-  const targetKey = reviewId || recipientId; // para LIKE es la review, para SEGUIDOR es el destinatario
-  const docId = isRepeatable ? `${actorId}_${type}_${targetKey}` : event.id;
-  const notificationRef = notificationsCol.doc(docId);
-
-  const payload = {
-    actorId,
-    actorName: resolvedActorName,
-    actorImageUrl: resolvedActorImageUrl,
-    type,
-    reviewId,
-    thumbnailUrl,
-    createdAt: admin.firestore.FieldValue.serverTimestamp(),
-    isRead: false,
-  };
-
-  if (isRepeatable) {
-    // set() crea o sobreescribe: si Juan quita y vuelve a dar like aparece una sola notificación
-    // con la fecha actualizada y sin leer.
-    await notificationRef.set(payload);
-  } else {
-    try {
-      // create() es idempotente ante reintentos de Firebase: si el documento ya existe
-      // (mismo event.id) el error "already-exists" se absorbe silenciosamente.
-      await notificationRef.create(payload);
-    } catch (error) {
-      if (error.code !== 6 && error.code !== "already-exists") throw error;
-      logger.debug("Notificación ya guardada para este evento", { notificationId: event.id });
-    }
+  try {
+    await notificationRef.create({
+      actorId,
+      actorName: resolvedActorName,
+      actorImageUrl: resolvedActorImageUrl,
+      type,
+      reviewId,
+      thumbnailUrl,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      isRead: false,
+    });
+  } catch (error) {
+    // create() es idempotente ante reintentos: si el documento ya existe se absorbe el error.
+    if (error.code !== 6 && error.code !== "already-exists") throw error;
+    logger.debug("Notificación ya guardada para este evento", { notificationId: event.id });
   }
 
-  // Devuelve el nombre que también se utiliza en el texto del push.
-  return { actorName: resolvedActorName };
+  // Devuelve los datos que necesita el push (nombre, destinatario y tipo de evento).
+  return { actorName: resolvedActorName, recipientId, type, reviewId };
+}
+
+// Textos del push por tipo de evento, adaptados al idioma del destinatario.
+function buildPushContent(type, language, actorName) {
+  const en = language === "en";
+  switch (type) {
+    case "LIKE":
+      return {
+        title: en ? "New like" : "Nuevo me gusta",
+        body: en ? `${actorName} liked your review.` : `${actorName} indicó que le gusta tu reseña.`,
+      };
+    case "COMENTARIO":
+      return {
+        title: en ? "New comment" : "Nuevo comentario",
+        body: en ? `${actorName} commented on your review.` : `${actorName} comentó tu reseña.`,
+      };
+    case "NUEVA_RESENA":
+      return {
+        title: en ? "New review" : "Nueva reseña",
+        body: en ? `${actorName} published a review of your article.` : `${actorName} publicó una reseña de tu artículo.`,
+      };
+    case "NUEVO_SEGUIDOR":
+      return {
+        title: en ? "New follower" : "Nuevo seguidor",
+        body: en ? `${actorName} started following you.` : `${actorName} comenzó a seguirte.`,
+      };
+    default:
+      return null;
+  }
+}
+
+// Envía el push con el token FCM del destinatario. Que no tenga token o que FCM falle
+// no debe borrar ni impedir la notificación ya persistida en Firestore.
+async function sendPushForEvent(notification) {
+  if (!notification) return;
+
+  const recipientSnapshot = await db.collection("users").doc(notification.recipientId).get();
+  const recipient = recipientSnapshot.exists ? recipientSnapshot.data() : {};
+  const token = recipient.fcmToken || recipient.FCMToken;
+  if (!token) {
+    logger.debug("Push omitido: el destinatario no tiene token FCM", { recipientId: notification.recipientId });
+    return;
+  }
+
+  const language = typeof recipient.languageTag === "string" && recipient.languageTag.toLowerCase().startsWith("en") ? "en" : "es";
+  const content = buildPushContent(notification.type, language, notification.actorName);
+  if (!content) return;
+
+  try {
+    await admin.messaging().send({
+      token,
+      notification: { title: content.title, body: content.body },
+      data: { type: notification.type, reviewId: notification.reviewId || "" },
+    });
+  } catch (error) {
+    logger.error("Error enviando push", {
+      recipientId: notification.recipientId,
+      type: notification.type,
+      error,
+    });
+  }
 }
 
 // Crea una notificacion persistente y un push cuando se agrega un like a una reseña.
@@ -237,26 +276,8 @@ exports.sendReviewLikeNotification = onDocumentCreated(
       thumbnailUrl: article.imageArticle || null,
     });
 
-    if (!notification) return;
-
-    // El token puede faltar si el usuario no tiene un dispositivo registrado para FCM.
-    const { recipient } = notification;
-    const token = recipient.fcmToken || recipient.FCMToken;
-    if (!token) return;
-
-    try {
-      // El push se envia despues de guardar el registro para que ambos canales compartan el evento.
-      await admin.messaging().send({
-        token,
-        notification: {
-          body: notification.language === "en" ? `${notification.actorName} liked your review.` : `${notification.actorName} indicó que le gusta tu reseña.`,
-        },
-        data: { type: "LIKE", reviewId },
-      });
-    } catch (error) {
-      // Un error de FCM no elimina la notificacion persistida en Firestore.
-      logger.error("Error enviando push de like", { recipientId, reviewId, error });
-    }
+    // El push se envía después de guardar el registro para que ambos canales compartan el evento.
+    await sendPushForEvent(notification);
   }
 );
 
@@ -276,7 +297,7 @@ exports.saveReviewCommentNotification = onDocumentCreated(
       ? await db.collection("articles").doc(review.articleId).get()
       : null;
     const article = articleSnapshot?.exists ? articleSnapshot.data() : {};
-    await saveUserNotification({
+    const notification = await saveUserNotification({
       event,
       recipientId: review.userId,
       actorId: comment.userId,
@@ -286,6 +307,7 @@ exports.saveReviewCommentNotification = onDocumentCreated(
       reviewId,
       thumbnailUrl: article.imageArticle || null,
     });
+    await sendPushForEvent(notification);
   }
 );
 
@@ -302,7 +324,7 @@ exports.saveNewReviewNotification = onDocumentCreated(
     if (!articleSnapshot.exists) return;
     const article = articleSnapshot.data();
     // El creador del artículo recibe la notificacion de la reseña nueva.
-    await saveUserNotification({
+    const notification = await saveUserNotification({
       event,
       recipientId: article.idUser,
       actorId: review.userId,
@@ -310,6 +332,7 @@ exports.saveNewReviewNotification = onDocumentCreated(
       reviewId,
       thumbnailUrl: article.imageArticle || null,
     });
+    await sendPushForEvent(notification);
   }
 );
 
@@ -319,12 +342,13 @@ exports.saveNewFollowerNotification = onDocumentCreated(
   async (event) => {
     const { recipientId, actorId } = event.params;
     // El ID del documento follower identifica al usuario que comenzó a seguir al destinatario.
-    await saveUserNotification({
+    const notification = await saveUserNotification({
       event,
       recipientId,
       actorId,
       type: "NUEVO_SEGUIDOR",
     });
+    await sendPushForEvent(notification);
   }
 );
 
@@ -347,6 +371,17 @@ exports.generateArticleAiSummary = onDocumentCreated(
 
       if (reviews.length === 0) return;
 
+      // Evita regenerar el mismo resumen ante reintentos o triggers simultáneos:
+      // solo se recalcula cuando cambia el número de reseñas.
+      const articleRef = db.collection("articles").doc(articleId);
+      const articleSnapshot = await articleRef.get();
+      const currentArticle = articleSnapshot.exists ? articleSnapshot.data() : {};
+      if (currentArticle.aiSummary && currentArticle.summaryReviewCount === reviews.length) {
+        logger.debug("El resumen ya está actualizado para este número de reseñas", { articleId, reviewsCount: reviews.length });
+        return;
+      }
+
+      const startedAt = Date.now();
       const reviewsText = reviews.map((r) => `- ${r.text || ""}`).join("\n");
       const apiKey = process.env.OPENROUTER_API_KEY || "sk-or-v1-API_KEY";
       const prompt = `Actúa como un experto en análisis de calidad de ropa en un e-commerce. Lee las siguientes opiniones de usuarios sobre un producto y genera un resumen conciso, amigable y directo en español (máximo 3 oraciones) destacando los pros, contras y la opinión general:\n${reviewsText}`;
@@ -373,10 +408,19 @@ exports.generateArticleAiSummary = onDocumentCreated(
 
       if (!summary) return;
 
-      await db.collection("articles").doc(articleId).set({
-        aiSummary: summary,
-        summaryReviewCount: reviews.length,
-      }, { merge: true });
+      // Solo el resumen generado más recientemente puede sobrescribir al anterior.
+      await db.runTransaction(async (transaction) => {
+        const snapshot = await transaction.get(articleRef);
+        const current = snapshot.exists ? snapshot.data() : {};
+        const lastCreatedAt = current.summaryCreatedAt?.toMillis?.() || 0;
+        if (lastCreatedAt > startedAt) return;
+
+        transaction.set(articleRef, {
+          aiSummary: summary,
+          summaryReviewCount: reviews.length,
+          summaryCreatedAt: admin.firestore.FieldValue.serverTimestamp(),
+        }, { merge: true });
+      });
 
       logger.info("Resumen de IA generado exitosamente para el artículo", { articleId, reviewsCount: reviews.length });
     } catch (error) {
