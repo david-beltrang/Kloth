@@ -18,9 +18,14 @@ class AppLocaleRepository @Inject constructor(
         return resolveApplicationLanguage(dataSource.selectedLanguageTag(), systemLanguageTag)
     }
 
+    fun applyProcessLocale() {
+        Locale.setDefault(Locale.forLanguageTag(currentLanguageTag()))
+    }
+
     fun setApplicationLanguage(languageTag: String) {
         val normalizedLanguage = resolveApplicationLanguage(languageTag, null)
         dataSource.setApplicationLanguage(normalizedLanguage)
+        Locale.setDefault(Locale.forLanguageTag(normalizedLanguage))
     }
 
 }

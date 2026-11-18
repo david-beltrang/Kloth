@@ -45,6 +45,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        appLocaleRepository.applyProcessLocale()
         enableEdgeToEdge()
         setContent {
             KlothTheme {
@@ -57,6 +58,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
+        appLocaleRepository.applyProcessLocale()
         val userId = authRepository.currentUser?.uid ?: return
         val languageTag = appLocaleRepository.currentLanguageTag()
         val updateKey = userId to languageTag
