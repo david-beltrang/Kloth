@@ -162,4 +162,12 @@ class UserRepository @Inject constructor(
         Log.e("UserRepository", "No se pudo actualizar el token de notificaciones", e)
         Result.failure(e)
     }
+
+    suspend fun updateLanguageTag(userId: String, languageTag: String): Result<Unit> = try {
+        userDataSource.updateLanguageTag(userId, languageTag)
+        Result.success(Unit)
+    } catch (e: Exception) {
+        Log.e("UserRepository", "No se pudo actualizar el idioma del usuario", e)
+        Result.failure(e)
+    }
 }

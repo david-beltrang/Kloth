@@ -18,7 +18,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
-import com.example.kloth.R
 import com.example.kloth.ui.utils.localizedArticleOption
 
 @Composable
