@@ -231,6 +231,7 @@ exports.sendReviewLikeNotification = onDocumentCreated(
       await admin.messaging().send({
         token,
         notification: {
+          title: notification.language === "en" ? "New like" : "Nuevo me gusta",
           body: notification.language === "en" ? `${notification.actorName} liked your review.` : `${notification.actorName} indicó que le gusta tu reseña.`,
         },
         data: { type: "LIKE", reviewId },
