@@ -36,6 +36,7 @@ import com.example.kloth.ui.theme.KlothTheme
 import com.example.kloth.ui.theme.RedInferno
 import com.example.kloth.ui.theme.GoldStar
 import com.example.kloth.ui.theme.articleCategoryColor
+import com.example.kloth.ui.utils.localizedArticleType
 
 @Composable
 fun PostCard(
@@ -154,7 +155,7 @@ private fun PostContent(
         )
         
         KlothBadge(
-            text = category,
+            text = localizedArticleType(category),
             containerColor = categoryColor,
             contentColor = Color.White,
             modifier = Modifier

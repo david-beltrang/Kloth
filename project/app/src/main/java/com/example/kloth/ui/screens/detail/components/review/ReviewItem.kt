@@ -11,6 +11,8 @@ import androidx.compose.ui.unit.sp
 import com.example.kloth.R
 import com.example.kloth.data.local.ReviewData
 import com.example.kloth.ui.theme.KlothTheme
+import com.example.kloth.ui.utils.TranslatableText
+import com.example.kloth.ui.utils.TranslationTextState
 
 @Composable
 fun ReviewItem(
@@ -18,6 +20,9 @@ fun ReviewItem(
     onLikeClick: () -> Unit = {},
     onCommentClick: () -> Unit = {},
     onAuthorClick: (String) -> Unit = {},
+    translationState: TranslationTextState = TranslationTextState(),
+    onTranslate: () -> Unit = {},
+    onShowOriginal: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -36,11 +41,13 @@ fun ReviewItem(
 
         Spacer(modifier = Modifier.height(8.dp))
 
-        Text(
-            text = review.reviewText,
-            fontSize = 12.sp,
-            color = MaterialTheme.colorScheme.onBackground,
-            lineHeight = 16.sp
+        TranslatableText(
+            originalText = review.reviewText,
+            state = translationState,
+            onTranslate = onTranslate,
+            onShowOriginal = onShowOriginal,
+            style = MaterialTheme.typography.bodySmall.copy(fontSize = 12.sp, lineHeight = 16.sp),
+            color = MaterialTheme.colorScheme.onBackground
         )
 
         Spacer(modifier = Modifier.height(8.dp))

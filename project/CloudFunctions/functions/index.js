@@ -240,8 +240,7 @@ exports.sendReviewLikeNotification = onDocumentCreated(
     if (!notification) return;
 
     // El token puede faltar si el usuario no tiene un dispositivo registrado para FCM.
-    const recipientSnapshot = await db.collection("users").doc(recipientId).get();
-    const recipient = recipientSnapshot.exists ? recipientSnapshot.data() : {};
+    const { recipient } = notification;
     const token = recipient.fcmToken || recipient.FCMToken;
     if (!token) return;
 
@@ -250,8 +249,7 @@ exports.sendReviewLikeNotification = onDocumentCreated(
       await admin.messaging().send({
         token,
         notification: {
-          title: "Nuevo me gusta",
-          body: `${notification.actorName} indicÃ³ que le gusta tu reseÃ±a.`,
+          body: notification.language === "en" ? `${notification.actorName} liked your review.` : `${notification.actorName} indicó que le gusta tu reseña.`,
         },
         data: { type: "LIKE", reviewId },
       });

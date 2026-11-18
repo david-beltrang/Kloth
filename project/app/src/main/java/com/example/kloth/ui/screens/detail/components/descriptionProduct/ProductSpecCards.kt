@@ -18,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
+import com.example.kloth.ui.utils.localizedArticleOption
 
 @Composable
 fun ProductSpecCards(
@@ -81,7 +82,7 @@ fun ProductSpecCards(
                 )
                 Spacer(modifier = Modifier.height(6.dp))
                 Text(
-                    text = categoryName,
+                    text = localizedArticleOption(categoryName, R.array.article_categories),
                     fontSize = 12.sp,
                     fontWeight = FontWeight.SemiBold,
                     color = MaterialTheme.colorScheme.onSurface,

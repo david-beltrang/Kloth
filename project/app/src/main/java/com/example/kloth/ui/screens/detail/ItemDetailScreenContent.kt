@@ -20,6 +20,8 @@ import com.example.kloth.ui.screens.detail.components.descriptionProduct.General
 import com.example.kloth.ui.screens.detail.components.image.HeroImageSection
 import com.example.kloth.ui.screens.detail.components.review.RatingsAndReviewsSection
 import com.example.kloth.ui.screens.tryOn.components.TryOnButton
+import com.example.kloth.ui.utils.TranslationContentIds
+import com.example.kloth.ui.utils.TranslationTextState
 
 @Composable
 fun ItemDetailScreenContent(
@@ -37,6 +39,9 @@ fun ItemDetailScreenContent(
     onLikeReviewClick: (String) -> Unit = {},
     onCommentReviewClick: (String) -> Unit = {},
     onAuthorClick: (String) -> Unit = {},
+    translationStates: Map<String, TranslationTextState> = emptyMap(),
+    onTranslate: (String, String) -> Unit = { _, _ -> },
+    onShowOriginal: (String) -> Unit = {},
     onTryOnClick: () -> Unit = {},
     
     modifier: Modifier = Modifier
@@ -65,6 +70,14 @@ fun ItemDetailScreenContent(
                 colorName = product.colorName,
                 categoryName = product.categoryName,
                 description = product.description,
+                descriptionTranslation = translationStates[TranslationContentIds.description(product.id)]
+                    ?: TranslationTextState(),
+                onTranslateDescription = {
+                    onTranslate(TranslationContentIds.description(product.id), product.description)
+                },
+                onShowOriginalDescription = {
+                    onShowOriginal(TranslationContentIds.description(product.id))
+                },
             )
         }
         if (product.supportsVirtualTryOn) {
@@ -96,7 +109,10 @@ fun ItemDetailScreenContent(
                 onWriteReviewClick = onWriteReviewClick,
                 onLikeReviewClick = onLikeReviewClick,
                 onCommentReviewClick = onCommentReviewClick,
-                onAuthorClick = onAuthorClick
+                onAuthorClick = onAuthorClick,
+                translationStates = translationStates,
+                onTranslate = onTranslate,
+                onShowOriginal = onShowOriginal
             )
         }
     }

@@ -50,6 +50,9 @@ android {
         compose = true
         buildConfig = true
     }
+    lint {
+        error += "MissingTranslation"
+    }
     // En unit tests (JVM) Android Log/APIs no existen; evita crash al llamar Log.e en el repo.
     testOptions {
         unitTests.isReturnDefaultValues = true
@@ -121,6 +124,8 @@ dependencies {
     implementation(libs.maplibre.android)
     // Google Location
     implementation(libs.play.services.location)
+    implementation(libs.mlkit.translate)
+    implementation(libs.mlkit.language.id)
 
     //Adicionales
     testImplementation("io.mockk:mockk:1.13.14")

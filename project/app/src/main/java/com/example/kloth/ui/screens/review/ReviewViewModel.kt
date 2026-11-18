@@ -7,6 +7,8 @@ import androidx.lifecycle.viewModelScope
 import com.example.kloth.data.repository.ReviewRepository
 import com.example.kloth.data.repository.AuthRepository
 import com.example.kloth.data.repository.UserRepository
+import com.example.kloth.data.repository.TranslationOutcome
+import com.example.kloth.data.repository.TranslationRepository
 import com.example.kloth.ui.navigation.AppRoutes
 import com.example.kloth.R
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -17,6 +19,11 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.CancellationException
+import com.example.kloth.ui.utils.TranslationContentIds
+import com.example.kloth.ui.utils.TranslationTextState
+import com.example.kloth.ui.utils.TranslationUiStatus
+import com.example.kloth.ui.utils.appTranslationLanguage
 
 @HiltViewModel
 class ReviewViewModel @Inject constructor(
@@ -24,7 +31,8 @@ class ReviewViewModel @Inject constructor(
     savedStateHandle: SavedStateHandle,
     private val reviewRepository: ReviewRepository,
     private val authRepository: AuthRepository,
-    private val userRepository: UserRepository
+    private val userRepository: UserRepository,
+    private val translationRepository: TranslationRepository
 ) : ViewModel() {
 
     // Recupera el ID si viene de la navegación
@@ -71,6 +79,7 @@ class ReviewViewModel @Inject constructor(
                 _uiState.update { currentState ->
                     currentState.copy(resena = resena)
                 }
+                observeReviewTranslations(resena)
             }
         }
     }
@@ -102,6 +111,10 @@ class ReviewViewModel @Inject constructor(
                             nuevoComentarioTexto = ""
                         )
                     }
+                    observeTranslation(
+                        TranslationContentIds.comment(reviewId, nuevoComentario.id),
+                        nuevoComentario.commentText
+                    )
                 }
             }
         }
@@ -187,6 +200,71 @@ class ReviewViewModel @Inject constructor(
                 ordenMasRecientes = nuevoOrden,
                 resena = currentState.resena.copy(comentariosList = comentariosInvertidos)
             )
+        }
+    }
+
+    fun onTranslate(contentId: String, originalText: String) {
+        if (_uiState.value.translationStates[contentId]?.canTranslate != true) return
+        updateTranslation(contentId) { it.copy(status = TranslationUiStatus.Translating) }
+        viewModelScope.launch {
+            try {
+                when (val outcome = translationRepository.translate(
+                    contentId,
+                    originalText,
+                    appTranslationLanguage(context)
+                )) {
+                    is TranslationOutcome.Translated -> updateTranslation(contentId) {
+                        it.copy(status = TranslationUiStatus.Translated(outcome.text))
+                    }
+                    is TranslationOutcome.SameLanguage,
+                    TranslationOutcome.Undetermined -> updateTranslation(contentId) {
+                        it.copy(canTranslate = false, status = TranslationUiStatus.Original)
+                    }
+                }
+            } catch (error: Exception) {
+                if (error is CancellationException) throw error
+                updateTranslation(contentId) { it.copy(status = TranslationUiStatus.Error) }
+            }
+        }
+    }
+
+    fun onShowOriginal(contentId: String) = updateTranslation(contentId) {
+        it.copy(status = TranslationUiStatus.Original)
+    }
+
+    private fun observeReviewTranslations(review: com.example.kloth.data.local.ReviewData) {
+        observeTranslation(TranslationContentIds.review(review.id), review.reviewText)
+        review.comentariosList.forEach { comment ->
+            observeTranslation(
+                TranslationContentIds.comment(review.id, comment.id),
+                comment.commentText
+            )
+        }
+    }
+
+    private fun observeTranslation(contentId: String, text: String) {
+        if (text.isBlank() || contentId in _uiState.value.translationStates) return
+        _uiState.update { state ->
+            state.copy(translationStates = state.translationStates +
+                (contentId to TranslationTextState(isDetectingLanguage = true)))
+        }
+        viewModelScope.launch {
+            val canTranslate = runCatching {
+                translationRepository.canTranslate(contentId, text, appTranslationLanguage(context))
+            }.getOrDefault(false)
+            updateTranslation(contentId) {
+                it.copy(canTranslate = canTranslate, isDetectingLanguage = false)
+            }
+        }
+    }
+
+    private fun updateTranslation(
+        contentId: String,
+        transform: (TranslationTextState) -> TranslationTextState
+    ) {
+        _uiState.update { state ->
+            val current = state.translationStates[contentId] ?: TranslationTextState()
+            state.copy(translationStates = state.translationStates + (contentId to transform(current)))
         }
     }
 }

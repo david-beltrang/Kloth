@@ -16,10 +16,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.kloth.R
 import com.example.kloth.ui.theme.KlothTheme
+import com.example.kloth.ui.utils.TranslatableText
+import com.example.kloth.ui.utils.TranslationTextState
 
 @Composable
 fun ProductDescription(
     descriptionText: String,
+    translationState: TranslationTextState = TranslationTextState(),
+    onTranslate: () -> Unit = {},
+    onShowOriginal: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(modifier = modifier.fillMaxWidth()) {
@@ -30,11 +35,13 @@ fun ProductDescription(
             color = MaterialTheme.colorScheme.onBackground
         )
         Spacer(modifier = Modifier.height(8.dp))
-        Text(
-            text = descriptionText,
-            fontSize = 13.sp,
+        TranslatableText(
+            originalText = descriptionText,
+            state = translationState,
+            onTranslate = onTranslate,
+            onShowOriginal = onShowOriginal,
+            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 13.sp, lineHeight = 19.sp),
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            lineHeight = 19.sp,
             modifier = Modifier.testTag("detailDescription")
         )
     }

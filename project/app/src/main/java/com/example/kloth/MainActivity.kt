@@ -8,12 +8,18 @@ import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.lifecycle.lifecycleScope
+import com.example.kloth.data.repository.UserRepository
+import com.google.firebase.auth.FirebaseAuth
+import javax.inject.Inject
+import kotlinx.coroutines.launch
 import com.example.kloth.ui.theme.KlothTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 /** Punto de entrada principal de la aplicación**/
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+    @Inject lateinit var userRepository: UserRepository
     private val locationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) {
@@ -42,6 +48,15 @@ class MainActivity : ComponentActivity() {
         }
 
         requestLocationPermissionIfNeeded()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
+        val languageTag = resources.configuration.locales[0].toLanguageTag()
+        lifecycleScope.launch {
+            userRepository.updateLanguageTag(userId, languageTag)
+        }
     }
 
     private fun requestLocationPermissionIfNeeded() {

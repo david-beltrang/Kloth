@@ -18,7 +18,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.kloth.R
 import com.mikepenz.markdown.m3.Markdown
 
 @Composable
@@ -52,7 +54,7 @@ fun AiSummaryCard(
                     modifier = Modifier.size(20.dp)
                 )
                 Text(
-                    text = "Resumen Inteligente (IA)",
+                    text = stringResource(R.string.ai_summary_title),
                     style = MaterialTheme.typography.titleSmall.copy(fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.primary
                 )

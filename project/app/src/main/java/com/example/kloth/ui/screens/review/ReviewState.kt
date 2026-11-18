@@ -2,6 +2,7 @@ package com.example.kloth.ui.screens.review
 
 import com.example.kloth.R
 import com.example.kloth.data.local.ReviewData
+import com.example.kloth.ui.utils.TranslationTextState
 
 data class ReviewState(
     val currentUserId: String? = null,
@@ -19,7 +20,8 @@ data class ReviewState(
     val ordenMasRecientes: Boolean = true,
     val isDeletingReview: Boolean = false,
     val reviewDeleted: Boolean = false,
-    val deleteReviewError: String? = null
+    val deleteReviewError: String? = null,
+    val translationStates: Map<String, TranslationTextState> = emptyMap()
 ) {
     val yaComento: Boolean
         get() = resena.comentariosList.any { it.isMyComment }

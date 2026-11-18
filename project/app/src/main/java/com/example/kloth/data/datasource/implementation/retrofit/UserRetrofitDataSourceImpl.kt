@@ -24,6 +24,10 @@ class UserRetrofitDataSourceImpl @Inject constructor(
         TODO("Not yet implemented")
     }
 
+    override suspend fun updateLanguageTag(userId: String, languageTag: String) {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun updateProfile(
         userId: String,
         username: String,
