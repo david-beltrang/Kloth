@@ -22,15 +22,15 @@ import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.FileUpload
-import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.minimumInteractiveComponentSize
 import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.draw.clip
@@ -241,7 +241,8 @@ private fun ModelPicsControls(
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             FilterChip(
                 selected = state.selectedFilter == ModelPicType.BASE,
@@ -263,31 +264,41 @@ private fun ModelPicsControls(
                         R.string.model_pics_upload
                     }
                 )
-                FilledIconButton(
-                    onClick = onUploadClick,
-                    enabled = !state.isUploadingBaseModelPic,
+                Box(
                     modifier = Modifier
-                        .size(32.dp)
                         .minimumInteractiveComponentSize()
+                        .size(width = 52.dp, height = 48.dp)
+                        .clickable(
+                            enabled = !state.isUploadingBaseModelPic,
+                            role = Role.Button,
+                            onClick = onUploadClick
+                        )
                         .semantics {
                             contentDescription = uploadContentDescription
                         },
-                    shape = RoundedCornerShape(999.dp),
-                    colors = IconButtonDefaults.filledIconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary
-                    )
+                    contentAlignment = Alignment.Center
                 ) {
-                    if (state.isUploadingBaseModelPic) {
-                        CircularProgressIndicator(
-                            modifier = Modifier.size(18.dp),
-                            strokeWidth = 2.dp
-                        )
-                    } else {
-                        Icon(
-                            imageVector = Icons.Outlined.FileUpload,
-                            contentDescription = null
-                        )
+                    Box(
+                        modifier = Modifier
+                            .size(width = 52.dp, height = FilterChipDefaults.Height)
+                            .clip(RoundedCornerShape(999.dp))
+                            .background(MaterialTheme.colorScheme.primary),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (state.isUploadingBaseModelPic) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(18.dp),
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                strokeWidth = 2.dp
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Outlined.FileUpload,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp),
+                                tint = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
                     }
                 }
             }
