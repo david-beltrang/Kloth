@@ -138,9 +138,6 @@ private fun FormSelectorField(
     }
 }
 
-private fun canonicalOptionsIndex(value: String, options: List<String>): Int =
-    if (value in options) options.indexOf(value) else -1
-
 @Preview(showBackground = true, name = "Selector cerrado")
 @Composable
 private fun FormSelectorClosedPreview() {
