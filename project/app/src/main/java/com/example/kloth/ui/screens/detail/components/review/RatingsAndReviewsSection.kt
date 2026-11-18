@@ -17,6 +17,8 @@ import com.example.kloth.R
 import com.example.kloth.data.local.ReviewData
 import com.example.kloth.ui.screens.detail.components.RatingStars
 import com.example.kloth.ui.theme.KlothTheme
+import com.example.kloth.ui.utils.TranslationContentIds
+import com.example.kloth.ui.utils.TranslationTextState
 
 @Composable
 fun RatingsAndReviewsSection(
@@ -27,6 +29,9 @@ fun RatingsAndReviewsSection(
     onLikeReviewClick: (String) -> Unit = {},
     onCommentReviewClick: (String) -> Unit = {},
     onAuthorClick: (String) -> Unit = {},
+    translationStates: Map<String, TranslationTextState> = emptyMap(),
+    onTranslate: (String, String) -> Unit = { _, _ -> },
+    onShowOriginal: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -98,7 +103,11 @@ fun RatingsAndReviewsSection(
                 review = review,
                 onLikeClick = { onLikeReviewClick(review.id) },
                 onCommentClick = { onCommentReviewClick(review.id) },
-                onAuthorClick = onAuthorClick
+                onAuthorClick = onAuthorClick,
+                translationState = translationStates[TranslationContentIds.review(review.id)]
+                    ?: TranslationTextState(),
+                onTranslate = { onTranslate(TranslationContentIds.review(review.id), review.reviewText) },
+                onShowOriginal = { onShowOriginal(TranslationContentIds.review(review.id)) }
             )
 
             if (index < reviewsList.size - 1) {

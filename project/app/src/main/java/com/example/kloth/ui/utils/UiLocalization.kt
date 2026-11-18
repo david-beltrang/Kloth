@@ -9,6 +9,12 @@ import androidx.compose.ui.res.stringResource
 import com.example.kloth.R
 import java.util.Locale
 
+/** La app admite solo español e inglés; cualquier otro idioma usa español. */
+fun appTranslationLanguage(context: Context): String {
+    val language = context.resources.configuration.locales[0]?.language
+    return if (language == "en") "en" else "es"
+}
+
 /** Obtiene las opciones canónicas en español, independientemente del idioma visible. */
 fun spanishStringArray(context: Context, @ArrayRes arrayRes: Int): List<String> {
     val configuration = Configuration(context.resources.configuration)

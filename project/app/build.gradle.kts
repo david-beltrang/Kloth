@@ -124,6 +124,8 @@ dependencies {
     implementation(libs.maplibre.android)
     // Google Location
     implementation(libs.play.services.location)
+    implementation(libs.mlkit.translate)
+    implementation(libs.mlkit.language.id)
 
     //Adicionales
     testImplementation("io.mockk:mockk:1.13.14")

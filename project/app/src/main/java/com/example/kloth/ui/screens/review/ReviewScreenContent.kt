@@ -33,6 +33,8 @@ import com.example.kloth.data.local.ReviewData
 import com.example.kloth.ui.screens.review.components.CommentInputField
 import com.example.kloth.ui.screens.review.components.CommentItem
 import com.example.kloth.ui.screens.review.components.MainReviewItem
+import com.example.kloth.ui.utils.TranslationContentIds
+import com.example.kloth.ui.utils.TranslationTextState
 
 @Composable
 fun ReviewScreenContent(
@@ -41,6 +43,9 @@ fun ReviewScreenContent(
     isDeletingReview: Boolean = false,
     deleteReviewError: String? = null,
     currentUserImageUrl: String?,
+    translationStates: Map<String, TranslationTextState> = emptyMap(),
+    onTranslate: (String, String) -> Unit = { _, _ -> },
+    onShowOriginal: (String) -> Unit = {},
     nuevoComentarioTexto: String,
     ordenMasRecientes: Boolean,
     yaComento: Boolean,
@@ -99,7 +104,11 @@ fun ReviewScreenContent(
                     onAuthorClick = onUserClick,
                     canDelete = isOwnReview,
                     isDeleting = isDeletingReview,
-                    onDeleteClick = { showDeleteConfirmation = true }
+                    onDeleteClick = { showDeleteConfirmation = true },
+                    translationState = translationStates[TranslationContentIds.review(resena.id)]
+                        ?: TranslationTextState(),
+                    onTranslate = { onTranslate(TranslationContentIds.review(resena.id), resena.reviewText) },
+                    onShowOriginal = { onShowOriginal(TranslationContentIds.review(resena.id)) }
                 )
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
             }
@@ -141,6 +150,18 @@ fun ReviewScreenContent(
             items(resena.comentariosList, key = { it.id }) { comentario ->
                 CommentItem(
                     comentario = comentario,
+                    translationState = translationStates[
+                        TranslationContentIds.comment(resena.id, comentario.id)
+                    ] ?: TranslationTextState(),
+                    onTranslate = {
+                        onTranslate(
+                            TranslationContentIds.comment(resena.id, comentario.id),
+                            comentario.commentText
+                        )
+                    },
+                    onShowOriginal = {
+                        onShowOriginal(TranslationContentIds.comment(resena.id, comentario.id))
+                    },
                     onLikeClick = { onLikeComentario(comentario.id) },
                     onDeleteClick = { onEliminarComentario(comentario.id) },
                     onAuthorClick = onUserClick

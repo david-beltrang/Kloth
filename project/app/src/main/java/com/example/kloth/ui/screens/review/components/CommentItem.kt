@@ -32,6 +32,8 @@ import com.example.kloth.R
 import com.example.kloth.data.local.ComentarioReviewData
 import com.example.kloth.data.local.ComentariosDataLocal
 import com.example.kloth.ui.theme.KlothTheme
+import com.example.kloth.ui.utils.TranslatableText
+import com.example.kloth.ui.utils.TranslationTextState
 import coil.compose.AsyncImage
 
 @Composable
@@ -39,6 +41,9 @@ fun CommentItem(
     comentario: ComentarioReviewData,
     onLikeClick: () -> Unit,
     onDeleteClick: () -> Unit,
+    translationState: TranslationTextState = TranslationTextState(),
+    onTranslate: () -> Unit = {},
+    onShowOriginal: () -> Unit = {},
     onAuthorClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
@@ -78,10 +83,12 @@ fun CommentItem(
                 )
             }
 
-            Text(
-                text = comentario.commentText,
-                fontSize = 13.sp,
-                lineHeight = 18.sp,
+            TranslatableText(
+                originalText = comentario.commentText,
+                state = translationState,
+                onTranslate = onTranslate,
+                onShowOriginal = onShowOriginal,
+                style = MaterialTheme.typography.bodySmall.copy(fontSize = 13.sp, lineHeight = 18.sp),
                 color = MaterialTheme.colorScheme.onBackground,
                 modifier = Modifier
                     .padding(top = 4.dp, bottom = 6.dp)

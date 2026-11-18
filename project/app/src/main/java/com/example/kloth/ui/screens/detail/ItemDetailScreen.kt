@@ -112,6 +112,9 @@ fun ItemDetailScreen(
         onLikeReviewClick = { reviewId -> detailViewModel.toggleReviewLike(reviewId) },
         onCommentReviewClick = onReviewClick,
         onAuthorClick = onUserClick,
+        translationStates = state.translationStates,
+        onTranslate = detailViewModel::onTranslate,
+        onShowOriginal = detailViewModel::onShowOriginal,
         onTryOnClick = {
             tryOnViewModel.openDialog(product.id, product.imageUrl)
         },

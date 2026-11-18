@@ -7,6 +7,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.kloth.ui.theme.KlothTheme
+import com.example.kloth.ui.utils.TranslationTextState
 
 @Composable
 fun GeneralInfoSection(
@@ -17,6 +18,9 @@ fun GeneralInfoSection(
     colorName: String,
     categoryName: String,
     description: String,
+    descriptionTranslation: TranslationTextState = TranslationTextState(),
+    onTranslateDescription: () -> Unit = {},
+    onShowOriginalDescription: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -44,7 +48,10 @@ fun GeneralInfoSection(
         Spacer(modifier = Modifier.height(20.dp))
 
         ProductDescription(
-            descriptionText = description
+            descriptionText = description,
+            translationState = descriptionTranslation,
+            onTranslate = onTranslateDescription,
+            onShowOriginal = onShowOriginalDescription
         )
     }
 }

@@ -40,6 +40,8 @@ import com.example.kloth.R
 import com.example.kloth.data.local.ReviewData
 import com.example.kloth.ui.theme.GoldStar
 import com.example.kloth.ui.theme.KlothTheme
+import com.example.kloth.ui.utils.TranslatableText
+import com.example.kloth.ui.utils.TranslationTextState
 
 @Composable
 fun MainReviewItem(
@@ -50,6 +52,9 @@ fun MainReviewItem(
     canDelete: Boolean = false,
     isDeleting: Boolean = false,
     onDeleteClick: () -> Unit = {},
+    translationState: TranslationTextState = TranslationTextState(),
+    onTranslate: () -> Unit = {},
+    onShowOriginal: () -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -125,10 +130,12 @@ fun MainReviewItem(
             }
         }
 
-        Text(
-            text = resena.reviewText,
-            fontSize = 14.sp,
-            lineHeight = 20.sp,
+        TranslatableText(
+            originalText = resena.reviewText,
+            state = translationState,
+            onTranslate = onTranslate,
+            onShowOriginal = onShowOriginal,
+            style = MaterialTheme.typography.bodyMedium.copy(fontSize = 14.sp, lineHeight = 20.sp),
             color = MaterialTheme.colorScheme.onBackground,
             modifier = Modifier
                 .padding(start = 12.dp, top = 8.dp, end = 12.dp, bottom = 8.dp)
