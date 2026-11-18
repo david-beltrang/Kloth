@@ -16,7 +16,15 @@ const MAX_TRY_ON_OUTPUT_BYTES = 30 * 1024 * 1024;
 // Inicializa Firebase Admin para que las funciones puedan consultar y escribir en Firestore.
 
 // Centraliza la persistencia de los eventos que aparecen en la pantalla de notificaciones.
-// Usa el ID del evento como ID del documento para evitar duplicados si Firebase reintenta la funcion.
+//
+// ID del documento:
+//   - Acciones repetibles (LIKE, NUEVO_SEGUIDOR): ID determinístico "{actorId}_{type}_{target}"
+//     para que quitar y volver a dar like sobreescriba el mismo documento en lugar de crear uno nuevo.
+//   - Acciones únicas (COMENTARIO, NUEVA_RESENA): event.id del trigger, que ya es único por definición.
+//
+// En el caso LIKE/SEGUIDOR se usa set() en lugar de create() para actualizar createdAt e isRead
+// si el usuario repite la acción. En los demás casos se mantiene create() para idempotencia ante
+// reintentos de Firebase.
 async function saveUserNotification({ event, recipientId, actorId, type, reviewId = null, thumbnailUrl = null, actorName = null, actorImageUrl = null }) {
   // Ignora eventos incompletos y acciones propias para no notificar al mismo usuario.
   if (!recipientId || !actorId || recipientId === actorId) return null;
@@ -25,30 +33,47 @@ async function saveUserNotification({ event, recipientId, actorId, type, reviewI
   const actorSnapshot = await db.collection("users").doc(actorId).get();
   const actor = actorSnapshot.exists ? actorSnapshot.data() : {};
 
-  // Todas las notificaciones se guardan bajo el perfil de su destinatario.
-  const notificationRef = db.collection("users").doc(recipientId)
-    .collection("notifications").doc(event.id);
+  const resolvedActorName = actorName || actor.username || actor.email?.split("@")[0] || "Usuario";
+  const resolvedActorImageUrl = actorImageUrl || actor.imageURL || null;
 
-  try {
-    // La hora del servidor permite ordenar los eventos y mostrar su antiguedad correctamente.
-    await notificationRef.create({
-      actorId,
-      actorName: actorName || actor.username || actor.email?.split("@")[0] || "Usuario",
-      actorImageUrl: actorImageUrl || actor.imageURL || null,
-      type,
-      reviewId,
-      thumbnailUrl,
-      createdAt: admin.firestore.FieldValue.serverTimestamp(),
-      isRead: false,
-    });
-  } catch (error) {
-    // Si el documento ya existe, este evento ya fue procesado y el reintento no debe duplicarlo.
-    if (error.code !== 6 && error.code !== "already-exists") throw error;
-    logger.debug("NotificaciÃ³n ya guardada para este evento", { notificationId: event.id });
+  // Todas las notificaciones se guardan bajo el perfil de su destinatario.
+  const notificationsCol = db.collection("users").doc(recipientId).collection("notifications");
+
+  // Acciones repetibles usan un ID fijo para que la segunda acción sobreescriba la primera
+  // en lugar de acumular documentos idénticos.
+  const isRepeatable = type === "LIKE" || type === "NUEVO_SEGUIDOR";
+  const targetKey = reviewId || recipientId; // para LIKE es la review, para SEGUIDOR es el destinatario
+  const docId = isRepeatable ? `${actorId}_${type}_${targetKey}` : event.id;
+  const notificationRef = notificationsCol.doc(docId);
+
+  const payload = {
+    actorId,
+    actorName: resolvedActorName,
+    actorImageUrl: resolvedActorImageUrl,
+    type,
+    reviewId,
+    thumbnailUrl,
+    createdAt: admin.firestore.FieldValue.serverTimestamp(),
+    isRead: false,
+  };
+
+  if (isRepeatable) {
+    // set() crea o sobreescribe: si Juan quita y vuelve a dar like aparece una sola notificación
+    // con la fecha actualizada y sin leer.
+    await notificationRef.set(payload);
+  } else {
+    try {
+      // create() es idempotente ante reintentos de Firebase: si el documento ya existe
+      // (mismo event.id) el error "already-exists" se absorbe silenciosamente.
+      await notificationRef.create(payload);
+    } catch (error) {
+      if (error.code !== 6 && error.code !== "already-exists") throw error;
+      logger.debug("Notificación ya guardada para este evento", { notificationId: event.id });
+    }
   }
 
-  // Devuelve el nombre que tambien se utiliza en el texto del push.
-  return { actorName: actorName || actor.username || actor.email?.split("@")[0] || "Usuario" };
+  // Devuelve el nombre que también se utiliza en el texto del push.
+  return { actorName: resolvedActorName };
 }
 
 // Crea una notificacion persistente y un push cuando se agrega un like a una reseña.
