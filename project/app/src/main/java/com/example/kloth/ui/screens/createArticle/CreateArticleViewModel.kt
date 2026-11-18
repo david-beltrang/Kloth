@@ -49,6 +49,10 @@ class CreateArticleViewModel @Inject constructor(
         _uiState.update { it.copy(color = color) }
     }
 
+    fun onCategoriaChanged(categoria: String) {
+        _uiState.update { it.copy(categoria = categoria) }
+    }
+
     fun onPrecioChanged(precio: String) {
         _uiState.update { it.copy(precio = precio) }
     }
@@ -107,7 +111,9 @@ class CreateArticleViewModel @Inject constructor(
     fun publishArticle(onSuccess: () -> Unit) {
         val state = _uiState.value
         val uid = authRepository.currentUser?.uid ?: return
-        if (state.nombre.isBlank() || state.isPublishing) return
+        if (state.nombre.isBlank() || state.isPublishing ||
+            (state.selectedType == ArticleType.PRENDA && state.categoria.isBlank())
+        ) return
 
         val isPrenda = state.selectedType == ArticleType.PRENDA
         val isOutfit = state.selectedType == ArticleType.OUTFIT
@@ -149,7 +155,8 @@ class CreateArticleViewModel @Inject constructor(
                 organizer = state.organizador.takeIf { isEvento && it.isNotBlank() },
                 website = state.sitioWeb.trim().takeIf { isMarca && it.isNotBlank() },
                 originCountry = state.paisOrigen.trim().takeIf { isMarca && it.isNotBlank() },
-                foundedAt = if (isMarca) state.anioFundacion.toIntOrNull() else null
+                foundedAt = if (isMarca) state.anioFundacion.toIntOrNull() else null,
+                category = state.categoria.takeIf { isPrenda && it.isNotBlank() }
             )
 
             val result = articleRepository.createArticle(dto)

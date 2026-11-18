@@ -31,6 +31,7 @@ fun EditArticleScreenContent(
     onMarcaChange: (String) -> Unit,
     onColorChange: (String) -> Unit,
     onPrecioChange: (String) -> Unit,
+    onCategoriaChange: (String) -> Unit,
     onEstiloChange: (String) -> Unit,
     onCiudadChange: (String) -> Unit,
     onPaisChange: (String) -> Unit,
@@ -65,7 +66,7 @@ fun EditArticleScreenContent(
                 ArticleType.EVENTO -> stringResource(R.string.type_evento)
                 ArticleType.MARCA -> stringResource(R.string.type_marca)
             }
-            CategoryChip(text = typeName, isSelected = true, onClick = {})
+            CategoryChip(text = typeName, isSelected = true, onClick = {}, horizontalPadding = 12.dp)
         }
 
         // 2. Foto principal con la X para cambiarla
@@ -86,6 +87,8 @@ fun EditArticleScreenContent(
             onMarcaChange = onMarcaChange,
             color = uiState.color,
             onColorChange = onColorChange,
+            categoria = uiState.categoria,
+            onCategoriaChange = onCategoriaChange,
             precio = uiState.precio,
             onPrecioChange = onPrecioChange,
             estilo = uiState.estilo,
@@ -104,7 +107,8 @@ fun EditArticleScreenContent(
             onAnioFundacionChange = onAnioFundacionChange,
             onPublicarClick = onSaveClick,
             buttonTextRes = R.string.btn_guardar_cambios,
-            buttonEnabled = !uiState.isSaving
+            buttonEnabled = !uiState.isSaving &&
+                (uiState.type != ArticleType.PRENDA || uiState.categoria.isNotBlank())
         )
     }
 }

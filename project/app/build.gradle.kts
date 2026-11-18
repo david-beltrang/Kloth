@@ -8,6 +8,10 @@ plugins {
     alias(libs.plugins.firebase.crashlytics) 
 }
 
+val useFirebaseEmulators = providers.gradleProperty("useFirebaseEmulators")
+    .map { it.toBooleanStrictOrNull() ?: error("useFirebaseEmulators must be true or false") }
+    .orElse(false)
+
 android {
     namespace = "com.example.kloth"
     compileSdk = 37
@@ -20,6 +24,7 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "com.example.kloth.HiltTestRunner"
+        buildConfigField("boolean", "USE_FIREBASE_EMULATORS", useFirebaseEmulators.get().toString())
     }
 
     buildTypes {
@@ -92,8 +97,8 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.auth)
-    implementation(libs.firebase.functions)
     implementation(libs.firebase.storage)
+    implementation(libs.firebase.functions)
     implementation(libs.firebase.crashlytics)
     implementation(libs.firebase.analytics)
 

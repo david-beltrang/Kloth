@@ -49,7 +49,7 @@ fun ExploreScreenDarkPreview() {
 fun ExploreSearchBarPreview() {
     KlothTheme {
         Box(modifier = Modifier.padding(16.dp)) {
-            SearchBar()
+            SearchBar(query = "chaqueta", onQueryChange = {}, onClear = {})
         }
     }
 }

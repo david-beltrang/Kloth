@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseAuthInvalidUserException
 import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.FirebaseAuthWeakPasswordException
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.functions.FirebaseFunctionsException
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 
@@ -65,9 +66,39 @@ class AuthRepository @Inject constructor(
         }
     }
 
+    suspend fun requestPasswordResetCode(email: String): Result<Unit> = try {
+        authRemoteDataSource.requestPasswordResetCode(email)
+        Result.success(Unit)
+    } catch (e: FirebaseFunctionsException) {
+        Result.failure(Exception(requestCodeErrorMessage(e)))
+    } catch (e: Exception) {
+        Result.failure(Exception(context.getString(R.string.auth_error_generic)))
+    }
 
-    //suspend fun forgotPassword(email: String){
-    //    authRemoteDataSource.forgotPassword(email)
-    //}
+    suspend fun resetPasswordWithCode(email: String, code: String, newPassword: String): Result<Unit> = try {
+        authRemoteDataSource.resetPasswordWithCode(email, code, newPassword)
+        Result.success(Unit)
+    } catch (e: FirebaseFunctionsException) {
+        Result.failure(Exception(functionsErrorMessage(e)))
+    } catch (e: Exception) {
+        Result.failure(Exception(context.getString(R.string.auth_error_generic)))
+    }
+
+    private fun functionsErrorMessage(exception: FirebaseFunctionsException): String = when (exception.code) {
+        FirebaseFunctionsException.Code.INVALID_ARGUMENT -> context.getString(R.string.auth_error_invalid_reset_code)
+        FirebaseFunctionsException.Code.NOT_FOUND -> context.getString(R.string.auth_error_invalid_reset_code)
+        FirebaseFunctionsException.Code.RESOURCE_EXHAUSTED -> context.getString(R.string.auth_error_reset_wait)
+        FirebaseFunctionsException.Code.UNAVAILABLE,
+        FirebaseFunctionsException.Code.DEADLINE_EXCEEDED -> context.getString(R.string.auth_error_connection)
+        else -> context.getString(R.string.auth_error_generic)
+    }
+
+    private fun requestCodeErrorMessage(exception: FirebaseFunctionsException): String = when (exception.code) {
+        FirebaseFunctionsException.Code.INVALID_ARGUMENT -> context.getString(R.string.auth_error_invalid_email)
+        FirebaseFunctionsException.Code.RESOURCE_EXHAUSTED -> context.getString(R.string.auth_error_reset_wait)
+        FirebaseFunctionsException.Code.UNAVAILABLE,
+        FirebaseFunctionsException.Code.DEADLINE_EXCEEDED -> context.getString(R.string.auth_error_connection)
+        else -> context.getString(R.string.auth_error_generic)
+    }
 }
 
