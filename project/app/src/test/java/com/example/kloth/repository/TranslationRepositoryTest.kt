@@ -40,6 +40,23 @@ class TranslationRepositoryTest {
     }
 
     @Test
+    fun translate_usesUpdatedTextInsteadOfCachedTranslationForSameContent() = runTest {
+        val source = FakeTranslationDataSource(sourceLanguage = "en")
+        val repository = TranslationRepository(source)
+
+        assertEquals(
+            TranslationOutcome.Translated("es:First version"),
+            repository.translate("review-1", "First version", "es")
+        )
+        assertEquals(
+            TranslationOutcome.Translated("es:Edited version"),
+            repository.translate("review-1", "Edited version", "es")
+        )
+
+        assertEquals(listOf("First version", "Edited version"), source.translatedTexts)
+    }
+
+    @Test
     fun canTranslate_isFalseWhenTextAlreadyMatchesTargetOrIsUndetermined() = runTest {
         val englishSource = FakeTranslationDataSource(sourceLanguage = "en")
         val englishRepository = TranslationRepository(englishSource)
@@ -55,12 +72,14 @@ class TranslationRepositoryTest {
         private val sourceLanguage: String
     ) : TranslationRemoteDataSource {
         val translationCalls = mutableListOf<String>()
+        val translatedTexts = mutableListOf<String>()
 
         override suspend fun identifyLanguage(text: String): String = sourceLanguage
 
         override suspend fun translate(text: String, sourceLanguage: String, targetLanguage: String): String {
             translationCalls += "$sourceLanguage->$targetLanguage"
-            return "$targetLanguage:Hola"
+            translatedTexts += text
+            return "$targetLanguage:$text"
         }
     }
 }
