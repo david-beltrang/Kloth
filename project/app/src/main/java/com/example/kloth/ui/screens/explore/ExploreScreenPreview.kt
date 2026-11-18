@@ -1,10 +1,6 @@
 package com.example.kloth.ui.screens.explore
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.KeyboardArrowDown
-import androidx.compose.material.icons.outlined.Tune
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -14,10 +10,8 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.kloth.R
 import com.example.kloth.ui.screens.detail.components.ProductCatalogCard
 import com.example.kloth.ui.screens.explore.components.CategoryChip
-import com.example.kloth.ui.screens.explore.components.FilterChip
 import com.example.kloth.ui.screens.explore.components.SearchBar
 import com.example.kloth.ui.theme.KlothTheme
-import com.example.kloth.ui.utils.KlothBottomNavigation
 
 @Preview(
     name = "Explore Screen - Light",
@@ -71,38 +65,6 @@ fun ExploreCategoryChipsPreview() {
                 text = stringResource(R.string.category_outfits),
                 isSelected = false,
                 onClick = {}
-            )
-        }
-    }
-}
-
-@Preview(name = "Explore Components - Filter Chips", showBackground = true)
-@Composable
-fun ExploreFilterChipsPreview() {
-    KlothTheme {
-        Column(
-            modifier = Modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
-        ) {
-            FilterChip(
-                text = stringResource(R.string.filter_tune),
-                leadingIcon = {
-                    Icon(
-                        imageVector = Icons.Outlined.Tune,
-                        contentDescription = null,
-                        modifier = Modifier.size(18.dp)
-                    )
-                }
-            )
-            FilterChip(
-                text = stringResource(R.string.filter_price),
-                trailingIcon = {
-                    Icon(
-                        imageVector = Icons.Outlined.KeyboardArrowDown,
-                        contentDescription = null,
-                        modifier = Modifier.size(16.dp)
-                    )
-                }
             )
         }
     }

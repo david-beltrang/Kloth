@@ -2,6 +2,7 @@ package com.example.kloth.ui.screens.notification.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -33,6 +34,7 @@ import com.example.kloth.ui.theme.KlothTheme
 fun NotificationItem(
     notificacion: NotificacionUI,
     onToggleSeguir: (String) -> Unit,
+    onNotificationClick: (String) -> Unit = {},
     modifier: Modifier = Modifier
 ) {
     val description = stringResource(
@@ -43,10 +45,20 @@ fun NotificationItem(
             TipoNotificacion.LIKE -> com.example.kloth.R.string.notification_liked_review
         }
     )
+
+    // El fondo se tiñe levemente si la notificación no fue leída.
+    val background = if (notificacion.noLeida)
+        MaterialTheme.colorScheme.surfaceContainerLow
+    else
+        MaterialTheme.colorScheme.background
+
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .padding(horizontal = 20.dp),
+            .background(background)
+            // Al tocar la fila se marca como leída.
+            .clickable { onNotificationClick(notificacion.id) }
+            .padding(horizontal = 20.dp, vertical = 8.dp),
         verticalAlignment = Alignment.Top,
         horizontalArrangement = Arrangement.spacedBy(12.dp)
     ) {

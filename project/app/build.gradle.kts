@@ -90,7 +90,7 @@ dependencies {
     implementation("androidx.compose.runtime:runtime-livedata:1.8.3")
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-    debugImplementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.ui.tooling)
 
     //Hilt
     implementation(libs.dagger.hilt)

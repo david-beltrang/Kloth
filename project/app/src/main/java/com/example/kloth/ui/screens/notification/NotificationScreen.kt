@@ -22,6 +22,7 @@ fun NotificationScreen(
         errorMessage = state.errorMessage,
 
         // Métodos del ViewModel para manejar el estado
+        onNotificationClick = { notificationViewModel.onNotificationClick(it) },
         onToggleSeguir = { notificationViewModel.onToggleSeguir(it) },
         onRetry = { notificationViewModel.loadNotifications() },
 

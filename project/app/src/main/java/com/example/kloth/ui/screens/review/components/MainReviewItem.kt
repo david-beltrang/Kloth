@@ -1,7 +1,6 @@
 package com.example.kloth.ui.screens.review.components
 
 import android.content.res.Configuration
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +16,6 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.outlined.Delete
-import androidx.compose.material.icons.outlined.ModeComment
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.CircularProgressIndicator
@@ -29,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImage
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -106,19 +103,6 @@ fun MainReviewItem(
             }
 
             Row(horizontalArrangement = Arrangement.spacedBy(2.dp)) {
-                if (canDelete) {
-                    if (isDeleting) {
-                        CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
-                    } else {
-                        IconButton(onClick = onDeleteClick) {
-                            Icon(
-                                imageVector = Icons.Outlined.Delete,
-                                contentDescription = stringResource(R.string.cd_delete_review),
-                                tint = MaterialTheme.colorScheme.error
-                            )
-                        }
-                    }
-                }
                 repeat(5) { index ->
                     Icon(
                         imageVector = Icons.Default.Star,
@@ -144,7 +128,7 @@ fun MainReviewItem(
 
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(20.dp),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
             modifier = Modifier.padding(start = 12.dp)
         ) {
             Row(
@@ -165,21 +149,18 @@ fun MainReviewItem(
                 )
             }
 
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
-            ) {
-                Icon(
-                    imageVector = Icons.Outlined.ModeComment,
-                    contentDescription = null,
-                    modifier = Modifier.size(20.dp),
-                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-                Text(
-                    text = "${resena.comentariosList.size}",
-                    fontSize = 14.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+            if (canDelete) {
+                if (isDeleting) {
+                    CircularProgressIndicator(modifier = Modifier.size(20.dp), strokeWidth = 2.dp)
+                } else {
+                    IconButton(onClick = onDeleteClick, modifier = Modifier.size(24.dp)) {
+                        Icon(
+                            imageVector = Icons.Outlined.Delete,
+                            contentDescription = stringResource(R.string.cd_delete_review),
+                            tint = MaterialTheme.colorScheme.error
+                        )
+                    }
+                }
             }
         }
     }
@@ -200,7 +181,8 @@ fun MainReviewItemPreview() {
                 reviewText = "Muy buena calidad, la recomiendo."
             ),
             onLikeClick = {},
-            onBackClick = {}
+            onBackClick = {},
+            canDelete = true
         )
     }
 }

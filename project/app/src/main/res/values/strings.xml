@@ -266,7 +266,7 @@
     <string name="follow_list_back">Volver</string>
 
     <!-- Mock Data -->
-    <string name="mock_description" formatted="false">Una pieza maestra de sastrería contemporánea. Este abrigo ha sido confeccionado con 100% cachemira italiana de origen sostenible, ofreciendo una caída impecable y una suavidad inigualable.</string>
+    <string name="mock_description">Una pieza maestra de sastrería contemporánea. Este abrigo ha sido confeccionado con 100% cachemira italiana de origen sostenible, ofreciendo una caída impecable y una suavidad inigualable.</string>
     <string name="mock_price">$280.000 COP</string>
 
     <!-- Edit Profile Screen -->

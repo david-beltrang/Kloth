@@ -13,16 +13,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.KeyboardArrowDown
 import androidx.compose.material.icons.outlined.Map
-import androidx.compose.material.icons.outlined.Tune
 import androidx.compose.material3.FilledTonalIconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.Icon
@@ -38,7 +35,6 @@ import com.example.kloth.R
 import com.example.kloth.data.local.PostItem
 import com.example.kloth.ui.screens.detail.components.ProductCatalogCard
 import com.example.kloth.ui.screens.explore.components.CategoryChip
-import com.example.kloth.ui.screens.explore.components.FilterChip
 import com.example.kloth.ui.screens.explore.components.SearchBar
 
 @Composable
@@ -130,61 +126,7 @@ fun ExploreScreenContent(
                         )
                     }
                 }
-
                 Spacer(modifier = Modifier.height(16.dp))
-
-                LazyRow(
-                    horizontalArrangement = Arrangement.spacedBy(12.dp),
-                    verticalAlignment = Alignment.CenterVertically,
-                    contentPadding = PaddingValues(end = 16.dp)
-                ) {
-                    item {
-                        FilterChip(
-                            text = stringResource(R.string.filter_tune),
-                            leadingIcon = {
-                                Icon(
-                                    imageVector = Icons.Outlined.Tune,
-                                    contentDescription = null,
-                                    modifier = Modifier.size(18.dp),
-                                    tint = MaterialTheme.colorScheme.onSurfaceVariant
-                                )
-                            }
-                        )
-                    }
-                    item {
-                        Box(
-                            modifier = Modifier
-                                .width(1.dp)
-                                .height(24.dp)
-                                .background(MaterialTheme.colorScheme.outlineVariant)
-                        )
-                    }
-                    item {
-                        FilterChip(
-                            text = stringResource(R.string.filter_price),
-                            trailingIcon = {
-                                ExpandIcon()
-                            }
-                        )
-                    }
-                    item {
-                        FilterChip(
-                            text = stringResource(R.string.filter_color),
-                            trailingIcon = {
-                                ExpandIcon()
-                            }
-                        )
-                    }
-                    item {
-                        FilterChip(
-                            text = stringResource(R.string.filter_size),
-                            trailingIcon = {
-                                ExpandIcon()
-                            }
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(24.dp))
             }
         }
 
@@ -210,16 +152,4 @@ fun ExploreScreenContent(
             )
         }
     }
-}
-
-@Composable
-private fun ExpandIcon(
-    modifier: Modifier = Modifier
-) {
-    Icon(
-        imageVector = Icons.Outlined.KeyboardArrowDown,
-        contentDescription = null,
-        modifier = modifier.size(16.dp),
-        tint = MaterialTheme.colorScheme.onSurfaceVariant
-    )
 }
