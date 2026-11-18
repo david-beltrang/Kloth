@@ -1,7 +1,6 @@
 package com.example.kloth.ui.screens.notification
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -27,6 +26,8 @@ import com.example.kloth.ui.screens.notification.components.NotificationItem
 fun NotificationScreenContent(
     notificaciones: List<NotificacionUI>,
     onToggleSeguir: (String) -> Unit,
+    // Callback invocado al tocar una fila; marca esa notificación como leída.
+    onNotificationClick: (String) -> Unit = {},
     isLoading: Boolean = false,
     errorMessage: String? = null,
     onRetry: () -> Unit = {},
@@ -41,7 +42,9 @@ fun NotificationScreenContent(
             CircularProgressIndicator()
         }
         errorMessage != null && notificaciones.isEmpty() -> Box(
-            modifier = modifier.fillMaxSize().padding(horizontal = 24.dp),
+            modifier = modifier
+                .fillMaxSize()
+                .padding(horizontal = 24.dp),
             contentAlignment = Alignment.Center
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
@@ -54,7 +57,9 @@ fun NotificationScreenContent(
             }
         }
         notificaciones.isEmpty() -> Box(
-            modifier = modifier.fillMaxSize().padding(horizontal = 24.dp),
+            modifier = modifier
+                .fillMaxSize()
+                .padding(horizontal = 24.dp),
             contentAlignment = Alignment.Center
         ) {
             Text(
@@ -65,10 +70,9 @@ fun NotificationScreenContent(
         }
         else -> LazyColumn(
             contentPadding = PaddingValues(
-                top = contentPadding.calculateTopPadding() + 16.dp,
+                top = contentPadding.calculateTopPadding() + 8.dp,
                 bottom = contentPadding.calculateBottomPadding() + 24.dp
             ),
-            verticalArrangement = Arrangement.spacedBy(20.dp),
             modifier = modifier
                 .fillMaxSize()
                 .background(MaterialTheme.colorScheme.background)
@@ -76,7 +80,8 @@ fun NotificationScreenContent(
             items(notificaciones, key = { it.id }) { notificacion ->
                 NotificationItem(
                     notificacion = notificacion,
-                    onToggleSeguir = onToggleSeguir
+                    onToggleSeguir = onToggleSeguir,
+                    onNotificationClick = onNotificationClick
                 )
             }
         }

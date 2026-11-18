@@ -91,6 +91,27 @@ class NotificationViewModel @Inject constructor(
         }
     }
 
+    fun onNotificationClick(notificationId: String) {
+        val userId = authRepository.currentUser?.uid ?: return
+        // Solo actuar si la notificación está realmente sin leer para evitar escrituras innecesarias.
+        val isUnread = _uiState.value.notificaciones.firstOrNull { it.id == notificationId }?.noLeida ?: return
+        if (!isUnread) return
+
+        // Actualización optimista: el punto desaparece de inmediato sin esperar a Firestore.
+        _uiState.update { state ->
+            state.copy(
+                notificaciones = state.notificaciones.map {
+                    if (it.id == notificationId) it.copy(noLeida = false) else it
+                }
+            )
+        }
+        viewModelScope.launch {
+            runCatching {
+                notificationRepository.markNotificationsRead(userId, listOf(notificationId))
+            }
+        }
+    }
+
     fun onToggleSeguir(notificationId: String) {
         val userId = authRepository.currentUser?.uid ?: return
         val notification = _uiState.value.notificaciones.firstOrNull { it.id == notificationId } ?: return
