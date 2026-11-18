@@ -59,6 +59,12 @@ class UserFirestoreDataSourceImpl @Inject constructor(private val db: FirebaseFi
             .await()
     }
 
+    override suspend fun updateLanguageTag(userId: String, languageTag: String) {
+        db.collection("users").document(userId)
+            .set(mapOf("languageTag" to languageTag), SetOptions.merge())
+            .await()
+    }
+
     override suspend fun updateProfile(
         userId: String,
         username: String,

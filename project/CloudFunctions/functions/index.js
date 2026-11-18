@@ -177,11 +177,18 @@ async function saveUserNotification({ event, recipientId, actorId, type, reviewI
   } catch (error) {
     // Si el documento ya existe, este evento ya fue procesado y el reintento no debe duplicarlo.
     if (error.code !== 6 && error.code !== "already-exists") throw error;
-    logger.debug("NotificaciÃ³n ya guardada para este evento", { notificationId: event.id });
+    logger.debug("Notificación ya guardada para este evento", { notificationId: event.id });
   }
 
   // Devuelve el nombre que tambien se utiliza en el texto del push.
-  return { actorName: actorName || actor.username || actor.email?.split("@")[0] || "Usuario" };
+  const recipientSnapshot = await db.collection("users").doc(recipientId).get();
+  const recipient = recipientSnapshot.exists ? recipientSnapshot.data() : {};
+  const language = recipient.languageTag?.toLowerCase().startsWith("en") ? "en" : "es";
+  return {
+    actorName: actorName || actor.username || actor.email?.split("@")[0] || "Usuario",
+    recipient,
+    language,
+  };
 }
 
 // Crea una notificacion persistente y un push cuando se agrega un like a una reseña.
@@ -215,8 +222,7 @@ exports.sendReviewLikeNotification = onDocumentCreated(
     if (!notification) return;
 
     // El token puede faltar si el usuario no tiene un dispositivo registrado para FCM.
-    const recipientSnapshot = await db.collection("users").doc(recipientId).get();
-    const recipient = recipientSnapshot.exists ? recipientSnapshot.data() : {};
+    const { recipient } = notification;
     const token = recipient.fcmToken || recipient.FCMToken;
     if (!token) return;
 
@@ -225,8 +231,7 @@ exports.sendReviewLikeNotification = onDocumentCreated(
       await admin.messaging().send({
         token,
         notification: {
-          title: "Nuevo me gusta",
-          body: `${notification.actorName} indicÃ³ que le gusta tu reseÃ±a.`,
+          body: notification.language === "en" ? `${notification.actorName} liked your review.` : `${notification.actorName} indicó que le gusta tu reseña.`,
         },
         data: { type: "LIKE", reviewId },
       });

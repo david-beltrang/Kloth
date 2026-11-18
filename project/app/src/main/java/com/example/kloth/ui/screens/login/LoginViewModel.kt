@@ -65,6 +65,10 @@ class LoginViewModel @Inject constructor(
                     _uiState.update { it.copy(navigate = true) }
                     runCatching {
                         val userId = authRepository.currentUser?.uid
+                        if (userId != null) {
+                            val languageTag = context.resources.configuration.locales[0].toLanguageTag()
+                            userRepository.updateLanguageTag(userId, languageTag)
+                        }
                         val token = FirebaseMessaging.getInstance().token.await()
                         if (userId != null) userRepository.updateFcmToken(userId, token)
                     }
