@@ -1,9 +1,14 @@
 package com.example.kloth.dto
 
+import android.text.format.DateUtils
 import com.example.kloth.data.dto.UserFirestoreDto
 import com.example.kloth.data.dto.formatPrice
+import java.util.Locale
 import com.example.kloth.data.dto.timeAgo
 import com.google.common.truth.Truth
+import io.mockk.every
+import io.mockk.mockkStatic
+import io.mockk.unmockkStatic
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import java.time.Instant
@@ -70,12 +75,27 @@ class MappersTest {
     }
 
     @Test
+    fun formatPrice_usesLocaleSeparatorsWithoutChangingCurrencySymbol() {
+        val formatted = formatPrice(1234.5, locale = Locale.GERMANY)
+
+        Truth.assertThat(formatted).isEqualTo("$1.234,5")
+    }
+
+    @Test
     fun timeAgo_recentTimestamp_returnsMinutesLabel() {
-        val createdAt = Instant.now().minus(5, ChronoUnit.MINUTES).toString()
+        mockkStatic(DateUtils::class)
+        try {
+            every {
+                DateUtils.getRelativeTimeSpanString(any<Long>(), any<Long>(), any<Long>())
+            } returns "Hace 5 min"
+            val createdAt = Instant.now().minus(5, ChronoUnit.MINUTES).toString()
 
-        val label = timeAgo(createdAt)
+            val label = timeAgo(createdAt)
 
-        Truth.assertThat(label).isEqualTo("Hace 5 min")
+            Truth.assertThat(label).isEqualTo("Hace 5 min")
+        } finally {
+            unmockkStatic(DateUtils::class)
+        }
     }
 }
 

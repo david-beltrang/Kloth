@@ -129,6 +129,7 @@ class TranslationViewModelTest {
         val resources = mockk<Resources>()
         val configuration = Configuration().apply { setLocale(Locale.forLanguageTag(language)) }
         every { context.resources } returns resources
+        every { context.getString(R.string.review_default_username) } returns "User"
         every { resources.configuration } returns configuration
         return context
     }

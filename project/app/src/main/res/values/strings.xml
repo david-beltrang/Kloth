@@ -16,7 +16,7 @@
     <string name="header_notifications">Notificaciones</string>
     <string name="badge_couture">COUTURE</string>
     <string name="badge_essentials">ESSENTIALS</string>
-    <string name="label_reviews">(%1$d reviews)</string>
+    <string name="label_reviews">(%1$d reseñas)</string>
     <plurals name="reviews_count">
         <item quantity="one">(%1$d reseña)</item>
         <item quantity="other">(%1$d reseñas)</item>
@@ -63,6 +63,16 @@
     <string name="profile_tab_posts">Publicaciones</string>
     <string name="profile_tab_rated">Artículos calificados</string>
     <string name="profile_edit">Editar perfil</string>
+    <string name="language_button_description">Cambiar idioma de la aplicación</string>
+    <string name="language_selector_title">Selecciona un idioma</string>
+    <string name="language_name_spanish" translatable="false">Español</string>
+    <string name="language_name_english" translatable="false">English</string>
+    <string name="language_name_portuguese" translatable="false">Português</string>
+    <string name="language_name_french" translatable="false">Français</string>
+    <string name="language_name_german" translatable="false">Deutsch</string>
+    <string name="language_name_italian" translatable="false">Italiano</string>
+    <string name="language_name_russian" translatable="false">Русский</string>
+    <string name="language_name_arabic" translatable="false">العربية</string>
     <string name="profile_followers">Seguidores</string>
     <string name="profile_following">Seguidos</string>
     <string name="profile_follow">Seguir</string>
@@ -180,7 +190,7 @@
     <string name="placeholder_color">Color principal</string>
     <string name="label_precio">Precio</string>
     <string name="placeholder_precio">0.00</string>
-    <string name="currency_symbol">€</string>
+    <string name="currency_symbol">$</string>
     <string name="label_estilo">Estilo</string>
     <string name="placeholder_estilo">Seleccionar estilo</string>
     <string-array name="outfit_styles">
@@ -288,7 +298,7 @@
     <string name="cd_hero_image">Imagen principal del producto</string>
     <string name="cd_remove_favorite">Quitar de favoritos</string>
     <string name="cd_add_favorite">Añadir a favoritos</string>
-    <string name="cd_likes">Likes</string>
+    <string name="cd_likes">Me gusta</string>
     <string name="cd_comments">Comentarios</string>
     <string name="push_channel_name">Notificaciones de Kloth</string>
     <string name="cd_delete_review">Eliminar reseña</string>

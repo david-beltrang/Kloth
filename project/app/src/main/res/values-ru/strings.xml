@@ -1,0 +1,332 @@
+<resources>
+    <string name="app_name">KLOTH</string>
+    <string name="nav_home">Главная</string>
+    <string name="nav_explore">Обзор</string>
+    <string name="nav_create">Создать</string>
+    <string name="nav_alerts">Уведомления</string>
+    <string name="nav_profile">Профиль</string>
+    <string name="tab_following">Подписки</string>
+    <string name="tab_for_you">Для вас</string>
+    <string name="feed_follow_prompt">Follow people and find your style</string>
+    <string name="header_create">Создать</string>
+    <string name="header_notifications">Уведомления</string>
+    <string name="badge_couture">COUTURE</string>
+    <string name="badge_essentials">ESSENTIALS</string>
+    <string name="label_reviews">(%1$d reviews)</string>
+    <plurals name="reviews_count">
+        <item quantity="one">(%1$d review)</item>
+        <item quantity="few">(%1$d reviews)</item>
+        <item quantity="many">(%1$d reviews)</item>
+        <item quantity="other">(%1$d reviews)</item>
+    </plurals>
+    <string name="label_count_parentheses">(%1$s)</string>
+    <string name="text_prefix_space">%1$s </string>
+    <string name="content_desc_back">Back</string>
+    <string name="cd_back">Back</string>
+    <string name="content_desc_search">Search</string>
+    <string name="content_desc_notifications">Notifications</string>
+    <string name="content_desc_more">More options</string>
+    <string name="content_desc_favorite">Favorite</string>
+    <string name="cd_favorite">Favorite</string>
+    <string name="content_desc_comment">Comment</string>
+    <string name="cd_share">Share</string>
+    <string name="cd_product_image">Product image</string>
+    <string name="cd_user_image">User image</string>
+    <string name="title_explore">Обзор</string>
+    <string name="category_all">Все</string>
+    <string name="search_placeholder">Поиск вещей...</string>
+    <string name="search_clear">Очистить поиск</string>
+    <string name="explore_empty_results">Ничего не найдено</string>
+    <string name="category_prendas">Одежда</string>
+    <string name="category_outfits">Образы</string>
+    <string name="category_marcas">Бренды</string>
+    <string name="category_eventos">События</string>
+    <string name="filter_tune">Фильтры</string>
+    <string name="filter_price">Цена</string>
+    <string name="filter_color">Цвет</string>
+    <string name="filter_size">Размер</string>
+    <string name="product_abrigo">Black Lunar Coat</string>
+    <string name="product_gym">GymShark T-shirt</string>
+    <string name="product_barcelona">Barcelona Jersey</string>
+    <string name="product_bolso">Leather Bag</string>
+    <string name="title_profile">Профиль</string>
+    <string name="profile_tab_posts">Публикации</string>
+    <string name="profile_tab_rated">Оценённые товары</string>
+    <string name="profile_edit">Редактировать профиль</string>
+    <string name="language_button_description">Изменить язык приложения</string>
+    <string name="language_selector_title">Выберите язык</string>
+    <string name="profile_followers">Подписчики</string>
+    <string name="profile_following">Подписки</string>
+    <string name="profile_follow">Подписаться</string>
+    <string name="profile_unfollow">Отписаться</string>
+    <string name="profile_reviews">Отзывы</string>
+    <string name="profile_publications">Публикации</string>
+    <string name="profile_logout">Выйти</string>
+    <string name="profile_bio_empty">Добавьте описание профиля, чтобы другие узнали вас</string>
+    <string name="profile_location_empty">Добавьте местоположение</string>
+    <string name="profile_website_empty">Добавьте сайт</string>
+    <string name="mock_profile_name">Elena Vancouvé</string>
+    <string name="mock_profile_username">\@elenav_styling</string>
+    <string name="mock_profile_bio">Silhouette architect. A minimalist by nature, a fashion lover by choice.</string>
+    <string name="mock_profile_location">Paris, FR</string>
+    <string name="mock_profile_website">vancouve.studio</string>
+    <string name="cd_profile_photo">Profile photo</string>
+    <string name="detail_title">Информация о товаре</string>
+    <string name="detail_not_found_title">Товар не найден</string>
+    <string name="detail_not_found_desc">The item you are looking for is unavailable or has been removed.</string>
+    <string name="detail_not_found_back">Назад</string>
+    <string name="label_color">Цвет</string>
+    <string name="label_category">Категория</string>
+    <string name="label_description">Описание</string>
+    <string name="section_reviews">Оценки и отзывы</string>
+    <string name="btn_write_review">Написать отзыв</string>
+    <string name="splash_loading">Загрузка</string>
+    <string name="login_subtitle">Ваше сообщество моды</string>
+    <string name="login_email_placeholder">Электронная почта</string>
+    <string name="login_password_placeholder">Пароль</string>
+    <string name="login_button">Войти</string>
+    <string name="login_forgot_password">Забыли пароль?</string>
+    <string name="login_or">или</string>
+    <string name="login_no_account">Don’t have an account?</string>
+    <string name="login_create_account">Создать аккаунт</string>
+    <string name="cd_logo">Kloth logo</string>
+    <string name="cd_toggle_password">Show or hide password</string>
+    <string name="register_title">Создать аккаунт</string>
+    <string name="register_name_placeholder">Полное имя</string>
+    <string name="register_confirm_password_placeholder">Подтвердите пароль</string>
+    <string name="register_button">Зарегистрироваться</string>
+    <string name="register_has_account">Already have an account?</string>
+    <string name="register_login">Войти</string>
+    <string name="forgot_password_title">Забыли пароль?</string>
+    <string name="forgot_password_instruction">Enter your email address and we’ll send you recovery instructions.</string>
+    <string name="forgot_password_button">Отправить письмо</string>
+    <string name="forgot_password_back_login">Назад ко входу</string>
+    <string name="forgot_password_code_instruction">If the email is registered, we sent you a 6-digit code.</string>
+    <string name="forgot_password_code_title">Сбросить пароль</string>
+    <string name="forgot_password_code_placeholder">Код из 6 цифр</string>
+    <string name="forgot_password_new_password_placeholder">Новый пароль</string>
+    <string name="forgot_password_confirm_password_placeholder">Подтвердите новый пароль</string>
+    <string name="forgot_password_reset_button">Изменить пароль</string>
+    <string name="forgot_password_resend">Отправить код повторно</string>
+    <string name="forgot_password_resend_countdown">Resend code in %1$d s</string>
+    <string name="forgot_password_error_invalid_email">Enter a valid email address</string>
+    <string name="forgot_password_error_invalid_code">The code must have 6 digits</string>
+    <string name="forgot_password_error_password_mismatch">Passwords do not match</string>
+    <string name="forgot_password_request_success">If the email is registered, we sent you a code</string>
+    <string name="forgot_password_reset_success">Your password was reset successfully!</string>
+    <string name="type_marca">Бренд</string>
+    <string name="label_sitio_web">Website</string>
+    <string name="placeholder_sitio_web">https://www.example.com</string>
+    <string name="label_pais_origen">Country of origin</string>
+    <string name="placeholder_pais_origen">E.g. Italy</string>
+    <string name="label_anio_fundacion">Year founded</string>
+    <string name="placeholder_anio_fundacion">E.g. 1913</string>
+    <string name="create_article_title">Создать публикацию</string>
+    <string name="type_prenda">Одежда</string>
+    <string name="type_outfit">Образ</string>
+    <string name="type_evento">Событие</string>
+    <string name="add_photo_title">Добавить фото</string>
+    <string name="add_photo_subtitle">Нажмите, чтобы загрузить изображения</string>
+    <string name="label_nombre">Название</string>
+    <string name="placeholder_nombre">Название товара</string>
+    <string name="label_descripcion">Описание</string>
+    <string name="placeholder_descripcion">Describe this item...</string>
+    <string name="label_marca">Бренд</string>
+    <string name="placeholder_marca">Бренд или дизайнер</string>
+    <string name="label_categoria">Категория</string>
+    <string name="placeholder_categoria">Выберите категорию</string>
+    <string-array name="article_categories">
+        <item>Футболки</item>
+        <item>Рубашки и блузки</item>
+        <item>Топы и боди</item>
+        <item>Толстовки и худи</item>
+        <item>Свитеры и кардиганы</item>
+        <item>Куртки и пальто</item>
+        <item>Брюки</item>
+        <item>Джинсы</item>
+        <item>Шорты и бермуды</item>
+        <item>Юбки</item>
+        <item>Платья</item>
+        <item>Комбинезоны</item>
+        <item>Спортивная одежда</item>
+        <item>Нижнее бельё и пижамы</item>
+        <item>Купальники</item>
+        <item>Обувь</item>
+        <item>Сумки и рюкзаки</item>
+        <item>Аксессуары</item>
+        <item>Другое</item>
+    </string-array>
+    <string name="label_color_field">Цвет</string>
+    <string name="placeholder_color">Main color</string>
+    <string name="label_precio">Цена</string>
+    <string name="placeholder_precio">0.00</string>
+    <string name="currency_symbol">$</string>
+    <string name="label_estilo">Стиль</string>
+    <string name="placeholder_estilo">Выберите стиль</string>
+    <string-array name="outfit_styles">
+        <item>Повседневный</item>
+        <item>Смарт-кэжуал</item>
+        <item>Формальный</item>
+        <item>Элегантный</item>
+        <item>Офисный</item>
+        <item>Спортивный</item>
+        <item>Стритвир</item>
+        <item>Городской</item>
+        <item>Винтажный</item>
+        <item>Ретро</item>
+        <item>Богемный</item>
+        <item>Минималистичный</item>
+        <item>Классический</item>
+        <item>Романтичный</item>
+        <item>Рок</item>
+        <item>Для вечеринки</item>
+        <item>Пляжный</item>
+        <item>Другое</item>
+    </string-array>
+    <string name="label_ciudad">Город</string>
+    <string name="placeholder_ciudad">Event city</string>
+    <string name="label_pais">Страна</string>
+    <string name="placeholder_pais">Event country</string>
+    <string name="label_inicio">Начало</string>
+    <string name="label_fin">Конец</string>
+    <string name="placeholder_fecha">MM/DD/YY</string>
+    <string name="label_organizador">Организатор</string>
+    <string name="placeholder_organizador">Organizer name</string>
+    <string name="btn_publicar">Опубликовать</string>
+    <string name="cd_delete_photo">Delete image</string>
+    <string name="article_options">Post options</string>
+    <string name="article_menu_edit">Изменить публикацию</string>
+    <string name="article_menu_delete">Удалить публикацию</string>
+    <string name="article_delete_title">Delete post?</string>
+    <string name="article_delete_message">The post and its image will be deleted. This action cannot be undone.</string>
+    <string name="article_delete_confirm">Удалить</string>
+    <string name="article_delete_cancel">Отмена</string>
+    <string name="btn_guardar_cambios">Сохранить изменения</string>
+    <string name="cd_like">Нравится</string>
+    <string name="cd_user_avatar">User avatar</string>
+    <string name="cd_delete_comment">Удалить комментарий</string>
+    <string name="cd_send_comment">Отправить комментарий</string>
+    <string name="placeholder_add_comment">Напишите комментарий...</string>
+    <string name="disabled_comment_placeholder">You can’t add any more comments</string>
+    <string name="time_now">Сейчас</string>
+    <string name="label_comments_count">Комментариев: %1$d</string>
+    <string name="label_order_recent">Сначала новые ▼</string>
+    <string name="label_order_old">Сначала старые ▲</string>
+    <string name="content_desc_avatar">User avatar</string>
+    <string name="content_desc_post_image">Post image</string>
+    <string name="label_tag_prefix">#%1$s</string>
+    <string name="label_follow">Подписаться</string>
+    <string name="label_following">Подписки</string>
+    <string name="notification_followed_you">подписался на вас</string>
+    <string name="notification_new_review">опубликовал отзыв на вашу публикацию</string>
+    <string name="notification_commented_review">прокомментировал ваш отзыв</string>
+    <string name="notification_liked_review">оценил ваш отзыв</string>
+    <string name="notifications_empty">У вас пока нет уведомлений.</string>
+    <string name="notifications_load_error">Не удалось загрузить уведомления.</string>
+    <string name="follow_list_followers_title">Подписчики</string>
+    <string name="follow_list_following_title">Подписки</string>
+    <string name="follow_list_empty_followers">Пока нет подписчиков</string>
+    <string name="follow_list_empty_following">Вы пока ни на кого не подписаны</string>
+    <string name="follow_list_unfollow">Отписаться</string>
+    <string name="follow_list_remove">Удалить</string>
+    <string name="follow_list_back">Назад</string>
+    <string name="mock_description" formatted="false">A masterpiece of contemporary tailoring. This coat is made from 100% sustainably sourced Italian cashmere, offering an impeccable drape and unmatched softness.</string>
+    <string name="mock_price">$280,000 COP</string>
+    <string name="edit_profile_title">Редактировать профиль</string>
+    <string name="edit_profile_cancel">Отмена</string>
+    <string name="edit_profile_save">Сохранить</string>
+    <string name="edit_profile_change_photo">Изменить фото</string>
+    <string name="edit_profile_label_username">Имя пользователя</string>
+    <string name="edit_profile_label_bio">О себе</string>
+    <string name="edit_profile_placeholder_bio">Passionate about urban fashion and streetwear. Sharing looks and discovering emerging brands.</string>
+    <string name="edit_profile_label_email">Электронная почта</string>
+    <string name="edit_profile_placeholder_email">alex@kloth.app</string>
+    <string name="edit_profile_label_location">Местоположение</string>
+    <string name="edit_profile_placeholder_location">City, Country</string>
+    <string name="edit_profile_label_website">Сайт</string>
+    <string name="edit_profile_placeholder_website">https://</string>
+    <string name="edit_profile_btn_save">Сохранить изменения</string>
+    <string name="edit_profile_danger_zone_title">Опасная зона</string>
+    <string name="edit_profile_btn_delete_account">Удалить аккаунт</string>
+    <string name="edit_profile_danger_zone_desc">This action cannot be undone. Your posts will be permanently deleted and your reviews will appear as \"Deleted user\".</string>
+    <string name="edit_profile_mock_username">alex_style</string>
+    <string name="detail_section_reviews_title">Оценки</string>
+    <string name="detail_write_review_btn">Write\nreview</string>
+    <string name="detail_description_title">Описание</string>
+    <string name="detail_spec_color">COLOR</string>
+    <string name="detail_spec_category">CATEGORY</string>
+    <string name="cd_hero_image">Main product image</string>
+    <string name="cd_remove_favorite">Remove from favorites</string>
+    <string name="cd_add_favorite">Add to favorites</string>
+    <string name="cd_likes">Нравится</string>
+    <string name="cd_comments">Комментарии</string>
+    <string name="push_channel_name">Kloth notifications</string>
+    <string name="cd_delete_review">Удалить отзыв</string>
+    <string name="review_delete_title">Удалить отзыв</string>
+    <string name="review_delete_confirmation">All comments on this review will also be deleted. This action cannot be undone.</string>
+    <string name="review_delete_confirm">Удалить</string>
+    <string name="create_review_loading">Публикация...</string>
+    <string name="create_review_rating_label">Ваша оценка</string>
+    <string name="create_review_opinion_label">Ваше мнение / анализ</string>
+    <string name="create_review_placeholder">Write your review here (required)…</string>
+    <string name="create_review_required">Обязательное поле</string>
+    <string name="edit_article_error">Could not load post: %1$s</string>
+    <string name="edit_article_retry">Повторить</string>
+    <string name="login_error_empty_fields">Заполните все поля</string>
+    <string name="register_error_empty_fields">Все поля обязательны</string>
+    <string name="register_error_generic">Could not create your account. Please try again</string>
+    <string name="login_error_generic">Incorrect credentials or connection error</string>
+    <string name="auth_error_password_short">Пароль должен содержать не менее 6 символов</string>
+    <string name="auth_error_invalid_credentials">Неверные данные для входа</string>
+    <string name="auth_error_user_not_found">Пользователь не найден</string>
+    <string name="auth_error_email_already_registered">Этот адрес уже зарегистрирован</string>
+    <string name="auth_error_weak_password">Слишком слабый пароль</string>
+    <string name="auth_error_invalid_email">Неверный адрес электронной почты</string>
+    <string name="forgot_password_error_empty_email">Введите адрес электронной почты</string>
+    <string name="auth_error_invalid_reset_code">The code is invalid or expired. Request a new one.</string>
+    <string name="auth_error_reset_wait">Подождите 60 секунд перед запросом нового кода.</string>
+    <string name="auth_error_connection">Не удалось подключиться. Проверьте соединение.</string>
+    <string name="auth_error_generic">Не удалось выполнить запрос. Попробуйте снова.</string>
+    <string name="register_error_user_id">Could not get the current user</string>
+    <string name="register_error_save_user">Could not save your user profile</string>
+    <string name="edit_profile_error_email">Could not change your email. Sign in again and try again.</string>
+    <string name="edit_profile_error_save">Could not save your profile</string>
+    <string name="review_default_username">User</string>
+    <string name="network_error_server">Server error (%1$d)</string>
+    <string name="network_error_connection">Could not connect to the server</string>
+    <string name="network_error_not_found">Resource not found</string>
+    <string name="storage_error_user_not_logged_in">User is not signed in</string>
+    <string name="feed_retry">Повторить</string>
+    <string name="close">Закрыть</string>
+    <string name="profile_tab_model_pics">Фото моделей</string>
+    <string name="model_pics_filter_uploaded">Загруженные</string>
+    <string name="model_pics_filter_generated">Созданные ИИ</string>
+    <string name="model_pics_upload">Загрузить фото</string>
+    <string name="model_pics_uploading">Загрузка фото…</string>
+    <string name="model_pics_empty_base">You haven’t uploaded any photos yet. Choose one from your gallery to get started.</string>
+    <string name="model_pics_empty_generated">У вас пока нет изображений, созданных ИИ.</string>
+    <string name="model_pics_load_error">Не удалось загрузить фото моделей.</string>
+    <string name="try_on_button">✨ Try On</string>
+    <string name="try_on_title">Виртуальная примерка</string>
+    <string name="try_on_select_model_pic">Выберите фото для примерки</string>
+    <string name="try_on_no_model_pics">You don’t have any base photos yet. Upload one to get started.</string>
+    <string name="try_on_generating">Создание изображения…</string>
+    <string name="try_on_continue">Продолжить</string>
+    <string name="try_on_result_content_description">Virtual try-on result</string>
+    <string name="create_review_location_required_error">Could not get your location. Enable location permission and GPS to publish the review.</string>
+    <string name="create_review_location_label">Добавить местоположение</string>
+    <string name="create_review_location_hint">An approximate location (~110 m) is saved. Optional.</string>
+    <string name="create_review_location_denied">Доступ к местоположению запрещён. Отзыв будет опубликован без него.</string>
+    <string name="map_title">Новые отзывы</string>
+    <string name="map_empty">Нет отзывов за последние 24 часа</string>
+    <string name="map_retry">Повторить</string>
+    <string name="map_refresh">Обновить</string>
+    <string name="cd_map">Открыть карту отзывов</string>
+    <string name="cd_my_location">Перейти к моему местоположению</string>
+    <string name="review_pin_open">Открыть отзыв</string>
+    <string name="ai_summary_title">AI Summary</string>
+    <string name="translate_button">Перевести</string>
+    <string name="view_original_button">Показать оригинал</string>
+    <string name="translation_loading">Перевод…</string>
+    <string name="translation_error">Не удалось перевести текст. Попробуйте ещё раз.</string>
+</resources>

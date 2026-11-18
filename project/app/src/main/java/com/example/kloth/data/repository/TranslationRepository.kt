@@ -30,7 +30,7 @@ class TranslationRepository @Inject constructor(
         text: String,
         targetLanguage: String
     ): TranslationOutcome {
-        val key = TranslationKey(contentId, targetLanguage)
+        val key = TranslationKey(contentId, text, targetLanguage)
         translations[key]?.let { return TranslationOutcome.Translated(it) }
         val sourceLanguage = detect(contentId, text)
         if (sourceLanguage == UNDETERMINED) return TranslationOutcome.Undetermined
@@ -50,10 +50,10 @@ class TranslationRepository @Inject constructor(
     }
 
     private data class DetectionKey(val contentId: String, val text: String)
-    private data class TranslationKey(val contentId: String, val targetLanguage: String)
+    private data class TranslationKey(val contentId: String, val text: String, val targetLanguage: String)
 
     private companion object {
         const val UNDETERMINED = "und"
-        val SUPPORTED_LANGUAGES = setOf("es", "en")
+        val SUPPORTED_LANGUAGES = setOf("es", "en", "pt", "fr", "de", "it", "ru", "ar")
     }
 }

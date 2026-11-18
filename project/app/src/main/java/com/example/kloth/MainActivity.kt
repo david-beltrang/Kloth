@@ -4,13 +4,14 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import androidx.activity.ComponentActivity
+import androidx.appcompat.app.AppCompatActivity
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.lifecycleScope
+import com.example.kloth.data.repository.AppLocaleRepository
+import com.example.kloth.data.repository.AuthRepository
 import com.example.kloth.data.repository.UserRepository
-import com.google.firebase.auth.FirebaseAuth
 import javax.inject.Inject
 import kotlinx.coroutines.launch
 import com.example.kloth.ui.theme.KlothTheme
@@ -18,8 +19,12 @@ import dagger.hilt.android.AndroidEntryPoint
 
 /** Punto de entrada principal de la aplicación**/
 @AndroidEntryPoint
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
+    @Inject lateinit var appLocaleRepository: AppLocaleRepository
+    @Inject lateinit var authRepository: AuthRepository
     @Inject lateinit var userRepository: UserRepository
+    private var lastLanguageTagUpdate: Pair<String, String>? = null
+    private var pendingLanguageTagUpdate: Pair<String, String>? = null
     private val locationPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
     ) {
@@ -40,6 +45,7 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        appLocaleRepository.applyProcessLocale()
         enableEdgeToEdge()
         setContent {
             KlothTheme {
@@ -52,10 +58,18 @@ class MainActivity : ComponentActivity() {
 
     override fun onResume() {
         super.onResume()
-        val userId = FirebaseAuth.getInstance().currentUser?.uid ?: return
-        val languageTag = resources.configuration.locales[0].toLanguageTag()
+        appLocaleRepository.applyProcessLocale()
+        val userId = authRepository.currentUser?.uid ?: return
+        val languageTag = appLocaleRepository.currentLanguageTag()
+        val updateKey = userId to languageTag
+        if (updateKey == lastLanguageTagUpdate || updateKey == pendingLanguageTagUpdate) return
+
+        pendingLanguageTagUpdate = updateKey
         lifecycleScope.launch {
-            userRepository.updateLanguageTag(userId, languageTag)
+            if (userRepository.updateLanguageTag(userId, languageTag).isSuccess) {
+                lastLanguageTagUpdate = updateKey
+            }
+            if (pendingLanguageTagUpdate == updateKey) pendingLanguageTagUpdate = null
         }
     }
 

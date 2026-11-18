@@ -44,10 +44,12 @@ private const val DELETED_USER = "Usuario eliminado"
 fun typeLabel(typeArticle: String): String =
     typeArticle.trim().lowercase().replaceFirstChar { it.titlecase(Locale.getDefault()) }
 
-// 129.9 -> "$129,90"
-fun formatPrice(price: Double): String = NumberFormat
-    .getCurrencyInstance(Locale.getDefault())
-    .format(price)
+// Conserva el símbolo de Kloth y localiza solo los separadores numéricos.
+fun formatPrice(
+    price: Double,
+    currencySymbol: String = "$",
+    locale: Locale = Locale.getDefault()
+): String = currencySymbol + NumberFormat.getNumberInstance(locale).format(price)
 
 private fun calculateAverageRating(reviews: List<ReviewDtoGeneric>): Float {
     if (reviews.isEmpty()) return 0f

@@ -4,16 +4,26 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.outlined.Translate
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,6 +49,7 @@ fun ProfileHeaderSection(
     followersCount: Int = 0,
     followingCount: Int = 0,
     reviewsCount: Int = 0,
+    currentLanguageTag: String = "es",
     viewingOwnProfile: Boolean = true,
     isFollowing: Boolean = false,
     isFollowActionInProgress: Boolean = false,
@@ -47,8 +58,10 @@ fun ProfileHeaderSection(
     onFollowClick: () -> Unit = {},
     onLogoutClick: () -> Unit = {},
     onFollowersClick: () -> Unit = {},
-    onFollowingClick: () -> Unit = {}
+    onFollowingClick: () -> Unit = {},
+    onLanguageSelected: (String) -> Unit = {}
 ) {
+    var showLanguageSelector by remember { mutableStateOf(false) }
     val displayName = if (!username.isNullOrBlank()) username else email.substringBefore("@").replaceFirstChar { it.uppercase() }
     val displayBio = if (!bio.isNullOrBlank()) bio else stringResource(R.string.profile_bio_empty)
     val displayLocation = if (!location.isNullOrBlank()) location else stringResource(R.string.profile_location_empty)
@@ -219,21 +232,48 @@ fun ProfileHeaderSection(
         }
 
         // RF-05: modificar perfil
-        if (viewingOwnProfile) Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp)
-                .clip(RoundedCornerShape(999.dp))
-                .background(MaterialTheme.colorScheme.primary)
-                .clickable { onEditProfileClick() }
-                .padding(vertical = 14.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = stringResource(R.string.profile_edit),
-                style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
-                color = MaterialTheme.colorScheme.onPrimary
-            )
+        if (viewingOwnProfile) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp)
+                    .height(48.dp),
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                val buttonShape = RoundedCornerShape(999.dp)
+                Box(
+                    modifier = Modifier
+                        .weight(3f)
+                        .fillMaxHeight()
+                        .clip(buttonShape)
+                        .background(MaterialTheme.colorScheme.primary)
+                        .clickable { onEditProfileClick() }
+                        .padding(horizontal = 16.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Text(
+                        text = stringResource(R.string.profile_edit),
+                        style = MaterialTheme.typography.labelLarge.copy(fontWeight = FontWeight.SemiBold),
+                        color = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                        .clip(buttonShape)
+                        .border(1.dp, MaterialTheme.colorScheme.outline, buttonShape)
+                        .clickable { showLanguageSelector = true }
+                        .testTag("languageSelectorButton"),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Outlined.Translate,
+                        contentDescription = stringResource(R.string.language_button_description),
+                        tint = MaterialTheme.colorScheme.onSurface
+                    )
+                }
+            }
         }
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -257,6 +297,64 @@ fun ProfileHeaderSection(
         }
 
         Spacer(modifier = Modifier.height(8.dp))
+    }
+
+    if (showLanguageSelector) {
+        val languages = listOf(
+            "es" to R.string.language_name_spanish,
+            "en" to R.string.language_name_english,
+            "pt" to R.string.language_name_portuguese,
+            "fr" to R.string.language_name_french,
+            "de" to R.string.language_name_german,
+            "it" to R.string.language_name_italian,
+            "ru" to R.string.language_name_russian,
+            "ar" to R.string.language_name_arabic
+        )
+        AlertDialog(
+            onDismissRequest = { showLanguageSelector = false },
+            title = { Text(stringResource(R.string.language_selector_title)) },
+            text = {
+                Column(
+                    modifier = Modifier
+                        .heightIn(max = 360.dp)
+                        .verticalScroll(rememberScrollState()),
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    languages.forEach { (languageTag, nameRes) ->
+                        val isSelected = currentLanguageTag == languageTag
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(8.dp))
+                                .clickable {
+                                    showLanguageSelector = false
+                                    onLanguageSelected(languageTag)
+                                }
+                                .padding(horizontal = 12.dp, vertical = 10.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(nameRes),
+                                modifier = Modifier.weight(1f),
+                                color = MaterialTheme.colorScheme.onSurface
+                            )
+                            if (isSelected) {
+                                Icon(
+                                    imageVector = Icons.Default.Check,
+                                    contentDescription = null,
+                                    tint = MaterialTheme.colorScheme.primary
+                                )
+                            }
+                        }
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = { showLanguageSelector = false }) {
+                    Text(stringResource(R.string.close))
+                }
+            }
+        )
     }
 }
 
@@ -323,6 +421,22 @@ fun ProfileHeaderSectionDarkPreview() {
             followersCount = 120,
             followingCount = 80,
             reviewsCount = 3
+        )
+    }
+}
+
+@Preview(showBackground = true, locale = "ar", name = "Perfil propio - Árabe")
+@Composable
+fun ProfileHeaderSectionArabicPreview() {
+    KlothTheme(darkTheme = false) {
+        ProfileHeaderSection(
+            email = "test@example.com",
+            username = "Elena",
+            bio = null,
+            location = null,
+            website = null,
+            profileImageUrl = null,
+            viewingOwnProfile = true
         )
     }
 }

@@ -13,22 +13,31 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.FileUpload
+import androidx.compose.material3.minimumInteractiveComponentSize
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.Role
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -50,6 +59,7 @@ import com.example.kloth.ui.screens.profile.components.ArticleOptionsMenu
 import com.example.kloth.ui.screens.profile.components.ProfileHeaderSection
 import com.example.kloth.ui.screens.modelPics.ModelPicState
 import com.example.kloth.ui.screens.modelPics.components.ModelPicImageDialog
+import com.example.kloth.ui.theme.KlothTheme
 
 @Composable
 fun ProfileScreenContent(
@@ -80,6 +90,8 @@ fun ProfileScreenContent(
     onLogoutClick: () -> Unit,
     onFollowersClick: () -> Unit = {},
     onFollowingClick: () -> Unit = {},
+    currentLanguageTag: String = "es",
+    onLanguageSelected: (String) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val gridState = rememberLazyGridState()
@@ -103,7 +115,7 @@ fun ProfileScreenContent(
                 bottom = 24.dp
             ),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
+            verticalArrangement = Arrangement.spacedBy(if (selectedTabIndex == 2) 8.dp else 16.dp),
             modifier = Modifier
                 .fillMaxSize()
                 .testTag("profileScreen")
@@ -114,7 +126,7 @@ fun ProfileScreenContent(
                 modifier = Modifier
                     .fillMaxWidth()
                     .background(MaterialTheme.colorScheme.surface.copy(alpha = 0.9f))
-                    .padding(top = 8.dp, bottom = 8.dp)
+                    .padding(top = 8.dp, bottom = if (selectedTabIndex == 2) 0.dp else 8.dp)
             ) {
                 ProfileHeaderSection(
                     email = email,
@@ -123,6 +135,7 @@ fun ProfileScreenContent(
                     location = location,
                     website = website,
                     profileImageUrl = profileImageUrl,
+                    currentLanguageTag = currentLanguageTag,
                     viewingOwnProfile = viewingOwnProfile,
                     publicationsCount = userArticles.size,
                     followersCount = followersCount,
@@ -134,7 +147,8 @@ fun ProfileScreenContent(
                     onFollowClick = onFollowClick,
                     onLogoutClick = onLogoutClick,
                     onFollowersClick = onFollowersClick,
-                    onFollowingClick = onFollowingClick
+                    onFollowingClick = onFollowingClick,
+                    onLanguageSelected = onLanguageSelected
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))
@@ -145,7 +159,7 @@ fun ProfileScreenContent(
                     onTabSelected = onTabSelected
                 )
 
-                Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(if (selectedTabIndex == 2) 0.dp else 16.dp))
             }
         }
 
@@ -191,11 +205,14 @@ fun ProfileScreenContent(
                 )
             }
 
-            items(modelPicState.visibleModelPics, key = { it.id }) { modelPic ->
+            itemsIndexed(modelPicState.visibleModelPics, key = { _, modelPic -> modelPic.id }) { index, modelPic ->
+                val rowCount = modelPicState.visibleModelPics.size
+                val lastRowStart = if (rowCount % 2 == 0) rowCount - 2 else rowCount - 1
                 ModelPicGridItem(
                     modelPic = modelPic,
                     highlighted = modelPic.id == highlightedModelPicId,
-                    onClick = { selectedModelPic = modelPic }
+                    onClick = { selectedModelPic = modelPic },
+                    modifier = if (index < lastRowStart) Modifier.padding(bottom = 8.dp) else Modifier
                 )
             }
         }
@@ -217,37 +234,72 @@ private fun ModelPicsControls(
     onUploadClick: () -> Unit
 ) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 8.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
             FilterChip(
                 selected = state.selectedFilter == ModelPicType.BASE,
                 onClick = { onFilterSelected(ModelPicType.BASE) },
-                label = { Text(stringResource(R.string.model_pics_filter_uploaded)) }
+                label = { Text(stringResource(R.string.model_pics_filter_uploaded)) },
+                shape = RoundedCornerShape(999.dp)
             )
             FilterChip(
                 selected = state.selectedFilter == ModelPicType.GENERATED,
                 onClick = { onFilterSelected(ModelPicType.GENERATED) },
-                label = { Text(stringResource(R.string.model_pics_filter_generated)) }
+                label = { Text(stringResource(R.string.model_pics_filter_generated)) },
+                shape = RoundedCornerShape(999.dp)
             )
-        }
-
-        if (state.selectedFilter == ModelPicType.BASE) {
-            Button(
-                onClick = onUploadClick,
-                enabled = !state.isUploadingBaseModelPic,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                if (state.isUploadingBaseModelPic) {
-                    CircularProgressIndicator()
-                    Spacer(Modifier.width(8.dp))
-                    Text(stringResource(R.string.model_pics_uploading))
-                } else {
-                    Text(stringResource(R.string.model_pics_upload))
+            if (state.selectedFilter == ModelPicType.BASE) {
+                val uploadContentDescription = stringResource(
+                    if (state.isUploadingBaseModelPic) {
+                        R.string.model_pics_uploading
+                    } else {
+                        R.string.model_pics_upload
+                    }
+                )
+                Box(
+                    modifier = Modifier
+                        .minimumInteractiveComponentSize()
+                        .size(width = 52.dp, height = 48.dp)
+                        .clickable(
+                            enabled = !state.isUploadingBaseModelPic,
+                            role = Role.Button,
+                            onClick = onUploadClick
+                        )
+                        .semantics {
+                            contentDescription = uploadContentDescription
+                        },
+                    contentAlignment = Alignment.Center
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .size(width = 52.dp, height = FilterChipDefaults.Height)
+                            .clip(RoundedCornerShape(999.dp))
+                            .background(MaterialTheme.colorScheme.primary),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        if (state.isUploadingBaseModelPic) {
+                            CircularProgressIndicator(
+                                modifier = Modifier.size(18.dp),
+                                color = MaterialTheme.colorScheme.onPrimary,
+                                strokeWidth = 2.dp
+                            )
+                        } else {
+                            Icon(
+                                imageVector = Icons.Outlined.FileUpload,
+                                contentDescription = null,
+                                modifier = Modifier.size(18.dp),
+                                tint = MaterialTheme.colorScheme.onPrimary
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -283,14 +335,65 @@ private fun ModelPicsControls(
     }
 }
 
+@Preview(name = "Model pics - claro", showBackground = true)
+@Composable
+private fun ModelPicsControlsLightPreview() {
+    ModelPicsControlsPreviewContent(darkTheme = false, uploading = false)
+}
+
+@Preview(name = "Model pics - subiendo", showBackground = true)
+@Composable
+private fun ModelPicsControlsUploadingLightPreview() {
+    ModelPicsControlsPreviewContent(darkTheme = false, uploading = true)
+}
+
+@Preview(
+    name = "Model pics - oscuro",
+    showBackground = true,
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+private fun ModelPicsControlsDarkPreview() {
+    ModelPicsControlsPreviewContent(darkTheme = true, uploading = false)
+}
+
+@Preview(
+    name = "Model pics - subiendo oscuro",
+    showBackground = true,
+    uiMode = android.content.res.Configuration.UI_MODE_NIGHT_YES
+)
+@Composable
+private fun ModelPicsControlsUploadingDarkPreview() {
+    ModelPicsControlsPreviewContent(darkTheme = true, uploading = true)
+}
+
+@Composable
+private fun ModelPicsControlsPreviewContent(darkTheme: Boolean, uploading: Boolean) {
+    KlothTheme(darkTheme = darkTheme) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(MaterialTheme.colorScheme.surface)
+                .padding(16.dp)
+        ) {
+            ModelPicsControls(
+                state = ModelPicState(isUploadingBaseModelPic = uploading),
+                onFilterSelected = {},
+                onUploadClick = {}
+            )
+        }
+    }
+}
+
 @Composable
 private fun ModelPicGridItem(
     modelPic: ModelPic,
     highlighted: Boolean,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier
 ) {
     Column(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .then(
                 if (highlighted) Modifier

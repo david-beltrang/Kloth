@@ -51,6 +51,8 @@
     <string name="profile_tab_posts">Posts</string>
     <string name="profile_tab_rated">Rated items</string>
     <string name="profile_edit">Edit profile</string>
+    <string name="language_button_description">Change app language</string>
+    <string name="language_selector_title">Select a language</string>
     <string name="profile_followers">Followers</string>
     <string name="profile_following">Following</string>
     <string name="profile_follow">Follow</string>
@@ -199,7 +201,7 @@
     <string name="follow_list_unfollow">Unfollow</string>
     <string name="follow_list_remove">Remove</string>
     <string name="follow_list_back">Back</string>
-    <string name="mock_description">A masterpiece of contemporary tailoring. This coat is made from 100% sustainably sourced Italian cashmere, offering an impeccable drape and unmatched softness.</string>
+    <string name="mock_description" formatted="false">A masterpiece of contemporary tailoring. This coat is made from 100% sustainably sourced Italian cashmere, offering an impeccable drape and unmatched softness.</string>
     <string name="mock_price">$280,000 COP</string>
     <string name="edit_profile_title">Edit profile</string>
     <string name="edit_profile_cancel">Cancel</string>
