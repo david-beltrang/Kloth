@@ -2,6 +2,7 @@ package com.example.kloth.dto
 
 import com.example.kloth.data.dto.UserFirestoreDto
 import com.example.kloth.data.dto.formatPrice
+import java.util.Locale
 import com.example.kloth.data.dto.timeAgo
 import com.google.common.truth.Truth
 import kotlinx.coroutines.test.runTest
@@ -67,6 +68,13 @@ class MappersTest {
 
         Truth.assertThat(formatted).startsWith("$")
         Truth.assertThat(formatted).contains("129")
+    }
+
+    @Test
+    fun formatPrice_usesLocaleSeparatorsWithoutChangingCurrencySymbol() {
+        val formatted = formatPrice(1234.5, locale = Locale.GERMANY)
+
+        Truth.assertThat(formatted).isEqualTo("$1.234,5")
     }
 
     @Test

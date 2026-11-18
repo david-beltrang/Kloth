@@ -16,7 +16,7 @@
     <string name="header_notifications">Notificaciones</string>
     <string name="badge_couture">COUTURE</string>
     <string name="badge_essentials">ESSENTIALS</string>
-    <string name="label_reviews">(%1$d reviews)</string>
+    <string name="label_reviews">(%1$d reseñas)</string>
     <plurals name="reviews_count">
         <item quantity="one">(%1$d reseña)</item>
         <item quantity="other">(%1$d reseñas)</item>
@@ -180,7 +180,7 @@
     <string name="placeholder_color">Color principal</string>
     <string name="label_precio">Precio</string>
     <string name="placeholder_precio">0.00</string>
-    <string name="currency_symbol">€</string>
+    <string name="currency_symbol">$</string>
     <string name="label_estilo">Estilo</string>
     <string name="placeholder_estilo">Seleccionar estilo</string>
     <string-array name="outfit_styles">
@@ -288,7 +288,7 @@
     <string name="cd_hero_image">Imagen principal del producto</string>
     <string name="cd_remove_favorite">Quitar de favoritos</string>
     <string name="cd_add_favorite">Añadir a favoritos</string>
-    <string name="cd_likes">Likes</string>
+    <string name="cd_likes">Me gusta</string>
     <string name="cd_comments">Comentarios</string>
     <string name="push_channel_name">Notificaciones de Kloth</string>
     <string name="cd_delete_review">Eliminar reseña</string>
