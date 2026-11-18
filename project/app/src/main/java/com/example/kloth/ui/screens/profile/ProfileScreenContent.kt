@@ -80,6 +80,8 @@ fun ProfileScreenContent(
     onLogoutClick: () -> Unit,
     onFollowersClick: () -> Unit = {},
     onFollowingClick: () -> Unit = {},
+    currentLanguageTag: String = "es",
+    onLanguageSelected: (String) -> Unit = {},
     modifier: Modifier = Modifier,
 ) {
     val gridState = rememberLazyGridState()
@@ -123,6 +125,7 @@ fun ProfileScreenContent(
                     location = location,
                     website = website,
                     profileImageUrl = profileImageUrl,
+                    currentLanguageTag = currentLanguageTag,
                     viewingOwnProfile = viewingOwnProfile,
                     publicationsCount = userArticles.size,
                     followersCount = followersCount,
@@ -134,7 +137,8 @@ fun ProfileScreenContent(
                     onFollowClick = onFollowClick,
                     onLogoutClick = onLogoutClick,
                     onFollowersClick = onFollowersClick,
-                    onFollowingClick = onFollowingClick
+                    onFollowingClick = onFollowingClick,
+                    onLanguageSelected = onLanguageSelected
                 )
 
                 Spacer(modifier = Modifier.height(8.dp))

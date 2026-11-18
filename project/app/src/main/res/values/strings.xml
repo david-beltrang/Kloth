@@ -63,6 +63,16 @@
     <string name="profile_tab_posts">Publicaciones</string>
     <string name="profile_tab_rated">Artículos calificados</string>
     <string name="profile_edit">Editar perfil</string>
+    <string name="language_button_description">Cambiar idioma de la aplicación</string>
+    <string name="language_selector_title">Selecciona un idioma</string>
+    <string name="language_name_spanish" translatable="false">Español</string>
+    <string name="language_name_english" translatable="false">English</string>
+    <string name="language_name_portuguese" translatable="false">Português</string>
+    <string name="language_name_french" translatable="false">Français</string>
+    <string name="language_name_german" translatable="false">Deutsch</string>
+    <string name="language_name_italian" translatable="false">Italiano</string>
+    <string name="language_name_russian" translatable="false">Русский</string>
+    <string name="language_name_arabic" translatable="false">العربية</string>
     <string name="profile_followers">Seguidores</string>
     <string name="profile_following">Seguidos</string>
     <string name="profile_follow">Seguir</string>
@@ -256,7 +266,7 @@
     <string name="follow_list_back">Volver</string>
 
     <!-- Mock Data -->
-    <string name="mock_description">Una pieza maestra de sastrería contemporánea. Este abrigo ha sido confeccionado con 100% cachemira italiana de origen sostenible, ofreciendo una caída impecable y una suavidad inigualable.</string>
+    <string name="mock_description" formatted="false">Una pieza maestra de sastrería contemporánea. Este abrigo ha sido confeccionado con 100% cachemira italiana de origen sostenible, ofreciendo una caída impecable y una suavidad inigualable.</string>
     <string name="mock_price">$280.000 COP</string>
 
     <!-- Edit Profile Screen -->

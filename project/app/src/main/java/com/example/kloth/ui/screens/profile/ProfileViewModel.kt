@@ -6,9 +6,11 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.kloth.data.local.PostItem
 import com.example.kloth.data.repository.ArticleRepository
+import com.example.kloth.data.repository.AppLocaleRepository
 import com.example.kloth.data.repository.AuthRepository
 import com.example.kloth.data.repository.StorageRepository
 import com.example.kloth.data.repository.UserRepository
+import com.example.kloth.data.repository.resolveApplicationLanguage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,11 +24,13 @@ class ProfileViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val storageRepository: StorageRepository,
     private val userRepository: UserRepository,
-    private val articleRepository: ArticleRepository
+    private val articleRepository: ArticleRepository,
+    private val appLocaleRepository: AppLocaleRepository
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(ProfileState(
         email = authRepository.currentUser?.email ?: "",
-        profileImageUrl = authRepository.currentUser?.photoUrl?.toString() ?: ""
+        profileImageUrl = authRepository.currentUser?.photoUrl?.toString() ?: "",
+        currentLanguageTag = appLocaleRepository.currentLanguageTag()
     ))
 
     val uiState: StateFlow<ProfileState> = _uiState.asStateFlow()
@@ -127,6 +131,20 @@ class ProfileViewModel @Inject constructor(
 
     fun onTabSelected(index: Int) {
         _uiState.update { it.copy(selectedTabIndex = index) }
+    }
+
+    fun onLanguageSelected(languageTag: String) {
+        val language = resolveApplicationLanguage(languageTag, null)
+        if (language == _uiState.value.currentLanguageTag) return
+
+        appLocaleRepository.setApplicationLanguage(language)
+        _uiState.update { it.copy(currentLanguageTag = language) }
+
+        val userId = authRepository.currentUser?.uid ?: return
+        viewModelScope.launch {
+            userRepository.updateLanguageTag(userId, language)
+                .onFailure { Log.e("ProfileViewModel", "No se pudo actualizar el idioma del usuario", it) }
+        }
     }
 
     fun logOutButtonPressed() {

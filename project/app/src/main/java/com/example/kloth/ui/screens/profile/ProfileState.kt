@@ -17,6 +17,7 @@ data class ProfileState(
     val followingCount: Int = 0,
     val isFollowing: Boolean = false,
     val isFollowActionInProgress: Boolean = false,
+    val currentLanguageTag: String = "es",
     val userArticles: List<PostItem> = emptyList(),
     val reviewedArticles: List<PostItem> = emptyList()
 )

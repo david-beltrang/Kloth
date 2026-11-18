@@ -1,0 +1,330 @@
+<resources>
+    <string name="app_name">KLOTH</string>
+    <string name="nav_home">Startseite</string>
+    <string name="nav_explore">Entdecken</string>
+    <string name="nav_create">Erstellen</string>
+    <string name="nav_alerts">Mitteilungen</string>
+    <string name="nav_profile">Profil</string>
+    <string name="tab_following">Folge ich</string>
+    <string name="tab_for_you">Für dich</string>
+    <string name="feed_follow_prompt">Follow people and find your style</string>
+    <string name="header_create">Erstellen</string>
+    <string name="header_notifications">Benachrichtigungen</string>
+    <string name="badge_couture">COUTURE</string>
+    <string name="badge_essentials">ESSENTIALS</string>
+    <string name="label_reviews">(%1$d reviews)</string>
+    <plurals name="reviews_count">
+        <item quantity="one">(%1$d review)</item>
+        <item quantity="other">(%1$d reviews)</item>
+    </plurals>
+    <string name="label_count_parentheses">(%1$s)</string>
+    <string name="text_prefix_space">%1$s </string>
+    <string name="content_desc_back">Back</string>
+    <string name="cd_back">Back</string>
+    <string name="content_desc_search">Search</string>
+    <string name="content_desc_notifications">Notifications</string>
+    <string name="content_desc_more">More options</string>
+    <string name="content_desc_favorite">Favorite</string>
+    <string name="cd_favorite">Favorite</string>
+    <string name="content_desc_comment">Comment</string>
+    <string name="cd_share">Share</string>
+    <string name="cd_product_image">Product image</string>
+    <string name="cd_user_image">User image</string>
+    <string name="title_explore">Entdecken</string>
+    <string name="category_all">Alle</string>
+    <string name="search_placeholder">Artikel suchen...</string>
+    <string name="search_clear">Suche löschen</string>
+    <string name="explore_empty_results">Keine Ergebnisse gefunden</string>
+    <string name="category_prendas">Kleidung</string>
+    <string name="category_outfits">Outfits</string>
+    <string name="category_marcas">Marken</string>
+    <string name="category_eventos">Events</string>
+    <string name="filter_tune">Filter</string>
+    <string name="filter_price">Preis</string>
+    <string name="filter_color">Farbe</string>
+    <string name="filter_size">Größe</string>
+    <string name="product_abrigo">Black Lunar Coat</string>
+    <string name="product_gym">GymShark T-shirt</string>
+    <string name="product_barcelona">Barcelona Jersey</string>
+    <string name="product_bolso">Leather Bag</string>
+    <string name="title_profile">Profil</string>
+    <string name="profile_tab_posts">Beiträge</string>
+    <string name="profile_tab_rated">Bewertete Artikel</string>
+    <string name="profile_edit">Profil bearbeiten</string>
+    <string name="language_button_description">App-Sprache ändern</string>
+    <string name="language_selector_title">Sprache auswählen</string>
+    <string name="profile_followers">Follower</string>
+    <string name="profile_following">Folge ich</string>
+    <string name="profile_follow">Folgen</string>
+    <string name="profile_unfollow">Nicht mehr folgen</string>
+    <string name="profile_reviews">Bewertungen</string>
+    <string name="profile_publications">Beiträge</string>
+    <string name="profile_logout">Abmelden</string>
+    <string name="profile_bio_empty">Füge eine Bio hinzu, damit andere dich kennenlernen</string>
+    <string name="profile_location_empty">Standort hinzufügen</string>
+    <string name="profile_website_empty">Website hinzufügen</string>
+    <string name="mock_profile_name">Elena Vancouvé</string>
+    <string name="mock_profile_username">\@elenav_styling</string>
+    <string name="mock_profile_bio">Silhouette architect. A minimalist by nature, a fashion lover by choice.</string>
+    <string name="mock_profile_location">Paris, FR</string>
+    <string name="mock_profile_website">vancouve.studio</string>
+    <string name="cd_profile_photo">Profile photo</string>
+    <string name="detail_title">Artikeldetails</string>
+    <string name="detail_not_found_title">Artikel nicht gefunden</string>
+    <string name="detail_not_found_desc">The item you are looking for is unavailable or has been removed.</string>
+    <string name="detail_not_found_back">Zurück</string>
+    <string name="label_color">Farbe</string>
+    <string name="label_category">Kategorie</string>
+    <string name="label_description">Beschreibung</string>
+    <string name="section_reviews">Bewertungen und Rezensionen</string>
+    <string name="btn_write_review">Bewertung schreiben</string>
+    <string name="splash_loading">Wird geladen</string>
+    <string name="login_subtitle">Deine Mode-Community</string>
+    <string name="login_email_placeholder">E-Mail-Adresse</string>
+    <string name="login_password_placeholder">Passwort</string>
+    <string name="login_button">Anmelden</string>
+    <string name="login_forgot_password">Passwort vergessen?</string>
+    <string name="login_or">oder</string>
+    <string name="login_no_account">Don’t have an account?</string>
+    <string name="login_create_account">Konto erstellen</string>
+    <string name="cd_logo">Kloth logo</string>
+    <string name="cd_toggle_password">Show or hide password</string>
+    <string name="register_title">Konto erstellen</string>
+    <string name="register_name_placeholder">Vollständiger Name</string>
+    <string name="register_confirm_password_placeholder">Passwort bestätigen</string>
+    <string name="register_button">Registrieren</string>
+    <string name="register_has_account">Already have an account?</string>
+    <string name="register_login">Anmelden</string>
+    <string name="forgot_password_title">Passwort vergessen?</string>
+    <string name="forgot_password_instruction">Enter your email address and we’ll send you recovery instructions.</string>
+    <string name="forgot_password_button">E-Mail senden</string>
+    <string name="forgot_password_back_login">Zurück zur Anmeldung</string>
+    <string name="forgot_password_code_instruction">If the email is registered, we sent you a 6-digit code.</string>
+    <string name="forgot_password_code_title">Passwort zurücksetzen</string>
+    <string name="forgot_password_code_placeholder">6-stelliger Code</string>
+    <string name="forgot_password_new_password_placeholder">Neues Passwort</string>
+    <string name="forgot_password_confirm_password_placeholder">Neues Passwort bestätigen</string>
+    <string name="forgot_password_reset_button">Passwort ändern</string>
+    <string name="forgot_password_resend">Code erneut senden</string>
+    <string name="forgot_password_resend_countdown">Resend code in %1$d s</string>
+    <string name="forgot_password_error_invalid_email">Enter a valid email address</string>
+    <string name="forgot_password_error_invalid_code">The code must have 6 digits</string>
+    <string name="forgot_password_error_password_mismatch">Passwords do not match</string>
+    <string name="forgot_password_request_success">If the email is registered, we sent you a code</string>
+    <string name="forgot_password_reset_success">Your password was reset successfully!</string>
+    <string name="type_marca">Marke</string>
+    <string name="label_sitio_web">Website</string>
+    <string name="placeholder_sitio_web">https://www.example.com</string>
+    <string name="label_pais_origen">Country of origin</string>
+    <string name="placeholder_pais_origen">E.g. Italy</string>
+    <string name="label_anio_fundacion">Year founded</string>
+    <string name="placeholder_anio_fundacion">E.g. 1913</string>
+    <string name="create_article_title">Beitrag erstellen</string>
+    <string name="type_prenda">Kleidung</string>
+    <string name="type_outfit">Outfit</string>
+    <string name="type_evento">Event</string>
+    <string name="add_photo_title">Foto hinzufügen</string>
+    <string name="add_photo_subtitle">Tippe, um Bilder hochzuladen</string>
+    <string name="label_nombre">Name</string>
+    <string name="placeholder_nombre">Artikelname</string>
+    <string name="label_descripcion">Beschreibung</string>
+    <string name="placeholder_descripcion">Describe this item...</string>
+    <string name="label_marca">Marke</string>
+    <string name="placeholder_marca">Marke oder Designer</string>
+    <string name="label_categoria">Kategorie</string>
+    <string name="placeholder_categoria">Kategorie auswählen</string>
+    <string-array name="article_categories">
+        <item>T-Shirts</item>
+        <item>Hemden und Blusen</item>
+        <item>Tops und Bodys</item>
+        <item>Sweatshirts und Kapuzenpullover</item>
+        <item>Pullover und Strickjacken</item>
+        <item>Jacken und Mäntel</item>
+        <item>Hosen</item>
+        <item>Jeans</item>
+        <item>Shorts und Bermudas</item>
+        <item>Röcke</item>
+        <item>Kleider</item>
+        <item>Overalls</item>
+        <item>Sportkleidung</item>
+        <item>Unterwäsche und Schlafanzüge</item>
+        <item>Bademode</item>
+        <item>Schuhe</item>
+        <item>Taschen und Rucksäcke</item>
+        <item>Accessoires</item>
+        <item>Sonstiges</item>
+    </string-array>
+    <string name="label_color_field">Farbe</string>
+    <string name="placeholder_color">Main color</string>
+    <string name="label_precio">Preis</string>
+    <string name="placeholder_precio">0.00</string>
+    <string name="currency_symbol">$</string>
+    <string name="label_estilo">Stil</string>
+    <string name="placeholder_estilo">Stil auswählen</string>
+    <string-array name="outfit_styles">
+        <item>Lässig</item>
+        <item>Smart Casual</item>
+        <item>Formell</item>
+        <item>Elegant</item>
+        <item>Büro</item>
+        <item>Sportlich</item>
+        <item>Streetwear</item>
+        <item>Urban</item>
+        <item>Vintage</item>
+        <item>Retro</item>
+        <item>Böhmisch</item>
+        <item>Minimalistisch</item>
+        <item>Klassisch</item>
+        <item>Romantisch</item>
+        <item>Rock</item>
+        <item>Party</item>
+        <item>Strand</item>
+        <item>Sonstiges</item>
+    </string-array>
+    <string name="label_ciudad">Stadt</string>
+    <string name="placeholder_ciudad">Event city</string>
+    <string name="label_pais">Land</string>
+    <string name="placeholder_pais">Event country</string>
+    <string name="label_inicio">Beginn</string>
+    <string name="label_fin">Ende</string>
+    <string name="placeholder_fecha">MM/DD/YY</string>
+    <string name="label_organizador">Veranstalter</string>
+    <string name="placeholder_organizador">Organizer name</string>
+    <string name="btn_publicar">Veröffentlichen</string>
+    <string name="cd_delete_photo">Delete image</string>
+    <string name="article_options">Post options</string>
+    <string name="article_menu_edit">Beitrag bearbeiten</string>
+    <string name="article_menu_delete">Beitrag löschen</string>
+    <string name="article_delete_title">Delete post?</string>
+    <string name="article_delete_message">The post and its image will be deleted. This action cannot be undone.</string>
+    <string name="article_delete_confirm">Löschen</string>
+    <string name="article_delete_cancel">Abbrechen</string>
+    <string name="btn_guardar_cambios">Änderungen speichern</string>
+    <string name="cd_like">Gefällt mir</string>
+    <string name="cd_user_avatar">User avatar</string>
+    <string name="cd_delete_comment">Kommentar löschen</string>
+    <string name="cd_send_comment">Kommentar senden</string>
+    <string name="placeholder_add_comment">Kommentar schreiben...</string>
+    <string name="disabled_comment_placeholder">You can’t add any more comments</string>
+    <string name="time_now">Jetzt</string>
+    <string name="label_comments_count">%1$d Kommentare</string>
+    <string name="label_order_recent">Neueste ▼</string>
+    <string name="label_order_old">Älteste ▲</string>
+    <string name="content_desc_avatar">User avatar</string>
+    <string name="content_desc_post_image">Post image</string>
+    <string name="label_tag_prefix">#%1$s</string>
+    <string name="label_follow">Folgen</string>
+    <string name="label_following">Folge ich</string>
+    <string name="notification_followed_you">folgt dir jetzt</string>
+    <string name="notification_new_review">hat einen Beitrag bewertet</string>
+    <string name="notification_commented_review">hat deine Bewertung kommentiert</string>
+    <string name="notification_liked_review">gefällt deine Bewertung</string>
+    <string name="notifications_empty">Du hast keine neuen Benachrichtigungen.</string>
+    <string name="notifications_load_error">Benachrichtigungen konnten nicht geladen werden.</string>
+    <string name="follow_list_followers_title">Follower</string>
+    <string name="follow_list_following_title">Folge ich</string>
+    <string name="follow_list_empty_followers">Noch keine Follower</string>
+    <string name="follow_list_empty_following">Du folgst noch niemandem</string>
+    <string name="follow_list_unfollow">Nicht mehr folgen</string>
+    <string name="follow_list_remove">Entfernen</string>
+    <string name="follow_list_back">Zurück</string>
+    <string name="mock_description" formatted="false">A masterpiece of contemporary tailoring. This coat is made from 100% sustainably sourced Italian cashmere, offering an impeccable drape and unmatched softness.</string>
+    <string name="mock_price">$280,000 COP</string>
+    <string name="edit_profile_title">Profil bearbeiten</string>
+    <string name="edit_profile_cancel">Abbrechen</string>
+    <string name="edit_profile_save">Speichern</string>
+    <string name="edit_profile_change_photo">Foto ändern</string>
+    <string name="edit_profile_label_username">Benutzername</string>
+    <string name="edit_profile_label_bio">Bio</string>
+    <string name="edit_profile_placeholder_bio">Passionate about urban fashion and streetwear. Sharing looks and discovering emerging brands.</string>
+    <string name="edit_profile_label_email">E-Mail-Adresse</string>
+    <string name="edit_profile_placeholder_email">alex@kloth.app</string>
+    <string name="edit_profile_label_location">Standort</string>
+    <string name="edit_profile_placeholder_location">City, Country</string>
+    <string name="edit_profile_label_website">Website</string>
+    <string name="edit_profile_placeholder_website">https://</string>
+    <string name="edit_profile_btn_save">Änderungen speichern</string>
+    <string name="edit_profile_danger_zone_title">Gefahrenzone</string>
+    <string name="edit_profile_btn_delete_account">Konto löschen</string>
+    <string name="edit_profile_danger_zone_desc">This action cannot be undone. Your posts will be permanently deleted and your reviews will appear as \"Deleted user\".</string>
+    <string name="edit_profile_mock_username">alex_style</string>
+    <string name="detail_section_reviews_title">Bewertungen</string>
+    <string name="detail_write_review_btn">Write\nreview</string>
+    <string name="detail_description_title">Beschreibung</string>
+    <string name="detail_spec_color">COLOR</string>
+    <string name="detail_spec_category">CATEGORY</string>
+    <string name="cd_hero_image">Main product image</string>
+    <string name="cd_remove_favorite">Remove from favorites</string>
+    <string name="cd_add_favorite">Add to favorites</string>
+    <string name="cd_likes">Gefällt mir</string>
+    <string name="cd_comments">Kommentare</string>
+    <string name="push_channel_name">Kloth notifications</string>
+    <string name="cd_delete_review">Bewertung löschen</string>
+    <string name="review_delete_title">Bewertung löschen</string>
+    <string name="review_delete_confirmation">All comments on this review will also be deleted. This action cannot be undone.</string>
+    <string name="review_delete_confirm">Löschen</string>
+    <string name="create_review_loading">Wird veröffentlicht...</string>
+    <string name="create_review_rating_label">Deine Bewertung</string>
+    <string name="create_review_opinion_label">Deine Meinung / Analyse</string>
+    <string name="create_review_placeholder">Write your review here (required)…</string>
+    <string name="create_review_required">Pflichtfeld</string>
+    <string name="edit_article_error">Could not load post: %1$s</string>
+    <string name="edit_article_retry">Erneut versuchen</string>
+    <string name="login_error_empty_fields">Bitte fülle alle Felder aus</string>
+    <string name="register_error_empty_fields">Alle Felder sind erforderlich</string>
+    <string name="register_error_generic">Could not create your account. Please try again</string>
+    <string name="login_error_generic">Incorrect credentials or connection error</string>
+    <string name="auth_error_password_short">Das Passwort muss mindestens 6 Zeichen lang sein</string>
+    <string name="auth_error_invalid_credentials">Ungültige Anmeldedaten</string>
+    <string name="auth_error_user_not_found">Benutzer nicht gefunden</string>
+    <string name="auth_error_email_already_registered">Diese E-Mail ist bereits registriert</string>
+    <string name="auth_error_weak_password">Passwort ist zu schwach</string>
+    <string name="auth_error_invalid_email">Ungültige E-Mail-Adresse</string>
+    <string name="forgot_password_error_empty_email">Gib deine E-Mail-Adresse ein</string>
+    <string name="auth_error_invalid_reset_code">The code is invalid or expired. Request a new one.</string>
+    <string name="auth_error_reset_wait">Warte 60 Sekunden, bevor du einen neuen Code anforderst.</string>
+    <string name="auth_error_connection">Verbindung fehlgeschlagen. Überprüfe deine Verbindung.</string>
+    <string name="auth_error_generic">Anfrage konnte nicht abgeschlossen werden. Bitte versuche es erneut.</string>
+    <string name="register_error_user_id">Could not get the current user</string>
+    <string name="register_error_save_user">Could not save your user profile</string>
+    <string name="edit_profile_error_email">Could not change your email. Sign in again and try again.</string>
+    <string name="edit_profile_error_save">Could not save your profile</string>
+    <string name="review_default_username">User</string>
+    <string name="network_error_server">Server error (%1$d)</string>
+    <string name="network_error_connection">Could not connect to the server</string>
+    <string name="network_error_not_found">Resource not found</string>
+    <string name="storage_error_user_not_logged_in">User is not signed in</string>
+    <string name="feed_retry">Erneut versuchen</string>
+    <string name="close">Schließen</string>
+    <string name="profile_tab_model_pics">Model-Fotos</string>
+    <string name="model_pics_filter_uploaded">Hochgeladen</string>
+    <string name="model_pics_filter_generated">KI-generiert</string>
+    <string name="model_pics_upload">Foto hochladen</string>
+    <string name="model_pics_uploading">Foto wird hochgeladen…</string>
+    <string name="model_pics_empty_base">You haven’t uploaded any photos yet. Choose one from your gallery to get started.</string>
+    <string name="model_pics_empty_generated">Du hast noch keine KI-generierten Bilder.</string>
+    <string name="model_pics_load_error">Deine Model-Fotos konnten nicht geladen werden.</string>
+    <string name="try_on_button">✨ Try On</string>
+    <string name="try_on_title">Virtuelle Anprobe</string>
+    <string name="try_on_select_model_pic">Wähle das gewünschte Foto</string>
+    <string name="try_on_no_model_pics">You don’t have any base photos yet. Upload one to get started.</string>
+    <string name="try_on_generating">Bild wird erstellt…</string>
+    <string name="try_on_continue">Weiter</string>
+    <string name="try_on_result_content_description">Virtual try-on result</string>
+    <string name="create_review_location_required_error">Could not get your location. Enable location permission and GPS to publish the review.</string>
+    <string name="create_review_location_label">Meinen Standort einbeziehen</string>
+    <string name="create_review_location_hint">An approximate location (~110 m) is saved. Optional.</string>
+    <string name="create_review_location_denied">Standortberechtigung verweigert. Die Bewertung wird ohne Standort veröffentlicht.</string>
+    <string name="map_title">Aktuelle Bewertungen</string>
+    <string name="map_empty">Keine Bewertungen in den letzten 24 Stunden</string>
+    <string name="map_retry">Erneut versuchen</string>
+    <string name="map_refresh">Aktualisieren</string>
+    <string name="cd_map">Bewertungskarte öffnen</string>
+    <string name="cd_my_location">Zu meinem Standort</string>
+    <string name="review_pin_open">Bewertung ansehen</string>
+    <string name="ai_summary_title">AI Summary</string>
+    <string name="translate_button">Übersetzen</string>
+    <string name="view_original_button">Original ansehen</string>
+    <string name="translation_loading">Wird übersetzt…</string>
+    <string name="translation_error">Dieser Text konnte nicht übersetzt werden. Bitte versuche es erneut.</string>
+</resources>
