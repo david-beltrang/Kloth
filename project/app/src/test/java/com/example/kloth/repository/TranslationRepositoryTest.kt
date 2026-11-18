@@ -79,7 +79,7 @@ class TranslationRepositoryTest {
         override suspend fun translate(text: String, sourceLanguage: String, targetLanguage: String): String {
             translationCalls += "$sourceLanguage->$targetLanguage"
             translatedTexts += text
-            return "$targetLanguage:$text"
+            return if (text == "Hello") "$targetLanguage:Hola" else "$targetLanguage:$text"
         }
     }
 }
